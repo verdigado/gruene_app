@@ -44,7 +44,7 @@ android {
 
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId "de.gruene.gruene_app"
+        applicationId "de.gruene.grueneapp"
         // You can update the following values to match your application needs.
         // For more information, see: https://docs.flutter.dev/deployment/android#reviewing-the-gradle-build-configuration.
         minSdkVersion flutter.minSdkVersion
@@ -52,6 +52,22 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        staging {
+            dimension "default"
+            resValue "string", "app_name", "STG Grüne App"
+            applicationId "de.gruene.grueneapp.stg"
+        }
+         production {
+            dimension "default"
+            resValue "string", "app_name", "Grüne App"
+            applicationId "de.gruene.grueneapp"
+        }
+    }
+
+
 
     buildTypes {
         release {

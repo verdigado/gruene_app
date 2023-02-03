@@ -1,6 +1,6 @@
 {
-    "name": "gruene_app",
-    "short_name": "gruene_app",
+    "name": "Grüne App",
+    "short_name": "Grüne App",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

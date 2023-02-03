@@ -5,21 +5,46 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "gruene_app",
+            "name": "gruene_app_debug_stg",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "staging"
+            ]
+
+        },
+        {
+            "name": "gruene_app_debug_production",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "production"
+            ]
+
+        },
+        {
+            "name": "gruene_app_release_production",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--flavor",
+                "production",
+                "--release"
+            ]
+
         },
         {
             "name": "gruene_app (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
-        },
-        {
-            "name": "gruene_app (release mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "profile",
+            "args": [
+                "--flavor",
+                "production",
+            ]
+            
         }
     ]
 }
