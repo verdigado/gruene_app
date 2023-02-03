@@ -8,6 +8,7 @@
             "name": "gruene_app_debug_stg",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_staging.dart",
             "args": [
                 "--flavor",
                 "staging"
@@ -18,6 +19,7 @@
             "name": "gruene_app_debug_production",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
                 "production"
@@ -28,6 +30,7 @@
             "name": "gruene_app_release_production",
             "request": "launch",
             "type": "dart",
+            "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
                 "production",
@@ -40,6 +43,7 @@
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile",
+            "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
                 "production",
