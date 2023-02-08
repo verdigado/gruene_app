@@ -11,7 +11,7 @@
             "program": "lib/main_staging.dart",
             "args": [
                 "--flavor",
-                "staging"
+                "Staging"
             ]
 
         },
@@ -22,7 +22,7 @@
             "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "production"
+                "Production"
             ]
 
         },
@@ -33,7 +33,7 @@
             "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "production",
+                "Production",
                 "--release"
             ]
 
@@ -46,7 +46,7 @@
             "program": "lib/main_production.dart",
             "args": [
                 "--flavor",
-                "production",
+                "Production",
             ]
             
         }
