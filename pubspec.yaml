@@ -71,7 +71,7 @@ flutter:
   assets:
      - .env.staging
      - .env.production
-     - assets/images
+     - assets/images/
 
 
   # An image asset can refer to one or more resolution-specific "variants", see
