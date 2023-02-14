@@ -506,7 +506,7 @@
 				DEVELOPMENT_TEAM = JY6MYP345Z;
 				ENABLE_BITCODE = NO;
 				FLUTTER_APPLICATION_PATH = /Users/dpeters/projects/github/verdigado/gruene_app;
-				FLUTTER_TARGET = lib/main_production.dart;
+				FLUTTER_TARGET = lib/main_staging.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -611,7 +611,7 @@
 				DEVELOPMENT_TEAM = JY6MYP345Z;
 				ENABLE_BITCODE = NO;
 				FLUTTER_APPLICATION_PATH = /Users/dpeters/projects/github/verdigado/gruene_app;
-				FLUTTER_TARGET = lib/main_production.dart;
+				FLUTTER_TARGET = lib/main_staging.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -689,7 +689,7 @@
 				DEVELOPMENT_TEAM = JY6MYP345Z;
 				ENABLE_BITCODE = NO;
 				FLUTTER_APPLICATION_PATH = /Users/dpeters/projects/github/verdigado/gruene_app;
-				FLUTTER_TARGET = lib/main_production.dart;
+				FLUTTER_TARGET = lib/main_staging.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -764,7 +764,7 @@
 				DEVELOPMENT_TEAM = JY6MYP345Z;
 				ENABLE_BITCODE = NO;
 				FLUTTER_APPLICATION_PATH = /Users/dpeters/projects/github/verdigado/gruene_app;
-				FLUTTER_TARGET = lib/main_production.dart;
+				FLUTTER_TARGET = lib/main_staging.dart;
 				INFOPLIST_FILE = Runner/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
