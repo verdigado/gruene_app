@@ -1,4 +1,3 @@
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:gruene_app/constants/flavors.dart';
 
 class AppConst {

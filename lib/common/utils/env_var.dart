@@ -1,8 +1,9 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:gruene_app/common/logger.dart';
 
-import '../../constants/app_const.dart';
-import '../../constants/flavors.dart';
+import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/constants/flavors.dart';
+
+import 'package:gruene_app/constants/app_const.dart';
 
 Future<void> loadEnvVars({required Flavors flavor}) async {
   try {
