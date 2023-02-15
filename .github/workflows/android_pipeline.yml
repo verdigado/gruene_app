@@ -1,0 +1,51 @@
+name: Android Build & Deploymemt
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout the project
+        uses: actions/checkout@v3
+      - name: Set Staging Vars
+        run: |
+          echo "APPSTORE_GROUP=DEV" >> $GITHUB_ENV 
+          echo "FLUTTER_FLAVOR=staging" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/production-') != true
+      - name: Set Prod Vars
+        run: |
+          echo "APPSTORE_GROUP=PROD" >> $GITHUB_ENV
+          echo "FLUTTER_FLAVOR=production" >> $GITHUB_ENV
+        if: startsWith(github.ref, 'refs/tags/production-')
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: "3.7.3"
+          channel: "stable"
+          cache: true
+      - name: Building Android application
+        run: flutter build apk --target lib/main_${{env.FLUTTER_FLAVOR}}.dart --flavor ${{env.FLUTTER_FLAVOR}} --release
+      - name: Transmit to AppCenter
+        env:
+          APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_ANDROID }}
+        run: |
+          echo 'Installing App Center CLI tools'
+          npm install -g appcenter-cli
+          echo "Find build artifacts"
+          apkPath=$(find . -name "app-release.apk" | head -1)
+          echo "Found apk at $apkPath"
+          if [[ -z ${apkPath} ]]
+          then
+            echo "No apks were found, skip publishing to App Center"
+          else
+            echo "Publishing $apkPath to App Center"
+            appcenter distribute release \
+            --group ${{env.APPSTORE_GROUP}} \
+            --file "${apkPath}" \
+            --release-notes '${{ github.event.head_commit.message }}' \
+            --app Die-Gruenen/Gruene-App-Android \
+            --token "${APP_CENTER_TOKEN}"
+          fi
