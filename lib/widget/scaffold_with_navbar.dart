@@ -49,7 +49,7 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
           setState(() {
             _selectedIndex = index;
           });
-          context.go(widget.appBarItems[index]!);
+          context.push(widget.appBarItems[index]!);
         },
       ),
     );
