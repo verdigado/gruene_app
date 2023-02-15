@@ -44,8 +44,21 @@ dev_dependencies:
   flutter_native_splash: ^2.2.17
   build_runner:
   flutter_gen_runner:
+  flutter_launcher_icons:
+  # TODO: remove git ref if Pr https://github.com/fluttercommunity/flutter_launcher_icons/pull/451 is merged !
+    git: 
+      url: https://github.com/carloshpb/flutter_launcher_icons
   flutter_test:
     sdk: flutter
+
+flutter_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
