@@ -44,7 +44,7 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: const Color.fromARGB(255, 126, 115, 101),
+        selectedItemColor: Color.fromARGB(255, 89, 84, 77),
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
