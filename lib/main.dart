@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+import 'package:gruene_app/routing/router.dart';
 
 void runMain() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,10 +13,10 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
+    return MaterialApp.router(
+      title: 'Grüne App',
+      routerConfig: router,
       theme: rootTheme,
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
 }
