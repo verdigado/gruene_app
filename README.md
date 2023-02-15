@@ -1,4 +1,4 @@
-# Grüne App
+# Gruene App
 
 A new Flutter project.
 
