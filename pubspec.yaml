@@ -39,7 +39,7 @@ dependencies:
   url_launcher: ^6.1.8
   flutter_localizations:
     sdk: flutter
-  intl: ^0.18.0
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_native_splash: ^2.2.17
