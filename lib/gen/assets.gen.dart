@@ -12,12 +12,16 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/GRUENE_Topic_Oekologie.svg
+  String get gRUENETopicOekologie => 'assets/images/GRUENE_Topic_Oekologie.svg';
+
   /// File path: assets/images/Sonnenblume_rgb_aufTransparent.png
   AssetGenImage get sonnenblumeRgbAufTransparent =>
       const AssetGenImage('assets/images/Sonnenblume_rgb_aufTransparent.png');
 
   /// List of all assets
-  List<AssetGenImage> get values => [sonnenblumeRgbAufTransparent];
+  List<dynamic> get values =>
+      [gRUENETopicOekologie, sonnenblumeRgbAufTransparent];
 }
 
 class Assets {
