@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -25,8 +26,8 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const Text(
-          'You have pushed the button this many times:',
+        Text(
+          '${AppLocalizations.of(context)!.helloWorld} You have pushed the button this many times:',
         ),
         Text(
           '$_counter',
