@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 
 void runMain() async {
@@ -16,6 +17,9 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: rootTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      // Localisations
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
@@ -86,9 +90,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
+            Text(AppLocalizations.of(context)!.helloWorld),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.displayMedium,
