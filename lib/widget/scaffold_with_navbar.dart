@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/routing/router.dart';
+import 'package:gruene_app/routing/routes.dart';
 
 class ScaffoldWithNavbar extends StatefulWidget {
-  Widget child;
+  final Widget child;
 
-  String titel;
-  final appBarItems = [routes['startScreen'], routes['searchScreen']];
+  final String titel;
+  final appBarItems = [startScreen, searchScreen];
 
   ScaffoldWithNavbar({
     Key? key,
@@ -44,12 +44,12 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Color.fromARGB(255, 89, 84, 77),
+        selectedItemColor: const Color.fromARGB(255, 89, 84, 77),
         onTap: (index) {
           setState(() {
             _selectedIndex = index;
           });
-          context.push(widget.appBarItems[index]!);
+          context.push(widget.appBarItems[index]);
         },
       ),
     );
