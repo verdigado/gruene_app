@@ -17,6 +17,8 @@ class MyApp extends StatelessWidget {
       title: 'Grüne App',
       routerConfig: router,
       theme: rootTheme,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     );
   }
 }
