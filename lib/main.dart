@@ -18,7 +18,6 @@ class MyApp extends StatelessWidget {
       theme: rootTheme,
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
       // Localisations
-      locale: const Locale('de'), // standard locale
       localizationsDelegates: AppLocalizations.localizationsDelegates,
       supportedLocales: AppLocalizations.supportedLocales,
     );
