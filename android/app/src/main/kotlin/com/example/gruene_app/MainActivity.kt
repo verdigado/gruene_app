@@ -1,4 +1,4 @@
-package de.gruene.grueneapp
+package de.gruene.dgn
 
 import io.flutter.embedding.android.FlutterActivity
 
