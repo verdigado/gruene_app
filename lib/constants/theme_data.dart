@@ -16,29 +16,38 @@ const MaterialColor mcgpalette0 =
 const int _mcgpalette0PrimaryValue = 0xFF145F32;
 
 const MaterialColor mcgpalette0Accent =
-    MaterialColor(_mcgpalette0AccentValue, <int, Color>{
+    MaterialColor(mcgpalette0AccentValue, <int, Color>{
   50: Color(0xFFFFE9EC),
   100: Color(0xFFFFC8CE),
   200: Color(0xFFFFA4AE),
   300: Color(0xFFFF808E),
   400: Color(0xFFFF6475),
-  500: Color(_mcgpalette0AccentValue),
+  500: Color(mcgpalette0AccentValue),
   600: Color(0xFFFF4255),
   700: Color(0xFFFF394B),
   800: Color(0xFFFF3141),
   900: Color(0xFFFF2130),
 });
-const int _mcgpalette0AccentValue = 0xFFFF495D;
+const int mcgpalette0AccentValue = 0xFFFF495D;
 
 final rootTheme = ThemeData(
   textTheme: const TextTheme(
-    displayLarge: TextStyle(fontFamily: 'Bereit', fontWeight: FontWeight.w700),
-    displayMedium: TextStyle(fontFamily: 'Bereit', fontWeight: FontWeight.w500),
-    displaySmall: TextStyle(fontFamily: 'Bereit', fontWeight: FontWeight.w300),
-  ),
+      displayLarge: TextStyle(
+          fontFamily: 'Bereit',
+          fontWeight: FontWeight.w700,
+          color: Color.fromRGBO(52, 52, 51, 1)),
+      displayMedium: TextStyle(
+          fontFamily: 'Bereit',
+          fontWeight: FontWeight.w500,
+          color: Color.fromRGBO(52, 52, 51, 1)),
+      displaySmall: TextStyle(
+          fontFamily: 'Bereit',
+          fontWeight: FontWeight.w100,
+          color: Color.fromRGBO(52, 52, 51, 1))),
   fontFamily: 'Ptsans',
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      minimumSize: Size(345, 56),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12), // <-- Radius
       ),

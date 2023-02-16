@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/logger.dart';
@@ -20,6 +21,7 @@ bool isSplashRemoved = false;
 
 final GoRouter router = GoRouter(
   navigatorKey: rootNavigatorKey,
+  debugLogDiagnostics: kDebugMode ? true : false,
   initialLocation: startScreen,
   routes: <RouteBase>[
     ShellRoute(
@@ -82,7 +84,7 @@ final GoRouter router = GoRouter(
   ],
   redirect: (context, state) async {
     String? firstRoute = null;
-    firstRoute = await onAppStartup();
+    firstRoute = await onAppStartup(context, state);
 
     if (!isSplashRemoved) {
       FlutterNativeSplash.remove();

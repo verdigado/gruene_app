@@ -11,7 +11,7 @@ class LoginScreen extends StatelessWidget {
         body: SafeArea(
       child: Column(
         children: [
-          Expanded(child: SvgPicture.asset(Assets.images.gRUENETopicOekologie))
+          Expanded(child: SvgPicture.asset(Assets.images.grueneTopicOekologie)),
         ],
       ),
     ));

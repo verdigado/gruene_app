@@ -44,6 +44,7 @@ dependencies:
   intl: ^0.17.0
   shared_preferences: ^2.0.17
   flutter_svg: ^2.0.1
+  sliding_up_panel: ^2.0.0+1
 
 dev_dependencies:
   flutter_native_splash: ^2.2.17

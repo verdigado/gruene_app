@@ -1,3 +1,22 @@
 {
-    "helloWorld": "Hello World!"
-}
+    "helloWorld": "Hallo Welt!",
+    "@helloWorld": {
+      "description": "Eine nettt Begrüßung"
+    },
+    "loginButtonText": "Anmelden",
+    "@loginButtonText": {
+      "description": "Anmelden"
+    },
+    "introHeadline1": "Hallo, Lorem Ipsum et Entdecke und erfahre",
+    "@introHeadline1": {
+      "description": "Intro Headline 1"
+    },
+    "introHeadline2": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore",
+    "@introHeadline2": {
+      "description": "Intro Headline 2"
+    },
+    "loginHeadline1": "Bevor es losgeht, schau Dir Deine neue Mitglieder-App an",
+    "@loginHeadline1": {
+      "description": "Login Headline 1"
+    }
+  }
