@@ -1,0 +1,38 @@
+name: Main Pipeline
+
+on:
+  push:
+    branches:
+      - develop
+    tags:
+      - production-*
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Flutter action
+        uses: subosito/flutter-action@v2.8.0
+        with:
+          flutter-version: "3.7.3"
+          channel: "stable"
+          cache: true
+      - name: Fetching Flutter dependencies
+        run: flutter pub get
+      - name: Running flutter tests
+        run: flutter test
+
+  android_pipeline:
+    needs: testing
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/android_pipeline.yml
+    secrets: inherit
+
+  ios_pipeline:
+    needs: testing
+    if: ${{ github.event_name == 'push' }}
+    uses: ./.github/workflows/ios_pipeline.yml
+    secrets: inherit

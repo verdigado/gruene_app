@@ -1,54 +1,37 @@
 {
-    // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
-    // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
-    // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
-    "version": "0.2.0",
-    "configurations": [
-        {
-            "name": "gruene_app_debug_stg",
-            "request": "launch",
-            "type": "dart",
-            "program": "lib/main_staging.dart",
-            "args": [
-                "--flavor",
-                "Staging"
-            ]
-
-        },
-        {
-            "name": "gruene_app_debug_production",
-            "request": "launch",
-            "type": "dart",
-            "program": "lib/main_production.dart",
-            "args": [
-                "--flavor",
-                "Production"
-            ]
-
-        },
-        {
-            "name": "gruene_app_release_production",
-            "request": "launch",
-            "type": "dart",
-            "program": "lib/main_production.dart",
-            "args": [
-                "--flavor",
-                "Production",
-                "--release"
-            ]
-
-        },
-        {
-            "name": "gruene_app (profile mode)",
-            "request": "launch",
-            "type": "dart",
-            "flutterMode": "profile",
-            "program": "lib/main_production.dart",
-            "args": [
-                "--flavor",
-                "Production",
-            ]
-            
-        }
-    ]
+  // Verwendet IntelliSense zum Ermitteln möglicher Attribute.
+  // Zeigen Sie auf vorhandene Attribute, um die zugehörigen Beschreibungen anzuzeigen.
+  // Weitere Informationen finden Sie unter https://go.microsoft.com/fwlink/?linkid=830387
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "gruene_app_debug_stg",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_staging.dart",
+      "args": ["--flavor", "staging"]
+    },
+    {
+      "name": "gruene_app_debug_production",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_production.dart",
+      "args": ["--flavor", "production"]
+    },
+    {
+      "name": "gruene_app_release_production",
+      "request": "launch",
+      "type": "dart",
+      "program": "lib/main_production.dart",
+      "args": ["--flavor", "production", "--release"]
+    },
+    {
+      "name": "gruene_app (profile mode)",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "profile",
+      "program": "lib/main_production.dart",
+      "args": ["--flavor", "production"]
+    }
+  ]
 }
