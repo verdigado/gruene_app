@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/routing/routes.dart';
 
 class StartScreen extends StatefulWidget {
   const StartScreen({super.key});
@@ -26,6 +28,8 @@ class _StartScreenState extends State<StartScreen> {
   Widget build(BuildContext context) {
     return Column(
       children: [
+        TextButton(
+            onPressed: () => context.push(intro), child: Text('Start Intro')),
         Text(
           '${AppLocalizations.of(context)!.helloWorld} You have pushed the button this many times:',
         ),

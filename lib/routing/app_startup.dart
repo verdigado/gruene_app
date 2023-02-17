@@ -10,11 +10,11 @@ Future<String?> onAppStartup(BuildContext context, GoRouterState state) async {
   final bool? isFirstLaunched = prefs.getBool('firstLaunched');
   if ((isFirstLaunched == null || isFirstLaunched)) {
     prefs.setBool('firstLaunched', true);
-    return intro;
+    return null;
   }
   var isLogin = prefs.getBool('login');
   if (!doLoginAutoLogin(isLogin)) {
-    return login;
+    return null;
   }
   return null;
 }

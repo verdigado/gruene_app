@@ -18,30 +18,36 @@ class IntroScreen extends StatelessWidget {
     return Scaffold(
         body: SafeArea(
       child: Stack(children: [
-        Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SvgPicture.asset(Assets.images.grueneTopicEconomy),
-            Text(
-              textAlign: TextAlign.center,
-              AppLocalizations.of(context)!.introHeadline1,
-              style: Theme.of(context).textTheme.displaySmall,
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SvgPicture.asset(Assets.images.grueneTopicEconomy),
+                Text(
+                  textAlign: TextAlign.center,
+                  AppLocalizations.of(context)!.introHeadline1,
+                  style: Theme.of(context).textTheme.displaySmall,
+                ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    AppLocalizations.of(context)!.introHeadline2,
+                    style: Theme.of(context).textTheme.titleMedium,
+                  ),
+                ),
+                ElevatedButton(
+                    onPressed: () => context.go(login),
+                    child: Text(AppLocalizations.of(context)!.loginButtonText,
+                        style: Theme.of(context).textTheme.titleMedium)),
+              ],
             ),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
-              child: Text(
-                textAlign: TextAlign.center,
-                AppLocalizations.of(context)!.introHeadline2,
-                style: Theme.of(context).textTheme.titleMedium,
-              ),
-            ),
-            ElevatedButton(
-                onPressed: () => context.push(newsScreen),
-                child: Text(AppLocalizations.of(context)!.loginButtonText)),
-          ],
+          ),
         ),
         SlidingUpPanel(
-          minHeight: 80,
+          minHeight: 50,
           maxHeight: MediaQuery.of(context).size.height,
           parallaxEnabled: true,
           backdropEnabled: true,
@@ -61,7 +67,7 @@ class IntroScreen extends StatelessWidget {
                       borderRadius: BorderRadius.all(Radius.circular(12.0))),
                 ),
                 SizedBox(
-                  height: 25,
+                  height: 10,
                 ),
                 Center(
                   child: Text(
