@@ -25,13 +25,16 @@ class IntroScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 SvgPicture.asset(Assets.images.grueneTopicEconomy),
-                Text(
-                  textAlign: TextAlign.center,
-                  AppLocalizations.of(context)!.introHeadline1,
-                  style: Theme.of(context).textTheme.displaySmall,
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20),
+                  child: Text(
+                    textAlign: TextAlign.center,
+                    AppLocalizations.of(context)!.introHeadline1,
+                    style: Theme.of(context).textTheme.displaySmall,
+                  ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.fromLTRB(20, 30, 20, 30),
+                  padding: const EdgeInsets.all(20),
                   child: Text(
                     textAlign: TextAlign.center,
                     AppLocalizations.of(context)!.introHeadline2,
@@ -41,7 +44,7 @@ class IntroScreen extends StatelessWidget {
                 ElevatedButton(
                     onPressed: () => context.go(login),
                     child: Text(AppLocalizations.of(context)!.loginButtonText,
-                        style: Theme.of(context).textTheme.titleMedium)),
+                        style: const TextStyle(color: Colors.white))),
               ],
             ),
           ),
