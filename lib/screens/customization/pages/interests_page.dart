@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:gruene_app/widget/topic_card.dart';
 
 class InterestsPage extends StatefulWidget {
   PageController controller;
@@ -14,8 +15,17 @@ class InterestsPage extends StatefulWidget {
 class _InterestsPageState extends State<InterestsPage> {
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('InterestsPage'),
+    return GridView.count(
+      crossAxisCount: 2,
+      children: [
+        TopicCard(),
+        TopicCard(),
+        TopicCard(),
+        TopicCard(),
+        TopicCard(),
+        TopicCard(),
+        TopicCard(),
+      ],
     );
   }
 }

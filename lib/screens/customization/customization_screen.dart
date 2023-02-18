@@ -22,7 +22,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
       extendBodyBehindAppBar: true,
       appBar: widget.currentPage != 0
           ? PreferredSize(
-              preferredSize: const Size.fromHeight(80),
+              preferredSize: Size(double.infinity, 80),
               child: AppBar(
                 backgroundColor: Colors.white,
                 leading: const CupertinoNavigationBarBackButton(
@@ -32,7 +32,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                 elevation: 0,
                 leadingWidth: 100,
                 bottom: PreferredSize(
-                    preferredSize: const Size.fromHeight(6.0),
+                    preferredSize: const Size(double.infinity, 80),
                     child: Padding(
                       padding:
                           const EdgeInsets.only(left: 18, right: 18, top: 10),
@@ -63,7 +63,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     )),
               ),
             )
-          : null,
+          : PreferredSize(preferredSize: Size(0, 0), child: Container()),
       body: SafeArea(
         child: PageView(
           controller: controller,
