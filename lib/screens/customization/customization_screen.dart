@@ -33,7 +33,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               ? PreferredSize(
                   preferredSize: Size(double.infinity, 80),
                   child: AppBar(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     leading: const CupertinoNavigationBarBackButton(
                       color: Colors.grey,
                       previousPageTitle: 'Zurück',
@@ -72,7 +72,8 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                         )),
                   ),
                 )
-              : PreferredSize(preferredSize: Size(0, 0), child: Container()),
+              : PreferredSize(
+                  preferredSize: const Size(0, 0), child: Container()),
           body: SafeArea(
             child: PageView(
               controller: controller,

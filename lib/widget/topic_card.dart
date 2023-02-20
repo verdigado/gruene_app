@@ -1,7 +1,10 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/gen/fonts.gen.dart';
+import 'package:shimmer/shimmer.dart';
 
 class TopicCard extends StatefulWidget {
   String imgageUrl;
@@ -17,20 +20,10 @@ class TopicCard extends StatefulWidget {
 }
 
 class _TopicCardState extends State<TopicCard> {
-  Image? img;
+  CachedNetworkImage? img;
   var icon = Icons.add;
   bool checked = false;
-
-  @override
-  void initState() {
-    img = Image.network(
-      widget.imgageUrl,
-      width: 160,
-      height: 160,
-      fit: BoxFit.fill,
-    );
-    super.initState();
-  }
+  bool imgLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +39,20 @@ class _TopicCardState extends State<TopicCard> {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(15.0),
-                child: img,
+                child: CachedNetworkImage(
+                  imageUrl: widget.imgageUrl,
+                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  placeholder: (context, url) => placeholderCard(),
+                  imageBuilder: (context, imageProvider) => Image(
+                    image: imageProvider,
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.fill,
+                  ),
+                  width: 160,
+                  height: 160,
+                  fit: BoxFit.fill,
+                ),
               )),
         ),
         Positioned(
@@ -83,5 +89,21 @@ class _TopicCardState extends State<TopicCard> {
         ))
       ]),
     );
+  }
+
+  Shimmer placeholderCard() {
+    return Shimmer.fromColors(
+        baseColor: const Color(0xFF145F32),
+        highlightColor: const Color(0xFF5B8F70),
+        child: SizedBox(
+          width: 160,
+          height: 160,
+          child: Card(
+            semanticContainer: true,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15.0),
+            ),
+          ),
+        ));
   }
 }

@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 
 import '../bloc/customization_bloc.dart';
@@ -30,7 +32,7 @@ class _InterestsPageState extends State<InterestsPage> {
         BlocBuilder<CustomizationBloc, CustomizationState>(
           builder: (context, state) {
             if (state is CustomizationLoading) {
-              return CircularProgressIndicator();
+              return const CircularProgressIndicator();
             }
             if (state is CustomizationReady) {
               return Expanded(
@@ -48,6 +50,17 @@ class _InterestsPageState extends State<InterestsPage> {
             return Container();
           },
         ),
+        const SizedBox(
+          height: 10,
+        ),
+        ElevatedButton(
+            onPressed: () => widget.controller.nextPage(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeIn),
+            child: const Text('Weiter', style: TextStyle(color: Colors.white))),
+        TextButton(
+            onPressed: () => context.go(startScreen),
+            child: const Text('Überspringen'))
       ],
     );
   }

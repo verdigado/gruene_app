@@ -28,7 +28,9 @@ class CustomizationRepositoryImpl extends CustomizationRepository {
         name: 'Politik',
         imageUrl:
             'https://upload.wikimedia.org/wikipedia/commons/3/3f/2020-02-13_Deutscher_Bundestag_IMG_3438_by_Stepro.jpg',
-      )
+      ),
+      Topic(name: 'Beipiel', imageUrl: 'http://via.placeholder.com/160x160'),
+      Topic(name: 'Beipiel', imageUrl: 'http://via.placeholder.com/160x160')
     ];
   }
 }
