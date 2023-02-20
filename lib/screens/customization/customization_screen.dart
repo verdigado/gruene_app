@@ -4,10 +4,10 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/screens/customization/bloc/costumization_bloc.dart';
+import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
 import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
-import 'package:gruene_app/screens/customization/repository/costumization_repository.dart';
+import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
 
 class CustomizationScreen extends StatefulWidget {
   CustomizationScreen({super.key});
@@ -22,11 +22,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   Widget build(BuildContext context) {
     final PageController controller = PageController();
     return RepositoryProvider(
-      create: (context) => CostumizationRepositoryImpl(),
+      create: (context) => CustomizationRepositoryImpl(),
       child: BlocProvider(
         create: (context) =>
-            CostumizationBloc(context.read<CostumizationRepositoryImpl>())
-              ..add(CostumizationLoad()),
+            CustomizationBloc(context.read<CustomizationRepositoryImpl>())
+              ..add(CustomizationLoad()),
         child: Scaffold(
           extendBodyBehindAppBar: true,
           appBar: widget.currentPage != 0

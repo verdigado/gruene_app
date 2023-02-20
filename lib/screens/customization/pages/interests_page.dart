@@ -4,7 +4,7 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 
-import '../bloc/costumization_bloc.dart';
+import '../bloc/customization_bloc.dart';
 
 class InterestsPage extends StatefulWidget {
   PageController controller;
@@ -27,12 +27,12 @@ class _InterestsPageState extends State<InterestsPage> {
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
-        BlocBuilder<CostumizationBloc, CostumizationState>(
+        BlocBuilder<CustomizationBloc, CustomizationState>(
           builder: (context, state) {
-            if (state is CostumizationLoading) {
+            if (state is CustomizationLoading) {
               return CircularProgressIndicator();
             }
-            if (state is CostumizationReady) {
+            if (state is CustomizationReady) {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,

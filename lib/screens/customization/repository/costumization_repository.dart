@@ -1,10 +1,10 @@
 import 'package:gruene_app/data/topic.dart';
 
-abstract class CostumizationRepository {
+abstract class CustomizationRepository {
   List<Topic> listTopic();
 }
 
-class CostumizationRepositoryImpl extends CostumizationRepository {
+class CustomizationRepositoryImpl extends CustomizationRepository {
   @override
   List<Topic> listTopic() {
     return [
