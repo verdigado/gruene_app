@@ -40,8 +40,14 @@ class _InterestsPageState extends State<InterestsPage> {
                   crossAxisCount: 2,
                   children: state.topis
                       .map((e) => TopicCard(
+                            id: e.id,
                             imgageUrl: e.imageUrl,
                             topic: e.name,
+                            onTap: (check, id) => check
+                                ? BlocProvider.of<CustomizationBloc>(context)
+                                    .add(CustomizationTopicAdd(id: id))
+                                : BlocProvider.of<CustomizationBloc>(context)
+                                    .add(CustomizationTopicRemove(id: id)),
                           ))
                       .toList(),
                 ),

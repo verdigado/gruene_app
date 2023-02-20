@@ -8,12 +8,19 @@ import 'package:shimmer/shimmer.dart';
 
 class TopicCard extends StatefulWidget {
   String imgageUrl;
+  String id;
 
-  void Function(bool)? onTap;
+  void Function(bool, String)? onTap;
 
   String? topic;
 
-  TopicCard({super.key, required this.imgageUrl, this.topic, this.onTap});
+  TopicCard({
+    super.key,
+    required this.id,
+    required this.imgageUrl,
+    this.topic,
+    this.onTap,
+  });
 
   @override
   State<TopicCard> createState() => _TopicCardState();
@@ -67,7 +74,7 @@ class _TopicCardState extends State<TopicCard> {
                     checked = !checked;
                     icon = checked ? icon = Icons.check : Icons.add;
                     if (widget.onTap != null) {
-                      widget.onTap!(checked);
+                      widget.onTap!(checked, widget.id);
                     }
                   });
                 },

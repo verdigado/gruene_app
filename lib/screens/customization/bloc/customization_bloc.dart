@@ -13,7 +13,34 @@ class CustomizationBloc extends Bloc<CustomizationEvent, CustomizationState> {
       : super(CustomizationInitial()) {
     on<CustomizationLoad>((event, emit) {
       emit(CustomizationReady(
-          topis: customizationRepository.listTopic(), subject: ['Umwelt']));
+          topis: customizationRepository.listTopic(),
+          subject: ['Umwelt'],
+          selectTopis: [],
+          selectSubject: []));
     });
+    on<CustomizationTopicAdd>((event, emit) {
+      final currentState = state;
+      if (currentState is CustomizationReady) {
+        emit(CustomizationReady(
+            topis: currentState.topis,
+            subject: currentState.subject,
+            selectTopis: [...currentState.selectTopis, event.id],
+            selectSubject: currentState.selectSubject));
+      }
+    });
+    on<CustomizationTopicRemove>(
+      (event, emit) {
+        final currentState = state;
+        if (currentState is CustomizationReady) {
+          emit(CustomizationReady(
+              topis: currentState.topis,
+              subject: currentState.subject,
+              selectTopis: currentState.selectTopis
+                  .where((element) => element != event.id)
+                  .toList(),
+              selectSubject: currentState.selectSubject));
+        }
+      },
+    );
   }
 }
