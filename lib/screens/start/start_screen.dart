@@ -29,10 +29,11 @@ class _StartScreenState extends State<StartScreen> {
     return Column(
       children: [
         TextButton(
-            onPressed: () => context.push(intro), child: Text('Start Intro')),
+            onPressed: () => context.push(intro),
+            child: const Text('Start Intro')),
         TextButton(
             onPressed: () => context.push(customization),
-            child: Text('Start costomization')),
+            child: const Text('Start costomization')),
         Text(
           '${AppLocalizations.of(context)!.helloWorld} You have pushed the button this many times:',
         ),

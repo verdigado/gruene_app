@@ -7,6 +7,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
 import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
+import 'package:gruene_app/screens/customization/pages/subject_page.dart';
 import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
 
 class CustomizationScreen extends StatefulWidget {
@@ -21,6 +22,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   @override
   Widget build(BuildContext context) {
     final PageController controller = PageController();
+    final pages = [
+      IntroPage(controller),
+      InterestsPage(controller),
+      SubjectPage(controller)
+    ];
     return RepositoryProvider(
       create: (context) => CustomizationRepositoryImpl(),
       child: BlocProvider(
@@ -31,7 +37,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
           extendBodyBehindAppBar: true,
           appBar: widget.currentPage != 0
               ? PreferredSize(
-                  preferredSize: Size(double.infinity, 80),
+                  preferredSize: const Size(double.infinity, 80),
                   child: AppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     leading: const CupertinoNavigationBarBackButton(
@@ -51,11 +57,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(10)),
                                 child: LinearProgressIndicator(
-                                  backgroundColor: Colors.red.withOpacity(0.3),
-                                  valueColor:
-                                      const AlwaysStoppedAnimation(Colors.red),
-                                  value: 0.5,
-                                ),
+                                    backgroundColor:
+                                        Colors.red.withOpacity(0.3),
+                                    valueColor: const AlwaysStoppedAnimation(
+                                        Colors.red),
+                                    value:
+                                        getProzentOfCurrentPage(pages) / 100),
                               ),
                               const SizedBox(
                                 height: 15,
@@ -63,7 +70,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                               Align(
                                 alignment: Alignment.bottomLeft,
                                 child: Text(
-                                  'Schritt ${widget.currentPage} von 2',
+                                  'Schritt ${widget.currentPage} von ${pages.length}',
                                   textAlign: TextAlign.left,
                                 ),
                               )
@@ -81,11 +88,15 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                 widget.currentPage = value;
               }),
               physics: const NeverScrollableScrollPhysics(),
-              children: [IntroPage(controller), InterestsPage(controller)],
+              children: pages,
             ),
           ),
         ),
       ),
     );
+  }
+
+  double getProzentOfCurrentPage(List<StatefulWidget> pages) {
+    return ((widget.currentPage * 100) / pages.length);
   }
 }

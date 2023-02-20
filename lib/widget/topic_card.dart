@@ -48,7 +48,19 @@ class _TopicCardState extends State<TopicCard> {
                 borderRadius: BorderRadius.circular(15.0),
                 child: CachedNetworkImage(
                   imageUrl: widget.imgageUrl,
-                  errorWidget: (context, url, error) => const Icon(Icons.error),
+                  errorWidget: (context, url, error) {
+                    return SizedBox(
+                      width: 160,
+                      height: 160,
+                      child: Card(
+                        semanticContainer: true,
+                        color: const Color(0xFF145F32),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15.0),
+                        ),
+                      ),
+                    );
+                  },
                   placeholder: (context, url) => placeholderCard(),
                   imageBuilder: (context, imageProvider) => Image(
                     image: imageProvider,
@@ -80,7 +92,7 @@ class _TopicCardState extends State<TopicCard> {
                 },
                 child: Icon(
                   icon,
-                  color: Theme.of(context).primaryColor,
+                  color: checked ? const Color(0xFFFF495D) : Colors.black,
                   size: 30,
                 ))),
         Positioned.fill(

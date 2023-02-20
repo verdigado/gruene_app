@@ -1,4 +1,4 @@
-import 'package:gruene_app/data/topic.dart';
+import 'package:gruene_app/screens/customization/data/topic.dart';
 
 abstract class CustomizationRepository {
   List<Topic> listTopic();

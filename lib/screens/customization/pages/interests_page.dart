@@ -61,7 +61,7 @@ class _InterestsPageState extends State<InterestsPage> {
         ),
         ElevatedButton(
             onPressed: () => widget.controller.nextPage(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn),
             child: const Text('Weiter', style: TextStyle(color: Colors.white))),
         TextButton(

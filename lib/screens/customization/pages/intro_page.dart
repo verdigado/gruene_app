@@ -36,7 +36,7 @@ class _IntroPageState extends State<IntroPage> {
         ),
         ElevatedButton(
             onPressed: () => widget.controller.nextPage(
-                duration: const Duration(milliseconds: 300),
+                duration: const Duration(milliseconds: 500),
                 curve: Curves.easeIn),
             child: Text(AppLocalizations.of(context)!.askForInterest,
                 style: const TextStyle(color: Colors.white))),

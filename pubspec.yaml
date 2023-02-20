@@ -49,6 +49,7 @@ dependencies:
   equatable: ^2.0.5
   shimmer: ^2.0.0
   cached_network_image: ^3.2.3
+  azlistview: ^2.0.0
 
 dev_dependencies:
   flutter_native_splash: ^2.2.17
