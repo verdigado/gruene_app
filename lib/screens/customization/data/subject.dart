@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:azlistview/azlistview.dart';
+import 'package:flutter/material.dart';
 
 class Subject extends ISuspensionBean {
   String id;
@@ -9,6 +10,12 @@ class Subject extends ISuspensionBean {
     required this.id,
     required this.name,
   });
+
+  @override
+  String getSuspensionTag() {
+    if (name.isEmpty) return '#';
+    return name.characters.first.toUpperCase();
+  }
 
   Subject copyWith({
     String? id,
@@ -53,9 +60,4 @@ class Subject extends ISuspensionBean {
 
   @override
   int get hashCode => id.hashCode ^ name.hashCode;
-
-  @override
-  String getSuspensionTag() {
-    return name;
-  }
 }

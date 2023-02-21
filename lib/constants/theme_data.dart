@@ -31,7 +31,8 @@ const MaterialColor mcgpalette0Accent =
 const int mcgpalette0AccentValue = 0xFFFF495D;
 
 final rootTheme = ThemeData(
-  primaryColor: Color(_mcgpalette0PrimaryValue),
+  primaryColor: const Color(_mcgpalette0PrimaryValue),
+  primaryColorLight: const Color(0xFFE3ECE6),
   textTheme: const TextTheme(
       labelSmall: TextStyle(color: Colors.white),
       displayLarge: TextStyle(
