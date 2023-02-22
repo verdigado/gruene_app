@@ -51,8 +51,8 @@ final rootTheme = ThemeData(
   fontFamily: 'Ptsans',
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      textStyle: TextStyle(color: Colors.white),
-      minimumSize: Size(345, 56),
+      textStyle: const TextStyle(color: Colors.white),
+      minimumSize: const Size(345, 56),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12), // <-- Radius
       ),

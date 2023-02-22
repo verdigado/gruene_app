@@ -1,7 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
@@ -92,7 +91,7 @@ final GoRouter router = GoRouter(
     ),
   ],
   redirect: (context, state) async {
-    String? firstRoute = null;
+    String? firstRoute;
     firstRoute = await onAppStartup(context, state);
 
     if (!isSplashRemoved) {

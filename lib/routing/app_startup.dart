@@ -1,6 +1,5 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:go_router/src/state.dart';
-import 'package:gruene_app/routing/routes.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 /// Execute on Launch and return the Route first Route to Navigate
