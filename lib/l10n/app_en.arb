@@ -18,5 +18,9 @@
     "loginHeadline1": "Bevor es losgeht, schau Dir Deine neue Mitglieder-App an",
     "@loginHeadline1": {
       "description": "Login Headline 1"
-    }
+    },
+    "customPageHeadline1": "Wir würden gern die App auf Deine Bedürfnisse zu schneiden.",
+    "customPageHeadline2": "consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
+    "askForInterest":"Verrate uns Deine Interessen",
+    "skipCustomText":"Gleich loslegen"
   }

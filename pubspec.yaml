@@ -45,6 +45,13 @@ dependencies:
   shared_preferences: ^2.0.17
   flutter_svg: ^2.0.1
   sliding_up_panel: ^2.0.0+1
+  flutter_bloc: ^8.1.2
+  equatable: ^2.0.5
+  shimmer: ^2.0.0
+  cached_network_image: ^3.2.3
+  azlistview: ^2.0.0-nullsafety.0
+  flutter_typeahead: ^4.3.6
+  fuzzywuzzy: ^0.2.0
 
 dev_dependencies:
   flutter_native_splash: ^2.2.17

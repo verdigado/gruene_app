@@ -13,6 +13,7 @@ import 'package:gruene_app/screens/start/start_screen.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
+import '../screens/customization/customization_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -76,9 +77,17 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
       path: login,
       pageBuilder: (context, state) {
         return const NoTransitionPage(child: LoginScreen());
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: customization,
+      pageBuilder: (context, state) {
+        return NoTransitionPage(child: CustomizationScreen());
       },
     ),
   ],

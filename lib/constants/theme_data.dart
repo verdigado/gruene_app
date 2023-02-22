@@ -31,7 +31,10 @@ const MaterialColor mcgpalette0Accent =
 const int mcgpalette0AccentValue = 0xFFFF495D;
 
 final rootTheme = ThemeData(
+  primaryColor: const Color(_mcgpalette0PrimaryValue),
+  primaryColorLight: const Color(0xFFE3ECE6),
   textTheme: const TextTheme(
+      labelSmall: TextStyle(color: Colors.white),
       displayLarge: TextStyle(
           fontFamily: 'Bereit',
           fontWeight: FontWeight.w700,
@@ -42,11 +45,13 @@ final rootTheme = ThemeData(
           color: Color.fromRGBO(52, 52, 51, 1)),
       displaySmall: TextStyle(
           fontFamily: 'Bereit',
-          fontWeight: FontWeight.w100,
+          fontWeight: FontWeight.w300,
+          fontSize: 32,
           color: Color.fromRGBO(52, 52, 51, 1))),
   fontFamily: 'Ptsans',
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
+      textStyle: TextStyle(color: Colors.white),
       minimumSize: Size(345, 56),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(12), // <-- Radius
