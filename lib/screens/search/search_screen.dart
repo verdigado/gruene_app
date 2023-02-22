@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 class SearchScreen extends StatefulWidget {
@@ -18,9 +15,9 @@ class _SearchScreenState extends State<SearchScreen> {
     return Center(
       child: Column(
         children: [
-          Text('Search'),
+          const Text('Search'),
           TextButton(
-              onPressed: () => context.push(newsScreen), child: Text('News'))
+              onPressed: () => context.push(newsScreen), child: const Text('News'))
         ],
       ),
     );

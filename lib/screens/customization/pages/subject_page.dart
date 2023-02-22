@@ -1,10 +1,8 @@
-import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:gruene_app/screens/customization/pages/widget/subject_list.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SubjectPage extends StatefulWidget {
   PageController controller;
