@@ -1,7 +1,12 @@
 import 'package:gruene_app/screens/customization/data/topic.dart';
 
+import '../data/subject.dart';
+
 abstract class CustomizationRepository {
   List<Topic> listTopic();
+
+  List<Subject> listSubject();
+  bool customizationSend(List<Topic> topics, List<Subject> subjects);
 }
 
 class CustomizationRepositoryImpl extends CustomizationRepository {
@@ -35,5 +40,40 @@ class CustomizationRepositoryImpl extends CustomizationRepository {
             'https://upload.wikimedia.org/wikipedia/commons/3/3f/2020-02-13_Deutscher_Bundestag_IMG_3438_by_Stepro.jpg',
       ),
     ];
+  }
+
+  @override
+  List<Subject> listSubject() {
+    return [
+      Subject(id: '1', name: 'Asylpolitik'),
+      Subject(id: '9', name: 'Außenpolitik'),
+      Subject(id: '2', name: 'Bauen'),
+      Subject(id: '3', name: 'Europa'),
+      Subject(id: '8', name: 'Zeitpolitik'),
+      Subject(id: '4', name: 'Friedenspolitik'),
+      Subject(id: '5', name: 'Gesundheit'),
+      Subject(id: '6', name: 'Globalisierung'),
+      Subject(id: '7', name: 'Handelsabkommen'),
+      Subject(id: '8', name: 'Handelspolitik'),
+      Subject(id: '8', name: 'Hamburgpolitik'),
+      Subject(id: '8', name: 'Hamsterpolitik'),
+      Subject(id: '8', name: 'Hundepolitik'),
+      Subject(id: '8', name: 'Hauspolitik'),
+      Subject(id: '8', name: 'Heimpolitik'),
+      Subject(id: '8', name: 'Himmelpolitik'),
+      Subject(id: '8', name: 'Handpolitik'),
+      Subject(id: '8', name: 'Hemdpolitik'),
+      Subject(id: '8', name: 'Hallopolitik'),
+      Subject(id: '8', name: 'Haarpolitik'),
+      Subject(id: '8', name: 'Halspolitik'),
+      Subject(id: '8', name: 'Handelspolitik'),
+      Subject(id: '9', name: 'Innenpolitik'),
+    ];
+  }
+
+  @override
+  bool customizationSend(List<Topic> topics, List<Subject> subjects) {
+    // TODO: implement customizationSend
+    throw UnimplementedError();
   }
 }

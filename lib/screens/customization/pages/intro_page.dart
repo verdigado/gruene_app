@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 class IntroPage extends StatefulWidget {
-  PageController controller;
+  final PageController controller;
 
-  IntroPage(this.controller, {super.key});
+  const IntroPage(this.controller, {super.key});
 
   @override
   State<IntroPage> createState() => _IntroPageState();

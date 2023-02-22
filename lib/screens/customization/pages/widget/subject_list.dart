@@ -8,10 +8,15 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 class SubjectList extends StatefulWidget {
   void Function(Subject sub, bool check) onSelect;
 
-  SubjectList({Key? key, required this.subjectList, required this.onSelect})
-      : super(key: key);
-
+  final List<Subject> selectedSubjects;
   final List<Subject> subjectList;
+
+  SubjectList({
+    Key? key,
+    required this.subjectList,
+    required this.onSelect,
+    required this.selectedSubjects,
+  }) : super(key: key);
 
   @override
   _SubjectListState createState() => _SubjectListState();
@@ -21,13 +26,15 @@ class _SubjectListState extends State<SubjectList> {
   ItemScrollController? itemScrollController;
   List<String> subjectNames = [];
   String searchPattern = '';
-  final List<String> subjectListSelects = [];
+  List<Subject> subjectListSelects = [];
 
   @override
   void initState() {
     super.initState();
     itemScrollController = ItemScrollController();
     subjectNames = widget.subjectList.map((e) => e.name).toList();
+    subjectListSelects = widget.selectedSubjects;
+
     // short alphabetically
     SuspensionUtil.sortListBySuspensionTag(widget.subjectList);
     // create first letter entry
@@ -62,7 +69,6 @@ class _SubjectListState extends State<SubjectList> {
                               element.name.toLowerCase() ==
                               suggestion.first.toLowerCase());
                           FocusScope.of(context).unfocus();
-
                           itemScrollController?.jumpTo(index: res);
                         },
                         icon: const Icon(Icons.search)),
@@ -114,16 +120,18 @@ class _SubjectListState extends State<SubjectList> {
                 title: Text(name),
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: subjectListSelects.contains(subject.name)
+                  child: subjectListSelects
+                          .map((e) => e.name)
+                          .contains(subject.name)
                       ? const Icon(Icons.check)
                       : const Icon(null),
                 ),
                 onTap: () {
                   setState(() {
-                    if (subjectListSelects.contains(subject.name)) {
-                      subjectListSelects.remove(subject.name);
+                    if (subjectListSelects.contains(subject)) {
+                      subjectListSelects.remove(subject);
                     } else {
-                      subjectListSelects.add(subject.name);
+                      subjectListSelects.add(subject);
                     }
                   });
                 },

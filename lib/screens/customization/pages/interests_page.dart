@@ -7,9 +7,9 @@ import 'package:gruene_app/widget/topic_card.dart';
 import '../bloc/customization_bloc.dart';
 
 class InterestsPage extends StatefulWidget {
-  PageController controller;
+  final PageController controller;
 
-  InterestsPage(this.controller, {super.key});
+  const InterestsPage(this.controller, {super.key});
 
   @override
   State<InterestsPage> createState() => _InterestsPageState();
@@ -41,6 +41,9 @@ class _InterestsPageState extends State<InterestsPage> {
                             id: e.id,
                             imgageUrl: e.imageUrl,
                             topic: e.name,
+                            checked: state.selectTopis
+                                .map((e) => e.id)
+                                .contains(e.id),
                             onTap: (check, id) => check
                                 ? BlocProvider.of<CustomizationBloc>(context)
                                     .add(CustomizationTopicAdd(id: id))

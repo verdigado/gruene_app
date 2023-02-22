@@ -16,14 +16,23 @@ class CustomizationScreen extends StatefulWidget {
 }
 
 class _CustomizationScreenState extends State<CustomizationScreen> {
+  late List<Widget> pages;
+
+  late PageController controller;
+
   @override
-  Widget build(BuildContext context) {
-    final PageController controller = PageController();
-    final pages = [
+  void initState() {
+    super.initState();
+    controller = PageController();
+    pages = [
       IntroPage(controller),
       InterestsPage(controller),
       SubjectPage(controller)
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => CustomizationRepositoryImpl(),
       child: BlocProvider(
@@ -37,9 +46,11 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                   preferredSize: const Size(double.infinity, 80),
                   child: AppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: const CupertinoNavigationBarBackButton(
+                    leading: CupertinoNavigationBarBackButton(
                       color: Colors.grey,
                       previousPageTitle: 'Zurück',
+                      onPressed: () =>
+                          controller.jumpToPage(widget.currentPage - 1),
                     ),
                     elevation: 0,
                     leadingWidth: 100,
@@ -63,7 +74,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     );
   }
 
-  PreferredSize progressIndicator(List<StatefulWidget> pages) {
+  PreferredSize progressIndicator(List<Widget> pages) {
     return PreferredSize(
         preferredSize: const Size(double.infinity, 80),
         child: Padding(
