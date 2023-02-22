@@ -6,7 +6,10 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 
 class SubjectList extends StatefulWidget {
-  const SubjectList({Key? key, required this.subjectList}) : super(key: key);
+  void Function(Subject sub, bool check) onSelect;
+
+  SubjectList({Key? key, required this.subjectList, required this.onSelect})
+      : super(key: key);
 
   final List<Subject> subjectList;
 
@@ -16,13 +19,15 @@ class SubjectList extends StatefulWidget {
 
 class _SubjectListState extends State<SubjectList> {
   ItemScrollController? itemScrollController;
-  List<String> index = [];
+  List<String> subjectNames = [];
+  String searchPattern = '';
+  final List<String> subjectListSelects = [];
 
   @override
   void initState() {
     super.initState();
     itemScrollController = ItemScrollController();
-    index = widget.subjectList.map((e) => e.name).toList();
+    subjectNames = widget.subjectList.map((e) => e.name).toList();
     // short alphabetically
     SuspensionUtil.sortListBySuspensionTag(widget.subjectList);
     // create first letter entry
@@ -46,15 +51,29 @@ class _SubjectListState extends State<SubjectList> {
                     ),
                     hintText: 'Suche',
                     suffixIcon: IconButton(
-                        onPressed: () => print('HIHIHI'),
+                        onPressed: () {
+                          var suggestion = extractTop(
+                            query: searchPattern,
+                            choices: subjectNames,
+                            limit: 4,
+                            cutoff: 50,
+                          ).map((e) => e.choice);
+                          var res = widget.subjectList.indexWhere((element) =>
+                              element.name.toLowerCase() ==
+                              suggestion.first.toLowerCase());
+                          FocusScope.of(context).unfocus();
+
+                          itemScrollController?.jumpTo(index: res);
+                        },
                         icon: const Icon(Icons.search)),
                     hintStyle: Theme.of(context).textTheme.bodyMedium!
                       ..copyWith(color: Colors.grey))),
             suggestionsCallback: (pattern) {
               if (pattern.isEmpty || pattern.length < 2) return [];
+              searchPattern = pattern;
               return extractTop(
                 query: pattern,
-                choices: index,
+                choices: subjectNames,
                 limit: 4,
                 cutoff: 50,
               ).map((e) => e.choice);
@@ -65,6 +84,7 @@ class _SubjectListState extends State<SubjectList> {
               );
             },
             hideOnEmpty: true,
+            noItemsFoundBuilder: (context) => const Text('Kein Theme gefunden'),
             onSuggestionSelected: (suggestion) {
               itemScrollController?.jumpTo(
                 index: widget.subjectList.indexWhere(
@@ -88,8 +108,26 @@ class _SubjectListState extends State<SubjectList> {
             },
             susItemHeight: 36,
             itemBuilder: (context, index) {
-              var name = widget.subjectList[index].name;
-              return ListTile(title: Text(name));
+              var subject = widget.subjectList[index];
+              var name = subject.name;
+              return ListTile(
+                title: Text(name),
+                trailing: Padding(
+                  padding: const EdgeInsets.only(right: 10),
+                  child: subjectListSelects.contains(subject.name)
+                      ? const Icon(Icons.check)
+                      : const Icon(null),
+                ),
+                onTap: () {
+                  setState(() {
+                    if (subjectListSelects.contains(subject.name)) {
+                      subjectListSelects.remove(subject.name);
+                    } else {
+                      subjectListSelects.add(subject.name);
+                    }
+                  });
+                },
+              );
             },
           ),
         )

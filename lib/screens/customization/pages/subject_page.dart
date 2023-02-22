@@ -1,5 +1,7 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:gruene_app/screens/customization/pages/widget/subject_list.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
@@ -42,6 +44,28 @@ class _SubjectPageState extends State<SubjectPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SubjectList(subjectList: subjects);
+    return Column(
+      children: [
+        Expanded(
+          child: SubjectList(
+            subjectList: subjects,
+            onSelect: (sub, check) {
+              print('Select');
+            },
+          ),
+        ),
+        const SizedBox(
+          height: 20,
+        ),
+        ElevatedButton(
+            onPressed: () => widget.controller.nextPage(
+                duration: const Duration(microseconds: 700),
+                curve: Curves.easeIn),
+            child: const Text('Weiter', style: TextStyle(color: Colors.white))),
+        TextButton(
+            onPressed: () => context.go(startScreen),
+            child: const Text('Überspringen'))
+      ],
+    );
   }
 }

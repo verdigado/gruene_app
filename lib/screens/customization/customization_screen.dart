@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
 import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
@@ -46,37 +43,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     ),
                     elevation: 0,
                     leadingWidth: 100,
-                    bottom: PreferredSize(
-                        preferredSize: const Size(double.infinity, 80),
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                              left: 18, right: 18, top: 10),
-                          child: Column(
-                            children: [
-                              ClipRRect(
-                                borderRadius:
-                                    const BorderRadius.all(Radius.circular(10)),
-                                child: LinearProgressIndicator(
-                                    backgroundColor:
-                                        Colors.red.withOpacity(0.3),
-                                    valueColor: const AlwaysStoppedAnimation(
-                                        Colors.red),
-                                    value:
-                                        getProzentOfCurrentPage(pages) / 100),
-                              ),
-                              const SizedBox(
-                                height: 15,
-                              ),
-                              Align(
-                                alignment: Alignment.bottomLeft,
-                                child: Text(
-                                  'Schritt ${widget.currentPage} von ${pages.length}',
-                                  textAlign: TextAlign.left,
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
+                    bottom: progressIndicator(pages),
                   ),
                 )
               : PreferredSize(
@@ -96,7 +63,37 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     );
   }
 
-  double getProzentOfCurrentPage(List<StatefulWidget> pages) {
-    return ((widget.currentPage * 100) / pages.length);
+  PreferredSize progressIndicator(List<StatefulWidget> pages) {
+    return PreferredSize(
+        preferredSize: const Size(double.infinity, 80),
+        child: Padding(
+          padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+          child: Column(
+            children: [
+              ClipRRect(
+                borderRadius: const BorderRadius.all(Radius.circular(10)),
+                child: LinearProgressIndicator(
+                    backgroundColor: Colors.red.withOpacity(0.3),
+                    valueColor: const AlwaysStoppedAnimation(Colors.red),
+                    value: getProgressOfCurrentPage(pages.length - 1)),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Text(
+                  'Schritt ${widget.currentPage} von ${pages.length - 1}',
+                  textAlign: TextAlign.left,
+                ),
+              )
+            ],
+          ),
+        ));
+  }
+
+  double getProgressOfCurrentPage(int pages) {
+    var cu = widget.currentPage;
+    return cu / pages;
   }
 }

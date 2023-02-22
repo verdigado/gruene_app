@@ -30,7 +30,6 @@ class _TopicCardState extends State<TopicCard> {
   CachedNetworkImage? img;
   var icon = Icons.add;
   bool checked = false;
-  bool imgLoading = true;
 
   @override
   Widget build(BuildContext context) {
@@ -40,7 +39,6 @@ class _TopicCardState extends State<TopicCard> {
       child: Stack(children: [
         Positioned.fill(
           child: Card(
-              semanticContainer: true,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15.0),
               ),
@@ -118,9 +116,15 @@ class _TopicCardState extends State<TopicCard> {
           width: 160,
           height: 160,
           child: Card(
-            semanticContainer: true,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(15.0),
+            ),
+            child: const FittedBox(
+              fit: BoxFit.fill,
+              child: SizedBox(
+                width: 160,
+                height: 160,
+              ),
             ),
           ),
         ));
