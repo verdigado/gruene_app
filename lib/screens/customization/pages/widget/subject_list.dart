@@ -27,6 +27,7 @@ class _SubjectListState extends State<SubjectList> {
   List<String> subjectNames = [];
   String searchPattern = '';
   List<Subject> subjectListSelects = [];
+  List<Subject> subjectList = [];
 
   TextEditingController? textEditingController;
 
@@ -35,13 +36,14 @@ class _SubjectListState extends State<SubjectList> {
     super.initState();
     itemScrollController = ItemScrollController();
     textEditingController = TextEditingController();
-    subjectNames = widget.subjectList.map((e) => e.name).toList();
+    subjectList = List.from(widget.subjectList);
     subjectListSelects = List.from(widget.preSelectedSubjects);
 
+    subjectNames = subjectList.map((e) => e.name).toList();
     // short alphabetically
-    SuspensionUtil.sortListBySuspensionTag(widget.subjectList);
+    SuspensionUtil.sortListBySuspensionTag(subjectList);
     // create first letter entry
-    SuspensionUtil.setShowSuspensionStatus(widget.subjectList);
+    SuspensionUtil.setShowSuspensionStatus(subjectList);
   }
 
   @override
@@ -69,7 +71,7 @@ class _SubjectListState extends State<SubjectList> {
                             limit: 4,
                             cutoff: 50,
                           ).map((e) => e.choice);
-                          var res = widget.subjectList.indexWhere((element) =>
+                          var res = subjectList.indexWhere((element) =>
                               element.name.toLowerCase() ==
                               suggestion.first.toLowerCase());
                           FocusScope.of(context).unfocus();
@@ -96,7 +98,7 @@ class _SubjectListState extends State<SubjectList> {
             hideOnEmpty: true,
             noItemsFoundBuilder: (context) => const Text('Kein Theme gefunden'),
             onSuggestionSelected: (suggestion) {
-              var matchIndex = widget.subjectList.indexWhere(
+              var matchIndex = subjectList.indexWhere(
                 (element) =>
                     element.name.toLowerCase() == "$suggestion".toLowerCase(),
               );
@@ -110,17 +112,17 @@ class _SubjectListState extends State<SubjectList> {
         Expanded(
           child: AzListView(
             itemScrollController: itemScrollController,
-            data: widget.subjectList,
+            data: subjectList,
             hapticFeedback: true,
             physics: const BouncingScrollPhysics(),
-            itemCount: widget.subjectList.length,
+            itemCount: subjectList.length,
             susItemBuilder: (context, index) {
-              var model = widget.subjectList[index];
+              var model = subjectList[index];
               return getSusItem(context, model.getSuspensionTag());
             },
             susItemHeight: 36,
             itemBuilder: (context, index) {
-              var subject = widget.subjectList[index];
+              var subject = subjectList[index];
               var name = subject.name;
               return ListTile(
                 title: Text(name),
