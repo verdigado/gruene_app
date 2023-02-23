@@ -8,14 +8,14 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 class SubjectList extends StatefulWidget {
   void Function(Subject sub, bool check) onSelect;
 
-  final List<Subject> selectedSubjects;
+  final List<Subject> preSelectedSubjects;
   final List<Subject> subjectList;
 
   SubjectList({
     Key? key,
     required this.subjectList,
     required this.onSelect,
-    required this.selectedSubjects,
+    required this.preSelectedSubjects,
   }) : super(key: key);
 
   @override
@@ -28,12 +28,15 @@ class _SubjectListState extends State<SubjectList> {
   String searchPattern = '';
   List<Subject> subjectListSelects = [];
 
+  TextEditingController? textEditingController;
+
   @override
   void initState() {
     super.initState();
     itemScrollController = ItemScrollController();
+    textEditingController = TextEditingController();
     subjectNames = widget.subjectList.map((e) => e.name).toList();
-    subjectListSelects = widget.selectedSubjects;
+    subjectListSelects = List.from(widget.preSelectedSubjects);
 
     // short alphabetically
     SuspensionUtil.sortListBySuspensionTag(widget.subjectList);
@@ -49,6 +52,7 @@ class _SubjectListState extends State<SubjectList> {
           padding: const EdgeInsets.all(8.0),
           child: TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
+                controller: textEditingController,
                 style: DefaultTextStyle.of(context)
                     .style
                     .copyWith(fontStyle: FontStyle.italic),
@@ -92,12 +96,14 @@ class _SubjectListState extends State<SubjectList> {
             hideOnEmpty: true,
             noItemsFoundBuilder: (context) => const Text('Kein Theme gefunden'),
             onSuggestionSelected: (suggestion) {
-              itemScrollController?.jumpTo(
-                index: widget.subjectList.indexWhere(
-                  (element) =>
-                      element.name.toLowerCase() == "$suggestion".toLowerCase(),
-                ),
+              var matchIndex = widget.subjectList.indexWhere(
+                (element) =>
+                    element.name.toLowerCase() == "$suggestion".toLowerCase(),
               );
+              itemScrollController?.jumpTo(
+                index: matchIndex,
+              );
+              textEditingController?.text = '$suggestion';
             },
           ),
         ),
@@ -130,8 +136,10 @@ class _SubjectListState extends State<SubjectList> {
                   setState(() {
                     if (subjectListSelects.contains(subject)) {
                       subjectListSelects.remove(subject);
+                      widget.onSelect(subject, false);
                     } else {
                       subjectListSelects.add(subject);
+                      widget.onSelect(subject, true);
                     }
                   });
                 },

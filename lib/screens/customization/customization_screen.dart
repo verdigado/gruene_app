@@ -41,6 +41,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               ..add(CustomizationLoad()),
         child: Scaffold(
           extendBodyBehindAppBar: true,
+          resizeToAvoidBottomInset: false,
           appBar: widget.currentPage != 0
               ? PreferredSize(
                   preferredSize: const Size(double.infinity, 80),

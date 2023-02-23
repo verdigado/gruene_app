@@ -44,39 +44,44 @@ class _TopicCardState extends State<TopicCard> {
       height: 160,
       child: Stack(children: [
         Positioned.fill(
-          child: Card(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15.0),
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(15.0),
-                child: CachedNetworkImage(
-                  imageUrl: widget.imgageUrl,
-                  errorWidget: (context, url, error) {
-                    return SizedBox(
+          child: InkWell(
+            onTap: () {
+              check();
+            },
+            child: Card(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(15.0),
+                ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15.0),
+                  child: CachedNetworkImage(
+                    imageUrl: widget.imgageUrl,
+                    errorWidget: (context, url, error) {
+                      return SizedBox(
+                        width: 160,
+                        height: 160,
+                        child: Card(
+                          semanticContainer: true,
+                          color: const Color(0xFF145F32),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                      );
+                    },
+                    placeholder: (context, url) => placeholderCard(),
+                    imageBuilder: (context, imageProvider) => Image(
+                      image: imageProvider,
                       width: 160,
                       height: 160,
-                      child: Card(
-                        semanticContainer: true,
-                        color: const Color(0xFF145F32),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15.0),
-                        ),
-                      ),
-                    );
-                  },
-                  placeholder: (context, url) => placeholderCard(),
-                  imageBuilder: (context, imageProvider) => Image(
-                    image: imageProvider,
+                      fit: BoxFit.fill,
+                    ),
                     width: 160,
                     height: 160,
                     fit: BoxFit.fill,
                   ),
-                  width: 160,
-                  height: 160,
-                  fit: BoxFit.fill,
-                ),
-              )),
+                )),
+          ),
         ),
         Positioned(
           top: 15,
@@ -86,12 +91,7 @@ class _TopicCardState extends State<TopicCard> {
             backgroundColor: Colors.white,
             mini: true,
             onPressed: () {
-              setState(() {
-                checkedState = !checkedState;
-              });
-              if (widget.onTap != null) {
-                widget.onTap!(checkedState, widget.id);
-              }
+              check();
             },
             child: Icon(
               checkedState ? Icons.check : Icons.add,
@@ -114,6 +114,15 @@ class _TopicCardState extends State<TopicCard> {
         ),
       ]),
     );
+  }
+
+  void check() {
+    setState(() {
+      checkedState = !checkedState;
+    });
+    if (widget.onTap != null) {
+      widget.onTap!(checkedState, widget.id);
+    }
   }
 
   Shimmer placeholderCard() {

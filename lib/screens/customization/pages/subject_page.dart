@@ -33,7 +33,7 @@ class _SubjectPageState extends State<SubjectPage> {
               if (state is CustomizationReady) {
                 return SubjectList(
                   subjectList: state.subject,
-                  selectedSubjects: state.selectSubject,
+                  preSelectedSubjects: state.selectSubject,
                   onSelect: (sub, check) {
                     if (check) {
                       BlocProvider.of<CustomizationBloc>(context)
