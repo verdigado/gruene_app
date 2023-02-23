@@ -2,20 +2,19 @@ import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 
 class SubjectList extends StatefulWidget {
-  void Function(Subject sub, bool check) onSelect;
+  final void Function(Subject sub, bool check) onSelect;
 
-  final List<Subject> preSelectedSubjects;
   final List<Subject> subjectList;
 
-  SubjectList({
+  const SubjectList({
     Key? key,
     required this.subjectList,
     required this.onSelect,
-    required this.preSelectedSubjects,
   }) : super(key: key);
 
   @override
@@ -26,7 +25,6 @@ class _SubjectListState extends State<SubjectList> {
   ItemScrollController? itemScrollController;
   List<String> subjectNames = [];
   String searchPattern = '';
-  List<Subject> subjectListSelects = [];
   List<Subject> subjectList = [];
 
   TextEditingController? textEditingController;
@@ -37,7 +35,6 @@ class _SubjectListState extends State<SubjectList> {
     itemScrollController = ItemScrollController();
     textEditingController = TextEditingController();
     subjectList = List.from(widget.subjectList);
-    subjectListSelects = List.from(widget.preSelectedSubjects);
 
     subjectNames = subjectList.map((e) => e.name).toList();
     // short alphabetically
@@ -62,7 +59,7 @@ class _SubjectListState extends State<SubjectList> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12.0),
                     ),
-                    hintText: 'Suche',
+                    hintText: AppLocalizations.of(context)!.subjectSearchHint,
                     suffixIcon: IconButton(
                         onPressed: () {
                           var suggestion = extractTop(
@@ -128,19 +125,15 @@ class _SubjectListState extends State<SubjectList> {
                 title: Text(name),
                 trailing: Padding(
                   padding: const EdgeInsets.only(right: 10),
-                  child: subjectListSelects
-                          .map((e) => e.name)
-                          .contains(subject.name)
+                  child: subject.checked
                       ? const Icon(Icons.check)
                       : const Icon(null),
                 ),
                 onTap: () {
                   setState(() {
-                    if (subjectListSelects.contains(subject)) {
-                      subjectListSelects.remove(subject);
+                    if (subject.checked) {
                       widget.onSelect(subject, false);
                     } else {
-                      subjectListSelects.add(subject);
                       widget.onSelect(subject, true);
                     }
                   });

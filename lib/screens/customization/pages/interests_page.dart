@@ -3,8 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/topic_card.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../bloc/customization_bloc.dart';
+import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
 
 class InterestsPage extends StatefulWidget {
   final PageController controller;
@@ -23,7 +24,7 @@ class _InterestsPageState extends State<InterestsPage> {
         Padding(
           padding: const EdgeInsets.all(18),
           child: Text(
-            'Welche Bereiche der Parteiarbeit interessieren Dich besonders?',
+            AppLocalizations.of(context)!.interestsPageHeadline1,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -41,9 +42,7 @@ class _InterestsPageState extends State<InterestsPage> {
                             id: e.id,
                             imgageUrl: e.imageUrl,
                             topic: e.name,
-                            checked: state.selectTopis
-                                .map((e) => e.id)
-                                .contains(e.id),
+                            checked: e.checked,
                             onTap: (check, id) => check
                                 ? BlocProvider.of<CustomizationBloc>(context)
                                     .add(CustomizationTopicAdd(id: id))
@@ -64,10 +63,11 @@ class _InterestsPageState extends State<InterestsPage> {
             onPressed: () => widget.controller.nextPage(
                 duration: const Duration(microseconds: 700),
                 curve: Curves.easeIn),
-            child: const Text('Weiter', style: TextStyle(color: Colors.white))),
+            child: Text(AppLocalizations.of(context)!.next,
+                style: const TextStyle(color: Colors.white))),
         TextButton(
             onPressed: () => context.go(startScreen),
-            child: const Text('Überspringen'))
+            child: Text(AppLocalizations.of(context)!.skip))
       ],
     );
   }

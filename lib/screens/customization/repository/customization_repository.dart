@@ -3,16 +3,16 @@ import 'package:gruene_app/screens/customization/data/topic.dart';
 import '../data/subject.dart';
 
 abstract class CustomizationRepository {
-  List<Topic> listTopic();
+  Set<Topic> listTopic();
 
-  List<Subject> listSubject();
+  Set<Subject> listSubject();
   bool customizationSend(List<Topic> topics, List<Subject> subjects);
 }
 
 class CustomizationRepositoryImpl extends CustomizationRepository {
   @override
-  List<Topic> listTopic() {
-    return [
+  Set<Topic> listTopic() {
+    return {
       Topic(
           id: '1',
           name: 'Umwelt',
@@ -39,41 +39,40 @@ class CustomizationRepositoryImpl extends CustomizationRepository {
         imageUrl:
             'https://upload.wikimedia.org/wikipedia/commons/3/3f/2020-02-13_Deutscher_Bundestag_IMG_3438_by_Stepro.jpg',
       ),
-    ];
+    };
   }
 
   @override
-  List<Subject> listSubject() {
-    return [
-      Subject(id: '1', name: 'Asylpolitik'),
-      Subject(id: '9', name: 'Außenpolitik'),
-      Subject(id: '2', name: 'Bauen'),
-      Subject(id: '3', name: 'Europa'),
-      Subject(id: '8', name: 'Zeitpolitik'),
-      Subject(id: '4', name: 'Friedenspolitik'),
-      Subject(id: '5', name: 'Gesundheit'),
-      Subject(id: '6', name: 'Globalisierung'),
-      Subject(id: '7', name: 'Handelsabkommen'),
-      Subject(id: '8', name: 'Handelspolitik'),
-      Subject(id: '8', name: 'Hamburgpolitik'),
-      Subject(id: '8', name: 'Hamsterpolitik'),
-      Subject(id: '8', name: 'Hundepolitik'),
-      Subject(id: '8', name: 'Hauspolitik'),
-      Subject(id: '8', name: 'Heimpolitik'),
-      Subject(id: '8', name: 'Himmelpolitik'),
-      Subject(id: '8', name: 'Handpolitik'),
-      Subject(id: '8', name: 'Hemdpolitik'),
-      Subject(id: '8', name: 'Hallopolitik'),
-      Subject(id: '8', name: 'Haarpolitik'),
-      Subject(id: '8', name: 'Halspolitik'),
-      Subject(id: '8', name: 'Handelspolitik'),
-      Subject(id: '9', name: 'Innenpolitik'),
-    ];
+  Set<Subject> listSubject() {
+    return {
+      Subject(id: '534sfd51', name: 'Asylpolitik'),
+      Subject(id: '94sdf3', name: 'Außenpolitik'),
+      Subject(id: '25sdf3', name: 'Bauen'),
+      Subject(id: '332fsd3', name: 'Europa'),
+      Subject(id: '853sfd4', name: 'Zeitpolitik'),
+      Subject(id: '45sdf34', name: 'Friedenspolitik'),
+      Subject(id: '53fdssfd452', name: 'Gesundheit'),
+      Subject(id: '62sfd5', name: 'Globalisierung'),
+      Subject(id: '7sdfsfe53', name: 'Handelsabkommen'),
+      Subject(id: '853fdsf4', name: 'Handelspolitik'),
+      Subject(id: '85fsdf34', name: 'Hamburgpolitik'),
+      Subject(id: '853sdfsfsf4', name: 'Hamsterpolitik'),
+      Subject(id: '853sdfsdfs4', name: 'Hundepolitik'),
+      Subject(id: '83sfsdffd54', name: 'Hauspolitik'),
+      Subject(id: '85sdfs34', name: 'Heimpolitik'),
+      Subject(id: '8sdsf534', name: 'Himmelpolitik'),
+      Subject(id: '85sfsd34', name: 'Handpolitik'),
+      Subject(id: '85sdsdffs34', name: 'Hemdpolitik'),
+      Subject(id: '2344dsfffw', name: 'Hallopolitik'),
+      Subject(id: '53sdfds48', name: 'Haarpolitik'),
+      Subject(id: '83sdf425', name: 'Halspolitik'),
+      Subject(id: '45dsdfssf38', name: 'Handelspolitik'),
+      Subject(id: '53sdf49', name: 'Innenpolitik'),
+    };
   }
 
   @override
   bool customizationSend(List<Topic> topics, List<Subject> subjects) {
-    // TODO: implement customizationSend
-    throw UnimplementedError();
+    return true;
   }
 }

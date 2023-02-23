@@ -32,8 +32,7 @@ class _SubjectPageState extends State<SubjectPage> {
             builder: (context, state) {
               if (state is CustomizationReady) {
                 return SubjectList(
-                  subjectList: state.subject,
-                  preSelectedSubjects: state.selectSubject,
+                  subjectList: state.subject.toList(),
                   onSelect: (sub, check) {
                     if (check) {
                       BlocProvider.of<CustomizationBloc>(context)
@@ -45,7 +44,9 @@ class _SubjectPageState extends State<SubjectPage> {
                   },
                 );
               }
-              return Container();
+              return state is CustomizationSending
+                  ? const Center(child: CircularProgressIndicator())
+                  : Container();
             },
           ),
         ),

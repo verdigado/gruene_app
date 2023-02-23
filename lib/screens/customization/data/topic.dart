@@ -1,24 +1,30 @@
 import 'dart:convert';
 
+import 'package:gruene_app/screens/customization/data/subject.dart';
+
 class Topic {
   String id;
   String name;
   String imageUrl;
+  bool checked;
   Topic({
     required this.id,
     required this.name,
     required this.imageUrl,
+    this.checked = false,
   });
 
   Topic copyWith({
     String? id,
     String? name,
     String? imageUrl,
+    bool? checked,
   }) {
     return Topic(
       id: id ?? this.id,
       name: name ?? this.name,
       imageUrl: imageUrl ?? this.imageUrl,
+      checked: checked ?? this.checked,
     );
   }
 
@@ -28,6 +34,7 @@ class Topic {
     result.addAll({'id': id});
     result.addAll({'name': name});
     result.addAll({'imageUrl': imageUrl});
+    result.addAll({'checked': checked});
 
     return result;
   }
@@ -37,6 +44,7 @@ class Topic {
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       imageUrl: map['imageUrl'] ?? '',
+      checked: map['checked'] ?? false,
     );
   }
 
@@ -45,18 +53,19 @@ class Topic {
   factory Topic.fromJson(String source) => Topic.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Topic(id: $id, name: $name, imageUrl: $imageUrl)';
+  String toString() {
+    return 'Topic(id: $id, name: $name, imageUrl: $imageUrl, checked: $checked)';
+  }
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Topic &&
-        other.id == id &&
-        other.name == name &&
-        other.imageUrl == imageUrl;
+    return other is Topic && other.id == id;
   }
 
   @override
-  int get hashCode => id.hashCode ^ name.hashCode ^ imageUrl.hashCode;
+  int get hashCode {
+    return id.hashCode ^ name.hashCode ^ imageUrl.hashCode ^ checked.hashCode;
+  }
 }

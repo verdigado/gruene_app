@@ -1,22 +1,48 @@
 part of 'customization_bloc.dart';
 
-abstract class CustomizationState {}
+abstract class CustomizationState extends Equatable {}
 
-class CustomizationInitial extends CustomizationState {}
+class CustomizationInitial extends CustomizationState {
+  @override
+  List<Object?> get props => [];
+}
 
-class CustomizationLoading extends CustomizationState {}
+class CustomizationLoading extends CustomizationState {
+  @override
+  List<Object?> get props => [];
+}
 
 class CustomizationReady extends CustomizationState {
-  List<Topic> topis = [];
-  List<Subject> subject = [];
-  List<Topic> selectTopis = [];
-  List<Subject> selectSubject = [];
+  Set<Topic> topis = {};
+  Set<Subject> subject = {};
+
   CustomizationReady({
     required this.topis,
     required this.subject,
+  });
+
+  @override
+  List<Object?> get props => [topis, subject];
+}
+
+class CustomizationSended extends CustomizationState {
+  List<Topic> selectTopis = [];
+  List<Subject> selectSubject = [];
+  CustomizationSended({
     required this.selectTopis,
     required this.selectSubject,
   });
+
+  @override
+  List<Object?> get props => [selectSubject, selectTopis];
 }
 
-class CustomizationSend extends CustomizationState {}
+class CustomizationSendFailure extends CustomizationState {
+  @override
+  List<Object?> get props => [];
+}
+
+class CustomizationSending extends CustomizationState {
+  @override
+  List<Object?> get props => [];
+}
