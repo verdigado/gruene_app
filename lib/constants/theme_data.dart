@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+////**
+///  * CONST Colors
+///  */
 const MaterialColor mcgpalette0 =
     MaterialColor(_mcgpalette0PrimaryValue, <int, Color>{
   50: Color(0xFFE3ECE6),
@@ -15,43 +18,114 @@ const MaterialColor mcgpalette0 =
 });
 const int _mcgpalette0PrimaryValue = 0xFF145F32;
 
-const MaterialColor mcgpalette0Accent =
-    MaterialColor(mcgpalette0AccentValue, <int, Color>{
-  50: Color(0xFFFFE9EC),
-  100: Color(0xFFFFC8CE),
-  200: Color(0xFFFFA4AE),
-  300: Color(0xFFFF808E),
-  400: Color(0xFFFF6475),
-  500: Color(mcgpalette0AccentValue),
-  600: Color(0xFFFF4255),
-  700: Color(0xFFFF394B),
-  800: Color(0xFFFF3141),
-  900: Color(0xFFFF2130),
+const MaterialColor mcgpalette0Secondary =
+    MaterialColor(_mcgpalette0SecondaryValue, <int, Color>{
+  50: Color(0xFFE9F2E6),
+  100: Color(0xFFC8E0BF),
+  200: Color(0xFFA3CB95),
+  300: Color(0xFF7EB66B),
+  400: Color(0xFF62A64B),
+  500: Color(_mcgpalette0PrimaryValue),
+  600: Color(0xFF3F8E26),
+  700: Color(0xFF378320),
+  800: Color(0xFF2F791A),
+  900: Color(0xFF206810),
 });
-const int mcgpalette0AccentValue = 0xFFFF495D;
+const int _mcgpalette0SecondaryValue = 0xFF46962B;
 
+const Color softGreen = Color(0xFFDCE7E0);
+const Color lightBlack = Color(0xFF201D1B);
+const Color darkGrey = Color(0xFF343433);
+const Color lightGrey = Color(0xFFD9D9D9);
+const Color disabledGrey = lightGrey;
+
+////**
+///  * ThemeData
+///  */
 final rootTheme = ThemeData(
   primaryColor: const Color(_mcgpalette0PrimaryValue),
   primaryColorLight: const Color(0xFFE3ECE6),
   textTheme: const TextTheme(
-      bodyLarge: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 18,
-          color: Color.fromRGBO(52, 52, 51, 1)),
-      labelSmall: TextStyle(color: Colors.white),
-      displayLarge: TextStyle(
-          fontFamily: 'Bereit',
-          fontWeight: FontWeight.w700,
-          color: Color.fromRGBO(52, 52, 51, 1)),
-      displayMedium: TextStyle(
-          fontFamily: 'Bereit',
-          fontWeight: FontWeight.w500,
-          color: Color.fromRGBO(52, 52, 51, 1)),
-      displaySmall: TextStyle(
-          fontFamily: 'Bereit',
-          fontWeight: FontWeight.w300,
-          fontSize: 32,
-          color: Color.fromRGBO(52, 52, 51, 1))),
+    /**
+      * Headlines
+      */
+    displayLarge: TextStyle(
+        fontFamily: 'Bereit',
+        fontWeight: FontWeight.bold,
+        fontSize: 24,
+        height: 1.16,
+        letterSpacing: 1.0,
+        color: lightBlack),
+    displayMedium: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        height: 1.3,
+        letterSpacing: 1.0,
+        color: lightBlack),
+    displaySmall: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        height: 1.33,
+        letterSpacing: 1.0,
+        color: lightBlack),
+    headlineLarge: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 18,
+        height: 1.33,
+        letterSpacing: 1.0,
+        color: lightBlack),
+    headlineMedium: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.normal,
+        fontSize: 16,
+        height: 1.25,
+        letterSpacing: 0,
+        color: lightBlack),
+    headlineSmall: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 16,
+        height: 1.25,
+        letterSpacing: 0,
+        color: lightBlack),
+    /**
+      * Body
+      */
+    bodyLarge: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.normal,
+        fontSize: 14,
+        height: 1.71,
+        letterSpacing: 0,
+        color: lightBlack),
+    bodyMedium: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        height: 1.71,
+        letterSpacing: 0,
+        color: lightBlack),
+    bodySmall: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.normal,
+        fontSize: 12,
+        height: 1.5,
+        letterSpacing: 1.0,
+        color: lightBlack),
+    /**
+      * Buttons
+      */
+    labelLarge: TextStyle(
+        fontFamily: 'PTSans',
+        fontWeight: FontWeight.bold,
+        fontSize: 14,
+        height: 1.28,
+        letterSpacing: 1.0,
+        color: lightBlack),
+  ),
   fontFamily: 'Ptsans',
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
@@ -63,5 +137,5 @@ final rootTheme = ThemeData(
     ),
   ),
   colorScheme: ColorScheme.fromSwatch(
-      primarySwatch: mcgpalette0, accentColor: mcgpalette0Accent),
+      primarySwatch: mcgpalette0, accentColor: mcgpalette0Secondary),
 );

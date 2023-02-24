@@ -39,7 +39,7 @@ class _StartScreenState extends State<StartScreen> {
         ),
         Text(
           '$_counter',
-          style: Theme.of(context).textTheme.displayMedium,
+          style: Theme.of(context).textTheme.bodyMedium,
         ),
         const Center(child: Text('StartScreen')),
         FloatingActionButton(

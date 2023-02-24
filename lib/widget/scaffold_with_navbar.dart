@@ -39,7 +39,7 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.search),
+            icon: const Icon(Icons.search),
             label: AppLocalizations.of(context)!.search,
             backgroundColor: Colors.white,
           ),
