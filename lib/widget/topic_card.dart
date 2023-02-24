@@ -83,7 +83,7 @@ class _TopicCardState extends State<TopicCard> {
       ),
       Positioned(
         top: cardSize / 100 * 4,
-        left: size.width / 2 - cardSize / 3.5,
+        left: size.width / 2 - cardSize / 3,
         child: FloatingActionButton(
           heroTag: null,
           backgroundColor: Colors.white,
