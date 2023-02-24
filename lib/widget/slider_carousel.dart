@@ -110,6 +110,9 @@ class _SliderCarouselState extends State<SliderCarousel> {
                       onTap: widget.onSkip,
                       child: Text(
                         AppLocalizations.of(context)!.skip,
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                              color: Theme.of(context).primaryColor,
+                            ),
                       ),
                     ),
                   ),
@@ -337,7 +340,7 @@ class SliderCarouselPage extends StatelessWidget {
                       maxLines: 3,
                       overflow: TextOverflow.visible,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
                             color: Colors.white,
                           ),
                     ),

@@ -83,15 +83,17 @@ class LoginScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Text(AppLocalizations.of(context)!
-                              .registerMemberLabel),
+                          Text(
+                              AppLocalizations.of(context)!.registerMemberLabel,
+                              style: Theme.of(context).textTheme.bodyLarge),
                           const SizedBox(width: 20),
                           Text(
                             AppLocalizations.of(context)!.registerMember,
-                            style: const TextStyle(
-                              fontWeight: FontWeight.bold,
-                              decoration: TextDecoration.underline,
-                            ),
+                            style: Theme.of(context)
+                                .textTheme
+                                .bodyMedium
+                                ?.copyWith(
+                                    decoration: TextDecoration.underline),
                           ),
                         ]),
                     const SizedBox(height: 10),
