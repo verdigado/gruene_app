@@ -26,6 +26,8 @@ class _SubjectListState extends State<SubjectList> {
   List<String> subjectNames = [];
   String searchPattern = '';
   List<Subject> subjectList = [];
+  // Size of Indexbar
+  final int factor = 28;
 
   TextEditingController? textEditingController;
 
@@ -107,36 +109,46 @@ class _SubjectListState extends State<SubjectList> {
           ),
         ),
         Expanded(
-          child: AzListView(
-            itemScrollController: itemScrollController,
-            data: subjectList,
-            hapticFeedback: true,
-            physics: const BouncingScrollPhysics(),
-            itemCount: subjectList.length,
-            susItemBuilder: (context, index) {
-              var model = subjectList[index];
-              return getSusItem(context, model.getSuspensionTag());
-            },
-            susItemHeight: 36,
-            itemBuilder: (context, index) {
-              var subject = subjectList[index];
-              var name = subject.name;
-              return ListTile(
-                title: Text(name),
-                trailing: Padding(
-                  padding: const EdgeInsets.only(right: 10),
-                  child: subject.checked
-                      ? const Icon(Icons.check)
-                      : const Icon(null),
-                ),
-                onTap: () {
-                  setState(() {
-                    if (subject.checked) {
-                      widget.onSelect(subject, false);
-                    } else {
-                      widget.onSelect(subject, true);
-                    }
-                  });
+          child: LayoutBuilder(
+            builder: (ctx, con) {
+              double fontSize =
+                  con.maxHeight / factor > 12 ? 12 : con.maxHeight / factor;
+              return AzListView(
+                itemScrollController: itemScrollController,
+                data: subjectList,
+                hapticFeedback: true,
+                indexBarItemHeight: con.maxHeight / factor,
+                indexBarAlignment: Alignment.topRight,
+                indexBarOptions:
+                    IndexBarOptions(textStyle: TextStyle(fontSize: fontSize)),
+                physics: const BouncingScrollPhysics(),
+                itemCount: subjectList.length,
+                susItemBuilder: (context, index) {
+                  var model = subjectList[index];
+                  return getSusItem(context, model.getSuspensionTag());
+                },
+                susItemHeight: 36,
+                itemBuilder: (context, index) {
+                  var subject = subjectList[index];
+                  var name = subject.name;
+                  return ListTile(
+                    title: Text(name),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: subject.checked
+                          ? const Icon(Icons.check)
+                          : const Icon(Icons.add),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        if (subject.checked) {
+                          widget.onSelect(subject, false);
+                        } else {
+                          widget.onSelect(subject, true);
+                        }
+                      });
+                    },
+                  );
                 },
               );
             },

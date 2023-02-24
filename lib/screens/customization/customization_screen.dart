@@ -9,7 +9,6 @@ import 'package:gruene_app/screens/customization/repository/customization_reposi
 
 class CustomizationScreen extends StatefulWidget {
   CustomizationScreen({super.key});
-  int currentPage = 0;
 
   @override
   State<CustomizationScreen> createState() => _CustomizationScreenState();
@@ -17,7 +16,7 @@ class CustomizationScreen extends StatefulWidget {
 
 class _CustomizationScreenState extends State<CustomizationScreen> {
   late List<Widget> pages;
-
+  int currentPage = 0;
   late PageController controller;
 
   @override
@@ -42,7 +41,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
         child: Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: false,
-          appBar: widget.currentPage != 0
+          appBar: currentPage != 0
               ? PreferredSize(
                   preferredSize: const Size(double.infinity, 80),
                   child: AppBar(
@@ -50,8 +49,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     leading: CupertinoNavigationBarBackButton(
                       color: Colors.grey,
                       previousPageTitle: 'Zurück',
-                      onPressed: () =>
-                          controller.jumpToPage(widget.currentPage - 1),
+                      onPressed: () => controller.jumpToPage(currentPage - 1),
                     ),
                     elevation: 0,
                     leadingWidth: 100,
@@ -64,7 +62,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
             child: PageView(
               controller: controller,
               onPageChanged: (value) => setState(() {
-                widget.currentPage = value;
+                currentPage = value;
               }),
               physics: const NeverScrollableScrollPhysics(),
               children: pages,
@@ -95,7 +93,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  'Schritt ${widget.currentPage} von ${pages.length - 1}',
+                  'Schritt $currentPage von ${pages.length - 1}',
                   textAlign: TextAlign.left,
                 ),
               )
@@ -105,7 +103,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   }
 
   double getProgressOfCurrentPage(int pages) {
-    var cu = widget.currentPage;
+    var cu = currentPage;
     return cu / pages;
   }
 }

@@ -30,6 +30,7 @@ class _TopicCardState extends State<TopicCard> {
   CachedNetworkImage? img;
   var icon = Icons.add;
   bool checkedState = false;
+  final cardSize = 160.00;
 
   @override
   void initState() {
@@ -39,81 +40,74 @@ class _TopicCardState extends State<TopicCard> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 160,
-      height: 160,
-      child: Stack(children: [
-        Positioned.fill(
-          child: InkWell(
-            onTap: () {
-              check();
-            },
-            child: Card(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15.0),
-                ),
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(15.0),
-                  child: CachedNetworkImage(
-                    imageUrl: widget.imgageUrl,
-                    errorWidget: (context, url, error) {
-                      return SizedBox(
-                        width: 160,
-                        height: 160,
-                        child: Card(
-                          semanticContainer: true,
-                          color: const Color(0xFF145F32),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(15.0),
-                          ),
-                        ),
-                      );
-                    },
-                    placeholder: (context, url) => placeholderCard(),
-                    imageBuilder: (context, imageProvider) => Image(
-                      image: imageProvider,
-                      width: 160,
-                      height: 160,
+    final size = MediaQuery.of(context).size;
+    return Stack(children: [
+      Positioned.fill(
+        child: InkWell(
+          onTap: () {
+            check();
+          },
+          child: Card(
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: CachedNetworkImage(
+                imageUrl: widget.imgageUrl,
+                errorWidget: (context, url, error) {
+                  return FittedBox(
                       fit: BoxFit.fill,
-                    ),
-                    width: 160,
-                    height: 160,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(15),
+                        child: Container(
+                          color: Theme.of(context).colorScheme.primary,
+                          width: 206,
+                          height: 206,
+                        ),
+                      ));
+                },
+                placeholder: (context, url) => placeholderCard(),
+                imageBuilder: (context, imageProvider) => ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Image(
+                    image: imageProvider,
+                    width: cardSize,
+                    height: cardSize,
                     fit: BoxFit.fill,
                   ),
-                )),
+                ),
+              )),
+        ),
+      ),
+      Positioned(
+        top: 8,
+        left: size.width / 2 - 55,
+        child: FloatingActionButton(
+          heroTag: null,
+          backgroundColor: Colors.white,
+          mini: true,
+          onPressed: () {
+            check();
+          },
+          child: Icon(
+            checkedState ? Icons.check : Icons.add,
+            color: checkedState ? const Color(0xFFFF495D) : Colors.black,
+            size: 30,
           ),
         ),
-        Positioned(
-          top: 15,
-          left: 130,
-          child: FloatingActionButton(
-            heroTag: null,
-            backgroundColor: Colors.white,
-            mini: true,
-            onPressed: () {
-              check();
-            },
-            child: Icon(
-              checkedState ? Icons.check : Icons.add,
-              color: checkedState ? const Color(0xFFFF495D) : Colors.black,
-              size: 30,
-            ),
+      ),
+      Positioned.fill(
+        child: Align(
+          alignment: Alignment.center,
+          child: Text(
+            widget.topic ?? '',
+            style: const TextStyle(
+                color: Colors.white,
+                fontFamily: FontFamily.bereit,
+                fontSize: 26),
           ),
         ),
-        Positioned.fill(
-          child: Align(
-            alignment: Alignment.center,
-            child: Text(
-              widget.topic ?? '',
-              style: const TextStyle(
-                  color: Colors.white,
-                  fontFamily: FontFamily.bereit,
-                  fontSize: 26),
-            ),
-          ),
-        ),
-      ]),
-    );
+      ),
+    ]);
   }
 
   void check() {
@@ -127,23 +121,19 @@ class _TopicCardState extends State<TopicCard> {
 
   Shimmer placeholderCard() {
     return Shimmer.fromColors(
-        baseColor: const Color(0xFF145F32),
-        highlightColor: const Color(0xFF5B8F70),
-        child: SizedBox(
-          width: 160,
-          height: 160,
-          child: Card(
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15.0),
-            ),
-            child: const FittedBox(
-              fit: BoxFit.fill,
-              child: SizedBox(
-                width: 160,
-                height: 160,
-              ),
-            ),
+      baseColor: const Color(0xFF145F32),
+      highlightColor: const Color(0xFF5B8F70),
+      child: FittedBox(
+        fit: BoxFit.fill,
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(15),
+          child: Container(
+            color: Theme.of(context).colorScheme.primary,
+            width: 206,
+            height: 206,
           ),
-        ));
+        ),
+      ),
+    );
   }
 }
