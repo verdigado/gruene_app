@@ -34,6 +34,10 @@ final rootTheme = ThemeData(
   primaryColor: const Color(_mcgpalette0PrimaryValue),
   primaryColorLight: const Color(0xFFE3ECE6),
   textTheme: const TextTheme(
+      bodyLarge: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: 18,
+          color: Color.fromRGBO(52, 52, 51, 1)),
       labelSmall: TextStyle(color: Colors.white),
       displayLarge: TextStyle(
           fontFamily: 'Bereit',
@@ -58,6 +62,6 @@ final rootTheme = ThemeData(
       ),
     ),
   ),
-  colorScheme: ColorScheme.fromSwatch(primarySwatch: mcgpalette0)
-      .copyWith(secondary: mcgpalette0Accent),
+  colorScheme: ColorScheme.fromSwatch(
+      primarySwatch: mcgpalette0, accentColor: mcgpalette0Accent),
 );
