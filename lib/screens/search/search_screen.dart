@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SearchScreen extends StatefulWidget {
   const SearchScreen({super.key});
@@ -15,9 +16,10 @@ class _SearchScreenState extends State<SearchScreen> {
     return Center(
       child: Column(
         children: [
-          const Text('Search'),
+          Text(AppLocalizations.of(context)!.search),
           TextButton(
-              onPressed: () => context.push(newsScreen), child: const Text('News'))
+              onPressed: () => context.push(newsScreen),
+              child: Text(AppLocalizations.of(context)!.news))
         ],
       ),
     );

@@ -52,7 +52,7 @@ class IntroScreen extends StatelessWidget {
                   flex: 1,
                   child: ElevatedButton(
                       onPressed: () => context.go(login),
-                      child: Text(AppLocalizations.of(context)!.loginButtonText,
+                      child: Text(AppLocalizations.of(context)!.login,
                           style: const TextStyle(color: Colors.white))),
                 ),
               ],

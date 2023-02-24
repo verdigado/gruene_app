@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:url_launcher/link.dart';
 import '../../widget/slider_carousel.dart';
 import '../../routing/routes.dart';
@@ -21,7 +22,7 @@ class LoginScreen extends StatelessWidget {
                 child: SliderCarousel(
                   showPrevNextButton: true,
                   showIndicator: true,
-                  backgroundColor: Colors.white,
+                  backgroundColor: Colors.transparent,
                   activeDotColor: Theme.of(context).colorScheme.primary,
                   deactiveDotColor: const Color(0xFFD9D9D9),
                   iconColor: Colors.white,
@@ -70,7 +71,7 @@ class LoginScreen extends StatelessWidget {
                   children: [
                     ElevatedButton(
                       onPressed: () => context.go(login),
-                      child: Text('Anmelden',
+                      child: Text(AppLocalizations.of(context)!.login,
                           style: Theme.of(context)
                               .textTheme
                               .bodyLarge
@@ -80,12 +81,13 @@ class LoginScreen extends StatelessWidget {
                     Row(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         mainAxisAlignment: MainAxisAlignment.center,
-                        children: const [
-                          Text('Noch kein Mitglied?'),
-                          SizedBox(width: 20),
+                        children: [
+                          Text(AppLocalizations.of(context)!
+                              .registerMemberLabel),
+                          const SizedBox(width: 20),
                           Text(
-                            'Jetzt Mitglied werden',
-                            style: TextStyle(
+                            AppLocalizations.of(context)!.registerMember,
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               decoration: TextDecoration.underline,
                             ),
@@ -126,7 +128,7 @@ class DatImpContainer extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Datenschutz',
+                      Text(AppLocalizations.of(context)!.privacyPolicy,
                           style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),
@@ -154,7 +156,7 @@ class DatImpContainer extends StatelessWidget {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text('Impressum',
+                      Text(AppLocalizations.of(context)!.imprint,
                           style: Theme.of(context).textTheme.bodySmall),
                     ],
                   ),

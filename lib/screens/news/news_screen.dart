@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NewsScreen extends StatefulWidget {
   const NewsScreen({super.key});
@@ -16,7 +17,7 @@ class _NewsScreenState extends State<NewsScreen> {
         body: Center(
             child: TextButton(
           onPressed: () => context.pop(),
-          child: const Text('Back'),
+          child: Text(AppLocalizations.of(context)!.back),
         )));
   }
 }
