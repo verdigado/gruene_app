@@ -6,6 +6,7 @@ import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
 import 'package:gruene_app/screens/customization/pages/subject_page.dart';
 import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomizationScreen extends StatefulWidget {
   CustomizationScreen({super.key});
@@ -48,12 +49,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
                     leading: CupertinoNavigationBarBackButton(
                       color: Colors.grey,
-                      previousPageTitle: 'Zurück',
+                      previousPageTitle: AppLocalizations.of(context)?.back,
                       onPressed: () => controller.jumpToPage(currentPage - 1),
                     ),
                     elevation: 0,
                     leadingWidth: 100,
-                    bottom: progressIndicator(pages),
+                    bottom: progressIndicator(context, pages),
                   ),
                 )
               : PreferredSize(
@@ -73,7 +74,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     );
   }
 
-  PreferredSize progressIndicator(List<Widget> pages) {
+  PreferredSize progressIndicator(BuildContext context, List<Widget> pages) {
     return PreferredSize(
         preferredSize: const Size(double.infinity, 80),
         child: Padding(
@@ -83,8 +84,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
-                    backgroundColor: Colors.red.withOpacity(0.3),
-                    valueColor: const AlwaysStoppedAnimation(Colors.red),
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.3),
+                    valueColor: AlwaysStoppedAnimation(
+                        Theme.of(context).colorScheme.secondary),
                     value: getProgressOfCurrentPage(pages.length - 1)),
               ),
               const SizedBox(
@@ -93,7 +98,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  'Schritt $currentPage von ${pages.length - 1}',
+                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
                   textAlign: TextAlign.left,
                 ),
               )
@@ -103,7 +108,6 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   }
 
   double getProgressOfCurrentPage(int pages) {
-    var cu = currentPage;
-    return cu / pages;
+    return currentPage / pages;
   }
 }

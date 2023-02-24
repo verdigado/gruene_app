@@ -29,6 +29,10 @@
 "interestsPageHeadline1":"Welche Bereiche der Parteiarbeit interessieren Dich besonders?",
   "subjectSearchHint":"Suche",
   "next":"Weiter",
-  "skip":"Überspringen"
+  "skip":"Überspringen",
+  "back":"Zurück",
+  "step":"Schritt",
+  "stepOf": "von",
+  "subjectHeadline1":"Welche Themen interessieren Dich?"
 
 }

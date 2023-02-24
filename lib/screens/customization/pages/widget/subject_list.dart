@@ -95,7 +95,6 @@ class _SubjectListState extends State<SubjectList> {
               );
             },
             hideOnEmpty: true,
-            noItemsFoundBuilder: (context) => const Text('Kein Theme gefunden'),
             onSuggestionSelected: (suggestion) {
               var matchIndex = subjectList.indexWhere(
                 (element) =>

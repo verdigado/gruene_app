@@ -3,8 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
-import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:gruene_app/screens/customization/pages/widget/subject_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SubjectPage extends StatefulWidget {
   final PageController controller;
@@ -23,7 +23,7 @@ class _SubjectPageState extends State<SubjectPage> {
         Padding(
           padding: const EdgeInsets.all(18),
           child: Text(
-            'Welche Themen interessieren Dich?',
+            AppLocalizations.of(context)!.subjectHeadline1,
             style: Theme.of(context).textTheme.titleLarge,
           ),
         ),
@@ -59,10 +59,11 @@ class _SubjectPageState extends State<SubjectPage> {
                   .add(CustomizationDone());
               context.go(startScreen);
             },
-            child: const Text('Weiter', style: TextStyle(color: Colors.white))),
+            child: Text(AppLocalizations.of(context)!.next,
+                style: const TextStyle(color: Colors.white))),
         TextButton(
             onPressed: () => context.go(startScreen),
-            child: const Text('Überspringen'))
+            child: Text(AppLocalizations.of(context)!.next))
       ],
     );
   }
