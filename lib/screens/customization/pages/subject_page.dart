@@ -12,7 +12,7 @@ class SubjectPage extends StatefulWidget {
   const SubjectPage(this.controller, {Key? key}) : super(key: key);
 
   @override
-  _SubjectPageState createState() => _SubjectPageState();
+  State<SubjectPage> createState() => _SubjectPageState();
 }
 
 class _SubjectPageState extends State<SubjectPage> {

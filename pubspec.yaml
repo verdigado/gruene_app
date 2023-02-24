@@ -52,9 +52,9 @@ dependencies:
   azlistview: ^2.0.0-nullsafety.0
   flutter_typeahead: ^4.3.6
   fuzzywuzzy: ^0.2.0
+  flutter_native_splash: ^2.2.17
 
 dev_dependencies:
-  flutter_native_splash: ^2.2.17
   build_runner:
   flutter_gen_runner:
   flutter_test:

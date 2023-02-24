@@ -5,16 +5,16 @@ import 'package:gruene_app/gen/fonts.gen.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TopicCard extends StatefulWidget {
-  String imgageUrl;
-  String id;
+  final String imgageUrl;
+  final String id;
 
-  void Function(bool, String)? onTap;
+  final void Function(bool, String)? onTap;
 
-  String? topic;
+  final String? topic;
 
-  bool checked;
+  final bool checked;
 
-  TopicCard({
+  const TopicCard({
     super.key,
     required this.id,
     required this.imgageUrl,

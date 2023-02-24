@@ -1,10 +1,11 @@
 import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
-import 'package:gruene_app/screens/customization/data/subject.dart';
-import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
+import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
+
+import 'package:gruene_app/screens/customization/data/subject.dart';
 
 class SubjectList extends StatefulWidget {
   final void Function(Subject sub, bool check) onSelect;
@@ -18,7 +19,7 @@ class SubjectList extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _SubjectListState createState() => _SubjectListState();
+  State<SubjectList> createState() => _SubjectListState();
 }
 
 class _SubjectListState extends State<SubjectList> {

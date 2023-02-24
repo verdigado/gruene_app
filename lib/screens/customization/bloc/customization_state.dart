@@ -13,8 +13,8 @@ class CustomizationLoading extends CustomizationState {
 }
 
 class CustomizationReady extends CustomizationState {
-  Set<Topic> topis = {};
-  Set<Subject> subject = {};
+  final Set<Topic> topis;
+  final Set<Subject> subject;
 
   CustomizationReady({
     required this.topis,
@@ -26,8 +26,8 @@ class CustomizationReady extends CustomizationState {
 }
 
 class CustomizationSended extends CustomizationState {
-  List<Topic> selectTopis = [];
-  List<Subject> selectSubject = [];
+  final List<Topic> selectTopis;
+  final List<Subject> selectSubject;
   CustomizationSended({
     required this.selectTopis,
     required this.selectSubject,
