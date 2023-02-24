@@ -1,6 +1,6 @@
 import 'package:gruene_app/screens/customization/data/topic.dart';
 
-import '../data/subject.dart';
+import 'package:gruene_app/screens/customization/data/subject.dart';
 
 abstract class CustomizationRepository {
   Set<Topic> listTopic();
