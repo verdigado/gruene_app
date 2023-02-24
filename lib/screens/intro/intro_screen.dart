@@ -59,39 +59,36 @@ class IntroScreen extends StatelessWidget {
             ),
           ),
         ),
-        Flexible(
-          flex: 1,
-          child: SlidingUpPanel(
-            minHeight: size.height / 100 * 12,
-            maxHeight: size.height,
-            parallaxEnabled: true,
-            backdropEnabled: true,
-            backdropColor: const Color(0xFFFF495D),
-            panel: Container(
-              color: const Color(0xFFFF495D),
-              child: Column(
-                children: [
-                  const SizedBox(
-                    height: 5,
+        SlidingUpPanel(
+          minHeight: size.height / 100 * 12,
+          maxHeight: size.height,
+          parallaxEnabled: true,
+          backdropEnabled: true,
+          backdropColor: const Color(0xFFFF495D),
+          panel: Container(
+            color: const Color(0xFFFF495D),
+            child: Column(
+              children: [
+                const SizedBox(
+                  height: 5,
+                ),
+                Container(
+                  width: 45,
+                  height: 5,
+                  decoration: const BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                Center(
+                  child: Text(
+                    "This is the sliding Widget",
+                    style: Theme.of(context).textTheme.titleMedium,
                   ),
-                  Container(
-                    width: 45,
-                    height: 5,
-                    decoration: const BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                  ),
-                  const SizedBox(
-                    height: 10,
-                  ),
-                  Center(
-                    child: Text(
-                      "This is the sliding Widget",
-                      style: Theme.of(context).textTheme.titleMedium,
-                    ),
-                  ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         )

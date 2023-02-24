@@ -114,71 +114,80 @@ class _SliderCarouselState extends State<SliderCarousel> {
                   ),
             widget.backgroundImage == null
                 ? const SizedBox()
-                : Expanded(
-                    flex: 3,
+                : Flexible(
+                    flex: 1,
                     child: widget.backgroundImage!,
                   ),
+            // Slider pages
             Expanded(
-              flex: 2,
-              child: PageView(
-                controller: _pageController,
-                onPageChanged: (value) {
-                  setState(() {
-                    currentIndex = value;
-                  });
-                },
-                children: widget.pages,
-              ),
-            ),
-            Container(
-              decoration: BoxDecoration(
-                color: widget.controlsBackground,
-                borderRadius: const BorderRadius.vertical(
-                  bottom: Radius.circular(12),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              flex: 1,
+              child: Column(
                 children: [
-                  // Previous button
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: widget.showPrevNextButton == false
-                        ? const SizedBox()
-                        : SizedBox(
-                            child: currentIndex == 0
-                                ? const SizedBox()
-                                : InkWell(
-                                    overlayColor: _overlayColor,
-                                    onTap: _previousPage,
-                                    child: Icon(
-                                      widget.leftIcon,
-                                      size: widget.iconSize,
-                                      color: widget.iconColor,
-                                    ),
-                                  ),
-                          ),
+                  Expanded(
+                    flex: 1,
+                    child: PageView(
+                      controller: _pageController,
+                      onPageChanged: (value) {
+                        setState(() {
+                          currentIndex = value;
+                        });
+                      },
+                      children: widget.pages,
+                    ),
                   ),
-                  // Next button
-                  Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 20, vertical: 5),
-                    child: widget.showPrevNextButton == false
-                        ? const SizedBox()
-                        : SizedBox(
-                            child: currentIndex + 1 == widget.pages.length
-                                ? const SizedBox()
-                                : InkWell(
-                                    overlayColor: _overlayColor,
-                                    onTap: _nextPage,
-                                    child: Icon(
-                                      widget.rightIcon,
-                                      size: widget.iconSize,
-                                      color: widget.iconColor,
-                                    ),
-                                  ),
-                          ),
+                  // Previous/Next Buttons
+                  Container(
+                    decoration: BoxDecoration(
+                      color: widget.controlsBackground,
+                      borderRadius: const BorderRadius.vertical(
+                        bottom: Radius.circular(12),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        // Previous button
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          child: widget.showPrevNextButton == false
+                              ? const SizedBox()
+                              : SizedBox(
+                                  child: currentIndex == 0
+                                      ? const SizedBox()
+                                      : InkWell(
+                                          overlayColor: _overlayColor,
+                                          onTap: _previousPage,
+                                          child: Icon(
+                                            widget.leftIcon,
+                                            size: widget.iconSize,
+                                            color: widget.iconColor,
+                                          ),
+                                        ),
+                                ),
+                        ),
+                        // Next button
+                        Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 5),
+                          child: widget.showPrevNextButton == false
+                              ? const SizedBox()
+                              : SizedBox(
+                                  child: currentIndex + 1 == widget.pages.length
+                                      ? const SizedBox()
+                                      : InkWell(
+                                          overlayColor: _overlayColor,
+                                          onTap: _nextPage,
+                                          child: Icon(
+                                            widget.rightIcon,
+                                            size: widget.iconSize,
+                                            color: widget.iconColor,
+                                          ),
+                                        ),
+                                ),
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -288,38 +297,44 @@ class SliderCarouselPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
+        // Image
         image == null && preserveImageSpace == false
             ? const SizedBox()
-            : Expanded(
-                flex: 10,
+            : Flexible(
+                flex: 1,
                 child: Container(
                   color: backgroundColorImage,
                   child: image == null
                       ? const SizedBox(
                           width: double.infinity,
+                          height: double.infinity,
                         )
                       : SizedBox(
                           child: image!,
                         ),
                 ),
               ),
+        // Text title and body
         Expanded(
+          flex: 1,
           child: Container(
             width: double.infinity,
             color: backgroundColorText,
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 0),
+              padding: const EdgeInsets.fromLTRB(20, 10, 20, 0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.center,
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   // Title Text
-                  Expanded(
+                  Flexible(
+                    flex: 1,
                     child: Text(
                       title!,
                       textAlign: TextAlign.center,
                       maxLines: 3,
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.visible,
                       softWrap: true,
                       style: Theme.of(context).textTheme.displaySmall?.copyWith(
                             color: Colors.white,
@@ -330,12 +345,13 @@ class SliderCarouselPage extends StatelessWidget {
 
                   // Body Text
                   Expanded(
+                    flex: 1,
                     child: Text(
                       body!,
                       textAlign: TextAlign.center,
-                      maxLines: 5,
+                      maxLines: 4,
                       textScaleFactor: 0.9,
-                      overflow: TextOverflow.fade,
+                      overflow: TextOverflow.visible,
                       softWrap: true,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                             color: Colors.white,
