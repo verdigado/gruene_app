@@ -9,7 +9,7 @@ import 'package:gruene_app/screens/customization/repository/customization_reposi
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomizationScreen extends StatefulWidget {
-  CustomizationScreen({super.key});
+  const CustomizationScreen({super.key});
 
   @override
   State<CustomizationScreen> createState() => _CustomizationScreenState();

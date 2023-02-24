@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:gruene_app/screens/customization/data/subject.dart';
 
 class Topic {
   String id;

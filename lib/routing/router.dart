@@ -86,7 +86,7 @@ final GoRouter router = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       path: customization,
       pageBuilder: (context, state) {
-        return NoTransitionPage(child: CustomizationScreen());
+        return const NoTransitionPage(child: CustomizationScreen());
       },
     ),
   ],
