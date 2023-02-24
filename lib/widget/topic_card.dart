@@ -1,5 +1,6 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/fonts.gen.dart';
 import 'package:shimmer/shimmer.dart';
 
@@ -30,7 +31,7 @@ class _TopicCardState extends State<TopicCard> {
   CachedNetworkImage? img;
   var icon = Icons.add;
   bool checkedState = false;
-  final cardSize = 160.00;
+  final double cardBorder = 15.0;
 
   @override
   void initState() {
@@ -41,6 +42,7 @@ class _TopicCardState extends State<TopicCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final cardSize = size.width / 2 - 20;
     return Stack(children: [
       Positioned.fill(
         child: InkWell(
@@ -49,7 +51,7 @@ class _TopicCardState extends State<TopicCard> {
           },
           child: Card(
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
+                borderRadius: BorderRadius.circular(cardBorder),
               ),
               child: CachedNetworkImage(
                 imageUrl: widget.imgageUrl,
@@ -57,17 +59,18 @@ class _TopicCardState extends State<TopicCard> {
                   return FittedBox(
                       fit: BoxFit.fill,
                       child: ClipRRect(
-                        borderRadius: BorderRadius.circular(15),
+                        borderRadius: BorderRadius.circular(cardBorder),
                         child: Container(
                           color: Theme.of(context).colorScheme.primary,
-                          width: 206,
-                          height: 206,
+                          width: cardSize,
+                          height: cardSize,
                         ),
                       ));
                 },
-                placeholder: (context, url) => placeholderCard(),
+                placeholder: (context, url) =>
+                    placeholderCard(context, cardSize),
                 imageBuilder: (context, imageProvider) => ClipRRect(
-                  borderRadius: BorderRadius.circular(15),
+                  borderRadius: BorderRadius.circular(cardBorder),
                   child: Image(
                     image: imageProvider,
                     width: cardSize,
@@ -79,8 +82,8 @@ class _TopicCardState extends State<TopicCard> {
         ),
       ),
       Positioned(
-        top: 8,
-        left: size.width / 2 - 55,
+        top: cardSize / 100 * 4,
+        left: size.width / 2 - cardSize / 3.5,
         child: FloatingActionButton(
           heroTag: null,
           backgroundColor: Colors.white,
@@ -90,8 +93,10 @@ class _TopicCardState extends State<TopicCard> {
           },
           child: Icon(
             checkedState ? Icons.check : Icons.add,
-            color: checkedState ? const Color(0xFFFF495D) : Colors.black,
-            size: 30,
+            color: checkedState
+                ? Theme.of(context).colorScheme.secondary
+                : Colors.black,
+            size: cardSize / 6,
           ),
         ),
       ),
@@ -119,18 +124,18 @@ class _TopicCardState extends State<TopicCard> {
     }
   }
 
-  Shimmer placeholderCard() {
+  Shimmer placeholderCard(BuildContext context, double cardSize) {
     return Shimmer.fromColors(
-      baseColor: const Color(0xFF145F32),
-      highlightColor: const Color(0xFF5B8F70),
+      baseColor: Theme.of(context).colorScheme.primary,
+      highlightColor: mcgpalette0[100]!,
       child: FittedBox(
         fit: BoxFit.fill,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(15),
+          borderRadius: BorderRadius.circular(cardBorder),
           child: Container(
             color: Theme.of(context).colorScheme.primary,
-            width: 206,
-            height: 206,
+            width: cardSize,
+            height: cardSize,
           ),
         ),
       ),
