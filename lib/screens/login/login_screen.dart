@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:gruene_app/gen/assets.gen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:url_launcher/link.dart';
-import '../../widget/privacy_imprint.dart';
-import '../../widget/slider_carousel.dart';
-import '../../routing/routes.dart';
+
+import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/widget/privacy_imprint.dart';
+import 'package:gruene_app/widget/slider_carousel.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
