@@ -110,7 +110,10 @@ class _SliderCarouselState extends State<SliderCarousel> {
                       onTap: widget.onSkip,
                       child: Text(
                         AppLocalizations.of(context)!.skip,
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .bodyMedium
+                            ?.copyWith(
                               color: Theme.of(context).primaryColor,
                             ),
                       ),
@@ -286,7 +289,7 @@ class SliderCarouselPage extends StatelessWidget {
     this.body,
     this.image,
     this.preserveImageSpace = true,
-    this.titleFontSize = 22,
+    this.titleFontSize = 33,
     this.bodyFontSize = 16,
     this.titleFontWeight = FontWeight.bold,
     this.bodyFontWeight = FontWeight.normal,
@@ -333,16 +336,17 @@ class SliderCarouselPage extends StatelessWidget {
                 children: [
                   // Title Text
                   Flexible(
-                    flex: 1,
                     child: Text(
                       title!,
                       textAlign: TextAlign.center,
                       maxLines: 3,
                       overflow: TextOverflow.visible,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.displayLarge?.copyWith(
-                            color: Colors.white,
-                          ),
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .displayLarge
+                          ?.copyWith(
+                              color: Colors.white, fontSize: titleFontSize),
                     ),
                   ),
                   const SizedBox(height: 10),
@@ -357,7 +361,10 @@ class SliderCarouselPage extends StatelessWidget {
                       textScaleFactor: 0.9,
                       overflow: TextOverflow.visible,
                       softWrap: true,
-                      style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .bodyLarge
+                          ?.copyWith(
                             color: Colors.white,
                           ),
                     ),

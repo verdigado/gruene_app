@@ -47,7 +47,7 @@ const textTheme = TextTheme(
   displayLarge: TextStyle(
       fontFamily: FontFamily.bereit,
       fontWeight: FontWeight.bold,
-      fontSize: 24,
+      fontSize: 33,
       height: 1.16,
       letterSpacing: 1.0,
       color: lightBlack),
@@ -98,7 +98,7 @@ const textTheme = TextTheme(
       color: lightBlack),
   bodyMedium: TextStyle(
       fontFamily: FontFamily.ptsans,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
       fontSize: 14,
       height: 1.71,
       letterSpacing: 0,

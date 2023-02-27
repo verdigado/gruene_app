@@ -39,7 +39,9 @@ class LoginScreen extends StatelessWidget {
                       backgroundColorText: Theme.of(context).primaryColor,
                       backgroundColorImage: Colors.blue,
                       preserveImageSpace: false,
-                      title: "Business Chat",
+                      title: "Schau Dir Deine neue Mitglieder-App an",
+                      titleFontWeight: FontWeight.bold,
+                      titleFontSize: 33,
                       body:
                           "First impressions are everything in business, even in chat service. It’s important to show professionalism and courtesy from the start",
                     ),
@@ -66,41 +68,39 @@ class LoginScreen extends StatelessWidget {
                   ],
                 )),
             Expanded(
-                flex: 1,
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    ElevatedButton(
-                      onPressed: () => context.go(login),
-                      child: Text(AppLocalizations.of(context)!.login,
-                          style: Theme.of(context)
-                              .textTheme
-                              .bodyLarge
-                              ?.copyWith(color: Colors.white)),
-                    ),
-                    const SizedBox(height: 20),
-                    Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                              AppLocalizations.of(context)!.registerMemberLabel,
-                              style: Theme.of(context).textTheme.bodyLarge),
-                          const SizedBox(width: 20),
-                          Text(
-                            AppLocalizations.of(context)!.registerMember,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                    decoration: TextDecoration.underline),
-                          ),
-                        ]),
-                    const SizedBox(height: 10),
-                    DatImpContainer(),
-                    const SizedBox(height: 10),
-                  ],
-                ))
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                ElevatedButton(
+                  onPressed: () => context.go(startScreen),
+                  child: Text(AppLocalizations.of(context)!.login,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .bodyLarge
+                          ?.copyWith(color: Colors.white)),
+                ),
+                const SizedBox(height: 20),
+                Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(AppLocalizations.of(context)!.registerMemberLabel,
+                          style: Theme.of(context).primaryTextTheme.bodyLarge),
+                      const SizedBox(width: 20),
+                      Text(
+                        AppLocalizations.of(context)!.registerMember,
+                        style: Theme.of(context)
+                            .primaryTextTheme
+                            .bodyMedium
+                            ?.copyWith(decoration: TextDecoration.underline),
+                      ),
+                    ]),
+                Flexible(
+                  flex: 2,
+                  child: DatImpContainer(),
+                ),
+              ],
+            ))
           ],
         ),
       ),

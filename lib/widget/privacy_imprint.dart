@@ -19,7 +19,7 @@ class DatImpContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 0),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
@@ -27,7 +27,7 @@ class DatImpContainer extends StatelessWidget {
           TextButton(
             onPressed: () => _launchUrl(_url_privacy),
             child: Text(AppLocalizations.of(context)!.privacyPolicy,
-                style: Theme.of(context).textTheme.bodySmall),
+                style: Theme.of(context).primaryTextTheme.bodySmall),
           ),
           const SizedBox(width: 10),
           Container(
@@ -42,7 +42,7 @@ class DatImpContainer extends StatelessWidget {
           TextButton(
             onPressed: () => _launchUrl(_url_imprint),
             child: Text(AppLocalizations.of(context)!.imprint,
-                style: Theme.of(context).textTheme.bodySmall),
+                style: Theme.of(context).primaryTextTheme.bodySmall),
           ),
         ],
       ),

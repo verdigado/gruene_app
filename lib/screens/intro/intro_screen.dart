@@ -45,7 +45,7 @@ class IntroScreen extends StatelessWidget {
                     child: Text(
                       textAlign: TextAlign.center,
                       AppLocalizations.of(context)!.introHeadline2,
-                      style: Theme.of(context).textTheme.titleMedium,
+                      style: Theme.of(context).primaryTextTheme.bodyMedium,
                     ),
                   ),
                 ),
@@ -53,16 +53,14 @@ class IntroScreen extends StatelessWidget {
             ),
           ),
         ),
-        Flexible(
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Padding(
-              padding: EdgeInsets.only(bottom: panelMinHeight + 10),
-              child: ElevatedButton(
-                  onPressed: () => context.go(login),
-                  child: Text(AppLocalizations.of(context)!.loginButtonText,
-                      style: const TextStyle(color: Colors.white))),
-            ),
+        Align(
+          alignment: Alignment.bottomCenter,
+          child: Padding(
+            padding: EdgeInsets.only(bottom: panelMinHeight + 10),
+            child: ElevatedButton(
+                onPressed: () => context.go(login),
+                child: Text(AppLocalizations.of(context)!.login,
+                    style: const TextStyle(color: Colors.white))),
           ),
         ),
         SlidingUpPanel(
@@ -70,9 +68,9 @@ class IntroScreen extends StatelessWidget {
           maxHeight: size.height,
           parallaxEnabled: true,
           backdropEnabled: true,
-          backdropColor: const Color(0xFFFF495D),
+          backdropColor: Theme.of(context).colorScheme.secondary,
           panel: Container(
-            color: const Color(0xFFFF495D),
+            color: Theme.of(context).colorScheme.secondary,
             child: Column(
               children: [
                 const SizedBox(
@@ -91,7 +89,7 @@ class IntroScreen extends StatelessWidget {
                 Center(
                   child: Text(
                     AppLocalizations.of(context)!.tourSliderIntroText,
-                    style: Theme.of(context).textTheme.titleMedium!
+                    style: Theme.of(context).primaryTextTheme.titleMedium!
                       ..copyWith(color: Colors.white),
                   ),
                 ),

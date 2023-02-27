@@ -25,7 +25,7 @@ class _InterestsPageState extends State<InterestsPage> {
           padding: const EdgeInsets.all(18),
           child: Text(
             AppLocalizations.of(context)!.interestsPageHeadline1,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).primaryTextTheme.displayMedium,
           ),
         ),
         BlocBuilder<CustomizationBloc, CustomizationState>(

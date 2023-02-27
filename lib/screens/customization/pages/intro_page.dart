@@ -25,17 +25,20 @@ class _IntroPageState extends State<IntroPage> {
             height: size.height / 100 * 40),
         Wrap(
           children: [
-            Text(
-              textAlign: TextAlign.center,
-              AppLocalizations.of(context)!.customPageHeadline1,
-              style: Theme.of(context).textTheme.displaySmall,
+            Padding(
+              padding: const EdgeInsets.only(left: 20, right: 20),
+              child: Text(
+                textAlign: TextAlign.center,
+                AppLocalizations.of(context)!.customPageHeadline1,
+                style: Theme.of(context).primaryTextTheme.displayLarge,
+              ),
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 50),
               child: Text(
                 textAlign: TextAlign.center,
                 AppLocalizations.of(context)!.customPageHeadline2,
-                style: Theme.of(context).textTheme.bodyMedium,
+                style: Theme.of(context).primaryTextTheme.bodyMedium,
               ),
             ),
           ],

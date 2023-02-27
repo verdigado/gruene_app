@@ -126,13 +126,11 @@
   "askForInterest":"Verrate uns Deine Interessen",
   "skipCustomText":"Gleich loslegen",
   "notificationPageHeadline1":"Halte mich auf dem Laufenden",
-  "notificationPageHeadline2":"consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua."
-  "skipCustomText":"Gleich loslegen",
+  "notificationPageHeadline2":"consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
+
 "interestsPageHeadline1":"Welche Bereiche der Parteiarbeit interessieren Dich besonders?",
   "subjectSearchHint":"Suche",
-  "next":"Weiter",
-  "skip":"Überspringen",
-  "back":"Zurück",
+
   "step":"Schritt",
   "stepOf": "von",
   "subjectHeadline1":"Welche Themen interessieren Dich?",

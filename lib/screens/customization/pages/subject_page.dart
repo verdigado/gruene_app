@@ -24,7 +24,7 @@ class _SubjectPageState extends State<SubjectPage> {
           padding: const EdgeInsets.all(18),
           child: Text(
             AppLocalizations.of(context)!.subjectHeadline1,
-            style: Theme.of(context).textTheme.titleLarge,
+            style: Theme.of(context).primaryTextTheme.displayMedium,
           ),
         ),
         Expanded(
@@ -63,7 +63,7 @@ class _SubjectPageState extends State<SubjectPage> {
                 style: const TextStyle(color: Colors.white))),
         TextButton(
             onPressed: () => context.go(startScreen),
-            child: Text(AppLocalizations.of(context)!.next))
+            child: Text(AppLocalizations.of(context)!.back))
       ],
     );
   }
