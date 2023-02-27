@@ -34,13 +34,14 @@ class _StartScreenState extends State<StartScreen> {
         TextButton(
             onPressed: () => context.push(customization),
             child: const Text('Start costomization')),
+        TextButton(
+            onPressed: () => context.push(notification),
+            child: const Text('Push Notification')),
         Text(
           '${AppLocalizations.of(context)!.helloWorld} You have pushed the button this many times:',
         ),
-        Text(
-          '$_counter',
-          style: Theme.of(context).textTheme.bodyMedium,
-        ),
+        Text('$_counter',
+            style: Theme.of(context).primaryTextTheme.displayLarge),
         const Center(child: Text('StartScreen')),
         FloatingActionButton(
           onPressed: _incrementCounter,

@@ -33,7 +33,7 @@ class IntroScreen extends StatelessWidget {
                     child: Text(
                       textAlign: TextAlign.center,
                       AppLocalizations.of(context)!.introHeadline1,
-                      style: Theme.of(context).textTheme.displaySmall,
+                      style: Theme.of(context).primaryTextTheme.displayLarge,
                     ),
                   ),
                 ),

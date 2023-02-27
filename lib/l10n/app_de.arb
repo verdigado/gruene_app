@@ -124,5 +124,8 @@
     "description": "Login Headline 2"
   },
   "askForInterest":"Verrate uns Deine Interessen",
-  "skipCustomText":"Gleich loslegen"
+  "skipCustomText":"Gleich loslegen",
+  "notificationPageHeadline1":"Halte mich auf dem Laufenden",
+  "notificationPageHeadline2":"consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua."
+
 }

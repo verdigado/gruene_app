@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/gen/fonts.gen.dart';
 
 ////**
 ///  * CONST Colors
@@ -39,94 +40,96 @@ const Color darkGrey = Color(0xFF343433);
 const Color lightGrey = Color(0xFFD9D9D9);
 const Color disabledGrey = lightGrey;
 
+const textTheme = TextTheme(
+  /**
+      * Headlines
+      */
+  displayLarge: TextStyle(
+      fontFamily: FontFamily.bereit,
+      fontWeight: FontWeight.bold,
+      fontSize: 24,
+      height: 1.16,
+      letterSpacing: 1.0,
+      color: lightBlack),
+  displayMedium: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 20,
+      height: 1.3,
+      letterSpacing: 1.0,
+      color: lightBlack),
+  displaySmall: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+      height: 1.33,
+      letterSpacing: 1.0,
+      color: lightBlack),
+  headlineLarge: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 18,
+      height: 1.33,
+      letterSpacing: 1.0,
+      color: lightBlack),
+  headlineMedium: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.normal,
+      fontSize: 16,
+      height: 1.25,
+      letterSpacing: 0,
+      color: lightBlack),
+  headlineSmall: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 16,
+      height: 1.25,
+      letterSpacing: 0,
+      color: lightBlack),
+  /**
+      * Body
+      */
+  bodyLarge: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.normal,
+      fontSize: 14,
+      height: 1.71,
+      letterSpacing: 0,
+      color: lightBlack),
+  bodyMedium: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+      height: 1.71,
+      letterSpacing: 0,
+      color: lightBlack),
+  bodySmall: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.normal,
+      fontSize: 12,
+      height: 1.5,
+      letterSpacing: 1.0,
+      color: lightBlack),
+  /**
+      * Buttons
+      */
+  labelLarge: TextStyle(
+      fontFamily: FontFamily.ptsans,
+      fontWeight: FontWeight.bold,
+      fontSize: 14,
+      height: 1.28,
+      letterSpacing: 1.0,
+      color: lightBlack),
+);
+
 ////**
 ///  * ThemeData
 ///  */
 final rootTheme = ThemeData(
   primaryColor: const Color(_mcgpalette0PrimaryValue),
   primaryColorLight: const Color(0xFFE3ECE6),
-  textTheme: const TextTheme(
-    /**
-      * Headlines
-      */
-    displayLarge: TextStyle(
-        fontFamily: 'Bereit',
-        fontWeight: FontWeight.bold,
-        fontSize: 24,
-        height: 1.16,
-        letterSpacing: 1.0,
-        color: lightBlack),
-    displayMedium: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 20,
-        height: 1.3,
-        letterSpacing: 1.0,
-        color: lightBlack),
-    displaySmall: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-        height: 1.33,
-        letterSpacing: 1.0,
-        color: lightBlack),
-    headlineLarge: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 18,
-        height: 1.33,
-        letterSpacing: 1.0,
-        color: lightBlack),
-    headlineMedium: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.normal,
-        fontSize: 16,
-        height: 1.25,
-        letterSpacing: 0,
-        color: lightBlack),
-    headlineSmall: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 16,
-        height: 1.25,
-        letterSpacing: 0,
-        color: lightBlack),
-    /**
-      * Body
-      */
-    bodyLarge: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.normal,
-        fontSize: 14,
-        height: 1.71,
-        letterSpacing: 0,
-        color: lightBlack),
-    bodyMedium: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-        height: 1.71,
-        letterSpacing: 0,
-        color: lightBlack),
-    bodySmall: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.normal,
-        fontSize: 12,
-        height: 1.5,
-        letterSpacing: 1.0,
-        color: lightBlack),
-    /**
-      * Buttons
-      */
-    labelLarge: TextStyle(
-        fontFamily: 'PTSans',
-        fontWeight: FontWeight.bold,
-        fontSize: 14,
-        height: 1.28,
-        letterSpacing: 1.0,
-        color: lightBlack),
-  ),
-  fontFamily: 'Ptsans',
+  primaryTextTheme: textTheme,
+  fontFamily: FontFamily.ptsans,
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       textStyle: const TextStyle(color: Colors.white),

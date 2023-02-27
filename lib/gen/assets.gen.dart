@@ -22,9 +22,16 @@ class $AssetsImagesGen {
   /// File path: assets/images/gruene_topic_economy.svg
   String get grueneTopicEconomy => 'assets/images/gruene_topic_economy.svg';
 
+  /// File path: assets/images/gruene_topic_europa1.svg
+  String get grueneTopicEuropa1 => 'assets/images/gruene_topic_europa1.svg';
+
   /// List of all assets
-  List<dynamic> get values =>
-      [gRUENETopicOekologie, sonnenblumeRgbAufTransparent, grueneTopicEconomy];
+  List<dynamic> get values => [
+        gRUENETopicOekologie,
+        sonnenblumeRgbAufTransparent,
+        grueneTopicEconomy,
+        grueneTopicEuropa1
+      ];
 }
 
 class Assets {

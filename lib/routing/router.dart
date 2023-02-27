@@ -5,6 +5,7 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
+import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/search/search_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
@@ -87,6 +88,13 @@ final GoRouter router = GoRouter(
       path: customization,
       pageBuilder: (context, state) {
         return NoTransitionPage(child: CustomizationScreen());
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: notification,
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: NotfificationScreen());
       },
     ),
   ],
