@@ -1,4 +1,9 @@
-import 'package:bloc/bloc.dart';
+import 'dart:convert';
+
+import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:gruene_app/screens/customization/data/topic.dart';
 import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
 
@@ -12,32 +17,81 @@ class CustomizationBloc extends Bloc<CustomizationEvent, CustomizationState> {
       : super(CustomizationInitial()) {
     on<CustomizationLoad>((event, emit) {
       emit(CustomizationReady(
-          topis: customizationRepository.listTopic(),
-          subject: ['Umwelt'],
-          selectTopis: [],
-          selectSubject: []));
+        topis: customizationRepository.listTopic(),
+        subject: customizationRepository.listSubject(),
+      ));
     });
     on<CustomizationTopicAdd>((event, emit) {
       final currentState = state;
       if (currentState is CustomizationReady) {
+        currentState.topis
+            .where((element) => element.id == event.id)
+            .first
+            .checked = true;
         emit(CustomizationReady(
-            topis: currentState.topis,
-            subject: currentState.subject,
-            selectTopis: [...currentState.selectTopis, event.id],
-            selectSubject: currentState.selectSubject));
+          topis: currentState.topis,
+          subject: currentState.subject,
+        ));
       }
     });
     on<CustomizationTopicRemove>(
       (event, emit) {
         final currentState = state;
         if (currentState is CustomizationReady) {
+          currentState.topis
+              .where((element) => element.id != event.id)
+              .first
+              .checked = false;
           emit(CustomizationReady(
-              topis: currentState.topis,
-              subject: currentState.subject,
-              selectTopis: currentState.selectTopis
-                  .where((element) => element != event.id)
-                  .toList(),
-              selectSubject: currentState.selectSubject));
+            topis: currentState.topis,
+            subject: currentState.subject,
+          ));
+        }
+      },
+    );
+    on<CustomizationSubjectAdd>(
+      (event, emit) {
+        final currentState = state;
+        if (currentState is CustomizationReady) {
+          final toAdd = currentState.subject
+              .where((element) => element.id == event.id)
+              .first;
+          toAdd.checked = true;
+          emit(CustomizationReady(
+              topis: currentState.topis, subject: currentState.subject));
+        }
+      },
+    );
+    on<CustomizationSubjectRemove>(
+      (event, emit) {
+        final currentState = state;
+        if (currentState is CustomizationReady) {
+          final toRemove = currentState.subject
+              .where((element) => element.id == event.id)
+              .first;
+          toRemove.checked = false;
+          emit(CustomizationReady(
+              subject: currentState.subject, topis: currentState.topis));
+        }
+      },
+    );
+
+    on<CustomizationDone>(
+      (event, emit) {
+        emit(CustomizationSending());
+        final currentState = state;
+        if (currentState is CustomizationReady) {
+          final sub =
+              currentState.subject.where((element) => element.checked).toList();
+          final topic =
+              currentState.topis.where((element) => element.checked).toList();
+          logger.i(
+              jsonEncode({'selectedTopics': topic, 'selectedSubjects': sub}));
+          if (customizationRepository.customizationSend(topic, sub)) {
+            emit(CustomizationSended(selectSubject: sub, selectTopis: topic));
+          } else {
+            emit(CustomizationSendFailure());
+          }
         }
       },
     );

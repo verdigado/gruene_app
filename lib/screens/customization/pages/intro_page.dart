@@ -6,9 +6,9 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 class IntroPage extends StatefulWidget {
-  PageController controller;
+  final PageController controller;
 
-  IntroPage(this.controller, {super.key});
+  const IntroPage(this.controller, {super.key});
 
   @override
   State<IntroPage> createState() => _IntroPageState();
@@ -45,7 +45,7 @@ class _IntroPageState extends State<IntroPage> {
           children: [
             ElevatedButton(
                 onPressed: () => widget.controller.nextPage(
-                    duration: const Duration(milliseconds: 500),
+                    duration: const Duration(milliseconds: 700),
                     curve: Curves.easeIn),
                 child: Text(AppLocalizations.of(context)!.askForInterest,
                     style: const TextStyle(color: Colors.white))),

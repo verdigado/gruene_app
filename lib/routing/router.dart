@@ -1,19 +1,18 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+
 import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/screens/customization/customization_screen.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/search/search_screen.dart';
+import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
-import 'package:gruene_app/screens/start/start_screen.dart';
-
-import 'package:flutter_native_splash/flutter_native_splash.dart';
-
-import '../screens/customization/customization_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -27,24 +26,25 @@ final GoRouter router = GoRouter(
   routes: <RouteBase>[
     ShellRoute(
       navigatorKey: shellNavigatorKey,
-      builder: (context, state, child) {
-        return ScaffoldWithNavbar(
+      pageBuilder: (context, state, child) {
+        return CustomNoTransitionPage(
+            child: ScaffoldWithNavbar(
           titel: 'Titel',
           child: child,
-        );
+        ));
       },
       routes: [
         // This screen is displayed on the ShellRoute's Navigator.
         GoRoute(
           path: startScreen,
           pageBuilder: (context, state) {
-            return const NoTransitionPage(child: StartScreen());
+            return const CustomNoTransitionPage(child: StartScreen());
           },
         ),
         GoRoute(
           path: searchScreen,
           pageBuilder: (context, state) {
-            return const NoTransitionPage(child: SearchScreen());
+            return const CustomNoTransitionPage(child: SearchScreen());
           },
         ),
       ],
@@ -80,14 +80,14 @@ final GoRouter router = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       path: login,
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: LoginScreen());
+        return const CustomNoTransitionPage(child: LoginScreen());
       },
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       path: customization,
       pageBuilder: (context, state) {
-        return NoTransitionPage(child: CustomizationScreen());
+        return const CustomNoTransitionPage(child: CustomizationScreen());
       },
     ),
     GoRoute(
@@ -120,4 +120,25 @@ SlideTransition slideAnimation(Animation<double> animation, Widget child) {
     position: animation.drive(tween),
     child: child,
   );
+}
+
+class CustomNoTransitionPage<T> extends CustomTransitionPage<T> {
+  /// Constructor for a page with no transition functionality.
+  const CustomNoTransitionPage({
+    required super.child,
+    super.name,
+    super.arguments,
+    super.restorationId,
+    super.key,
+  }) : super(
+            transitionsBuilder: _transitionsBuilder,
+            transitionDuration: const Duration(microseconds: 0),
+            reverseTransitionDuration: const Duration(microseconds: 0));
+
+  static Widget _transitionsBuilder(
+          BuildContext context,
+          Animation<double> animation,
+          Animation<double> secondaryAnimation,
+          Widget child) =>
+      child;
 }

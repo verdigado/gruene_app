@@ -6,24 +6,33 @@ import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
 import 'package:gruene_app/screens/customization/pages/subject_page.dart';
 import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CustomizationScreen extends StatefulWidget {
-  CustomizationScreen({super.key});
-  int currentPage = 0;
+  const CustomizationScreen({super.key});
 
   @override
   State<CustomizationScreen> createState() => _CustomizationScreenState();
 }
 
 class _CustomizationScreenState extends State<CustomizationScreen> {
+  late List<Widget> pages;
+  int currentPage = 0;
+  late PageController controller;
+
   @override
-  Widget build(BuildContext context) {
-    final PageController controller = PageController();
-    final pages = [
+  void initState() {
+    super.initState();
+    controller = PageController();
+    pages = [
       IntroPage(controller),
       InterestsPage(controller),
       SubjectPage(controller)
     ];
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return RepositoryProvider(
       create: (context) => CustomizationRepositoryImpl(),
       child: BlocProvider(
@@ -32,18 +41,20 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               ..add(CustomizationLoad()),
         child: Scaffold(
           extendBodyBehindAppBar: true,
-          appBar: widget.currentPage != 0
+          resizeToAvoidBottomInset: false,
+          appBar: currentPage != 0
               ? PreferredSize(
                   preferredSize: const Size(double.infinity, 80),
                   child: AppBar(
                     backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: const CupertinoNavigationBarBackButton(
+                    leading: CupertinoNavigationBarBackButton(
                       color: Colors.grey,
-                      previousPageTitle: 'Zurück',
+                      previousPageTitle: AppLocalizations.of(context)?.back,
+                      onPressed: () => controller.jumpToPage(currentPage - 1),
                     ),
                     elevation: 0,
                     leadingWidth: 100,
-                    bottom: progressIndicator(pages),
+                    bottom: progressIndicator(context, pages),
                   ),
                 )
               : PreferredSize(
@@ -52,7 +63,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
             child: PageView(
               controller: controller,
               onPageChanged: (value) => setState(() {
-                widget.currentPage = value;
+                currentPage = value;
               }),
               physics: const NeverScrollableScrollPhysics(),
               children: pages,
@@ -63,7 +74,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
     );
   }
 
-  PreferredSize progressIndicator(List<StatefulWidget> pages) {
+  PreferredSize progressIndicator(BuildContext context, List<Widget> pages) {
     return PreferredSize(
         preferredSize: const Size(double.infinity, 80),
         child: Padding(
@@ -73,8 +84,12 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
-                    backgroundColor: Colors.red.withOpacity(0.3),
-                    valueColor: const AlwaysStoppedAnimation(Colors.red),
+                    backgroundColor: Theme.of(context)
+                        .colorScheme
+                        .secondary
+                        .withOpacity(0.3),
+                    valueColor: AlwaysStoppedAnimation(
+                        Theme.of(context).colorScheme.secondary),
                     value: getProgressOfCurrentPage(pages.length - 1)),
               ),
               const SizedBox(
@@ -83,7 +98,7 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  'Schritt ${widget.currentPage} von ${pages.length - 1}',
+                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
                   textAlign: TextAlign.left,
                 ),
               )
@@ -93,7 +108,6 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   }
 
   double getProgressOfCurrentPage(int pages) {
-    var cu = widget.currentPage;
-    return cu / pages;
+    return currentPage / pages;
   }
 }

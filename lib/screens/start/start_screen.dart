@@ -32,11 +32,11 @@ class _StartScreenState extends State<StartScreen> {
             onPressed: () => context.push(intro),
             child: const Text('Start Intro')),
         TextButton(
-            onPressed: () => context.push(customization),
-            child: const Text('Start costomization')),
-        TextButton(
             onPressed: () => context.push(notification),
             child: const Text('Push Notification')),
+        TextButton(
+            onPressed: () => context.push(customization),
+            child: const Text('Start costomization')),
         Text(
           '${AppLocalizations.of(context)!.helloWorld} You have pushed the button this many times:',
         ),
