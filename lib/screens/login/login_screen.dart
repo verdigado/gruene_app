@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
 
@@ -26,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                   showIndicator: true,
                   backgroundColor: Colors.transparent,
                   activeDotColor: Theme.of(context).colorScheme.primary,
-                  deactiveDotColor: const Color(0xFFD9D9D9),
+                  deactiveDotColor: lightGrey,
                   iconColor: Colors.white,
                   rightIcon: Icons.arrow_forward,
                   leftIcon: Icons.arrow_back,

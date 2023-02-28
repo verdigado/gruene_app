@@ -39,34 +39,37 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
         create: (context) =>
             OnboardingBloc(context.read<CustomizationRepositoryImpl>())
               ..add(OnboardingLoad()),
-        child: Scaffold(
-          extendBodyBehindAppBar: true,
-          resizeToAvoidBottomInset: false,
-          appBar: currentPage != 0
-              ? PreferredSize(
-                  preferredSize: const Size(double.infinity, 80),
-                  child: AppBar(
-                    backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                    leading: CupertinoNavigationBarBackButton(
-                      color: Colors.grey,
-                      previousPageTitle: AppLocalizations.of(context)?.back,
-                      onPressed: () => controller.jumpToPage(currentPage - 1),
+        child: SafeArea(
+          child: Scaffold(
+            extendBodyBehindAppBar: true,
+            resizeToAvoidBottomInset: false,
+            appBar: currentPage != 0
+                ? PreferredSize(
+                    preferredSize: const Size(double.infinity, 80),
+                    child: AppBar(
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      leading: CupertinoNavigationBarBackButton(
+                        color: Colors.grey,
+                        previousPageTitle: AppLocalizations.of(context)?.back,
+                        onPressed: () => controller.jumpToPage(currentPage - 1),
+                      ),
+                      elevation: 0,
+                      leadingWidth: 100,
+                      bottom: progressIndicator(context, pages),
                     ),
-                    elevation: 0,
-                    leadingWidth: 100,
-                    bottom: progressIndicator(context, pages),
-                  ),
-                )
-              : PreferredSize(
-                  preferredSize: const Size(0, 0), child: Container()),
-          body: SafeArea(
-            child: PageView(
-              controller: controller,
-              onPageChanged: (value) => setState(() {
-                currentPage = value;
-              }),
-              physics: const NeverScrollableScrollPhysics(),
-              children: pages,
+                  )
+                : PreferredSize(
+                    preferredSize: const Size(0, 0), child: Container()),
+            body: SafeArea(
+              child: PageView(
+                controller: controller,
+                onPageChanged: (value) => setState(() {
+                  currentPage = value;
+                }),
+                physics: const NeverScrollableScrollPhysics(),
+                children: pages,
+              ),
             ),
           ),
         ),

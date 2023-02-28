@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/common/logger.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DatImpContainer extends StatelessWidget {
@@ -9,9 +10,9 @@ class DatImpContainer extends StatelessWidget {
   final Uri _urlPrivacy =
       Uri.parse('https://www.gruene.de/service/datenschutz');
 
-  Future<void> _launchUrl(Uri url) async {
+  Future<void> _launchUrl(BuildContext context, Uri url) async {
     if (!await launchUrl(url)) {
-      throw Exception('Could not launch $url');
+      logger.e('Fail to Launch Url $url');
     }
   }
 
@@ -25,7 +26,7 @@ class DatImpContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () => _launchUrl(_urlPrivacy),
+            onPressed: () => _launchUrl(context, _urlPrivacy),
             child: Text(AppLocalizations.of(context)!.privacyPolicy,
                 style: Theme.of(context).primaryTextTheme.bodySmall),
           ),
@@ -40,7 +41,7 @@ class DatImpContainer extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           TextButton(
-            onPressed: () => _launchUrl(_urlImprint),
+            onPressed: () => _launchUrl(context, _urlImprint),
             child: Text(AppLocalizations.of(context)!.imprint,
                 style: Theme.of(context).primaryTextTheme.bodySmall),
           ),
