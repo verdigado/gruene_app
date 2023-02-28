@@ -4,11 +4,11 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
 
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/screens/customization/customization_screen.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
+import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
 import 'package:gruene_app/screens/search/search_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
@@ -85,9 +85,9 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
-      path: customization,
+      path: onboarding,
       pageBuilder: (context, state) {
-        return const CustomNoTransitionPage(child: CustomizationScreen());
+        return const CustomNoTransitionPage(child: OnboardingScreen());
       },
     ),
     GoRoute(

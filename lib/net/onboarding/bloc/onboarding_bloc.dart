@@ -3,22 +3,23 @@ import 'dart:convert';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/screens/customization/data/subject.dart';
-import 'package:gruene_app/screens/customization/data/topic.dart';
-import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
+import 'package:gruene_app/net/onboarding/data/subject.dart';
+import 'package:gruene_app/net/onboarding/data/topic.dart';
+import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
+
 
 part 'onboarding_event.dart';
 part 'onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
-  CustomizationRepository customizationRepository;
+  OnboardingRepository onboardingRepository;
 
-  OnboardingBloc(this.customizationRepository)
+  OnboardingBloc(this.onboardingRepository)
       : super(OnboardingInitial()) {
     on<OnboardingLoad>((event, emit) {
       emit(OnboardingReady(
-        topis: customizationRepository.listTopic(),
-        subject: customizationRepository.listSubject(),
+        topis: onboardingRepository.listTopic(),
+        subject: onboardingRepository.listSubject(),
       ));
     });
     on<OnboardingTopicAdd>((event, emit) {
@@ -87,7 +88,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               currentState.topis.where((element) => element.checked).toList();
           logger.i(
               jsonEncode({'selectedTopics': topic, 'selectedSubjects': sub}));
-          if (customizationRepository.customizationSend(topic, sub)) {
+          if (onboardingRepository.onboardingSend(topic, sub)) {
             emit(OnboardingSended(selectSubject: sub, selectTopis: topic));
           } else {
             emit(OnboardingSendFailure());

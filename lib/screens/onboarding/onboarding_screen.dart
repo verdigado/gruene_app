@@ -1,21 +1,22 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/screens/customization/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/screens/customization/pages/interests_page.dart';
-import 'package:gruene_app/screens/customization/pages/intro_page.dart';
-import 'package:gruene_app/screens/customization/pages/subject_page.dart';
-import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
+import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
-class CustomizationScreen extends StatefulWidget {
-  const CustomizationScreen({super.key});
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/screens/onboarding/pages/interests_page.dart';
+import 'package:gruene_app/screens/onboarding/pages/intro_page.dart';
+import 'package:gruene_app/screens/onboarding/pages/subject_page.dart';
+
+class OnboardingScreen extends StatefulWidget {
+  const OnboardingScreen({super.key});
 
   @override
-  State<CustomizationScreen> createState() => _CustomizationScreenState();
+  State<OnboardingScreen> createState() => _OnboardingScreenState();
 }
 
-class _CustomizationScreenState extends State<CustomizationScreen> {
+class _OnboardingScreenState extends State<OnboardingScreen> {
   late List<Widget> pages;
   int currentPage = 0;
   late PageController controller;
@@ -34,10 +35,10 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => CustomizationRepositoryImpl(),
+      create: (context) => OnboardingRepositoryImpl(),
       child: BlocProvider(
         create: (context) =>
-            OnboardingBloc(context.read<CustomizationRepositoryImpl>())
+            OnboardingBloc(context.read<OnboardingRepositoryImpl>())
               ..add(OnboardingLoad()),
         child: SafeArea(
           child: Scaffold(

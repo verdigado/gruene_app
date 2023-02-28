@@ -1,15 +1,16 @@
-import 'package:gruene_app/screens/customization/data/topic.dart';
+import 'package:gruene_app/net/onboarding/data/subject.dart';
+import 'package:gruene_app/net/onboarding/data/topic.dart';
 
-import 'package:gruene_app/screens/customization/data/subject.dart';
 
-abstract class CustomizationRepository {
+
+abstract class OnboardingRepository {
   Set<Topic> listTopic();
 
   Set<Subject> listSubject();
-  bool customizationSend(List<Topic> topics, List<Subject> subjects);
+  bool onboardingSend(List<Topic> topics, List<Subject> subjects);
 }
 
-class CustomizationRepositoryImpl extends CustomizationRepository {
+class OnboardingRepositoryImpl extends OnboardingRepository {
   @override
   Set<Topic> listTopic() {
     return {
@@ -72,7 +73,7 @@ class CustomizationRepositoryImpl extends CustomizationRepository {
   }
 
   @override
-  bool customizationSend(List<Topic> topics, List<Subject> subjects) {
+  bool onboardingSend(List<Topic> topics, List<Subject> subjects) {
     return true;
   }
 }
