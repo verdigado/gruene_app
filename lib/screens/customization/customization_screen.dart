@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
+import 'package:gruene_app/screens/customization/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/screens/customization/pages/interests_page.dart';
 import 'package:gruene_app/screens/customization/pages/intro_page.dart';
 import 'package:gruene_app/screens/customization/pages/subject_page.dart';
@@ -37,8 +37,8 @@ class _CustomizationScreenState extends State<CustomizationScreen> {
       create: (context) => CustomizationRepositoryImpl(),
       child: BlocProvider(
         create: (context) =>
-            CustomizationBloc(context.read<CustomizationRepositoryImpl>())
-              ..add(CustomizationLoad()),
+            OnboardingBloc(context.read<CustomizationRepositoryImpl>())
+              ..add(OnboardingLoad()),
         child: Scaffold(
           extendBodyBehindAppBar: true,
           resizeToAvoidBottomInset: false,

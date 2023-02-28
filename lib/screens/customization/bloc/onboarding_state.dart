@@ -1,22 +1,22 @@
-part of 'customization_bloc.dart';
+part of 'onboarding_bloc.dart';
 
-abstract class CustomizationState extends Equatable {}
+abstract class OnboardingState extends Equatable {}
 
-class CustomizationInitial extends CustomizationState {
+class OnboardingInitial extends OnboardingState {
   @override
   List<Object?> get props => [];
 }
 
-class CustomizationLoading extends CustomizationState {
+class OnboardingLoading extends OnboardingState {
   @override
   List<Object?> get props => [];
 }
 
-class CustomizationReady extends CustomizationState {
+class OnboardingReady extends OnboardingState {
   final Set<Topic> topis;
   final Set<Subject> subject;
 
-  CustomizationReady({
+  OnboardingReady({
     required this.topis,
     required this.subject,
   });
@@ -25,10 +25,10 @@ class CustomizationReady extends CustomizationState {
   List<Object?> get props => [topis, subject];
 }
 
-class CustomizationSended extends CustomizationState {
+class OnboardingSended extends OnboardingState {
   final List<Topic> selectTopis;
   final List<Subject> selectSubject;
-  CustomizationSended({
+  OnboardingSended({
     required this.selectTopis,
     required this.selectSubject,
   });
@@ -37,12 +37,12 @@ class CustomizationSended extends CustomizationState {
   List<Object?> get props => [selectSubject, selectTopis];
 }
 
-class CustomizationSendFailure extends CustomizationState {
+class OnboardingSendFailure extends OnboardingState {
   @override
   List<Object?> get props => [];
 }
 
-class CustomizationSending extends CustomizationState {
+class OnboardingSending extends OnboardingState {
   @override
   List<Object?> get props => [];
 }

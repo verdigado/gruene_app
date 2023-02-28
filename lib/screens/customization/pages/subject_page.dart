@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
+import 'package:gruene_app/screens/customization/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/screens/customization/pages/widget/subject_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -28,23 +28,23 @@ class _SubjectPageState extends State<SubjectPage> {
           ),
         ),
         Expanded(
-          child: BlocBuilder<CustomizationBloc, CustomizationState>(
+          child: BlocBuilder<OnboardingBloc, OnboardingState>(
             builder: (context, state) {
-              if (state is CustomizationReady) {
+              if (state is OnboardingReady) {
                 return SubjectList(
                   subjectList: state.subject.toList(),
                   onSelect: (sub, check) {
                     if (check) {
-                      BlocProvider.of<CustomizationBloc>(context)
-                          .add(CustomizationSubjectAdd(id: sub.id));
+                      BlocProvider.of<OnboardingBloc>(context)
+                          .add(OnboardingSubjectAdd(id: sub.id));
                     } else {
-                      BlocProvider.of<CustomizationBloc>(context)
-                          .add(CustomizationSubjectRemove(id: sub.id));
+                      BlocProvider.of<OnboardingBloc>(context)
+                          .add(OnboardingSubjectRemove(id: sub.id));
                     }
                   },
                 );
               }
-              return state is CustomizationSending
+              return state is OnboardingSending
                   ? const Center(child: CircularProgressIndicator())
                   : Container();
             },
@@ -55,8 +55,8 @@ class _SubjectPageState extends State<SubjectPage> {
         ),
         ElevatedButton(
             onPressed: () {
-              BlocProvider.of<CustomizationBloc>(context)
-                  .add(CustomizationDone());
+              BlocProvider.of<OnboardingBloc>(context)
+                  .add(OnboardingDone());
               context.go(startScreen);
             },
             child: Text(AppLocalizations.of(context)!.next,

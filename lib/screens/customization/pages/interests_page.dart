@@ -5,7 +5,7 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'package:gruene_app/screens/customization/bloc/customization_bloc.dart';
+import 'package:gruene_app/screens/customization/bloc/onboarding_bloc.dart';
 
 class InterestsPage extends StatefulWidget {
   final PageController controller;
@@ -28,12 +28,12 @@ class _InterestsPageState extends State<InterestsPage> {
             style: Theme.of(context).primaryTextTheme.displayMedium,
           ),
         ),
-        BlocBuilder<CustomizationBloc, CustomizationState>(
+        BlocBuilder<OnboardingBloc, OnboardingState>(
           builder: (context, state) {
-            if (state is CustomizationLoading) {
+            if (state is OnboardingLoading) {
               return const CircularProgressIndicator();
             }
-            if (state is CustomizationReady) {
+            if (state is OnboardingReady) {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -44,10 +44,10 @@ class _InterestsPageState extends State<InterestsPage> {
                             topic: e.name,
                             checked: e.checked,
                             onTap: (check, id) => check
-                                ? BlocProvider.of<CustomizationBloc>(context)
-                                    .add(CustomizationTopicAdd(id: id))
-                                : BlocProvider.of<CustomizationBloc>(context)
-                                    .add(CustomizationTopicRemove(id: id)),
+                                ? BlocProvider.of<OnboardingBloc>(context)
+                                    .add(OnboardingTopicAdd(id: id))
+                                : BlocProvider.of<OnboardingBloc>(context)
+                                    .add(OnboardingTopicRemove(id: id)),
                           ))
                       .toList(),
                 ),

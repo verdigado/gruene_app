@@ -7,80 +7,80 @@ import 'package:gruene_app/screens/customization/data/subject.dart';
 import 'package:gruene_app/screens/customization/data/topic.dart';
 import 'package:gruene_app/screens/customization/repository/customization_repository.dart';
 
-part 'customization_event.dart';
-part 'customization_state.dart';
+part 'onboarding_event.dart';
+part 'onboarding_state.dart';
 
-class CustomizationBloc extends Bloc<CustomizationEvent, CustomizationState> {
+class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   CustomizationRepository customizationRepository;
 
-  CustomizationBloc(this.customizationRepository)
-      : super(CustomizationInitial()) {
-    on<CustomizationLoad>((event, emit) {
-      emit(CustomizationReady(
+  OnboardingBloc(this.customizationRepository)
+      : super(OnboardingInitial()) {
+    on<OnboardingLoad>((event, emit) {
+      emit(OnboardingReady(
         topis: customizationRepository.listTopic(),
         subject: customizationRepository.listSubject(),
       ));
     });
-    on<CustomizationTopicAdd>((event, emit) {
+    on<OnboardingTopicAdd>((event, emit) {
       final currentState = state;
-      if (currentState is CustomizationReady) {
+      if (currentState is OnboardingReady) {
         currentState.topis
             .where((element) => element.id == event.id)
             .first
             .checked = true;
-        emit(CustomizationReady(
+        emit(OnboardingReady(
           topis: currentState.topis,
           subject: currentState.subject,
         ));
       }
     });
-    on<CustomizationTopicRemove>(
+    on<OnboardingTopicRemove>(
       (event, emit) {
         final currentState = state;
-        if (currentState is CustomizationReady) {
+        if (currentState is OnboardingReady) {
           currentState.topis
               .where((element) => element.id != event.id)
               .first
               .checked = false;
-          emit(CustomizationReady(
+          emit(OnboardingReady(
             topis: currentState.topis,
             subject: currentState.subject,
           ));
         }
       },
     );
-    on<CustomizationSubjectAdd>(
+    on<OnboardingSubjectAdd>(
       (event, emit) {
         final currentState = state;
-        if (currentState is CustomizationReady) {
+        if (currentState is OnboardingReady) {
           final toAdd = currentState.subject
               .where((element) => element.id == event.id)
               .first;
           toAdd.checked = true;
-          emit(CustomizationReady(
+          emit(OnboardingReady(
               topis: currentState.topis, subject: currentState.subject));
         }
       },
     );
-    on<CustomizationSubjectRemove>(
+    on<OnboardingSubjectRemove>(
       (event, emit) {
         final currentState = state;
-        if (currentState is CustomizationReady) {
+        if (currentState is OnboardingReady) {
           final toRemove = currentState.subject
               .where((element) => element.id == event.id)
               .first;
           toRemove.checked = false;
-          emit(CustomizationReady(
+          emit(OnboardingReady(
               subject: currentState.subject, topis: currentState.topis));
         }
       },
     );
 
-    on<CustomizationDone>(
+    on<OnboardingDone>(
       (event, emit) {
-        emit(CustomizationSending());
+        emit(OnboardingSending());
         final currentState = state;
-        if (currentState is CustomizationReady) {
+        if (currentState is OnboardingReady) {
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =
@@ -88,9 +88,9 @@ class CustomizationBloc extends Bloc<CustomizationEvent, CustomizationState> {
           logger.i(
               jsonEncode({'selectedTopics': topic, 'selectedSubjects': sub}));
           if (customizationRepository.customizationSend(topic, sub)) {
-            emit(CustomizationSended(selectSubject: sub, selectTopis: topic));
+            emit(OnboardingSended(selectSubject: sub, selectTopis: topic));
           } else {
-            emit(CustomizationSendFailure());
+            emit(OnboardingSendFailure());
           }
         }
       },
