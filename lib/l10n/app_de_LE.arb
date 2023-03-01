@@ -1,128 +1,35 @@
 {
   "helloWorld": "Hallo Welt!",
-  "@helloWorld": {
-    "description": "Eine nettt Begrüßung"
-  },
   "skip": "Überspringen",
-  "@skip": {
-    "description": "Überspringen"
-  },
   "next": "Weiter",
-  "@next": {
-    "description": "Weiter"
-  },
   "back": "Zurück",
-  "@back": {
-    "description": "Zurück"
-  },
   "save": "Speichern",
-  "@save": {
-    "description": "Speichern"
-  },
   "cancel": "Abbrechen",
-  "@cancel": {
-    "description": "Abbrechen"
-  },
   "close": "Schließen",
-  "@close": {
-    "description": "Schließen"
-  },
   "delete": "Löschen",
-  "@delete": {
-    "description": "Löschen"
-  },
   "edit": "Bearbeiten",
-  "@edit": {
-    "description": "Bearbeiten"
-  },
   "add": "Hinzufügen",
-  "@add": {
-    "description": "Hinzufügen"
-  },
   "search": "Suchen",
-  "@search": {
-    "description": "Suchen"
-  },
   "searchFor": "Suche nach...",
-  "@searchFor": {
-    "description": "Suche nach..."
-  },
   "privacyPolicy": "Datenschutz",
-  "@privacyPolicy": {
-    "description": "Datenschutz"
-  },
   "termsOfUse": "Nutzungsbedingungen",
-  "@termsOfUse": {
-    "description": "Nutzungsbedingungen"
-  },
   "imprint": "Impressum",
-  "@imprint": {
-    "description": "Impressum"
-  },
   "contact": "Kontakt",
-  "@contact": {
-    "description": "Kontakt"
-  },
   "about": "Über uns",
-  "@about": {
-    "description": "Über uns"
-  },
   "settings": "Einstellungen",
-  "@settings": {
-    "description": "Einstellungen"
-  },
   "profile": "Profil",
-  "@profile": {
-    "description": "Profil"
-  },
   "home": "Start",
-  "@home": {
-    "description": "Start"
-  },
   "news": "News",
-  "@news": {
-    "description": "News"
-  },
   "logout": "Abmelden",
-  "@logout": {
-    "description": "Abmelden"
-  },
   "login": "Anmelden",
-  "@login": {
-    "description": "Anmelden"
-  },
   "register": "Registrieren",
-  "@register": {
-    "description": "Registrieren"
-  },
   "registerMember": "Jetzt Mitglied werden",
-  "@registerMember": {
-    "description": "Jetzt Mitglied werden"
-  },
   "registerMemberLabel": "Noch kein Mitglied?",
-  "@registerMemberLabel": {
-    "description": "Noch kein Mitglied?"
-  },
   "introHeadline1": "Hallo, Lorem Ipsum et Entdecke und erfahre",
-  "@introHeadline1": {
-    "description": "Intro Headline 1"
-  },
   "introHeadline2": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore",
-  "@introHeadline2": {
-    "description": "Intro Headline 2"
-  },
   "loginHeadline1": "Bevor es losgeht, schau Dir Deine neue Mitglieder-App an",
-  "@loginHeadline1": {
-    "description": "Login Headline 1"
-  },
   "customPageHeadline1": "Wir würden gern die App auf Deine Bedürfnisse zu schneiden.",
-  "@customPageHeadline1": {
-    "description": "Login Headline 1"
-  },
   "customPageHeadline2": "consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
-  "@customPageHeadline2": {
-    "description": "Login Headline 2"
-  },
   "askForInterest":"Verrate uns Deine Interessen",
   "skipCustomText":"Gleich loslegen"
 }
