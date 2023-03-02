@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/locator.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
@@ -35,10 +36,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     return RepositoryProvider(
-      create: (context) => OnboardingRepositoryImpl(),
+      create: (context) => locator.get<OnboardingRepository>(),
       child: BlocProvider(
         create: (context) =>
-            OnboardingBloc(context.read<OnboardingRepositoryImpl>())
+            OnboardingBloc(context.read<OnboardingRepository>())
               ..add(OnboardingLoad()),
         child: SafeArea(
           child: Scaffold(
@@ -64,6 +65,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     preferredSize: const Size(0, 0), child: Container()),
             body: SafeArea(
               child: PageView(
+                key: const Key('Onboarding_PageView'),
                 controller: controller,
                 onPageChanged: (value) => setState(() {
                   currentPage = value;

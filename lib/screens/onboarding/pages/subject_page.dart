@@ -55,9 +55,9 @@ class _SubjectPageState extends State<SubjectPage> {
           height: 20,
         ),
         ElevatedButton(
+            key: const Key('subject_page_next_step'),
             onPressed: () {
-              BlocProvider.of<OnboardingBloc>(context)
-                  .add(OnboardingDone());
+              BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());
               context.go(startScreen);
             },
             child: Text(AppLocalizations.of(context)!.next,

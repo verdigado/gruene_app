@@ -6,8 +6,6 @@ import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
-
-
 class SubjectList extends StatefulWidget {
   final void Function(Subject sub, bool check) onSelect;
 
