@@ -12,12 +12,26 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
+  /// File path: assets/images/GRUENE_Topic_Oekologie.svg
+  String get gRUENETopicOekologie => 'assets/images/GRUENE_Topic_Oekologie.svg';
+
   /// File path: assets/images/Sonnenblume_rgb_aufTransparent.png
   AssetGenImage get sonnenblumeRgbAufTransparent =>
       const AssetGenImage('assets/images/Sonnenblume_rgb_aufTransparent.png');
 
+  /// File path: assets/images/gruene_topic_economy.svg
+  String get grueneTopicEconomy => 'assets/images/gruene_topic_economy.svg';
+
+  /// File path: assets/images/gruene_topic_europa1.svg
+  String get grueneTopicEuropa1 => 'assets/images/gruene_topic_europa1.svg';
+
   /// List of all assets
-  List<AssetGenImage> get values => [sonnenblumeRgbAufTransparent];
+  List<dynamic> get values => [
+        gRUENETopicOekologie,
+        sonnenblumeRgbAufTransparent,
+        grueneTopicEconomy,
+        grueneTopicEuropa1
+      ];
 }
 
 class Assets {

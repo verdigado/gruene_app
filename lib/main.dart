@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/routing/router.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 void runMain() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   runApp(const MyApp());
 }
 
