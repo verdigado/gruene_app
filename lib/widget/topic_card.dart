@@ -5,8 +5,6 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/fonts.gen.dart';
 import 'package:gruene_app/locator.dart';
 import 'package:shimmer/shimmer.dart';
-import 'package:flutter_cache_manager/flutter_cache_manager.dart'
-    show BaseCacheManager, DefaultCacheManager;
 
 class TopicCard extends StatefulWidget {
   final String imgageUrl;
