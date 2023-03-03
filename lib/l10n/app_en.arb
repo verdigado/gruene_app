@@ -1,128 +1,35 @@
 {
   "helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "A warm welcome to the world!"
-  },
   "skip": "Skip",
-  "@skip": {
-    "description": "Skip"
-  },
   "next": "Next",
-  "@next": {
-    "description": "Next"
-  },
   "back": "Back",
-  "@back": {
-    "description": "Back"
-  },
   "save": "Save",
-  "@save": {
-    "description": "Save"
-  },
   "cancel": "Cancel",
-  "@cancel": {
-    "description": "Cancel"
-  },
   "close": "Close",
-  "@close": {
-    "description": "Close"
-  },
   "delete": "Delete",
-  "@delete": {
-    "description": "Delete"
-  },
   "edit": "Edit",
-  "@edit": {
-    "description": "Edit"
-  },
   "add": "Add",
-  "@add": {
-    "description": "Add"
-  },
   "search": "Search",
-  "@search": {
-    "description": "Search"
-  },
   "searchFor": "Search for...",
-  "@searchFor": {
-    "description": "Search for..."
-  },
   "privacyPolicy": "Privacy policy",
-  "@privacyPolicy": {
-    "description": "Privacy policy"
-  },
   "termsOfUse": "Terms of use",
-  "@termsOfUse": {
-    "description": "Terms of use"
-  },
   "imprint": "Imprint",
-  "@imprint": {
-    "description": "Imprint"
-  },
   "contact": "Contact",
-  "@contact": {
-    "description": "Contact"
-  },
   "about": "About us",
-  "@about": {
-    "description": "About us"
-  },
   "settings": "Einstellungen",
-  "@settings": {
-    "description": "Einstellungen"
-  },
   "profile": "Profile",
-  "@profile": {
-    "description": "Profile"
-  },
   "home": "Start",
-  "@home": {
-    "description": "Start"
-  },
   "news": "News",
-  "@news": {
-    "description": "News"
-  },
   "logout": "Logout",
-  "@logout": {
-    "description": "Logout"
-  },
   "login": "Login",
-  "@login": {
-    "description": "Login"
-  },
   "register": "Register",
-  "@register": {
-    "description": "Register"
-  },
   "registerMember": "Register now",
-  "@registerMember": {
-    "description": "Register now"
-  },
   "registerMemberLabel": "Not a member yet?",
-  "@registerMemberLabel": {
-    "description": "Not a member yet?"
-  },
   "introHeadline1": "Hello Lorem ipsum, look and see",
-  "@introHeadline1": {
-    "description": "Intro Headline 1"
-  },
   "introHeadline2": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore",
-  "@introHeadline2": {
-    "description": "Intro Headline 2"
-  },
   "loginHeadline1": "Before we start, have a look at our new app",
-  "@loginHeadline1": {
-    "description": "Login Headline 1"
-  },
   "customPageHeadline1": "We would like to adapt the app to your needs",
-  "@customPageHeadline1": {
-    "description": "Login Headline 1"
-  },
   "customPageHeadline2": "consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
-  "@customPageHeadline2": {
-    "description": "Login Headline 2"
-  },
   "askForInterest":"Tell us what you are interested in",
   "skipCustomText":"Gleich loslegen"
 }
