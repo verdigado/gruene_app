@@ -104,6 +104,50 @@ void main() {
       () => onboardingRepositoryMock.listSubject(),
     ).called(1);
   });
+
+  testWidgets(
+      'should_send_first_interessets_And__first_Subjects_when_check_first_interessets_And_Subjects',
+      (tester) async {
+    MockOnboardingRepository onboardingRepositoryMock =
+        MockOnboardingRepository();
+    when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
+    when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
+    when(() => onboardingRepositoryMock.onboardingSend(any(), any()))
+        .thenReturn(true);
+    final bloc = OnboardingBloc(onboardingRepositoryMock);
+
+    await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
+    bloc.add(OnboardingLoad());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.byKey(const Key('intro_page_next_step')));
+    // Because of the PageTransition Animation we need to wait for 1 seconds
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+
+    await tester.tap(find.byKey(Key('TopicCard_${topics.first.id}')));
+    await tester.pump();
+    // The grid is 2 x 2 this is the reason that we scroll on every second Card
+    await tester.tap(find.byKey(const Key('interests_page_next_step')));
+    await tester.pumpAndSettle(const Duration(seconds: 2));
+
+    await tester.tap(find.widgetWithText(ListTile, subjects.first.name));
+
+    await tester.pump();
+    bloc.add(OnboardingDone());
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    verify(
+      () => onboardingRepositoryMock.onboardingSend(
+        any(that: containsAllInOrder([topics.first])),
+        any(that: containsAllInOrder([subjects.first])),
+      ),
+    );
+    verify(
+      () => onboardingRepositoryMock.listTopic(),
+    ).called(1);
+    verify(
+      () => onboardingRepositoryMock.listSubject(),
+    ).called(1);
+  });
 }
 
 Widget makeTestWidget(Widget child, OnboardingBloc bloc) {
