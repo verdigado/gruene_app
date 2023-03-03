@@ -1,13 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 @GenerateNiceMocks([MockSpec<OnboardingRepository>()])
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
+import 'package:gruene_app/screens/onboarding/onboarding_layout.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mockito/annotations.dart';
@@ -52,28 +55,30 @@ Set<Subject> subjects = {
 };
 
 void main() {
-  OnboardingRepository onboardingRepositoryMock = MockOnboardingRepository();
   setUp(() {
     GetIt.instance.registerSingleton(
       instanceName: 'TopicCard',
       ImageProviderDelegate(typ: ImageProviderTyp.asset),
     );
-    GetIt.instance.registerSingleton(onboardingRepositoryMock);
   });
   testWidgets(
       'should_send_all_interessets_And_Subjects_when_check_all_interessets_And_Subjects',
       (tester) async {
-    when(onboardingRepositoryMock.listTopic())
-        .thenAnswer((realInvocation) => topics);
-    when(onboardingRepositoryMock.listSubject())
-        .thenAnswer((realInvocation) => subjects);
-    await tester.pumpWidget(makeTestWidget(const OnboardingScreen()));
+    MockOnboardingRepository onboardingRepositoryMock =
+        MockOnboardingRepository();
+    final bloc = OnboardingBloc(onboardingRepositoryMock);
+    when(onboardingRepositoryMock.listTopic()).thenReturn(topics);
+    when(onboardingRepositoryMock.listSubject()).thenReturn(subjects);
+    await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
+    bloc.add(OnboardingLoad());
+    await tester.pumpAndSettle();
+
     await tester.tap(find.byKey(const Key('intro_page_next_step')));
-    // Because of the PageTransition Animation we need to wait for 3 seconds
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    // Because of the PageTransition Animation we need to wait for 2 seconds
+    await tester.pumpAndSettle(const Duration(seconds: 1));
     for (var topic in topics) {
       await tester.tap(find.byKey(Key('TopicCard_${topic.id}')));
-      await tester.pumpAndSettle();
+      await tester.pump();
 
       // The grid is 2 x 2 this is the reason that we scroll on every second Card
       if (int.parse(topic.id) % 2 == 0) {
@@ -88,14 +93,14 @@ void main() {
       await tester.tap(find.widgetWithText(ListTile, sub.name));
     }
     await tester.pump();
-    await tester.tap(find.byKey(const Key('subject_page_next_step')));
-    await tester.pumpAndSettle(const Duration(seconds: 2));
+    bloc.add(OnboardingDone());
+    verify(onboardingRepositoryMock.onboardingSend(any, any)).called(1);
   });
 }
 
-Widget makeTestWidget(Widget child) {
+Widget makeTestWidget(Widget child, OnboardingBloc bloc) {
   return MaterialApp(
-    home: child,
+    home: BlocProvider(create: (context) => bloc, child: child),
     theme: rootTheme,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,
