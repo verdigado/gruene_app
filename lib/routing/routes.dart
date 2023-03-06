@@ -1,4 +1,5 @@
 const startScreen = '/';
+const moreScreen = '/more';
 const searchScreen = '/search';
 const newsScreen = '/news';
 const intro = '/intro';

@@ -6,6 +6,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
+import 'package:gruene_app/screens/more/more_screen.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
@@ -42,9 +43,9 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: searchScreen,
+          path: moreScreen,
           pageBuilder: (context, state) {
-            return const CustomNoTransitionPage(child: SearchScreen());
+            return const CustomNoTransitionPage(child: MoreScreen());
           },
         ),
       ],
