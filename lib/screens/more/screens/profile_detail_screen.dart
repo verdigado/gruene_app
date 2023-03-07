@@ -1,8 +1,25 @@
+import 'dart:io';
+import 'dart:math';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/common/exception/file_cropper_exception.dart';
+import 'package:gruene_app/common/exception/permisson_exception.dart';
+import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/common/utils/image_utils.dart';
+import 'package:gruene_app/common/utils/snackbars.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
+import 'package:gruene_app/main.dart';
+import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
+import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileDetailScreen extends StatelessWidget {
   const ProfileDetailScreen({super.key});
@@ -50,7 +67,8 @@ class ProfileDetailScreen extends StatelessWidget {
                   children: [
                     const ModalTopLine(color: Colors.grey),
                     InkWell(
-                      onTap: () => print('Bib'),
+                      onTap: () =>
+                          uploadProfileImage(context, ImageSource.camera),
                       child: Row(
                         children: const [
                           Icon(Icons.camera_alt_outlined),
@@ -63,7 +81,8 @@ class ProfileDetailScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => print('Bib'),
+                      onTap: () =>
+                          uploadProfileImage(context, ImageSource.gallery),
                       child: Row(
                         children: const [
                           Icon(Icons.image_outlined),
@@ -76,7 +95,7 @@ class ProfileDetailScreen extends StatelessWidget {
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => print('Bib'),
+                      onTap: () => print('Not yet implemented'),
                       child: Row(
                         children: const [
                           Icon(Icons.delete_outline),
@@ -98,5 +117,20 @@ class ProfileDetailScreen extends StatelessWidget {
         );
       },
     );
+  }
+
+  void uploadProfileImage(BuildContext context, ImageSource src) async {
+    try {
+      final img = await getImageFromCameraOrGallery(src);
+      if (img == null) {
+        return;
+      }
+      context
+          .read<ProfileBloc>()
+          .add(UploadProfileImage(await img.readAsBytes()));
+    } on PermissionException catch (ex) {
+      logger.i([ex]);
+      permissonDeniedSnackbar(src.name);
+    }
   }
 }
