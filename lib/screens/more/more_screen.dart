@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/routing/routes.dart';
 
 class MoreScreen extends StatelessWidget {
   const MoreScreen({super.key});
@@ -24,14 +26,18 @@ class MoreScreen extends StatelessWidget {
         backgroundColor: const Color.fromRGBO(247, 247, 247, 1),
         body: CostumeSeparatedList(
           items: items,
-          header: const ProfileListViewHeader(),
+          header:
+              ProfileListViewHeader(onTap: () => context.push(profileDetail)),
         ));
   }
 }
 
 class ProfileListViewHeader extends StatelessWidget {
+  final void Function() onTap;
+
   const ProfileListViewHeader({
     super.key,
+    required this.onTap,
   });
 
   @override
@@ -48,35 +54,40 @@ class ProfileListViewHeader extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
-          child: Row(
-            children: [
-              const CircleAvatar(
-                radius: 24,
-                child: Text('DP'),
-              ),
-              const SizedBox(
-                width: 8,
-              ),
-              Column(
-                children: [
-                  Text('Dominik Peters',
-                      style: Theme.of(context).primaryTextTheme.displaySmall),
-                  TextButton(
-                      style: TextButton.styleFrom(
-                        padding: EdgeInsets.zero,
-                        minimumSize: const Size(50, 30),
-                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                      ),
-                      onPressed: () => print('Dp'),
-                      child: Column(
-                        children: const [Text('Profil anzeigen')],
-                      )),
-                  const SizedBox(
-                    height: 16,
-                  )
-                ],
-              )
-            ],
+          child: InkWell(
+            onTap: () => onTap(),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const CircleAvatar(
+                  radius: 24,
+                  child: Text('DP'),
+                ),
+                const SizedBox(
+                  width: 8,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text('Dominik Peters',
+                        style: Theme.of(context).primaryTextTheme.displaySmall),
+                    TextButton(
+                        style: TextButton.styleFrom(
+                          padding: EdgeInsets.zero,
+                          minimumSize: const Size(50, 30),
+                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        ),
+                        onPressed: () => onTap(),
+                        child: Column(
+                          children: const [Text('Profil anzeigen')],
+                        )),
+                    const SizedBox(
+                      height: 16,
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ],
@@ -85,9 +96,9 @@ class ProfileListViewHeader extends StatelessWidget {
 }
 
 class CostumeSeparatedList extends StatelessWidget {
-  Widget? header;
+  final Widget? header;
 
-  CostumeSeparatedList({
+  const CostumeSeparatedList({
     super.key,
     required this.items,
     this.header,

@@ -7,6 +7,7 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/more/more_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile_detail_screen.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
@@ -30,7 +31,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state, child) {
         return CustomNoTransitionPage(
             child: ScaffoldWithNavbar(
-          titel: 'Titel',
+          titel: getTitel(state.location),
           child: child,
         ));
       },
@@ -96,6 +97,13 @@ final GoRouter router = GoRouter(
       path: notification,
       pageBuilder: (context, state) {
         return const NoTransitionPage(child: NotfificationScreen());
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: profileDetail,
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: ProfileDetailScreen());
       },
     ),
   ],
