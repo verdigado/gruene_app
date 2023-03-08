@@ -1,7 +1,11 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/main.dart';
+import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
+import 'package:gruene_app/net/profile/bloc/repository/profile_repository.dart';
 
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
@@ -19,6 +23,8 @@ import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
+// Global Blocs
+
 bool isSplashRemoved = false;
 
 final GoRouter router = GoRouter(
@@ -103,7 +109,11 @@ final GoRouter router = GoRouter(
       parentNavigatorKey: rootNavigatorKey,
       path: profileDetail,
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: ProfileDetailScreen());
+        return NoTransitionPage(
+            child: BlocProvider.value(
+          value: context.read<ProfileBloc>(),
+          child: const ProfileDetailScreen(),
+        ));
       },
     ),
   ],

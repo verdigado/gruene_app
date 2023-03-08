@@ -9,4 +9,11 @@ abstract class ProfileState extends Equatable {
 
 class ProfileInitial extends ProfileState {}
 
-class ProfileReady extends ProfileState {}
+class ProfileReady extends ProfileState {
+  final Profile profile;
+  const ProfileReady({
+    required this.profile,
+  });
+  @override
+  List<Object> get props => [profile];
+}

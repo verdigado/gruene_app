@@ -13,31 +13,52 @@ void runMain() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+final ProfileBloc profileBloc = ProfileBloc(ProfileRepositoryImpl());
+
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+  }
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
+    return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(
-          create: (context) => ProfileRepositoryImpl(),
-          child: BlocProvider<ProfileBloc>(
-            create: (context) =>
-                ProfileBloc(context.read<ProfileRepositoryImpl>()),
-          ),
-        ),
+        RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
       ],
-      child: MaterialApp.router(
-        title: 'Grüne App',
-        routerConfig: router,
-        scaffoldMessengerKey: scaffoldMessengerKey,
-        theme: rootTheme,
-        localizationsDelegates: AppLocalizations.localizationsDelegates,
-        supportedLocales: AppLocalizations.supportedLocales,
+      child: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) {
+            var bloc = ProfileBloc(context.read<ProfileRepositoryImpl>());
+            bloc.add(const GetProfile());
+            return bloc;
+          }),
+        ],
+        child: MaterialApp.router(
+          title: 'Grüne App',
+          routerConfig: router,
+          scaffoldMessengerKey: MyApp.scaffoldMessengerKey,
+          theme: rootTheme,
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+        ),
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    profileBloc.close();
+    super.dispose();
   }
 }

@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/common/utils/avatar_utils.dart';
+import 'package:gruene_app/net/profile/bloc/data/profile.dart';
+import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 class MoreScreen extends StatelessWidget {
@@ -32,7 +36,7 @@ class MoreScreen extends StatelessWidget {
   }
 }
 
-class ProfileListViewHeader extends StatelessWidget {
+class ProfileListViewHeader extends StatefulWidget {
   final void Function() onTap;
 
   const ProfileListViewHeader({
@@ -41,7 +45,24 @@ class ProfileListViewHeader extends StatelessWidget {
   });
 
   @override
+  State<ProfileListViewHeader> createState() => _ProfileListViewHeaderState();
+}
+
+class _ProfileListViewHeaderState extends State<ProfileListViewHeader> {
+  @override
   Widget build(BuildContext context) {
+    return BlocBuilder<ProfileBloc, ProfileState>(
+      builder: (context, state) {
+        if (state is ProfileReady) {
+          return profileHeader(context, state.profile);
+        } else {
+          return Container();
+        }
+      },
+    );
+  }
+
+  Widget profileHeader(BuildContext context, Profile profile) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -55,35 +76,35 @@ class ProfileListViewHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0),
           child: InkWell(
-            onTap: () => onTap(),
+            onTap: () => widget.onTap(),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const CircleAvatar(
-                  radius: 24,
-                  child: Text('DP'),
-                ),
+                profile.profileImageUrl!.isNotEmpty
+                    ? circleAvatarImage(profile, editable: false, radius: 24)
+                    : circleAvatarInitials(profile, radius: 24),
                 const SizedBox(
                   width: 8,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Dominik Peters',
+                    Text(profile.displayName,
                         style: Theme.of(context).primaryTextTheme.displaySmall),
                     TextButton(
-                        style: TextButton.styleFrom(
-                          padding: EdgeInsets.zero,
-                          minimumSize: const Size(50, 30),
-                          tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                        ),
-                        onPressed: () => onTap(),
-                        child: Column(
-                          children: const [Text('Profil anzeigen')],
-                        )),
+                      style: TextButton.styleFrom(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(50, 30),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                      ),
+                      onPressed: () => widget.onTap(),
+                      child: Column(
+                        children: const [Text('Profil anzeigen')],
+                      ),
+                    ),
                     const SizedBox(
                       height: 16,
-                    )
+                    ),
                   ],
                 )
               ],

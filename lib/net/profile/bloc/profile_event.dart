@@ -7,6 +7,10 @@ abstract class ProfileEvent extends Equatable {
   List<Object> get props => [];
 }
 
+class GetProfile extends ProfileEvent {
+  const GetProfile();
+}
+
 class UploadProfileImage extends ProfileEvent {
   final Uint8List img;
 

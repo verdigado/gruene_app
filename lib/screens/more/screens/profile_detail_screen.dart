@@ -10,10 +10,12 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/exception/file_cropper_exception.dart';
 import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/common/utils/snackbars.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/main.dart';
+import 'package:gruene_app/net/profile/bloc/data/profile.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
@@ -21,36 +23,41 @@ import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-class ProfileDetailScreen extends StatelessWidget {
+class ProfileDetailScreen extends StatefulWidget {
   const ProfileDetailScreen({super.key});
 
+  @override
+  State<ProfileDetailScreen> createState() => _ProfileDetailScreenState();
+}
+
+class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(),
-        body: Padding(
-            padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 8),
-            child: Column(
-              children: [
-                Text(
-                  'Profil',
-                  style: Theme.of(context).primaryTextTheme.displaySmall,
-                ),
-                InkWell(
-                  onTap: () => openImagePickerModal(context),
-                  child: CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage(Assets.images.download.path),
-                    child: const Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Icon(Icons.edit),
-                        )),
-                  ),
-                ),
-              ],
-            )));
+        body: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return Padding(
+                padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 8),
+                child: Column(
+                  children: [
+                    Text(
+                      'Profil',
+                      style: Theme.of(context).primaryTextTheme.displaySmall,
+                    ),
+                    InkWell(
+                      onTap: () => openImagePickerModal(context),
+                      child: state is ProfileReady &&
+                              state.profile.profileImageUrl!.isNotEmpty
+                          ? circleAvatarImage(state.profile)
+                          : circleAvatarInitials(state is ProfileReady
+                              ? state.profile
+                              : Profile()),
+                    ),
+                  ],
+                ));
+          },
+        ));
   }
 
   openImagePickerModal(BuildContext context) {
@@ -68,7 +75,9 @@ class ProfileDetailScreen extends StatelessWidget {
                     const ModalTopLine(color: Colors.grey),
                     InkWell(
                       onTap: () =>
-                          uploadProfileImage(context, ImageSource.camera),
+                          uploadProfileImage(context, ImageSource.camera)
+                              .then(sendImage)
+                              .then((value) => context.pop()),
                       child: Row(
                         children: const [
                           Icon(Icons.camera_alt_outlined),
@@ -82,7 +91,9 @@ class ProfileDetailScreen extends StatelessWidget {
                     const Spacer(),
                     InkWell(
                       onTap: () =>
-                          uploadProfileImage(context, ImageSource.gallery),
+                          uploadProfileImage(context, ImageSource.gallery)
+                              .then(sendImage)
+                              .then((value) => context.pop()),
                       child: Row(
                         children: const [
                           Icon(Icons.image_outlined),
@@ -119,18 +130,23 @@ class ProfileDetailScreen extends StatelessWidget {
     );
   }
 
-  void uploadProfileImage(BuildContext context, ImageSource src) async {
+  Future<Uint8List> uploadProfileImage(
+      BuildContext context, ImageSource src) async {
     try {
-      final img = await getImageFromCameraOrGallery(src);
-      if (img == null) {
-        return;
+      final res = await getImageFromCameraOrGallery(src);
+      if (res != null) {
+        return await res.readAsBytes();
       }
-      context
-          .read<ProfileBloc>()
-          .add(UploadProfileImage(await img.readAsBytes()));
     } on PermissionException catch (ex) {
       logger.i([ex]);
       permissonDeniedSnackbar(src.name);
+    }
+    return Uint8List(0);
+  }
+
+  void sendImage(Uint8List img) {
+    if (img.isNotEmpty) {
+      context.read<ProfileBloc>().add(UploadProfileImage(img));
     }
   }
 }
