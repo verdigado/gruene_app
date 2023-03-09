@@ -1,6 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
@@ -46,18 +46,23 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             resizeToAvoidBottomInset: false,
             appBar: currentPage != 0
                 ? PreferredSize(
-                    preferredSize: const Size(double.infinity, 80),
-                    child: AppBar(
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      leading: CupertinoNavigationBarBackButton(
-                        color: Colors.grey,
-                        previousPageTitle: AppLocalizations.of(context)?.back,
-                        onPressed: () => controller.jumpToPage(currentPage - 1),
-                      ),
-                      elevation: 0,
-                      leadingWidth: 100,
-                      bottom: progressIndicator(context, pages),
+                    preferredSize: const Size(double.infinity, 85),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
+                      children: [
+                        IconButton(
+                          icon: const Icon(
+                            Icons.keyboard_backspace,
+                            color: darkGrey,
+                            size: 50,
+                          ),
+                          onPressed: () =>
+                              controller.jumpToPage(currentPage - 1),
+                        ),
+                        progressIndicator(context, pages),
+                      ],
                     ),
                   )
                 : PreferredSize(
@@ -82,9 +87,19 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     return PreferredSize(
         preferredSize: const Size(double.infinity, 80),
         child: Padding(
-          padding: const EdgeInsets.only(left: 18, right: 18, top: 10),
+          padding: const EdgeInsets.only(left: 18, right: 18),
           child: Column(
             children: [
+              Align(
+                alignment: Alignment.centerRight,
+                child: Text(
+                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
+                  textAlign: TextAlign.left,
+                ),
+              ),
+              const SizedBox(
+                height: 15,
+              ),
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
                 child: LinearProgressIndicator(
@@ -96,16 +111,6 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Theme.of(context).colorScheme.secondary),
                     value: getProgressOfCurrentPage(pages.length - 1)),
               ),
-              const SizedBox(
-                height: 15,
-              ),
-              Align(
-                alignment: Alignment.bottomLeft,
-                child: Text(
-                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
-                  textAlign: TextAlign.left,
-                ),
-              )
             ],
           ),
         ));
