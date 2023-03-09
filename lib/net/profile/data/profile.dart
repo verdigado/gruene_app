@@ -5,5 +5,10 @@ class Profile {
   Uint8List? profileImageUrl;
   String displayName;
   String initals;
-  Profile({this.profileImageUrl, this.displayName = '', this.initals = ''});
+  String description;
+  Profile(
+      {this.profileImageUrl,
+      this.displayName = '',
+      this.initals = '',
+      this.description = ''});
 }

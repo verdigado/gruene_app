@@ -4,7 +4,8 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
-import 'package:gruene_app/net/profile/bloc/data/profile.dart';
+import 'package:gruene_app/constants/layout.dart';
+import 'package:gruene_app/net/profile/data/profile.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/routes.dart';
 
@@ -80,11 +81,12 @@ class _ProfileListViewHeaderState extends State<ProfileListViewHeader> {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                profile.profileImageUrl!.isNotEmpty
+                profile.profileImageUrl != null &&
+                        profile.profileImageUrl!.isNotEmpty
                     ? circleAvatarImage(profile, editable: false, radius: 24)
                     : circleAvatarInitials(profile, radius: 24),
-                const SizedBox(
-                  width: 8,
+                SizedBox(
+                  width: small,
                 ),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

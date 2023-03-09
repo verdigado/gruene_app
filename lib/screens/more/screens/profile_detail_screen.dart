@@ -13,9 +13,10 @@ import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/common/utils/snackbars.dart';
+import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/main.dart';
-import 'package:gruene_app/net/profile/bloc/data/profile.dart';
+import 'package:gruene_app/net/profile/data/profile.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
@@ -34,30 +35,37 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(),
-        body: BlocBuilder<ProfileBloc, ProfileState>(
-          builder: (context, state) {
-            return Padding(
-                padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 8),
-                child: Column(
-                  children: [
-                    Text(
-                      'Profil',
-                      style: Theme.of(context).primaryTextTheme.displaySmall,
-                    ),
-                    InkWell(
-                      onTap: () => openImagePickerModal(context),
-                      child: state is ProfileReady &&
-                              state.profile.profileImageUrl!.isNotEmpty
-                          ? circleAvatarImage(state.profile)
-                          : circleAvatarInitials(state is ProfileReady
-                              ? state.profile
-                              : Profile()),
-                    ),
-                  ],
-                ));
-          },
-        ));
+      appBar: AppBar(),
+      body: BlocBuilder<ProfileBloc, ProfileState>(
+        builder: (context, state) {
+          return Padding(
+            padding: EdgeInsets.only(left: medium1, bottom: small, top: small),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  'Profil',
+                  style: Theme.of(context).primaryTextTheme.displaySmall,
+                ),
+                if (state is ProfileReady) ...[
+                  InkWell(
+                    onTap: () => openImagePickerModal(context),
+                    child: state.profile.profileImageUrl != null &&
+                            state.profile.profileImageUrl!.isNotEmpty
+                        ? circleAvatarImage(state.profile)
+                        : circleAvatarInitials(state.profile, editable: true),
+                  ),
+                  SizedBox(
+                    height: medium1,
+                  ),
+                  Text(state.profile.description),
+                ]
+              ],
+            ),
+          );
+        },
+      ),
+    );
   }
 
   openImagePickerModal(BuildContext context) {
@@ -79,12 +87,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                               .then(sendImage)
                               .then((value) => context.pop()),
                       child: Row(
-                        children: const [
+                        children: [
                           Icon(Icons.camera_alt_outlined),
                           SizedBox(
-                            width: 8,
+                            width: small,
                           ),
-                          Text('Foto Aufnehmen')
+                          const Text('Foto Aufnehmen')
                         ],
                       ),
                     ),
@@ -95,30 +103,33 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                               .then(sendImage)
                               .then((value) => context.pop()),
                       child: Row(
-                        children: const [
-                          Icon(Icons.image_outlined),
+                        children: [
+                          const Icon(Icons.image_outlined),
                           SizedBox(
-                            width: 8,
+                            width: small,
                           ),
-                          Text('Aus der Bibliothek auswählen')
+                          const Text('Aus der Bibliothek auswählen')
                         ],
                       ),
                     ),
                     const Spacer(),
                     InkWell(
-                      onTap: () => print('Not yet implemented'),
+                      onTap: () {
+                        removeProfileImage();
+                        context.pop();
+                      },
                       child: Row(
-                        children: const [
-                          Icon(Icons.delete_outline),
+                        children: [
+                          const Icon(Icons.delete_outline),
                           SizedBox(
-                            width: 8,
+                            width: small,
                           ),
-                          Text('Profilbild löschen')
+                          const Text('Profilbild löschen')
                         ],
                       ),
                     ),
-                    const SizedBox(
-                      height: 8,
+                    SizedBox(
+                      height: small,
                     ),
                   ],
                 ),
@@ -148,5 +159,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     if (img.isNotEmpty) {
       context.read<ProfileBloc>().add(UploadProfileImage(img));
     }
+  }
+
+  void removeProfileImage() {
+    context.read<ProfileBloc>().add(const RemoveProfileImage());
   }
 }

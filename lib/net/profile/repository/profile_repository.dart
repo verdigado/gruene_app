@@ -1,10 +1,10 @@
 import 'dart:typed_data';
-
-import 'package:gruene_app/net/profile/bloc/data/profile.dart';
+import 'package:gruene_app/net/profile/data/profile.dart';
 
 abstract class ProfileRepository {
   String uploadProfileImage(Uint8List img);
   Profile getProfile();
+  void removeProfileImage();
 }
 
 class ProfileRepositoryImpl extends ProfileRepository {
@@ -18,6 +18,14 @@ class ProfileRepositoryImpl extends ProfileRepository {
   @override
   Profile getProfile() {
     return Profile(
-        profileImageUrl: image, displayName: 'Chuck Norris', initals: 'CN');
+        profileImageUrl: image,
+        displayName: 'Chuck Norris',
+        initals: 'CN',
+        description: ' How is going, I am Chuck');
+  }
+
+  @override
+  void removeProfileImage() {
+    image = Uint8List(0);
   }
 }
