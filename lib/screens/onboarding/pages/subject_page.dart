@@ -5,6 +5,7 @@ import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/subject_list.dart';
 
 class SubjectPage extends StatefulWidget {
@@ -51,20 +52,18 @@ class _SubjectPageState extends State<SubjectPage> {
             },
           ),
         ),
-        const SizedBox(
-          height: 20,
+        ButtonGroupNextPrevious(
+          next: () {
+            BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());
+            context.go(startScreen);
+          },
+          nextText: AppLocalizations.of(context)!.next,
+          previous: () => widget.controller.previousPage(
+            duration: const Duration(milliseconds: 300),
+            curve: Curves.easeInOut,
+          ),
+          previousText: AppLocalizations.of(context)!.skip,
         ),
-        ElevatedButton(
-            onPressed: () {
-              BlocProvider.of<OnboardingBloc>(context)
-                  .add(OnboardingDone());
-              context.go(startScreen);
-            },
-            child: Text(AppLocalizations.of(context)!.next,
-                style: const TextStyle(color: Colors.white))),
-        TextButton(
-            onPressed: () => context.go(startScreen),
-            child: Text(AppLocalizations.of(context)!.back))
       ],
     );
   }

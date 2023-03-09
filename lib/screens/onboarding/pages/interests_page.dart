@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
 
 class InterestsPage extends StatefulWidget {
   final PageController controller;
@@ -57,18 +54,16 @@ class _InterestsPageState extends State<InterestsPage> {
             return Container();
           },
         ),
-        const SizedBox(
-          height: 10,
+        ButtonGroupNextPrevious(
+          next: () => widget.controller.nextPage(
+              duration: const Duration(microseconds: 700),
+              curve: Curves.easeIn),
+          nextText: AppLocalizations.of(context)!.next,
+          previous: () => widget.controller.previousPage(
+              duration: const Duration(microseconds: 700),
+              curve: Curves.easeIn),
+          previousText: AppLocalizations.of(context)!.skip,
         ),
-        ElevatedButton(
-            onPressed: () => widget.controller.nextPage(
-                duration: const Duration(microseconds: 700),
-                curve: Curves.easeIn),
-            child: Text(AppLocalizations.of(context)!.next,
-                style: const TextStyle(color: Colors.white))),
-        TextButton(
-            onPressed: () => context.go(startScreen),
-            child: Text(AppLocalizations.of(context)!.skip))
       ],
     );
   }
