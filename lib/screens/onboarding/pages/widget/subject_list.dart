@@ -5,8 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-
-
+import '../../../../constants/theme_data.dart';
 
 class SubjectList extends StatefulWidget {
   final void Function(Subject sub, bool check) onSelect;
@@ -55,32 +54,45 @@ class _SubjectListState extends State<SubjectList> {
           padding: const EdgeInsets.all(8.0),
           child: TypeAheadField(
             textFieldConfiguration: TextFieldConfiguration(
-                controller: textEditingController,
-                style: DefaultTextStyle.of(context)
-                    .style
-                    .copyWith(fontStyle: FontStyle.italic),
-                decoration: InputDecoration(
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12.0),
-                    ),
-                    hintText: AppLocalizations.of(context)!.subjectSearchHint,
-                    suffixIcon: IconButton(
-                        onPressed: () {
-                          var suggestion = extractTop(
-                            query: searchPattern,
-                            choices: subjectNames,
-                            limit: 4,
-                            cutoff: 50,
-                          ).map((e) => e.choice);
-                          var res = subjectList.indexWhere((element) =>
-                              element.name.toLowerCase() ==
-                              suggestion.first.toLowerCase());
-                          FocusScope.of(context).unfocus();
-                          itemScrollController?.jumpTo(index: res);
-                        },
-                        icon: const Icon(Icons.search)),
-                    hintStyle: Theme.of(context).textTheme.bodyMedium!
-                      ..copyWith(color: Colors.grey))),
+              controller: textEditingController,
+              style: DefaultTextStyle.of(context)
+                  .style
+                  .copyWith(fontStyle: FontStyle.italic),
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(0),
+                enabledBorder:
+                    const OutlineInputBorder(borderSide: BorderSide.none),
+                border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(8.0)),
+                filled: true,
+                fillColor: unfocusedGrey,
+                hintText: AppLocalizations.of(context)!.subjectSearchHint,
+                prefixIcon: IconButton(
+                  onPressed: () {
+                    var suggestion = extractTop(
+                      query: searchPattern,
+                      choices: subjectNames,
+                      limit: 4,
+                      cutoff: 50,
+                    ).map((e) => e.choice);
+                    var res = subjectList.indexWhere((element) =>
+                        element.name.toLowerCase() ==
+                        suggestion.first.toLowerCase());
+                    FocusScope.of(context).unfocus();
+                    itemScrollController?.jumpTo(index: res);
+                  },
+                  icon: const Icon(Icons.search),
+                ),
+                suffixIcon: Transform.rotate(
+                  angle: 0.8,
+                  child: const Icon(Icons.add_circle),
+                ),
+                hintStyle: Theme.of(context)
+                    .textTheme
+                    .bodyMedium!
+                    .copyWith(color: Colors.grey),
+              ),
+            ),
             suggestionsCallback: (pattern) {
               if (pattern.isEmpty || pattern.length < 2) return [];
               searchPattern = pattern;
@@ -137,8 +149,16 @@ class _SubjectListState extends State<SubjectList> {
                     trailing: Padding(
                       padding: const EdgeInsets.only(right: 10),
                       child: subject.checked
-                          ? const Icon(Icons.check)
-                          : const Icon(Icons.add),
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Theme.of(context).colorScheme.secondary,
+                              size: 30,
+                            )
+                          : Icon(
+                              Icons.add,
+                              color: Theme.of(context).colorScheme.secondary,
+                              size: 30,
+                            ),
                     ),
                     onTap: () {
                       setState(() {
