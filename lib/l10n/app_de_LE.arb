@@ -31,5 +31,14 @@
   "customPageHeadline1": "Wir würden gern die App auf Deine Bedürfnisse zu schneiden.",
   "customPageHeadline2": "consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
   "askForInterest":"Verrate uns Deine Interessen",
-  "skipCustomText":"Gleich loslegen"
+  "skipCustomText":"Gleich loslegen",
+  "notificationPageHeadline1":"Halte mich auf dem Laufenden",
+  "notificationPageHeadline2":"consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
+  "interestsPageHeadline1":"Welche Bereiche der Parteiarbeit interessieren Dich besonders?",
+  "subjectSearchHint":"Suche",
+  "step":"Schritt",
+  "stepOf": "von",  
+  "competenceHeadline1":"Deine Kompetenzen",
+  "subjectHeadline1":"Welche Themen interessieren Dich?",
+  "tourSliderIntroText":"Oder willst Du erstmal sehen, was Dich hier erwartet?"
 }
