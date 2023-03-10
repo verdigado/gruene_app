@@ -1,7 +1,7 @@
 {
   "helloWorld": "Hallo Welt!",
   "@helloWorld": {
-    "description": "Eine nettt Begrüßung"
+    "description": "Eine nette Begrüßung"
   },
   "skip": "Überspringen",
   "@skip": {
@@ -133,6 +133,7 @@
 
   "step":"Schritt",
   "stepOf": "von",
+  "competenceHeadline1":"Deine Kompetenzen",
   "subjectHeadline1":"Welche Themen interessieren Dich?",
   "tourSliderIntroText":"Oder willst Du erstmal sehen, was Dich hier erwartet?"
 

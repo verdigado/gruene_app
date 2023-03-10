@@ -5,6 +5,7 @@ import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/screens/onboarding/pages/competence_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/interests_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/intro_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/subject_page.dart';
@@ -28,6 +29,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     pages = [
       IntroPage(controller),
       InterestsPage(controller),
+      CompetencePage(controller),
       SubjectPage(controller)
     ];
   }
