@@ -50,8 +50,8 @@
 	<key>UIStatusBarHidden</key>
 	<false/>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Select a Profileimage</string>
+    <string>$(PRODUCT_NAME) can select a photo for your Profileimage</string>
 	<key>NSCameraUsageDescription</key>
-	<string>Take a Profileimage</string>
+	<string>$(PRODUCT_NAME) can take photo for your Profileimage</string>
 </dict>
 </plist>

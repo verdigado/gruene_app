@@ -85,10 +85,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       onTap: () =>
                           uploadProfileImage(context, ImageSource.camera)
                               .then(sendImage)
-                              .then((value) => context.pop()),
+                              .then((value) => value
+                                  ? context.pop()
+                                  : logger.i('Image not Send')),
                       child: Row(
                         children: [
-                          Icon(Icons.camera_alt_outlined),
+                          const Icon(Icons.camera_alt_outlined),
                           SizedBox(
                             width: small,
                           ),
@@ -101,7 +103,9 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       onTap: () =>
                           uploadProfileImage(context, ImageSource.gallery)
                               .then(sendImage)
-                              .then((value) => context.pop()),
+                              .then((value) => value
+                                  ? context.pop()
+                                  : logger.i('Image not Send')),
                       child: Row(
                         children: [
                           const Icon(Icons.image_outlined),
@@ -155,10 +159,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     return Uint8List(0);
   }
 
-  void sendImage(Uint8List img) {
+  bool sendImage(Uint8List img) {
     if (img.isNotEmpty) {
       context.read<ProfileBloc>().add(UploadProfileImage(img));
+      return true;
     }
+    return false;
   }
 
   void removeProfileImage() {
