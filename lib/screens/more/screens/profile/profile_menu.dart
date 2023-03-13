@@ -65,7 +65,7 @@ class ProfileMenu extends StatelessWidget {
         appBar: AppBar(),
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {
-            if (state is ProfileReady) {
+            if (state.status == ProfileStatus.ready) {
               return CostumeSeparatedList(
                   items: items,
                   header: ProfileListViewHeader(

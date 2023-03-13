@@ -35,7 +35,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                   'Profil',
                   style: Theme.of(context).primaryTextTheme.displaySmall,
                 ),
-                if (state is ProfileReady) ...[
+                if (state.status == ProfileStatus.ready) ...[
                   InkWell(
                     onTap: () => openImagePickerModal(context),
                     child: state.profile.profileImageUrl != null &&

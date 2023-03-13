@@ -5,7 +5,6 @@ import 'package:flutter/services.dart';
 import 'package:gruene_app/common/exception/file_cropper_exception.dart';
 import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/common/utils/snackbars.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:image_cropper/image_cropper.dart';
@@ -15,6 +14,8 @@ import 'package:permission_handler/permission_handler.dart';
 Future<File> cropImage(File img) async {
   final cropped = await ImageCropper().cropImage(
       sourcePath: img.path,
+      maxWidth: 1200,
+      maxHeight: 1200,
       compressFormat: ImageCompressFormat.jpg,
       cropStyle: CropStyle.circle,
       uiSettings: [
@@ -69,4 +70,5 @@ Future<File?> getImageFromCameraOrGallery(ImageSource src) async {
       profilImg.delete();
     }
   }
+  return null;
 }
