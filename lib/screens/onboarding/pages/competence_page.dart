@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';

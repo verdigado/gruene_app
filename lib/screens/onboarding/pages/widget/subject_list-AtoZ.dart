@@ -1,3 +1,4 @@
+import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
@@ -7,22 +8,22 @@ import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import '../../../../constants/theme_data.dart';
 
-class SubjectList extends StatefulWidget {
+class SubjectListAtoZ extends StatefulWidget {
   final void Function(Subject sub, bool check) onSelect;
 
   final List<Subject> subjectList;
 
-  const SubjectList({
+  const SubjectListAtoZ({
     Key? key,
     required this.subjectList,
     required this.onSelect,
   }) : super(key: key);
 
   @override
-  State<SubjectList> createState() => _SubjectListState();
+  State<SubjectListAtoZ> createState() => _SubjectListAtoZState();
 }
 
-class _SubjectListState extends State<SubjectList> {
+class _SubjectListAtoZState extends State<SubjectListAtoZ> {
   ItemScrollController? itemScrollController;
   List<String> subjectNames = [];
   String searchPattern = '';
@@ -40,6 +41,10 @@ class _SubjectListState extends State<SubjectList> {
     subjectList = List.from(widget.subjectList);
 
     subjectNames = subjectList.map((e) => e.name).toList();
+    // short alphabetically
+    SuspensionUtil.sortListBySuspensionTag(subjectList);
+    // create first letter entry
+    SuspensionUtil.setShowSuspensionStatus(subjectList);
   }
 
   @override
@@ -120,42 +125,74 @@ class _SubjectListState extends State<SubjectList> {
         Expanded(
           child: LayoutBuilder(
             builder: (ctx, con) {
-              return ListView(
-                children: subjectList
-                    .map((e) => ListTile(
-                          title: Text(e.name),
-                          trailing: Padding(
-                            padding: const EdgeInsets.only(right: 10),
-                            child: e.checked
-                                ? Icon(
-                                    Icons.check_circle,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    size: 30,
-                                  )
-                                : Icon(
-                                    Icons.add,
-                                    color:
-                                        Theme.of(context).colorScheme.secondary,
-                                    size: 30,
-                                  ),
-                          ),
-                          onTap: () {
-                            setState(() {
-                              if (e.checked) {
-                                widget.onSelect(e, false);
-                              } else {
-                                widget.onSelect(e, true);
-                              }
-                            });
-                          },
-                        ))
-                    .toList(),
+              double fontSize =
+                  con.maxHeight / factor > 12 ? 12 : con.maxHeight / factor;
+              return AzListView(
+                itemScrollController: itemScrollController,
+                data: subjectList,
+                hapticFeedback: true,
+                indexBarItemHeight: con.maxHeight / factor,
+                indexBarAlignment: Alignment.topRight,
+                indexBarOptions:
+                    IndexBarOptions(textStyle: TextStyle(fontSize: fontSize)),
+                physics: const BouncingScrollPhysics(),
+                itemCount: subjectList.length,
+                susItemBuilder: (context, index) {
+                  var model = subjectList[index];
+                  return getSusItem(context, model.getSuspensionTag());
+                },
+                susItemHeight: 36,
+                itemBuilder: (context, index) {
+                  var subject = subjectList[index];
+                  var name = subject.name;
+                  return ListTile(
+                    title: Text(name),
+                    trailing: Padding(
+                      padding: const EdgeInsets.only(right: 10),
+                      child: subject.checked
+                          ? Icon(
+                              Icons.check_circle,
+                              color: Theme.of(context).colorScheme.secondary,
+                              size: 30,
+                            )
+                          : Icon(
+                              Icons.add,
+                              color: Theme.of(context).colorScheme.secondary,
+                              size: 30,
+                            ),
+                    ),
+                    onTap: () {
+                      setState(() {
+                        if (subject.checked) {
+                          widget.onSelect(subject, false);
+                        } else {
+                          widget.onSelect(subject, true);
+                        }
+                      });
+                    },
+                  );
+                },
               );
             },
           ),
         )
       ],
+    );
+  }
+
+  Widget getSusItem(BuildContext context, String tag, {double susHeight = 40}) {
+    return Container(
+      height: susHeight,
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(left: 16.0),
+      color: Theme.of(context).primaryColorLight,
+      alignment: Alignment.centerLeft,
+      child: Text(
+        tag,
+        softWrap: false,
+        style: const TextStyle(
+            fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

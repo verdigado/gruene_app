@@ -6,7 +6,7 @@ import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/subject_list.dart';
+import 'package:gruene_app/screens/onboarding/pages/widget/subject_list-AtoZ.dart';
 
 class SubjectPage extends StatefulWidget {
   final PageController controller;
@@ -33,7 +33,7 @@ class _SubjectPageState extends State<SubjectPage> {
           child: BlocBuilder<OnboardingBloc, OnboardingState>(
             builder: (context, state) {
               if (state is OnboardingReady) {
-                return SubjectList(
+                return SubjectListAtoZ(
                   subjectList: state.subject.toList(),
                   onSelect: (sub, check) {
                     if (check) {
