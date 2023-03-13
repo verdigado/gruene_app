@@ -1,9 +1,9 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/fonts.gen.dart';
-import 'package:gruene_app/locator.dart';
 import 'package:shimmer/shimmer.dart';
 
 class TopicCard extends StatefulWidget {
@@ -40,7 +40,6 @@ class _TopicCardState extends State<TopicCard> {
   @override
   void initState() {
     checkedState = widget.checked;
-    imgProvider = locator.get<ImageProviderDelegate>(instanceName: 'TopicCard');
     super.initState();
   }
 
@@ -58,7 +57,9 @@ class _TopicCardState extends State<TopicCard> {
               borderRadius: BorderRadius.circular(cardBorder),
             ),
             child: Image(
-              image: imgProvider.provide(widget.imgageUrl),
+              image: context
+                  .read<ImageProviderDelegate>()
+                  .provide(widget.imgageUrl),
               frameBuilder: (context, child, frame, wasSynchronouslyLoaded) =>
                   FittedBox(
                 fit: BoxFit.fill,

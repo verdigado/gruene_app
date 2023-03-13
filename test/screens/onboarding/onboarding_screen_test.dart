@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
@@ -11,15 +10,10 @@ import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart'
 import 'package:gruene_app/screens/onboarding/onboarding_layout.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:mocktail/mocktail.dart';
+import 'package:provider/provider.dart';
 
 void main() {
   group('Onboarding', () {
-    setUpAll(() async {
-      GetIt.instance.registerSingleton(
-        instanceName: 'TopicCard',
-        ImageProviderDelegate(typ: ImageProviderTyp.asset),
-      );
-    });
     tearDown(() async {
       resetMocktailState();
     });
@@ -175,7 +169,13 @@ void main() {
 
 Widget makeTestWidget(Widget child, OnboardingBloc bloc) {
   return MaterialApp(
-    home: BlocProvider(create: (context) => bloc, child: child),
+    home: BlocProvider(
+      create: (context) => bloc,
+      child: Provider(
+        create: (_) => const ImageProviderDelegate(typ: ImageProviderTyp.asset),
+        child: child,
+      ),
+    ),
     theme: rootTheme,
     localizationsDelegates: AppLocalizations.localizationsDelegates,
     supportedLocales: AppLocalizations.supportedLocales,

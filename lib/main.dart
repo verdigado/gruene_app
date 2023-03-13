@@ -5,12 +5,9 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-import 'locator.dart';
-
 void runMain() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  setupLocator();
   runApp(const MyApp());
 }
 

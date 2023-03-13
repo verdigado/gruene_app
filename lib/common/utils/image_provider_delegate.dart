@@ -4,9 +4,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/widgets.dart';
 
 class ImageProviderDelegate {
-  ImageProviderTyp typ;
+  final ImageProviderTyp typ;
 
-  ImageProviderDelegate({required this.typ});
+  const ImageProviderDelegate({required this.typ});
 
   ImageProvider provide(String url) {
     switch (typ) {
