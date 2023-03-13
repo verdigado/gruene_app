@@ -6,7 +6,10 @@ const intro = '/intro';
 const login = '/login';
 const onboarding = '/onboarding';
 const notification = '/notification';
-const profileDetail = '/profileDetail';
+const profileDetail = 'profileDetail';
+const profile = '/profile';
+
+const profileDetailScreenName = 'ProfileDetailScreen';
 // TODO: Make l10n
 String getTitel(String route) {
   if (startScreen == route) {

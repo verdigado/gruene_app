@@ -1,13 +1,15 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:gruene_app/net/profile/data/profile.dart';
 
-Widget circleAvatarImage(Profile profile,
+Widget circleAvatarImage(Uint8List? imageUrl,
     {editable = true, double radius = 40}) {
   if (editable) {
     return CircleAvatar(
       radius: 40,
       // TODO: Replace with NetworkImage
-      backgroundImage: MemoryImage(profile.profileImageUrl!),
+      backgroundImage: MemoryImage(imageUrl!),
       child: const Align(
           alignment: Alignment.bottomRight,
           child: Padding(
@@ -19,13 +21,13 @@ Widget circleAvatarImage(Profile profile,
     return CircleAvatar(
       radius: radius,
       // TODO: Replace with NetworkImage
-      backgroundImage: MemoryImage(profile.profileImageUrl!),
+      backgroundImage: MemoryImage(imageUrl!),
     );
   }
 }
 
 Widget circleAvatarInitials(
-  Profile profile, {
+  String initals, {
   double radius = 40,
   editable = false,
 }) {
@@ -34,7 +36,7 @@ Widget circleAvatarInitials(
         radius: radius,
         child: Stack(
           children: [
-            Align(alignment: Alignment.center, child: Text(profile.initals)),
+            Align(alignment: Alignment.center, child: Text(initals)),
             const Align(
                 alignment: Alignment.bottomRight,
                 child: Padding(
@@ -44,6 +46,6 @@ Widget circleAvatarInitials(
           ],
         ));
   } else {
-    return CircleAvatar(radius: radius, child: Text(profile.initals));
+    return CircleAvatar(radius: radius, child: Text(initals));
   }
 }

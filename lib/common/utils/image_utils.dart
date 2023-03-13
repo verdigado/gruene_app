@@ -19,14 +19,12 @@ Future<File> cropImage(File img) async {
       cropStyle: CropStyle.circle,
       uiSettings: [
         AndroidUiSettings(
-          statusBarColor: const Color(mcgpalette0PrimaryValue),
-          toolbarColor: const Color(mcgpalette0PrimaryValue),
-          showCropGrid: false,
-          activeControlsWidgetColor: const Color(mcgpalette0PrimaryValue),
-          cropGridColor: const Color(mcgpalette0PrimaryValue),
-          toolbarWidgetColor: Colors.white,
-          cropFrameColor: const Color(mcgpalette0PrimaryValue),
-        ),
+            statusBarColor: const Color(mcgpalette0PrimaryValue),
+            toolbarColor: const Color(mcgpalette0PrimaryValue),
+            showCropGrid: false,
+            activeControlsWidgetColor: const Color(mcgpalette0PrimaryValue),
+            toolbarWidgetColor: Colors.white,
+            cropFrameStrokeWidth: 0),
       ]);
   if (cropped == null) {
     throw FileCropperException('The Cropped Editor has been Aborted');

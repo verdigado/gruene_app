@@ -11,7 +11,8 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/more/more_screen.dart';
-import 'package:gruene_app/screens/more/screens/profile_detail_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/profile_detail_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
@@ -107,14 +108,25 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
-      path: profileDetail,
+      path: profile,
       pageBuilder: (context, state) {
         return NoTransitionPage(
             child: BlocProvider.value(
           value: context.read<ProfileBloc>(),
-          child: const ProfileDetailScreen(),
+          child: const ProfileMenu(),
         ));
       },
+      routes: [
+        GoRoute(
+            path: profileDetail,
+            parentNavigatorKey: rootNavigatorKey,
+            name: profileDetailScreenName,
+            pageBuilder: (context, state) {
+              return const NoTransitionPage(
+                child: ProfileDetailScreen(),
+              );
+            })
+      ],
     ),
   ],
   redirect: (context, state) async {
