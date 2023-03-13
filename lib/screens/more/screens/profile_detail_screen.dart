@@ -1,28 +1,16 @@
-import 'dart:io';
-import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/common/exception/file_cropper_exception.dart';
 import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/common/utils/snackbars.dart';
 import 'package:gruene_app/constants/layout.dart';
-import 'package:gruene_app/gen/assets.gen.dart';
-import 'package:gruene_app/main.dart';
-import 'package:gruene_app/net/profile/data/profile.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
-import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
-import 'package:image_cropper/image_cropper.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
   const ProfileDetailScreen({super.key});
@@ -150,7 +138,11 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     try {
       final res = await getImageFromCameraOrGallery(src);
       if (res != null) {
-        return await res.readAsBytes();
+        final data = await res.readAsBytes();
+        if (await res.exists()) {
+          res.delete();
+        }
+        return data;
       }
     } on PermissionException catch (ex) {
       logger.i([ex]);

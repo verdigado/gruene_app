@@ -67,6 +67,8 @@ Future<File?> getImageFromCameraOrGallery(ImageSource src) async {
   } on FileCropperException catch (ex) {
     logger.i('Fail to Crop img', [ex]);
   } finally {
-    profilImg?.delete();
+    if (profilImg != null && await profilImg.exists()) {
+      profilImg.delete();
+    }
   }
 }
