@@ -69,7 +69,7 @@ void main() {
 
       await tester.tap(find.byKey(const Key('intro_page_next_step')));
       // Because of the PageTransition Animation we need to wait for 1 seconds
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle();
       for (var topic in topics) {
         await tester.tap(find.byKey(Key('TopicCard_${topic.id}')));
         await tester.pump();
@@ -81,7 +81,7 @@ void main() {
         }
       }
       await tester.tap(find.byKey(const Key('interests_page_next_step')));
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.pumpAndSettle();
       for (var sub in subjects) {
         await tester.tap(find.widgetWithText(ListTile, sub.name));
       }
