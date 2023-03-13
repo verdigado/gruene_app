@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
@@ -26,16 +25,13 @@ class TopicCard extends StatefulWidget {
   });
 
   @override
-  State<TopicCard> createState() => _TopicCardState();
+  State<TopicCard> createState() => TopicCardState();
 }
 
-class _TopicCardState extends State<TopicCard> {
-  CachedNetworkImage? img;
+class TopicCardState extends State<TopicCard> {
   var icon = Icons.add;
   bool checkedState = false;
   final double cardBorder = 15.0;
-
-  late ImageProviderDelegate imgProvider;
 
   @override
   void initState() {

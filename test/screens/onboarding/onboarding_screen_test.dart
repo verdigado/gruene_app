@@ -9,6 +9,7 @@ import 'package:gruene_app/net/onboarding/data/topic.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_layout.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/widget/topic_card.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
@@ -71,7 +72,13 @@ void main() {
       // Because of the PageTransition Animation we need to wait for 1 seconds
       await tester.pumpAndSettle();
       for (var topic in topics) {
-        await tester.tap(find.byKey(Key('TopicCard_${topic.id}')));
+        final topicCardKey = Key('TopicCard_${topic.id}');
+        await tester.tap(find.byKey(topicCardKey));
+        final topicCard =
+            tester.state(find.byKey(topicCardKey)) as TopicCardState;
+
+        expect(topicCard.checkedState, true);
+
         await tester.pump();
         // The grid is 2 x 2 this is the reason that we scroll on every second Card
         if (int.parse(topic.id) % 2 == 0) {
@@ -139,9 +146,11 @@ void main() {
       await tester.tap(find.byKey(const Key('intro_page_next_step')));
       // Because of the PageTransition Animation we need to wait for 1 seconds
       await tester.pumpAndSettle(const Duration(seconds: 1));
-
-      await tester.tap(find.byKey(Key('TopicCard_${topics.first.id}')));
+      final topicCardKey = find.byKey(Key('TopicCard_${topics.first.id}'));
+      await tester.tap(topicCardKey);
       await tester.pump();
+      var state = tester.state(topicCardKey) as TopicCardState;
+      expect(state.checkedState, true);
       // The grid is 2 x 2 this is the reason that we scroll on every second Card
       await tester.tap(find.byKey(const Key('interests_page_next_step')));
       await tester.pumpAndSettle(const Duration(seconds: 2));
