@@ -63,7 +63,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
         return LayoutBuilder(
           builder: (ctx, con) {
             return SizedBox(
-              height: con.maxHeight / 100 * 45,
+              height: con.maxHeight / 100 * 35,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
