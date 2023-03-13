@@ -13,16 +13,16 @@ class OnboardingLoading extends OnboardingState {
 }
 
 class OnboardingReady extends OnboardingState {
-  final Set<Topic> topis;
+  final Set<Topic> topics;
   final Set<Subject> subject;
 
   OnboardingReady({
-    required this.topis,
+    required this.topics,
     required this.subject,
   });
 
   @override
-  List<Object?> get props => [topis, subject];
+  List<Object?> get props => [topics, subject];
 }
 
 class OnboardingSended extends OnboardingState {

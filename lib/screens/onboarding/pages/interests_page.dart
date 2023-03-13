@@ -35,7 +35,7 @@ class _InterestsPageState extends State<InterestsPage> {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  children: state.topis
+                  children: state.topics
                       .map((e) => TopicCard(
                             id: e.id,
                             imgageUrl: e.imageUrl,

@@ -7,30 +7,28 @@ import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
-
 part 'onboarding_event.dart';
 part 'onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingRepository onboardingRepository;
 
-  OnboardingBloc(this.onboardingRepository)
-      : super(OnboardingInitial()) {
+  OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
     on<OnboardingLoad>((event, emit) {
       emit(OnboardingReady(
-        topis: onboardingRepository.listTopic(),
+        topics: onboardingRepository.listTopic(),
         subject: onboardingRepository.listSubject(),
       ));
     });
     on<OnboardingTopicAdd>((event, emit) {
       final currentState = state;
       if (currentState is OnboardingReady) {
-        currentState.topis
+        currentState.topics
             .where((element) => element.id == event.id)
             .first
             .checked = true;
         emit(OnboardingReady(
-          topis: currentState.topis,
+          topics: currentState.topics,
           subject: currentState.subject,
         ));
       }
@@ -39,12 +37,12 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       (event, emit) {
         final currentState = state;
         if (currentState is OnboardingReady) {
-          currentState.topis
+          currentState.topics
               .where((element) => element.id != event.id)
               .first
               .checked = false;
           emit(OnboardingReady(
-            topis: currentState.topis,
+            topics: currentState.topics,
             subject: currentState.subject,
           ));
         }
@@ -59,7 +57,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               .first;
           toAdd.checked = true;
           emit(OnboardingReady(
-              topis: currentState.topis, subject: currentState.subject));
+              topics: currentState.topics, subject: currentState.subject));
         }
       },
     );
@@ -72,7 +70,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               .first;
           toRemove.checked = false;
           emit(OnboardingReady(
-              subject: currentState.subject, topis: currentState.topis));
+              subject: currentState.subject, topics: currentState.topics));
         }
       },
     );
@@ -85,7 +83,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =
-              currentState.topis.where((element) => element.checked).toList();
+              currentState.topics.where((element) => element.checked).toList();
           logger.i(
               jsonEncode({'selectedTopics': topic, 'selectedSubjects': sub}));
           if (onboardingRepository.onboardingSend(topic, sub)) {
