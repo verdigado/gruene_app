@@ -1,8 +1,6 @@
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 
-
-
 abstract class OnboardingRepository {
   Set<Topic> listTopic();
 

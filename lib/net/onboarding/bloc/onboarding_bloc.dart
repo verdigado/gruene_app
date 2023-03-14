@@ -7,15 +7,13 @@ import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
 
-
 part 'onboarding_event.dart';
 part 'onboarding_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingRepository onboardingRepository;
 
-  OnboardingBloc(this.onboardingRepository)
-      : super(OnboardingInitial()) {
+  OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
     on<OnboardingLoad>((event, emit) {
       emit(OnboardingReady(
         topis: onboardingRepository.listTopic(),
@@ -79,9 +77,9 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
 
     on<OnboardingDone>(
       (event, emit) {
-        emit(OnboardingSending());
         final currentState = state;
         if (currentState is OnboardingReady) {
+          emit(OnboardingSending());
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =
