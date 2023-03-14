@@ -24,13 +24,17 @@ class ProfileRepositoryImpl extends ProfileRepository {
       initals: 'GG',
       description: ' How is going, i am Gustav Grün i like green',
       memberProfil: MemberProfil(
+        givenName: 'Gustav',
+        surname: 'Grün',
+        politicalParty: 'Bündnis 90',
+        division: 'OV',
         email: {
-          Favourite('gruenerGustav@gruene.de', true),
-          Favourite('gustavGruen@gruene.de', false),
+          FavouriteValue('gruenerGustav@gruene.de', true),
+          FavouriteValue('gustavGruen@gruene.de', false),
         },
         telefon: {
-          Favourite('+491728463554123', false),
-          Favourite('+491716546335', true)
+          FavouriteValue('01725463554', true),
+          FavouriteValue('+491716546335', false)
         },
       ),
     );

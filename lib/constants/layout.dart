@@ -1,7 +1,7 @@
 // Global spacing values
-double small = 8;
-double medium1 = 16;
-double medium2 = 24;
-double medium3 = 32;
-double large1 = 40;
-double large2 = 48;
+const double small = 8;
+const double medium1 = 16;
+const double medium2 = 24;
+const double medium3 = 32;
+const double large1 = 40;
+const double large2 = 48;

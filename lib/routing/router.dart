@@ -11,6 +11,7 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/more/more_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/member_profil_screen.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_detail_screen.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
@@ -109,12 +110,16 @@ final GoRouter router = GoRouter(
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       path: profile,
+      name: profileScreenName,
       pageBuilder: (context, state) {
-        return NoTransitionPage(
-            child: BlocProvider.value(
-          value: context.read<ProfileBloc>(),
-          child: const ProfileMenu(),
-        ));
+        return CustomTransitionPage(
+          child: BlocProvider.value(
+            value: context.read<ProfileBloc>(),
+            child: const ProfileMenu(),
+          ),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              slideAnimation(animation, child),
+        );
       },
       routes: [
         GoRoute(
@@ -122,10 +127,25 @@ final GoRouter router = GoRouter(
             parentNavigatorKey: rootNavigatorKey,
             name: profileDetailScreenName,
             pageBuilder: (context, state) {
-              return const NoTransitionPage(
-                child: ProfileDetailScreen(),
+              return CustomTransitionPage(
+                child: const ProfileDetailScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        slideAnimation(animation, child),
               );
-            })
+            }),
+        GoRoute(
+            path: memberProfil,
+            parentNavigatorKey: rootNavigatorKey,
+            name: memberprofilScreenName,
+            pageBuilder: (context, state) {
+              return CustomTransitionPage(
+                child: const MemberProfilScreen(),
+                transitionsBuilder:
+                    (context, animation, secondaryAnimation, child) =>
+                        slideAnimation(animation, child),
+              );
+            }),
       ],
     ),
   ],

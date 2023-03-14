@@ -16,6 +16,7 @@ class CostumeSeparatedList extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView.separated(
       separatorBuilder: (context, index) {
+        if (!items[index].divider) return Container();
         return Column(
           children: [
             const Divider(
@@ -49,44 +50,59 @@ class CostumeListItem extends StatelessWidget {
   final IconData? iconTralling;
   final bool bold;
   final String? linksTo;
+  final String? subtitel;
+  final bool divider;
+  final WidgetBuilder? modalBuilder;
+
+  final Future Function()? modalSheet;
 
   const CostumeListItem({
     super.key,
     required this.titel,
+    this.modalBuilder,
+    this.subtitel,
     this.iconLeading,
     this.iconTralling,
     this.spaceBetween = false,
     this.bold = false,
     this.linksTo,
+    this.divider = true,
+    this.modalSheet,
   });
 
   @override
   Widget build(BuildContext context) {
-    if (iconLeading != null) {
-      return ListTile(
-        leading: Icon(iconLeading, color: Theme.of(context).primaryColor),
-        title: Text(titel),
-        trailing: Icon(iconTralling),
-        tileColor: Colors.white,
-        onTap: () => navigate(context, linksTo),
-      );
-    } else {
-      return ListTile(
-        title: Text(
-          titel,
-          style:
-              TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal),
-        ),
-        trailing: Icon(iconTralling),
-        tileColor: Colors.white,
-        onTap: () => navigate(context, linksTo),
-      );
-    }
+    return ListTile(
+      leading: iconLeading != null
+          ? Icon(iconLeading, color: Theme.of(context).primaryColor)
+          : null,
+      title: Text(
+        titel,
+        style: subtitel == null
+            ? TextStyle(fontWeight: bold ? FontWeight.bold : FontWeight.normal)
+            : const TextStyle(color: Colors.grey),
+      ),
+      subtitle: subtitel != null
+          ? Text(
+              subtitel!,
+              style: const TextStyle(color: Colors.black, fontSize: 16),
+            )
+          : null,
+      trailing: Icon(iconTralling),
+      tileColor: Colors.white,
+      onTap: linksTo != null || modalSheet != null
+          ? () => navigate(context, linksTo)
+          : null,
+    );
   }
 
   void navigate(BuildContext context, String? linksTo) {
+    if (modalSheet != null) {
+      modalSheet?.call();
+      return;
+    }
     if (linksTo != null && linksTo.isNotEmpty) {
-      context.push(linksTo);
+      context.pushNamed(linksTo);
     }
   }
 }

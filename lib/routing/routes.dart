@@ -1,3 +1,4 @@
+// PATHS
 const startScreen = '/';
 const moreScreen = '/more';
 const searchScreen = '/search';
@@ -7,9 +8,14 @@ const login = '/login';
 const onboarding = '/onboarding';
 const notification = '/notification';
 const profileDetail = 'profileDetail';
+const memberProfil = 'memberProfil';
 const profile = '/profile';
 
-const profileDetailScreenName = 'ProfileDetailScreen';
+// NAMED
+const profileScreenName = 'profilescreen';
+const profileDetailScreenName = 'profiledetailscreen';
+const memberprofilScreenName = 'memberprofilscreen';
+
 // TODO: Make l10n
 String getTitel(String route) {
   if (startScreen == route) {

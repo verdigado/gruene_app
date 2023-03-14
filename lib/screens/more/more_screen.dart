@@ -29,7 +29,7 @@ class MoreScreen extends StatelessWidget {
     CostumeListItem(
       titel: 'Profil',
       iconTralling: Icons.arrow_forward_ios,
-      linksTo: profile,
+      linksTo: profileScreenName,
     ),
     CostumeListItem(
       titel: 'Einstellungen',

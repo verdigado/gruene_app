@@ -4,8 +4,8 @@ import 'package:flutter/foundation.dart';
 class MemberProfil {
   final String givenName;
   final String surname;
-  final Set<Favourite<String>> email;
-  final Set<Favourite<String>> telefon;
+  final Set<FavouriteValue<String>> email;
+  final Set<FavouriteValue<String>> telefon;
   final String politicalParty;
   final String division;
 
@@ -21,8 +21,8 @@ class MemberProfil {
   MemberProfil copyWith({
     String? givenName,
     String? surname,
-    Set<Favourite<String>>? email,
-    Set<Favourite<String>>? telefon,
+    Set<FavouriteValue<String>>? email,
+    Set<FavouriteValue<String>>? telefon,
     String? politicalParty,
     String? division,
   }) {
@@ -37,9 +37,9 @@ class MemberProfil {
   }
 }
 
-class Favourite<T> {
+class FavouriteValue<T> {
   final T value;
   final bool isFavourite;
 
-  Favourite(this.value, this.isFavourite);
+  FavouriteValue(this.value, this.isFavourite);
 }
