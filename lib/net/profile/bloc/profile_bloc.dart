@@ -18,7 +18,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       : super(ProfileState(
             profile: Profile(
                 profileImageUrl: Uint8List(0),
-                memberProfil: const MemberProfil(email: {}, telefon: {})),
+                memberProfil: const MemberProfil(email: [], telefon: [])),
             status: ProfileStatus.initial)) {
     on<RemoveProfileImage>((event, emit) {
       final currentState = state;
@@ -46,7 +46,42 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
     on<GetProfile>((event, emit) {
       final profil = profileRepository.getProfile();
+      profil.memberProfil.telefon.sort((a, b) => a.compareTo(b.isFavourite));
       emit(ProfileState(profile: profil, status: ProfileStatus.ready));
+    });
+    on<MemberProfileAddValue>((event, emit) {
+      final memberProfil = state.profile.memberProfil;
+      if (event.fieldName == 'telefon') {
+        final newMemberProfil = memberProfil.copyWith(telefon: [
+          FavouriteValue(event.value, true),
+          ...memberProfil.telefon.map((e) => FavouriteValue(e.value, false)),
+        ]);
+        emit(ProfileState(
+            profile: state.profile.copyWith(memberProfil: newMemberProfil),
+            status: ProfileStatus.ready));
+      }
+    });
+    on<DispatchProfile>((event, emit) {
+      if (event.favTelfonnumberItemIndex != null) {
+        final memberprofil = state.profile.memberProfil;
+        var newFavItem = memberprofil.telefon[event.favTelfonnumberItemIndex!]
+            .copyWith(isFavourite: true);
+        memberprofil.telefon.removeAt(event.favTelfonnumberItemIndex!);
+        final newProfil = state.profile.copyWith(
+          memberProfil: memberprofil.copyWith(
+            telefon: [
+              newFavItem,
+              ...memberprofil.telefon.map(
+                (e) => FavouriteValue(e.value, false),
+              )
+            ],
+          ),
+        );
+        emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
+      } else {
+        emit(ProfileState(profile: state.profile, status: ProfileStatus.ready));
+      }
+      emit(ProfileState(profile: state.profile, status: ProfileStatus.ready));
     });
   }
 }

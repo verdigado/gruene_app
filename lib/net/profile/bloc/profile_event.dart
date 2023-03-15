@@ -13,6 +13,17 @@ class GetProfile extends ProfileEvent {
   List<Object> get props => [this];
 }
 
+class MemberProfileAddValue extends ProfileEvent {
+  final String value;
+  final String fieldName;
+  const MemberProfileAddValue(
+    this.fieldName,
+    this.value,
+  );
+  @override
+  List<Object> get props => [this];
+}
+
 class RemoveProfileImage extends ProfileEvent {
   const RemoveProfileImage();
   @override
@@ -25,4 +36,12 @@ class UploadProfileImage extends ProfileEvent {
   const UploadProfileImage(this.img);
   @override
   List<Object> get props => [img];
+}
+
+class DispatchProfile extends ProfileEvent {
+  final int? favTelfonnumberItemIndex;
+
+  const DispatchProfile({this.favTelfonnumberItemIndex});
+  @override
+  List<Object> get props => [this];
 }

@@ -28,14 +28,16 @@ class ProfileRepositoryImpl extends ProfileRepository {
         surname: 'Grün',
         politicalParty: 'Bündnis 90',
         division: 'OV',
-        email: {
+        email: [
           FavouriteValue('gruenerGustav@gruene.de', true),
           FavouriteValue('gustavGruen@gruene.de', false),
-        },
-        telefon: {
-          FavouriteValue('01725463554', true),
-          FavouriteValue('+491716546335', false)
-        },
+        ],
+        telefon: [
+          FavouriteValue('01725463554', false),
+          FavouriteValue('+491716546335', false),
+          FavouriteValue('004940297234', false),
+          FavouriteValue('0049049301', true)
+        ],
       ),
     );
   }
