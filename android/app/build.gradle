@@ -55,12 +55,12 @@ android {
 
     flavorDimensions "default"
     productFlavors {
-        staging {
+        Staging {
             dimension "default"
             resValue "string", "app_name", "STG Gruene App"
             applicationId "de.gruene.dgn.stg"
         }
-         production {
+         Production {
             dimension "default"
             resValue "string", "app_name", "Gruene App"
             applicationId "de.gruene.dgn"
