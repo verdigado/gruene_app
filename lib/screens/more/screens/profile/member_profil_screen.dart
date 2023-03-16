@@ -57,6 +57,43 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             .where((element) => element.isFavourite == true)
             .first
             .value,
+        iconTralling: Icons.edit_outlined,
+        modalSheet: () => showModalBottomSheet(
+          context: context,
+          isScrollControlled: true,
+          isDismissible: false,
+          enableDrag: false,
+          builder: (context) {
+            return BlocBuilder<ProfileBloc, ProfileState>(
+              builder: (context, state) {
+                return MultiModalSelect(
+                  inputHeadline: 'Neue Email-Adresse eintragen',
+                  onAddValue: (String value) => context
+                      .read<ProfileBloc>()
+                      .add(MemberProfileAddValue('email', value)),
+                  onSaveValues: (favItemIndex) {
+                    context
+                        .read<ProfileBloc>()
+                        .add(DispatchProfile(favEmailItemIndex: favItemIndex));
+                    context.pop();
+                  },
+                  values: [
+                    ...state.profile.memberProfil.email.map((e) => e.value)
+                  ],
+                  textInputType: TextInputType.emailAddress,
+                  validate: (value) {
+                    return value != null &&
+                        value.isNotEmpty &&
+                        !state.profile.memberProfil.email
+                            .map((e) => e.value)
+                            .contains(value) &&
+                        value.contains('@');
+                  },
+                );
+              },
+            );
+          },
+        ),
       ),
       CostumeListItem(
         titel: 'Telefonnummer',
@@ -75,6 +112,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
+                  inputHeadline: 'Neue Telfonnummer eintragen',
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
@@ -87,6 +125,16 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                     ...state.profile.memberProfil.telefon.map((e) => e.value)
                   ],
                   initalTextinputValue: '+49',
+                  textInputType: TextInputType.phone,
+                  validate: (value) {
+                    return value != null &&
+                        value.isNotEmpty &&
+                        !state.profile.memberProfil.telefon
+                            .map((e) => e.value)
+                            .contains(value) &&
+                        value.startsWith('+') &&
+                        value.length <= 16;
+                  },
                 );
               },
             );

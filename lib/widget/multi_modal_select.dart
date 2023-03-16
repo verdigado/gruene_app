@@ -11,8 +11,12 @@ class MultiModalSelect extends StatefulWidget {
   final List<String> values;
   final void Function(String value) onAddValue;
   final void Function(int selectedFavItemIndex) onSaveValues;
-
+  final bool Function(String? value) validate;
+  final TextInputType? textInputType;
   final String? initalTextinputValue;
+  final String inputHeadline;
+  final String? inputHint;
+  final String? inputLabel;
 
   const MultiModalSelect({
     super.key,
@@ -20,6 +24,11 @@ class MultiModalSelect extends StatefulWidget {
     required this.onAddValue,
     required this.onSaveValues,
     this.initalTextinputValue,
+    required this.validate,
+    this.textInputType,
+    required this.inputHeadline,
+    this.inputHint,
+    this.inputLabel,
   });
 
   @override
@@ -31,7 +40,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
   late FixedExtentScrollController scrollController;
   int selectedItem = 0;
   late FocusNode focusNode;
-  bool addContryNumber = true;
+  bool addInitalTextInputValue = true;
   late String? initalTextinputValue;
 
   @override
@@ -52,10 +61,10 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
       initalTextinputValue = '${widget.initalTextinputValue}';
       // Prefill onFocus
       focusNode.addListener(() {
-        if (addContryNumber && focusNode.hasFocus) {
+        if (addInitalTextInputValue && focusNode.hasFocus) {
           textEditControler.text = initalTextinputValue!;
           setState(() {
-            addContryNumber = false;
+            addInitalTextInputValue = false;
           });
         }
       });
@@ -145,7 +154,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                 ),
                 const Divider(),
                 Text(
-                  'Neue Nummer eintragen',
+                  widget.inputHeadline,
                   style: Theme.of(context).primaryTextTheme.displaySmall,
                 ),
                 const SizedBox(
@@ -154,7 +163,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                 FilledTextField(
                   textEditingController: textEditControler,
                   focusNode: focusNode,
-                  keyboardType: TextInputType.phone,
+                  keyboardType: widget.textInputType,
                   onSubmitted: (value) {
                     submit(value);
                   },
@@ -164,8 +173,8 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                       submit(textEditControler.text);
                     },
                   ),
-                  labelText: 'Telefonnummer',
-                  hintText: 'Gebe deine neue Telefonnummer an ',
+                  labelText: widget.inputLabel,
+                  hintText: widget.inputHint,
                 ),
                 const SizedBox(
                   height: medium1,
@@ -179,20 +188,24 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
   }
 
   void submit(String value) {
-    if (value.isNotEmpty &&
-        !widget.values.contains(value) &&
-        value.startsWith('+') &&
-        value.length <= 16) {
+    if (widget.validate(value)) {
       setState(() {
         selectedItem = 0;
         scrollController.animateTo(0,
             duration: const Duration(milliseconds: 500), curve: Curves.linear);
-        addContryNumber = true;
+        addInitalTextInputValue = true;
         focusNode.unfocus();
         textEditControler.clear();
       });
       widget.onAddValue(value);
     }
+  }
+
+  bool validate(String value) {
+    return value.isNotEmpty &&
+        !widget.values.contains(value) &&
+        value.startsWith('+') &&
+        value.length <= 16;
   }
 
   @override

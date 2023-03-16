@@ -60,6 +60,15 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             profile: state.profile.copyWith(memberProfil: newMemberProfil),
             status: ProfileStatus.ready));
       }
+      if (event.fieldName == 'email') {
+        final newMemberProfil = memberProfil.copyWith(email: [
+          FavouriteValue(event.value, true),
+          ...memberProfil.email.map((e) => FavouriteValue(e.value, false)),
+        ]);
+        emit(ProfileState(
+            profile: state.profile.copyWith(memberProfil: newMemberProfil),
+            status: ProfileStatus.ready));
+      }
     });
     on<DispatchProfile>((event, emit) {
       if (event.favTelfonnumberItemIndex != null) {
@@ -78,10 +87,25 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           ),
         );
         emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
+      } else if (event.favEmailItemIndex != null) {
+        final memberprofil = state.profile.memberProfil;
+        var newFavItem = memberprofil.email[event.favEmailItemIndex!]
+            .copyWith(isFavourite: true);
+        memberprofil.email.removeAt(event.favEmailItemIndex!);
+        final newProfil = state.profile.copyWith(
+          memberProfil: memberprofil.copyWith(
+            email: [
+              newFavItem,
+              ...memberprofil.email.map(
+                (e) => FavouriteValue(e.value, false),
+              )
+            ],
+          ),
+        );
+        emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
       } else {
         emit(ProfileState(profile: state.profile, status: ProfileStatus.ready));
       }
-      emit(ProfileState(profile: state.profile, status: ProfileStatus.ready));
     });
   }
 }

@@ -40,8 +40,12 @@ class UploadProfileImage extends ProfileEvent {
 
 class DispatchProfile extends ProfileEvent {
   final int? favTelfonnumberItemIndex;
+  final int? favEmailItemIndex;
 
-  const DispatchProfile({this.favTelfonnumberItemIndex});
+  const DispatchProfile({
+    this.favTelfonnumberItemIndex,
+    this.favEmailItemIndex,
+  });
   @override
   List<Object> get props => [this];
 }
