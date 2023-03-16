@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/screens/more/more_screen.dart';
-import 'package:gruene_app/screens/more/screens/profile/member_profil_screen.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_list_view_header.dart';
 

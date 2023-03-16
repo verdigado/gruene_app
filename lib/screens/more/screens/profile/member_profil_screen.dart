@@ -1,15 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
-import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:gruene_app/widget/multi_modal_select.dart';
-import 'package:mask_text_input_formatter/mask_text_input_formatter.dart';
 
 class MemberProfilScreen extends StatefulWidget {
   const MemberProfilScreen({super.key});
@@ -37,7 +32,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
   List<CostumeListItem> getProfileEntries(
       BuildContext context, MemberProfil memberProfil) {
     return [
-      CostumeListItem(
+      const CostumeListItem(
         titel: 'Mitgliedsprofil',
         bold: true,
         divider: false,
@@ -141,7 +136,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
           },
         ),
       ),
-      CostumeListItem(
+      const CostumeListItem(
         titel: 'Mitgliedschaften',
         bold: true,
         divider: false,

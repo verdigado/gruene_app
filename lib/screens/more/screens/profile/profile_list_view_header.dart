@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/constants/layout.dart';
-import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/data/profile.dart';
 
 class ProfileListViewHeader extends StatelessWidget {
@@ -39,7 +37,7 @@ class ProfileListViewHeader extends StatelessWidget {
                     ? circleAvatarImage(profile.profileImageUrl,
                         editable: false, radius: 24)
                     : circleAvatarInitials(profile.initals, radius: 24),
-                SizedBox(
+                const SizedBox(
                   width: small,
                 ),
                 Column(

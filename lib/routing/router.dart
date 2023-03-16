@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/main.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
-import 'package:gruene_app/net/profile/repository/profile_repository.dart';
 
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
@@ -17,7 +15,6 @@ import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
-import 'package:gruene_app/screens/search/search_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 

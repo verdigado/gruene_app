@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-import 'package:gruene_app/net/profile/data/profile.dart';
 
 Widget circleAvatarImage(Uint8List? imageUrl,
     {editable = true, double radius = 40}) {

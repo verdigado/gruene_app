@@ -27,7 +27,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return Padding(
-            padding: EdgeInsets.only(left: medium1, bottom: small, top: small),
+            padding: const EdgeInsets.only(left: medium1, bottom: small, top: small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -44,7 +44,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         : circleAvatarInitials(state.profile.initals,
                             editable: true),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: medium1,
                   ),
                   Text(state.profile.description),
@@ -78,12 +78,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   ? context.pop()
                                   : logger.i('Image not Send')),
                       child: Row(
-                        children: [
-                          const Icon(Icons.camera_alt_outlined),
+                        children: const [
+                          Icon(Icons.camera_alt_outlined),
                           SizedBox(
                             width: small,
                           ),
-                          const Text('Foto Aufnehmen')
+                          Text('Foto Aufnehmen')
                         ],
                       ),
                     ),
@@ -96,12 +96,12 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   ? context.pop()
                                   : logger.i('Image not Send')),
                       child: Row(
-                        children: [
-                          const Icon(Icons.image_outlined),
+                        children: const [
+                          Icon(Icons.image_outlined),
                           SizedBox(
                             width: small,
                           ),
-                          const Text('Aus der Bibliothek auswählen')
+                          Text('Aus der Bibliothek auswählen')
                         ],
                       ),
                     ),
@@ -112,16 +112,16 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         context.pop();
                       },
                       child: Row(
-                        children: [
-                          const Icon(Icons.delete_outline),
+                        children: const [
+                          Icon(Icons.delete_outline),
                           SizedBox(
                             width: small,
                           ),
-                          const Text('Profilbild löschen')
+                          Text('Profilbild löschen')
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: small,
                     ),
                   ],

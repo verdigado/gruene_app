@@ -162,7 +162,7 @@ class _SubjectListState extends State<SubjectList> {
     return Container(
       height: susHeight,
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.only(left: small),
+      padding: const EdgeInsets.only(left: small),
       color: Theme.of(context).primaryColorLight,
       alignment: Alignment.centerLeft,
       child: Text(

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gruene_app/main.dart';
 import 'package:permission_handler/permission_handler.dart';
 
