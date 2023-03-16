@@ -6,8 +6,6 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
-
 class InterestsPage extends StatefulWidget {
   final PageController controller;
 
@@ -40,6 +38,7 @@ class _InterestsPageState extends State<InterestsPage> {
                   crossAxisCount: 2,
                   children: state.topis
                       .map((e) => TopicCard(
+                            key: Key('TopicCard_${e.id}'),
                             id: e.id,
                             imgageUrl: e.imageUrl,
                             topic: e.name,
@@ -61,6 +60,7 @@ class _InterestsPageState extends State<InterestsPage> {
           height: 10,
         ),
         ElevatedButton(
+            key: const Key('interests_page_next_step'),
             onPressed: () => widget.controller.nextPage(
                 duration: const Duration(microseconds: 700),
                 curve: Curves.easeIn),

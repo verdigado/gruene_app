@@ -77,9 +77,9 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
 
     on<OnboardingDone>(
       (event, emit) {
-        emit(OnboardingSending());
         final currentState = state;
         if (currentState is OnboardingReady) {
+          emit(OnboardingSending());
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =

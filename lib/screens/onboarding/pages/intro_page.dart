@@ -47,6 +47,7 @@ class _IntroPageState extends State<IntroPage> {
           alignment: WrapAlignment.center,
           children: [
             ElevatedButton(
+                key: const Key('intro_page_next_step'),
                 onPressed: () => widget.controller.nextPage(
                     duration: const Duration(milliseconds: 700),
                     curve: Curves.easeIn),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/constants/theme_data.dart';
@@ -13,9 +14,7 @@ void runMain() async {
   runApp(const MyApp());
 }
 
-final ProfileBloc profileBloc = ProfileBloc(ProfileRepositoryImpl());
-
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -32,6 +31,15 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+    ]);
+    return MaterialApp.router(
+      title: 'Grüne App',
+      routerConfig: router,
+      theme: rootTheme,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      supportedLocales: AppLocalizations.supportedLocales,
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
@@ -54,11 +62,5 @@ class _MyAppState extends State<MyApp> {
         ),
       ),
     );
-  }
-
-  @override
-  void dispose() {
-    profileBloc.close();
-    super.dispose();
   }
 }
