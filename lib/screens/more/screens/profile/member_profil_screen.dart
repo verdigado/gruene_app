@@ -75,17 +75,19 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                    onAddValue: (String value) => context
-                        .read<ProfileBloc>()
-                        .add(MemberProfileAddValue('telefon', value)),
-                    onSaveValues: (favItemIndex) {
-                      context.read<ProfileBloc>().add(DispatchProfile(
-                          favTelfonnumberItemIndex: favItemIndex));
-                      context.pop();
-                    },
-                    values: [
-                      ...state.profile.memberProfil.telefon.map((e) => e.value)
-                    ]);
+                  onAddValue: (String value) => context
+                      .read<ProfileBloc>()
+                      .add(MemberProfileAddValue('telefon', value)),
+                  onSaveValues: (favItemIndex) {
+                    context.read<ProfileBloc>().add(DispatchProfile(
+                        favTelfonnumberItemIndex: favItemIndex));
+                    context.pop();
+                  },
+                  values: [
+                    ...state.profile.memberProfil.telefon.map((e) => e.value)
+                  ],
+                  initalTextinputValue: '+49',
+                );
               },
             );
           },
