@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -109,13 +110,11 @@ final GoRouter router = GoRouter(
       path: profile,
       name: profileScreenName,
       pageBuilder: (context, state) {
-        return CustomTransitionPage(
+        return CupertinoPage(
           child: BlocProvider.value(
             value: context.read<ProfileBloc>(),
             child: const ProfileMenu(),
           ),
-          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
-              slideAnimation(animation, child),
         );
       },
       routes: [
@@ -124,11 +123,8 @@ final GoRouter router = GoRouter(
             parentNavigatorKey: rootNavigatorKey,
             name: profileDetailScreenName,
             pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                child: const ProfileDetailScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) =>
-                        slideAnimation(animation, child),
+              return const CupertinoPage(
+                child: ProfileDetailScreen(),
               );
             }),
         GoRoute(
@@ -136,11 +132,8 @@ final GoRouter router = GoRouter(
             parentNavigatorKey: rootNavigatorKey,
             name: memberprofilScreenName,
             pageBuilder: (context, state) {
-              return CustomTransitionPage(
-                child: const MemberProfilScreen(),
-                transitionsBuilder:
-                    (context, animation, secondaryAnimation, child) =>
-                        slideAnimation(animation, child),
+              return const CupertinoPage(
+                child: MemberProfilScreen(),
               );
             }),
       ],
