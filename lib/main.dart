@@ -14,7 +14,7 @@ void runMain() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
@@ -23,34 +23,23 @@ class MyApp extends StatelessWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.portraitUp,
     ]);
-    return MaterialApp.router(
-      title: 'Grüne App',
-      routerConfig: router,
-      theme: rootTheme,
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
     return MultiRepositoryProvider(
       providers: [
         RepositoryProvider(create: (context) => ProfileRepositoryImpl()),
       ],
       child: MultiBlocProvider(
         providers: [
-          BlocProvider(create: (context) {
-            var bloc = ProfileBloc(context.read<ProfileRepositoryImpl>());
-            bloc.add(const GetProfile());
-            return bloc;
-          }),
+          BlocProvider(
+            create: (context) =>
+                ProfileBloc(context.read<ProfileRepositoryImpl>())
+                  ..add(const GetProfile()),
+          ),
         ],
         child: MaterialApp.router(
           title: 'Grüne App',

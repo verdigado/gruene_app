@@ -5,6 +5,7 @@ import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
+// ignore: depend_on_referenced_packages
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SubjectList extends StatefulWidget {
