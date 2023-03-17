@@ -3,7 +3,7 @@ name: Main Pipeline
 on:
   push:
     branches:
-      - develop
+      - main
     tags:
       - production-*
   pull_request:
