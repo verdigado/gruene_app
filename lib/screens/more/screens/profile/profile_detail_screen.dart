@@ -27,7 +27,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return Padding(
-            padding: const EdgeInsets.only(left: medium1, bottom: small, top: small),
+            padding:
+                const EdgeInsets.only(left: medium1, bottom: small, top: small),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -64,7 +65,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
         return LayoutBuilder(
           builder: (ctx, con) {
             return SizedBox(
-              height: con.maxHeight / 100 * 35,
+              height: con.maxHeight / 100 * 40,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
@@ -79,11 +80,17 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   : logger.i('Image not Send')),
                       child: Row(
                         children: const [
-                          Icon(Icons.camera_alt_outlined),
+                          Icon(
+                            Icons.camera_alt_outlined,
+                            size: medium3,
+                          ),
                           SizedBox(
                             width: small,
                           ),
-                          Text('Foto Aufnehmen')
+                          Text(
+                            'Foto Aufnehmen',
+                            style: TextStyle(fontSize: medium1),
+                          )
                         ],
                       ),
                     ),
@@ -97,11 +104,15 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   : logger.i('Image not Send')),
                       child: Row(
                         children: const [
-                          Icon(Icons.image_outlined),
+                          Icon(
+                            Icons.image_outlined,
+                            size: medium3,
+                          ),
                           SizedBox(
                             width: small,
                           ),
-                          Text('Aus der Bibliothek auswählen')
+                          Text('Aus der Bibliothek auswählen',
+                              style: TextStyle(fontSize: medium1))
                         ],
                       ),
                     ),
@@ -113,11 +124,15 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                       },
                       child: Row(
                         children: const [
-                          Icon(Icons.delete_outline),
+                          Icon(
+                            Icons.delete_outline,
+                            size: medium3,
+                          ),
                           SizedBox(
                             width: small,
                           ),
-                          Text('Profilbild löschen')
+                          Text('Profilbild löschen',
+                              style: TextStyle(fontSize: medium1))
                         ],
                       ),
                     ),

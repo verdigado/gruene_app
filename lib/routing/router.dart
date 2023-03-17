@@ -150,7 +150,7 @@ final GoRouter router = GoRouter(
   },
 );
 
-// Platform Check to get on IOS get BackSlide behavior
+// Platform Check to get on IOS BackSlide behavior
 Page<dynamic> getPlattformPage(
     {required BuildContext context, required Widget child}) {
   if (Platform.isIOS) {
