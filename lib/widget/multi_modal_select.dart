@@ -83,7 +83,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
                         onTap: () => context.pop(),
@@ -91,25 +91,37 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                           Icons.close_outlined,
                           size: medium2,
                         )),
-                    TextButton(
-                      style: ButtonStyle(
-                        textStyle: MaterialStatePropertyAll(
-                          Theme.of(context)
-                              .primaryTextTheme
-                              .labelLarge
-                              ?.copyWith(decoration: TextDecoration.underline),
-                        ),
-                      ),
-                      onPressed: () => widget.onSaveValues(selectedItem),
-                      child: const Text(
-                        'Speichern',
-                      ),
-                    )
                   ],
                 ),
-                Text(
-                  'Wähle dein Favorit',
-                  style: Theme.of(context).primaryTextTheme.displaySmall,
+                Row(
+                  mainAxisAlignment: selectedItem > 0
+                      ? MainAxisAlignment.spaceBetween
+                      : MainAxisAlignment.start,
+                  textBaseline: TextBaseline.alphabetic,
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  children: [
+                    Text(
+                      'Wähle dein Favorit',
+                      style: Theme.of(context).primaryTextTheme.displaySmall,
+                    ),
+                    if (selectedItem > 0) ...[
+                      TextButton(
+                        style: ButtonStyle(
+                          textStyle: MaterialStatePropertyAll(
+                            Theme.of(context)
+                                .primaryTextTheme
+                                .labelLarge
+                                ?.copyWith(
+                                    decoration: TextDecoration.underline),
+                          ),
+                        ),
+                        onPressed: () => widget.onSaveValues(selectedItem),
+                        child: const Text(
+                          'Als Favorit markieren',
+                        ),
+                      )
+                    ]
+                  ],
                 ),
                 SizedBox(
                   height: con.maxHeight / 100 * 16,

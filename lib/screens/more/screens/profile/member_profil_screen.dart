@@ -56,8 +56,6 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
         modalSheet: () => showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          isDismissible: false,
-          enableDrag: false,
           builder: (context) {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
@@ -101,8 +99,6 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
         modalSheet: () => showModalBottomSheet(
           context: context,
           isScrollControlled: true,
-          isDismissible: false,
-          enableDrag: false,
           builder: (context) {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
