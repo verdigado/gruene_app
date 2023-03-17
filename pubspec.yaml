@@ -60,6 +60,7 @@ dependencies:
   permission_handler: ^10.2.0
   image_cropper: ^3.0.1
   mask_text_input_formatter: ^2.4.0
+  adaptive_dialog: ^1.8.2
 
 
 dev_dependencies:

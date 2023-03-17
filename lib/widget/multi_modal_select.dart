@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/widget/filled_text_field.dart';
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 
 class MultiModalSelect extends StatefulWidget {
   final List<String> values;
   final void Function(String value) onAddValue;
-  final void Function(int selectedFavItemIndex) onSaveValues;
+  final void Function(int selectedFavItemIndex) onAddFavouriteValue;
   final bool Function(String? value) validate;
   final TextInputType? textInputType;
   final String? initalTextinputValue;
@@ -18,7 +19,7 @@ class MultiModalSelect extends StatefulWidget {
     super.key,
     required this.values,
     required this.onAddValue,
-    required this.onSaveValues,
+    required this.onAddFavouriteValue,
     this.initalTextinputValue,
     required this.validate,
     this.textInputType,
@@ -86,7 +87,21 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     InkWell(
-                        onTap: () => context.pop(),
+                        onTap: () async {
+                          if (textEditControler.text.isNotEmpty &&
+                              textEditControler.text !=
+                                  widget.initalTextinputValue) {
+                            var res = await showOkCancelAlertDialog(
+                                context: context,
+                                message:
+                                    'Möchtest du deine Änderungen verwerfen ? ');
+                            if (res.name == OkCancelResult.ok.name) {
+                              context.pop();
+                            }
+                          } else {
+                            context.pop();
+                          }
+                        },
                         child: const Icon(
                           Icons.close_outlined,
                           size: medium2,
@@ -115,7 +130,13 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                                     decoration: TextDecoration.underline),
                           ),
                         ),
-                        onPressed: () => widget.onSaveValues(selectedItem),
+                        onPressed: () {
+                          widget.onAddFavouriteValue(selectedItem);
+                          selectedItem = 0;
+                          scrollController.animateTo(0,
+                              duration: const Duration(milliseconds: 300),
+                              curve: Curves.linear);
+                        },
                         child: const Text(
                           'Als Favorit markieren',
                         ),

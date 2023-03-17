@@ -61,14 +61,15 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
               builder: (context, state) {
                 return MultiModalSelect(
                   inputHeadline: 'Neue Email-Adresse eintragen',
+                  inputHint: 'Email-Adresse eingeben',
+                  inputLabel: 'Email-Adresse',
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('email', value)),
-                  onSaveValues: (favItemIndex) {
+                  onAddFavouriteValue: (favItemIndex) {
                     context
                         .read<ProfileBloc>()
                         .add(DispatchProfile(favEmailItemIndex: favItemIndex));
-                    context.pop();
                   },
                   values: [
                     ...state.profile.memberProfil.email.map((e) => e.value)
@@ -103,14 +104,15 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
+                  inputHint: 'Telefonnummer',
+                  inputLabel: 'Telefonnummer',
                   inputHeadline: 'Neue Telfonnummer eintragen',
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
-                  onSaveValues: (favItemIndex) {
+                  onAddFavouriteValue: (favItemIndex) {
                     context.read<ProfileBloc>().add(DispatchProfile(
                         favTelfonnumberItemIndex: favItemIndex));
-                    context.pop();
                   },
                   values: [
                     ...state.profile.memberProfil.telefon.map((e) => e.value)
