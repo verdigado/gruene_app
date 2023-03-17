@@ -5,28 +5,28 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "gruene_app_debug_stg",
+      "name": "Debug Staging",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_staging.dart",
       "args": ["--flavor", "staging"]
     },
     {
-      "name": "gruene_app_debug_production",
+      "name": "Debug Production",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_production.dart",
       "args": ["--flavor", "production"]
     },
     {
-      "name": "gruene_app_release_production",
+      "name": "Release Production",
       "request": "launch",
       "type": "dart",
       "program": "lib/main_production.dart",
       "args": ["--flavor", "production", "--release"]
     },
     {
-      "name": "gruene_app (profile mode)",
+      "name": "Profile Production",
       "request": "launch",
       "type": "dart",
       "flutterMode": "profile",
