@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -110,12 +112,7 @@ final GoRouter router = GoRouter(
       path: profile,
       name: profileScreenName,
       pageBuilder: (context, state) {
-        return CupertinoPage(
-          child: BlocProvider.value(
-            value: context.read<ProfileBloc>(),
-            child: const ProfileMenu(),
-          ),
-        );
+        return getPlattformPage(context: context, child: const ProfileMenu());
       },
       routes: [
         GoRoute(
@@ -123,8 +120,9 @@ final GoRouter router = GoRouter(
             parentNavigatorKey: rootNavigatorKey,
             name: profileDetailScreenName,
             pageBuilder: (context, state) {
-              return const CupertinoPage(
-                child: ProfileDetailScreen(),
+              return getPlattformPage(
+                context: context,
+                child: const ProfileDetailScreen(),
               );
             }),
         GoRoute(
@@ -132,8 +130,9 @@ final GoRouter router = GoRouter(
             parentNavigatorKey: rootNavigatorKey,
             name: memberprofilScreenName,
             pageBuilder: (context, state) {
-              return const CupertinoPage(
-                child: MemberProfilScreen(),
+              return getPlattformPage(
+                context: context,
+                child: const MemberProfilScreen(),
               );
             }),
       ],
@@ -150,6 +149,25 @@ final GoRouter router = GoRouter(
     return firstRoute;
   },
 );
+
+// Platform Check to get on IOS get BackSlide behavior
+Page<dynamic> getPlattformPage(
+    {required BuildContext context, required Widget child}) {
+  if (Platform.isIOS) {
+    return CupertinoPage(
+      child: BlocProvider.value(
+        value: context.read<ProfileBloc>(),
+        child: child,
+      ),
+    );
+  } else {
+    return CustomTransitionPage(
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          slideAnimation(animation, child),
+    );
+  }
+}
 
 SlideTransition slideAnimation(Animation<double> animation, Widget child) {
   const begin = Offset(1.0, 0.0);
