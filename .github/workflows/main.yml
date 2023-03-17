@@ -27,12 +27,12 @@ jobs:
 
   android_pipeline:
     needs: testing
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || github.event.pull_request.merged == true}}
     uses: ./.github/workflows/android_pipeline.yml
     secrets: inherit
 
   ios_pipeline:
     needs: testing
-    if: ${{ github.event_name == 'push' }}
+    if: ${{ github.event_name == 'push' || github.event.pull_request.merged == true}}
     uses: ./.github/workflows/ios_pipeline.yml
     secrets: inherit
