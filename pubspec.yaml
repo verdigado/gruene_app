@@ -56,8 +56,11 @@ dependencies:
   flutter_native_splash: ^2.2.17
   mocktail: ^0.3.0
   provider: ^6.0.5
-  
-  
+  image_picker: ^0.8.6+4
+  permission_handler: ^10.2.0
+  image_cropper: ^3.0.1
+  mask_text_input_formatter: ^2.4.0
+  adaptive_dialog: ^1.8.2
 
 
 dev_dependencies:
@@ -71,7 +74,7 @@ dev_dependencies:
   # activated in the `analysis_options.yaml` file located at the root of your
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
-  flutter_lints: ^2.0.0  
+  flutter_lints: ^2.0.0
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

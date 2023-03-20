@@ -1,15 +1,22 @@
+import 'dart:io';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
+import 'package:gruene_app/screens/more/more_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/member_profil_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/profile_detail_screen.dart';
+import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
-import 'package:gruene_app/screens/search/search_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
@@ -17,6 +24,8 @@ import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
 final GlobalKey<NavigatorState> shellNavigatorKey = GlobalKey<NavigatorState>();
+// Global Blocs
+
 bool isSplashRemoved = false;
 
 final GoRouter router = GoRouter(
@@ -29,7 +38,7 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state, child) {
         return CustomNoTransitionPage(
             child: ScaffoldWithNavbar(
-          titel: 'Titel',
+          titel: getTitel(state.location),
           child: child,
         ));
       },
@@ -42,9 +51,9 @@ final GoRouter router = GoRouter(
           },
         ),
         GoRoute(
-          path: searchScreen,
+          path: moreScreen,
           pageBuilder: (context, state) {
-            return const CustomNoTransitionPage(child: SearchScreen());
+            return const CustomNoTransitionPage(child: MoreScreen());
           },
         ),
       ],
@@ -97,6 +106,36 @@ final GoRouter router = GoRouter(
         return const NoTransitionPage(child: NotfificationScreen());
       },
     ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: profile,
+      name: profileScreenName,
+      pageBuilder: (context, state) {
+        return getPlattformPage(context: context, child: const ProfileMenu());
+      },
+      routes: [
+        GoRoute(
+            path: profileDetail,
+            parentNavigatorKey: rootNavigatorKey,
+            name: profileDetailScreenName,
+            pageBuilder: (context, state) {
+              return getPlattformPage(
+                context: context,
+                child: const ProfileDetailScreen(),
+              );
+            }),
+        GoRoute(
+            path: memberProfil,
+            parentNavigatorKey: rootNavigatorKey,
+            name: memberprofilScreenName,
+            pageBuilder: (context, state) {
+              return getPlattformPage(
+                context: context,
+                child: const MemberProfilScreen(),
+              );
+            }),
+      ],
+    ),
   ],
   redirect: (context, state) async {
     String? firstRoute;
@@ -109,6 +148,25 @@ final GoRouter router = GoRouter(
     return firstRoute;
   },
 );
+
+// Platform Check to get on IOS BackSlide behavior
+Page<dynamic> getPlattformPage(
+    {required BuildContext context, required Widget child}) {
+  if (Platform.isIOS) {
+    return CupertinoPage(
+      child: BlocProvider.value(
+        value: context.read<ProfileBloc>(),
+        child: child,
+      ),
+    );
+  } else {
+    return CustomTransitionPage(
+      child: child,
+      transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+          slideAnimation(animation, child),
+    );
+  }
+}
 
 SlideTransition slideAnimation(Animation<double> animation, Widget child) {
   const begin = Offset(1.0, 0.0);

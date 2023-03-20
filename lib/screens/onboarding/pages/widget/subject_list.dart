@@ -3,7 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
+import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
+// ignore: depend_on_referenced_packages
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SubjectList extends StatefulWidget {
@@ -161,7 +163,7 @@ class _SubjectListState extends State<SubjectList> {
     return Container(
       height: susHeight,
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.only(left: 16.0),
+      padding: const EdgeInsets.only(left: small),
       color: Theme.of(context).primaryColorLight,
       alignment: Alignment.centerLeft,
       child: Text(

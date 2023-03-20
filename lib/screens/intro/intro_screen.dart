@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class IntroScreen extends StatelessWidget {
@@ -76,13 +77,7 @@ class IntroScreen extends StatelessWidget {
                 const SizedBox(
                   height: 5,
                 ),
-                Container(
-                  width: 45,
-                  height: 5,
-                  decoration: const BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.all(Radius.circular(12.0))),
-                ),
+                const ModalTopLine(color: Colors.white),
                 const SizedBox(
                   height: 10,
                 ),
