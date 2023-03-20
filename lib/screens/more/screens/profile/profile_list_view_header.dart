@@ -35,9 +35,15 @@ class ProfileListViewHeader extends StatelessWidget {
               children: [
                 profile.profileImageUrl != null &&
                         profile.profileImageUrl!.isNotEmpty
-                    ? circleAvatarImage(profile.profileImageUrl,
-                        editable: false, radius: 24)
-                    : circleAvatarInitials(profile.initals, radius: 24),
+                    ? CircleAvatarImage(
+                        imageUrl: profile.profileImageUrl,
+                        editable: false,
+                        radius: 24,
+                      )
+                    : CircleAvatarInitials(
+                        initals: profile.initals,
+                        radius: 24,
+                      ),
                 const SizedBox(
                   width: small,
                 ),

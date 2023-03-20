@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
@@ -19,7 +20,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      backgroundColor: const Color.fromRGBO(247, 247, 247, 1),
+      backgroundColor: greyBackground,
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           return CostumeSeparatedList(

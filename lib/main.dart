@@ -38,6 +38,7 @@ class _MyAppState extends State<MyApp> {
           BlocProvider(
             create: (context) =>
                 ProfileBloc(context.read<ProfileRepositoryImpl>())
+                  // TODO: Invoke after Login
                   ..add(const GetProfile()),
           ),
         ],

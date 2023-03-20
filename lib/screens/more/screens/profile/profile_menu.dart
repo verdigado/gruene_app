@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
@@ -13,7 +14,7 @@ class ProfileMenu extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: const Color.fromRGBO(247, 247, 247, 1),
+        backgroundColor: greyBackground,
         appBar: AppBar(),
         body: BlocBuilder<ProfileBloc, ProfileState>(
           builder: (context, state) {

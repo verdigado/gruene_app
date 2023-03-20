@@ -18,6 +18,7 @@ const MaterialColor mcgpalette0 =
   900: Color(0xFF063213),
 });
 const int mcgpalette0PrimaryValue = 0xFF145F32;
+const greyBackground = Color.fromRGBO(247, 247, 247, 1);
 
 const MaterialColor mcgpalette0Secondary =
     MaterialColor(_mcgpalette0SecondaryValue, <int, Color>{

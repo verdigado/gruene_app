@@ -25,6 +25,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     on<RemoveProfileImage>((event, emit) {
       final currentState = state;
       if (currentState.status == ProfileStatus.ready) {
+        // To-Do: Catch Errors of Api
         profileRepository.removeProfileImage();
         emit(
           ProfileState(
