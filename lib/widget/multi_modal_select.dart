@@ -1,3 +1,4 @@
+import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/routing/router.dart';
@@ -146,45 +147,50 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                   ),
                   SizedBox(
                     height: con.maxHeight / 100 * 16,
-                    child: ListWheelScrollView(
-                        itemExtent: 40,
-                        controller: scrollController,
-                        clipBehavior: Clip.antiAlias,
-                        diameterRatio: 1.8,
-                        children: [
-                          ...widget.values.map(
-                            (text) {
-                              final isSelected =
-                                  widget.values.indexOf(text) == selectedItem;
-                              final color = isSelected
-                                  ? Theme.of(context).colorScheme.secondary
-                                  : Colors.black;
-                              return Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  if (isSelected) ...[
-                                    Icon(
-                                      Icons.check_outlined,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary,
+                    child: ClickableListWheelScrollView(
+                      scrollController: scrollController,
+                      itemHeight: 40,
+                      itemCount: widget.values.length,
+                      child: ListWheelScrollView(
+                          itemExtent: 40,
+                          controller: scrollController,
+                          clipBehavior: Clip.antiAlias,
+                          diameterRatio: 1.8,
+                          children: [
+                            ...widget.values.map(
+                              (text) {
+                                final isSelected =
+                                    widget.values.indexOf(text) == selectedItem;
+                                final color = isSelected
+                                    ? Theme.of(context).colorScheme.secondary
+                                    : Colors.black;
+                                return Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    if (isSelected) ...[
+                                      Icon(
+                                        Icons.check_outlined,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary,
+                                      ),
+                                    ],
+                                    Text(
+                                      text,
+                                      style: Theme.of(context)
+                                          .primaryTextTheme
+                                          .bodyMedium
+                                          ?.copyWith(
+                                            color: color,
+                                            fontSize: medium1,
+                                          ),
                                     ),
                                   ],
-                                  Text(
-                                    text,
-                                    style: Theme.of(context)
-                                        .primaryTextTheme
-                                        .bodyMedium
-                                        ?.copyWith(
-                                          color: color,
-                                          fontSize: medium1,
-                                        ),
-                                  ),
-                                ],
-                              );
-                            },
-                          ),
-                        ]),
+                                );
+                              },
+                            ),
+                          ]),
+                    ),
                   ),
                   const Divider(),
                   Visibility(
