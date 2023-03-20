@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/layout.dart';
+import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/filled_text_field.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 
@@ -39,6 +40,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
   late FocusNode focusNode;
   bool addInitalTextInputValue = true;
   late String? initalTextinputValue;
+  String inputValue = '';
 
   @override
   void initState() {
@@ -66,61 +68,134 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
         }
       });
     }
+    textEditControler.addListener(() {
+      setState(() {
+        inputValue = textEditControler.text;
+      });
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    return LayoutBuilder(builder: (ctx, con) {
-      return GestureDetector(
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Container(
-          padding: EdgeInsets.only(
-            bottom: MediaQuery.of(context).viewInsets.bottom,
-          ),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    InkWell(
-                        onTap: () async {
-                          if (textEditControler.text.isNotEmpty &&
-                              textEditControler.text !=
-                                  widget.initalTextinputValue) {
-                            var res = await showOkCancelAlertDialog(
-                                context: context,
-                                message:
-                                    'Möchtest du deine Änderungen verwerfen ? ');
-                            if (res.name == OkCancelResult.ok.name) {
-                              context.pop();
+    return WillPopScope(
+      onWillPop: () async {
+        return await dismissDialog(context);
+      },
+      child: LayoutBuilder(builder: (ctx, con) {
+        return GestureDetector(
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: Container(
+            padding: EdgeInsets.only(
+              bottom: MediaQuery.of(context).viewInsets.bottom,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      InkWell(
+                          onTap: () async {
+                            if (await dismissDialog(context)) {
+                              rootNavigatorKey.currentState?.pop();
                             }
-                          } else {
-                            context.pop();
-                          }
-                        },
-                        child: const Icon(
-                          Icons.close_outlined,
-                          size: medium2,
-                        )),
-                  ],
-                ),
-                Row(
-                  mainAxisAlignment: selectedItem > 0
-                      ? MainAxisAlignment.spaceBetween
-                      : MainAxisAlignment.start,
-                  textBaseline: TextBaseline.alphabetic,
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  children: [
-                    Text(
-                      'Wähle dein Favorit',
-                      style: Theme.of(context).primaryTextTheme.displaySmall,
-                    ),
-                    if (selectedItem > 0) ...[
-                      TextButton(
+                          },
+                          child: const Icon(
+                            Icons.close_outlined,
+                            size: medium2,
+                          )),
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: selectedItem > 0
+                        ? MainAxisAlignment.spaceBetween
+                        : MainAxisAlignment.start,
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: [
+                      Text(
+                        'Wähle dein Favorit',
+                        style: Theme.of(context).primaryTextTheme.displaySmall,
+                      ),
+                      Visibility(
+                        maintainSize: true,
+                        maintainAnimation: true,
+                        maintainState: true,
+                        visible: selectedItem > 0,
+                        child: TextButton(
+                          style: ButtonStyle(
+                            textStyle: MaterialStatePropertyAll(
+                              Theme.of(context)
+                                  .primaryTextTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                      decoration: TextDecoration.underline),
+                            ),
+                          ),
+                          onPressed: () {
+                            widget.onAddFavouriteValue(selectedItem);
+                            selectedItem = 0;
+                            scrollController.animateTo(0,
+                                duration: const Duration(milliseconds: 300),
+                                curve: Curves.linear);
+                          },
+                          child: const Text(
+                            'Als Favorit markieren',
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                  SizedBox(
+                    height: con.maxHeight / 100 * 16,
+                    child: ListWheelScrollView(
+                        itemExtent: 40,
+                        controller: scrollController,
+                        clipBehavior: Clip.antiAlias,
+                        diameterRatio: 1.8,
+                        children: [
+                          ...widget.values.map(
+                            (text) {
+                              final isSelected =
+                                  widget.values.indexOf(text) == selectedItem;
+                              final color = isSelected
+                                  ? Theme.of(context).colorScheme.secondary
+                                  : Colors.black;
+                              return Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  if (isSelected) ...[
+                                    Icon(Icons.check_outlined,
+                                        color: Theme.of(context)
+                                            .colorScheme
+                                            .secondary),
+                                  ],
+                                  Text(
+                                    text,
+                                    style: Theme.of(context)
+                                        .primaryTextTheme
+                                        .displaySmall
+                                        ?.copyWith(color: color),
+                                  ),
+                                ],
+                              );
+                            },
+                          ),
+                        ]),
+                  ),
+                  const Divider(),
+                  Visibility(
+                    visible: inputValue.isNotEmpty &&
+                        inputValue != widget.initalTextinputValue,
+                    maintainSize: true,
+                    maintainAnimation: true,
+                    maintainState: true,
+                    child: Align(
+                      alignment: Alignment.centerRight,
+                      child: TextButton(
                         style: ButtonStyle(
                           textStyle: MaterialStatePropertyAll(
                             Theme.of(context)
@@ -131,89 +206,53 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                           ),
                         ),
                         onPressed: () {
-                          widget.onAddFavouriteValue(selectedItem);
-                          selectedItem = 0;
-                          scrollController.animateTo(0,
-                              duration: const Duration(milliseconds: 300),
-                              curve: Curves.linear);
+                          submit(textEditControler.text);
                         },
                         child: const Text(
-                          'Als Favorit markieren',
+                          'Favorit hinzufügen',
                         ),
-                      )
-                    ]
-                  ],
-                ),
-                SizedBox(
-                  height: con.maxHeight / 100 * 16,
-                  child: ListWheelScrollView(
-                      itemExtent: 40,
-                      controller: scrollController,
-                      clipBehavior: Clip.antiAlias,
-                      diameterRatio: 1.8,
-                      children: [
-                        ...widget.values.map(
-                          (text) {
-                            final isSelected =
-                                widget.values.indexOf(text) == selectedItem;
-                            final color = isSelected
-                                ? Theme.of(context).colorScheme.secondary
-                                : Colors.black;
-                            return Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                if (isSelected) ...[
-                                  Icon(Icons.check_outlined,
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .secondary),
-                                ],
-                                Text(
-                                  text,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .displaySmall
-                                      ?.copyWith(color: color),
-                                ),
-                              ],
-                            );
-                          },
-                        ),
-                      ]),
-                ),
-                const Divider(),
-                Text(
-                  widget.inputHeadline,
-                  style: Theme.of(context).primaryTextTheme.displaySmall,
-                ),
-                const SizedBox(
-                  height: medium1,
-                ),
-                FilledTextField(
-                  textEditingController: textEditControler,
-                  focusNode: focusNode,
-                  keyboardType: widget.textInputType,
-                  onSubmitted: (value) {
-                    submit(value);
-                  },
-                  suffixIcon: IconButton(
-                    icon: const Icon(Icons.add_outlined),
-                    onPressed: () {
-                      submit(textEditControler.text);
-                    },
+                      ),
+                    ),
                   ),
-                  labelText: widget.inputLabel,
-                  hintText: widget.inputHint,
-                ),
-                const SizedBox(
-                  height: medium1,
-                ),
-              ],
+                  Text(
+                    widget.inputHeadline,
+                    style: Theme.of(context).primaryTextTheme.displaySmall,
+                  ),
+                  const SizedBox(
+                    height: medium1,
+                  ),
+                  FilledTextField(
+                    textEditingController: textEditControler,
+                    focusNode: focusNode,
+                    keyboardType: widget.textInputType,
+                    onSubmitted: (value) {
+                      submit(value);
+                    },
+                    labelText: widget.inputLabel,
+                    hintText: widget.inputHint,
+                  ),
+                  const SizedBox(
+                    height: medium1,
+                  ),
+                ],
+              ),
             ),
           ),
-        ),
-      );
-    });
+        );
+      }),
+    );
+  }
+
+  Future<bool> dismissDialog(BuildContext context) async {
+    if (textEditControler.text.isNotEmpty &&
+        textEditControler.text != widget.initalTextinputValue) {
+      var res = await showOkCancelAlertDialog(
+          context: context,
+          message: 'Möchtest du deine Änderungen verwerfen ? ');
+      return res.name == OkCancelResult.ok.name;
+    } else {
+      return true;
+    }
   }
 
   void submit(String value) {

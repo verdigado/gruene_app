@@ -60,9 +60,9 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                  inputHeadline: 'Neue Email-Adresse eintragen',
-                  inputHint: 'Email-Adresse eingeben',
-                  inputLabel: 'Email-Adresse',
+                  inputHeadline: 'E-Mail als Favorit hinzufügen',
+                  inputHint: 'E-Mail-Adresse eingeben',
+                  inputLabel: 'E-Mail-Adresse',
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('email', value)),
@@ -106,7 +106,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                 return MultiModalSelect(
                   inputHint: 'Telefonnummer',
                   inputLabel: 'Telefonnummer',
-                  inputHeadline: 'Neue Telfonnummer eintragen',
+                  inputHeadline: 'Telefonnummer als Favorit hinzufügen',
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
