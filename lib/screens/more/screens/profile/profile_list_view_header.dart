@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/data/profile.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ProfileListViewHeader extends StatelessWidget {
   final void Function() onTap;
@@ -21,7 +22,7 @@ class ProfileListViewHeader extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(left: 16.0, bottom: 8, top: 8),
           child: Text(
-            'Profil',
+            AppLocalizations.of(context)!.profile,
             style: Theme.of(context).primaryTextTheme.displaySmall,
           ),
         ),
@@ -53,7 +54,9 @@ class ProfileListViewHeader extends StatelessWidget {
                       ),
                       onPressed: () => onTap(),
                       child: Column(
-                        children: const [Text('Profil anzeigen')],
+                        children: [
+                          Text(AppLocalizations.of(context)!.showProfile)
+                        ],
                       ),
                     ),
                     const SizedBox(

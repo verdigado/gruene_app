@@ -5,6 +5,7 @@ import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
 import 'package:gruene_app/widget/multi_modal_select.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberProfilScreen extends StatefulWidget {
   const MemberProfilScreen({super.key});
@@ -32,22 +33,22 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
   List<CostumeListItem> getProfileEntries(
       BuildContext context, MemberProfil memberProfil) {
     return [
-      const CostumeListItem(
-        titel: 'Mitgliedsprofil',
+      CostumeListItem(
+        titel: AppLocalizations.of(context)!.memberProfil,
         bold: true,
         divider: false,
       ),
       CostumeListItem(
-        titel: 'Vorname',
+        titel: AppLocalizations.of(context)!.givenName,
         subtitel: memberProfil.givenName,
       ),
       CostumeListItem(
-        titel: 'Nachname',
+        titel: AppLocalizations.of(context)!.surename,
         subtitel: memberProfil.surname,
         spaceBetween: true,
       ),
       CostumeListItem(
-        titel: 'E-Mail-Adresse',
+        titel: AppLocalizations.of(context)!.emailAdress,
         subtitel: memberProfil.email
             .where((element) => element.isFavourite == true)
             .first
@@ -60,9 +61,9 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                  inputHeadline: 'E-Mail als Favorit hinzufügen',
-                  inputHint: 'E-Mail-Adresse eingeben',
-                  inputLabel: 'E-Mail-Adresse',
+                  inputHeadline: AppLocalizations.of(context)!.emailAsFav,
+                  inputHint: AppLocalizations.of(context)!.emailAdress,
+                  inputLabel: AppLocalizations.of(context)!.emailAdress,
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('email', value)),
@@ -90,7 +91,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
         ),
       ),
       CostumeListItem(
-        titel: 'Telefonnummer',
+        titel: AppLocalizations.of(context)!.telefonnumber,
         subtitel: memberProfil.telefon
             .where((element) => element.isFavourite == true)
             .first
@@ -104,9 +105,10 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                  inputHint: 'Telefonnummer',
-                  inputLabel: 'Telefonnummer',
-                  inputHeadline: 'Telefonnummer als Favorit hinzufügen',
+                  inputHint: AppLocalizations.of(context)!.telefonnumber,
+                  inputLabel: AppLocalizations.of(context)!.telefonnumber,
+                  inputHeadline:
+                      AppLocalizations.of(context)!.telefonnumberAsFav,
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
@@ -134,17 +136,17 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
           },
         ),
       ),
-      const CostumeListItem(
-        titel: 'Mitgliedschaften',
+      CostumeListItem(
+        titel: AppLocalizations.of(context)!.memberships,
         bold: true,
         divider: false,
       ),
       CostumeListItem(
-        titel: 'Partei',
+        titel: AppLocalizations.of(context)!.politicalParty,
         subtitel: memberProfil.politicalParty,
       ),
       CostumeListItem(
-        titel: 'Gliederung',
+        titel: AppLocalizations.of(context)!.division,
         subtitel: memberProfil.division,
       ),
     ];

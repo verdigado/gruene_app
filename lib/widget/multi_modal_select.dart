@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/filled_text_field.dart';
 import 'package:adaptive_dialog/adaptive_dialog.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MultiModalSelect extends StatefulWidget {
   final List<String> values;
@@ -117,7 +117,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
                       Text(
-                        'Wähle dein Favorit',
+                        AppLocalizations.of(context)!.chooseFav,
                         style: Theme.of(context).primaryTextTheme.displaySmall,
                       ),
                       Visibility(
@@ -142,8 +142,8 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.linear);
                           },
-                          child: const Text(
-                            'Als Favorit markieren',
+                          child: Text(
+                            AppLocalizations.of(context)!.markAsFav,
                           ),
                         ),
                       )
@@ -208,8 +208,8 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                         onPressed: () {
                           submit(textEditControler.text);
                         },
-                        child: const Text(
-                          'Favorit hinzufügen',
+                        child: Text(
+                          AppLocalizations.of(context)!.addFav,
                         ),
                       ),
                     ),
@@ -248,7 +248,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
         textEditControler.text != widget.initalTextinputValue) {
       var res = await showOkCancelAlertDialog(
           context: context,
-          message: 'Möchtest du deine Änderungen verwerfen ? ');
+          message: AppLocalizations.of(context)!.discardChanges);
       return res.name == OkCancelResult.ok.name;
     } else {
       return true;

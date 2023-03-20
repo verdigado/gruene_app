@@ -12,6 +12,8 @@ import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:image_picker/image_picker.dart';
 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 class ProfileDetailScreen extends StatefulWidget {
   const ProfileDetailScreen({super.key});
 
@@ -33,7 +35,7 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Profil',
+                  AppLocalizations.of(context)!.profile,
                   style: Theme.of(context).primaryTextTheme.displaySmall,
                 ),
                 if (state.status == ProfileStatus.ready) ...[
@@ -79,17 +81,17 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   ? context.pop()
                                   : logger.i('Image not Send')),
                       child: Row(
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.camera_alt_outlined,
                             size: medium3,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: small,
                           ),
                           Text(
-                            'Foto Aufnehmen',
-                            style: TextStyle(fontSize: medium1),
+                            AppLocalizations.of(context)!.takePhoto,
+                            style: const TextStyle(fontSize: medium1),
                           )
                         ],
                       ),
@@ -103,16 +105,16 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                                   ? context.pop()
                                   : logger.i('Image not Send')),
                       child: Row(
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.image_outlined,
                             size: medium3,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: small,
                           ),
-                          Text('Aus der Bibliothek auswählen',
-                              style: TextStyle(fontSize: medium1))
+                          Text(AppLocalizations.of(context)!.selectFromLibary,
+                              style: const TextStyle(fontSize: medium1))
                         ],
                       ),
                     ),
@@ -123,16 +125,16 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                         context.pop();
                       },
                       child: Row(
-                        children: const [
-                          Icon(
+                        children: [
+                          const Icon(
                             Icons.delete_outline,
                             size: medium3,
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: small,
                           ),
-                          Text('Profilbild löschen',
-                              style: TextStyle(fontSize: medium1))
+                          Text(AppLocalizations.of(context)!.profilPhotoDelete,
+                              style: const TextStyle(fontSize: medium1))
                         ],
                       ),
                     ),
@@ -162,7 +164,8 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       }
     } on PermissionException catch (ex) {
       logger.i([ex]);
-      permissonDeniedSnackbar(src.name);
+      permissonDeniedSnackbar(
+          AppLocalizations.of(context)!.permissonDeniedOpenSettings, src.name);
     }
     return Uint8List(0);
   }
