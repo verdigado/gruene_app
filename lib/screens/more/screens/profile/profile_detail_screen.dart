@@ -43,9 +43,13 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                     onTap: () => openImagePickerModal(context),
                     child: state.profile.profileImageUrl != null &&
                             state.profile.profileImageUrl!.isNotEmpty
-                        ? circleAvatarImage(state.profile.profileImageUrl)
-                        : circleAvatarInitials(state.profile.initals,
-                            editable: true),
+                        ? CircleAvatarImage(
+                            imageUrl: state.profile.profileImageUrl,
+                          )
+                        : CircleAvatarInitials(
+                            initals: state.profile.initals,
+                            editable: true,
+                          ),
                   ),
                   const SizedBox(
                     height: medium1,
