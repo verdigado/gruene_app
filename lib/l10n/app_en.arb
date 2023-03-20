@@ -62,5 +62,6 @@
   "travelExpenses":"Travel Expenses",
   "applications":"Applications",
   "account":"Account",
-  "openSettings":"Open Settings"
+  "openSettings":"Open Settings",
+  "profileImageRemoveErrorMessage":"Failure on deleting the Profile Image, please try again"
 }

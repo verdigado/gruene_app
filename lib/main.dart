@@ -14,15 +14,10 @@ void runMain() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
-  @override
-  State<MyApp> createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -45,7 +40,7 @@ class _MyAppState extends State<MyApp> {
         child: MaterialApp.router(
           title: 'Grüne App',
           routerConfig: router,
-          scaffoldMessengerKey: MyApp.scaffoldMessengerKey,
+          scaffoldMessengerKey: scaffoldMessengerKey,
           theme: rootTheme,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,

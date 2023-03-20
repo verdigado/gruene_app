@@ -1,6 +1,6 @@
 part of 'profile_bloc.dart';
 
-enum ProfileStatus { initial, ready, dispached }
+enum ProfileStatus { initial, ready, dispached, profileImageRemoveError }
 
 class ProfileState extends Equatable {
   const ProfileState({required this.profile, required this.status});

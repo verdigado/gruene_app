@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/net/profile/data/profile.dart';
 
@@ -26,7 +27,16 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
       final currentState = state;
       if (currentState.status == ProfileStatus.ready) {
         // To-Do: Catch Errors of Api
-        profileRepository.removeProfileImage();
+        try {
+          profileRepository.removeProfileImage();
+        } on Exception catch (ex) {
+          logger.i('Exception on RemoveProfileImage', [ex]);
+          return emit(
+            ProfileState(
+                status: ProfileStatus.profileImageRemoveError,
+                profile: currentState.profile),
+          );
+        }
         emit(
           ProfileState(
             status: ProfileStatus.ready,

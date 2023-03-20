@@ -30,35 +30,47 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       appBar: AppBar(),
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
-          return Padding(
-            padding:
-                const EdgeInsets.only(left: medium1, bottom: small, top: small),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  AppLocalizations.of(context)!.profile,
-                  style: Theme.of(context).primaryTextTheme.displaySmall,
-                ),
-                if (state.status == ProfileStatus.ready) ...[
-                  InkWell(
-                    onTap: () => openImagePickerModal(context),
-                    child: state.profile.profileImageUrl != null &&
-                            state.profile.profileImageUrl!.isNotEmpty
-                        ? CircleAvatarImage(
-                            imageUrl: state.profile.profileImageUrl,
-                          )
-                        : CircleAvatarInitials(
-                            initals: state.profile.initals,
-                            editable: true,
-                          ),
+          return BlocListener<ProfileBloc, ProfileState>(
+            listener: (context, state) {
+              if (state.status == ProfileStatus.profileImageRemoveError) {
+                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                    content: Center(
+                  child: Text(AppLocalizations.of(context)!
+                      .profileImageRemoveErrorMessage),
+                )));
+                context.read<ProfileBloc>().add(const GetProfile());
+              }
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(
+                  left: medium1, bottom: small, top: small),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    AppLocalizations.of(context)!.profile,
+                    style: Theme.of(context).primaryTextTheme.displaySmall,
                   ),
-                  const SizedBox(
-                    height: medium1,
-                  ),
-                  Text(state.profile.description),
-                ]
-              ],
+                  if (state.status == ProfileStatus.ready) ...[
+                    InkWell(
+                      onTap: () => openImagePickerModal(context),
+                      child: state.profile.profileImageUrl != null &&
+                              state.profile.profileImageUrl!.isNotEmpty
+                          ? CircleAvatarImage(
+                              imageUrl: state.profile.profileImageUrl,
+                            )
+                          : CircleAvatarInitials(
+                              initals: state.profile.initals,
+                              editable: true,
+                            ),
+                    ),
+                    const SizedBox(
+                      height: medium1,
+                    ),
+                    Text(state.profile.description),
+                  ]
+                ],
+              ),
             ),
           );
         },

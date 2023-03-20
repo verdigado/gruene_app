@@ -164,6 +164,7 @@
   "travelExpenses":"Reisekosten",
   "applications":"Anwendungen",
   "account":"Konto",
-  "openSettings":"Einstellungen öffnen"
+  "openSettings":"Einstellungen öffnen",
+  "profileImageRemoveErrorMessage":"Fehler beim Löschen vom Profilbild bitte versuchen sie es erneut"
 
 }
