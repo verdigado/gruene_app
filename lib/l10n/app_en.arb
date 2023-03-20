@@ -39,7 +39,7 @@
   "telefonnumber":"Phone Number",
   "telefonnumberAsFav":"Add Phone Number as Favorit",
   "more":"More",
-  "profilPhotoDelete":"Profil Photo Delete",
+  "profilPhotoDelete":"Delete Profil Photo",
   "permissonDeniedOpenSettings":"Access Denied open Settings to allow Access to your",
   "takePhoto" :"Take Photo",
   "selectFromLibary":"Choose from Library",
@@ -61,5 +61,6 @@
   "theGruenenTools":"The Grünen Tools",
   "travelExpenses":"Travel Expenses",
   "applications":"Applications",
-  "account":"Account"
+  "account":"Account",
+  "openSettings":"Open Settings"
 }

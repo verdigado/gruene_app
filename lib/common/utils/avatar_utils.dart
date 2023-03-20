@@ -17,6 +17,7 @@ class CircleAvatarImage extends StatelessWidget {
   Widget build(BuildContext context) {
     if (editable) {
       return CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         radius: 40,
         // TODO: Replace with NetworkImage
         backgroundImage: MemoryImage(imageUrl!),
@@ -29,6 +30,7 @@ class CircleAvatarImage extends StatelessWidget {
       );
     } else {
       return CircleAvatar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         radius: radius,
         // TODO: Replace with NetworkImage
         backgroundImage: MemoryImage(imageUrl!),
@@ -55,6 +57,7 @@ class CircleAvatarInitials extends StatelessWidget {
   Widget build(BuildContext context) {
     if (editable) {
       return CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           radius: radius,
           child: Stack(
             children: [
@@ -68,7 +71,10 @@ class CircleAvatarInitials extends StatelessWidget {
             ],
           ));
     } else {
-      return CircleAvatar(radius: radius, child: Text(initals));
+      return CircleAvatar(
+          backgroundColor: Theme.of(context).colorScheme.secondary,
+          radius: radius,
+          child: Text(initals));
     }
   }
 }

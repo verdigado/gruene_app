@@ -126,15 +126,6 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                         maintainState: true,
                         visible: selectedItem > 0,
                         child: TextButton(
-                          style: ButtonStyle(
-                            textStyle: MaterialStatePropertyAll(
-                              Theme.of(context)
-                                  .primaryTextTheme
-                                  .labelLarge
-                                  ?.copyWith(
-                                      decoration: TextDecoration.underline),
-                            ),
-                          ),
                           onPressed: () {
                             widget.onAddFavouriteValue(selectedItem);
                             selectedItem = 0;
@@ -142,9 +133,13 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                                 duration: const Duration(milliseconds: 300),
                                 curve: Curves.linear);
                           },
-                          child: Text(
-                            AppLocalizations.of(context)!.markAsFav,
-                          ),
+                          child: Text(AppLocalizations.of(context)!.markAsFav,
+                              style: Theme.of(context)
+                                  .primaryTextTheme
+                                  .labelLarge
+                                  ?.copyWith(
+                                    decoration: TextDecoration.underline,
+                                  )),
                         ),
                       )
                     ],
@@ -168,17 +163,22 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
                                   if (isSelected) ...[
-                                    Icon(Icons.check_outlined,
-                                        color: Theme.of(context)
-                                            .colorScheme
-                                            .secondary),
+                                    Icon(
+                                      Icons.check_outlined,
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .secondary,
+                                    ),
                                   ],
                                   Text(
                                     text,
                                     style: Theme.of(context)
                                         .primaryTextTheme
-                                        .displaySmall
-                                        ?.copyWith(color: color),
+                                        .bodyMedium
+                                        ?.copyWith(
+                                          color: color,
+                                          fontSize: medium1,
+                                        ),
                                   ),
                                 ],
                               );
@@ -196,20 +196,17 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                     child: Align(
                       alignment: Alignment.centerRight,
                       child: TextButton(
-                        style: ButtonStyle(
-                          textStyle: MaterialStatePropertyAll(
-                            Theme.of(context)
-                                .primaryTextTheme
-                                .labelLarge
-                                ?.copyWith(
-                                    decoration: TextDecoration.underline),
-                          ),
-                        ),
                         onPressed: () {
                           submit(textEditControler.text);
                         },
                         child: Text(
                           AppLocalizations.of(context)!.addFav,
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .labelLarge
+                              ?.copyWith(
+                                decoration: TextDecoration.underline,
+                              ),
                         ),
                       ),
                     ),

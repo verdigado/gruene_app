@@ -1,3 +1,4 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -13,6 +14,7 @@ import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 class ProfileDetailScreen extends StatefulWidget {
   const ProfileDetailScreen({super.key});
@@ -168,8 +170,15 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
       }
     } on PermissionException catch (ex) {
       logger.i([ex]);
-      permissonDeniedSnackbar(
-          AppLocalizations.of(context)!.permissonDeniedOpenSettings, src.name);
+      var res = await showOkCancelAlertDialog(
+        context: context,
+        okLabel: AppLocalizations.of(context)!.openSettings,
+        message:
+            '${AppLocalizations.of(context)!.permissonDeniedOpenSettings} ${src.name}',
+      );
+      if (res.name == OkCancelResult.ok.name) {
+        openAppSettings();
+      }
     }
     return Uint8List(0);
   }

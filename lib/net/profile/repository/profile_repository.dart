@@ -26,7 +26,7 @@ class ProfileRepositoryImpl extends ProfileRepository {
       memberProfil: MemberProfil(
         givenName: 'Gustav',
         surname: 'Grün',
-        politicalParty: 'Bündnis 90',
+        politicalParty: 'Bündnis 90/Die Grünen',
         division: 'OV',
         email: [
           FavouriteValue('gruenerGustav@gruene.de', true),
