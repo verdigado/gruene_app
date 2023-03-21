@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class IntroScreen extends StatelessWidget {
   const IntroScreen({super.key});
@@ -25,7 +26,8 @@ class IntroScreen extends StatelessWidget {
               children: [
                 Expanded(
                   flex: 5,
-                  child: SvgPicture.asset(Assets.images.grueneTopicEconomy,
+                  child: SvgPicture(
+                      AssetBytesLoader(Assets.images.grueneTopicEconomySvg),
                       height: size.height / 100 * 60),
                 ),
                 Flexible(

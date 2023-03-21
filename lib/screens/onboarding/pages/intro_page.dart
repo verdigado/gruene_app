@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class IntroPage extends StatefulWidget {
   final PageController controller;
@@ -21,7 +22,7 @@ class _IntroPageState extends State<IntroPage> {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
-        SvgPicture.asset(Assets.images.gRUENETopicOekologie,
+        SvgPicture(AssetBytesLoader(Assets.images.gruenenTopicOekologieSvg),
             height: size.height / 100 * 40),
         Wrap(
           children: [
