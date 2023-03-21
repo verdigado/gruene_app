@@ -19,6 +19,7 @@ import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 import 'app_startup.dart';
 
@@ -152,7 +153,7 @@ final GoRouter router = GoRouter(
 // Platform Check to get on IOS BackSlide behavior
 Page<dynamic> getPlattformPage(
     {required BuildContext context, required Widget child}) {
-  if (Platform.isIOS) {
+  if (!kIsWeb && Platform.isIOS) {
     return CupertinoPage(
       child: BlocProvider.value(
         value: context.read<ProfileBloc>(),
