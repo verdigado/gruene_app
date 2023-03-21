@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 import 'member_profil.dart';
 
 @immutable
-class Profile {
+class Profile extends Equatable {
   // TODO: This should be replaced in Future with a Url to the actual Image
   final Uint8List? profileImageUrl;
   final String displayName;
@@ -33,4 +34,8 @@ class Profile {
       memberProfil: memberProfil ?? this.memberProfil,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [profileImageUrl, displayName, initals, description, memberProfil];
 }

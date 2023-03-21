@@ -1,9 +1,10 @@
 import 'dart:core';
 
+import 'package:equatable/equatable.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
-class MemberProfil {
+class MemberProfil extends Equatable {
   final String givenName;
   final String surname;
   final List<FavouriteValue<String>> email;
@@ -37,13 +38,17 @@ class MemberProfil {
       division: division ?? this.division,
     );
   }
+
+  @override
+  List<Object?> get props =>
+      [givenName, surname, email, telefon, politicalParty, division];
 }
 
-class FavouriteValue<T> implements Comparable<bool> {
+class FavouriteValue<T> extends Equatable implements Comparable<bool> {
   final T value;
   final bool isFavourite;
 
-  FavouriteValue(this.value, this.isFavourite);
+  const FavouriteValue(this.value, this.isFavourite);
 
   @override
   int compareTo(bool other) {
@@ -59,4 +64,7 @@ class FavouriteValue<T> implements Comparable<bool> {
       isFavourite ?? this.isFavourite,
     );
   }
+
+  @override
+  List<Object?> get props => [value, isFavourite];
 }

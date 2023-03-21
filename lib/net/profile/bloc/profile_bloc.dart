@@ -61,9 +61,11 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
     on<GetProfile>((event, emit) {
       final profil = profileRepository.getProfile();
-      profil.memberProfil.telefon.sort(
-        (a, b) => a.compareTo(b.isFavourite),
-      );
+      profil.copyWith(
+          memberProfil: profil.memberProfil.copyWith(
+              telefon: [...profil.memberProfil.telefon]..sort(
+                  (a, b) => a.compareTo(b.isFavourite),
+                )));
       emit(
         ProfileState(profile: profil, status: ProfileStatus.ready),
       );
