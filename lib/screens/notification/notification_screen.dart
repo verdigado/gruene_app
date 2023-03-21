@@ -6,6 +6,8 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/routes.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class NotfificationScreen extends StatefulWidget {
   const NotfificationScreen({super.key});
@@ -26,7 +28,8 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
               children: [
                 Align(
                   alignment: Alignment.topRight,
-                  child: SvgPicture.asset(Assets.images.grueneTopicEuropa1,
+                  child: SvgPicture(
+                      AssetBytesLoader(Assets.images.grueneTopicEuropa1Svg),
                       height: con.maxHeight / 100 * 45),
                 ),
                 Padding(

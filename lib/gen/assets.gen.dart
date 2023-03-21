@@ -12,9 +12,6 @@ import 'package:flutter/widgets.dart';
 class $AssetsImagesGen {
   const $AssetsImagesGen();
 
-  /// File path: assets/images/GRUENE_Topic_Oekologie.svg
-  String get gRUENETopicOekologie => 'assets/images/GRUENE_Topic_Oekologie.svg';
-
   /// File path: assets/images/Sonnenblume_rgb_aufTransparent.png
   AssetGenImage get sonnenblumeRgbAufTransparent =>
       const AssetGenImage('assets/images/Sonnenblume_rgb_aufTransparent.png');
@@ -22,15 +19,34 @@ class $AssetsImagesGen {
   /// File path: assets/images/gruene_topic_economy.svg
   String get grueneTopicEconomy => 'assets/images/gruene_topic_economy.svg';
 
+  /// File path: assets/images/gruene_topic_economy.svg.vec
+  String get grueneTopicEconomySvg =>
+      'assets/images/gruene_topic_economy.svg.vec';
+
   /// File path: assets/images/gruene_topic_europa1.svg
   String get grueneTopicEuropa1 => 'assets/images/gruene_topic_europa1.svg';
 
+  /// File path: assets/images/gruene_topic_europa1.svg.vec
+  String get grueneTopicEuropa1Svg =>
+      'assets/images/gruene_topic_europa1.svg.vec';
+
+  /// File path: assets/images/gruenen_topic_oekologie.svg
+  String get gruenenTopicOekologie =>
+      'assets/images/gruenen_topic_oekologie.svg';
+
+  /// File path: assets/images/gruenen_topic_oekologie.svg.vec
+  String get gruenenTopicOekologieSvg =>
+      'assets/images/gruenen_topic_oekologie.svg.vec';
+
   /// List of all assets
   List<dynamic> get values => [
-        gRUENETopicOekologie,
         sonnenblumeRgbAufTransparent,
         grueneTopicEconomy,
-        grueneTopicEuropa1
+        grueneTopicEconomySvg,
+        grueneTopicEuropa1,
+        grueneTopicEuropa1Svg,
+        gruenenTopicOekologie,
+        gruenenTopicOekologieSvg
       ];
 }
 
