@@ -1,13 +1,14 @@
+import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
-
-
 
 abstract class OnboardingRepository {
   Set<Topic> listTopic();
 
   Set<Subject> listSubject();
-  bool onboardingSend(List<Topic> topics, List<Subject> subjects);
+  Set<Competence> listCompetence();
+  bool onboardingSend(
+      List<Topic> topics, List<Subject> subjects, List<Competence> competence);
 }
 
 class OnboardingRepositoryImpl extends OnboardingRepository {
@@ -73,7 +74,22 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   }
 
   @override
-  bool onboardingSend(List<Topic> topics, List<Subject> subjects) {
+  bool onboardingSend(
+      List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
     return true;
+  }
+
+  @override
+  Set<Competence> listCompetence() {
+    return {
+      const Competence(id: '12314413', name: 'Reden', checked: false),
+      const Competence(id: '1231321413', name: 'Nichts', checked: false),
+      const Competence(id: '12313fs21413', name: 'Competence', checked: false),
+      const Competence(
+          id: '1231fdaf321413', name: 'Competence', checked: false),
+      const Competence(
+          id: '1231gsdg321413', name: 'Competence', checked: false),
+      const Competence(id: '1231asd321413', name: 'Competence', checked: false),
+    };
   }
 }

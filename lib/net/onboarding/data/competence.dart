@@ -1,29 +1,28 @@
 import 'dart:convert';
 
-import 'package:azlistview/azlistview.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 
 @immutable
-class Subject extends Equatable {
+class Competence extends Equatable {
   final String id;
   final String name;
   final bool checked;
-  const Subject({
+  const Competence({
     required this.id,
     required this.name,
-    this.checked = false,
+    required this.checked,
   });
 
   @override
   List<Object?> get props => [id, name, checked];
 
-  Subject copyWith({
+  Competence copyWith({
     String? id,
     String? name,
     bool? checked,
   }) {
-    return Subject(
+    return Competence(
       id: id ?? this.id,
       name: name ?? this.name,
       checked: checked ?? this.checked,
@@ -40,8 +39,8 @@ class Subject extends Equatable {
     return result;
   }
 
-  factory Subject.fromMap(Map<String, dynamic> map) {
-    return Subject(
+  factory Competence.fromMap(Map<String, dynamic> map) {
+    return Competence(
       id: map['id'] ?? '',
       name: map['name'] ?? '',
       checked: map['checked'] ?? false,
@@ -50,17 +49,20 @@ class Subject extends Equatable {
 
   String toJson() => json.encode(toMap());
 
-  factory Subject.fromJson(String source) =>
-      Subject.fromMap(json.decode(source));
+  factory Competence.fromJson(String source) =>
+      Competence.fromMap(json.decode(source));
 
   @override
-  String toString() => 'Subject(id: $id, name: $name, checked: $checked)';
+  String toString() => 'Competence(id: $id, name: $name, checked: $checked)';
 
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
 
-    return other is Subject && other.id == id;
+    return other is Competence &&
+        other.id == id &&
+        other.name == name &&
+        other.checked == checked;
   }
 
   @override

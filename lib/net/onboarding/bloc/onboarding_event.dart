@@ -33,3 +33,17 @@ class OnboardingSubjectRemove extends OnboardingEvent {
     required this.id,
   });
 }
+
+class CompetenceAdd extends OnboardingEvent {
+  String id;
+  CompetenceAdd({
+    required this.id,
+  });
+}
+
+class CompetenceRemove extends OnboardingEvent {
+  String id;
+  CompetenceRemove({
+    required this.id,
+  });
+}

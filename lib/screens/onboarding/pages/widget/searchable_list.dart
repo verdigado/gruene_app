@@ -3,48 +3,48 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
+
+import 'package:gruene_app/constants/theme_data.dart';
 // ignore: depend_on_referenced_packages
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
-import '../../../../constants/theme_data.dart';
 
-class SubjectListAtoZ extends StatefulWidget {
-  final void Function(Subject sub, bool check) onSelect;
+class SearchableList extends StatefulWidget {
+  final void Function(SearchableListItem sub, bool check) onSelect;
 
-  final List<Subject> subjectList;
+  final List<SearchableListItem> subjectList;
 
-  const SubjectListAtoZ({
+  final bool showIndexbar;
+
+  const SearchableList({
     Key? key,
     required this.subjectList,
     required this.onSelect,
+    this.showIndexbar = true,
   }) : super(key: key);
 
   @override
-  State<SubjectListAtoZ> createState() => _SubjectListAtoZState();
+  State<SearchableList> createState() => _SearchableListState();
 }
 
-class _SubjectListAtoZState extends State<SubjectListAtoZ> {
-  ItemScrollController? itemScrollController;
-  List<String> subjectNames = [];
+class _SearchableListState extends State<SearchableList> {
+  late ItemScrollController itemScrollController;
   String searchPattern = '';
-  List<Subject> subjectList = [];
   // Size of Indexbar
   final int factor = 28;
+  bool clearable = false;
 
-  TextEditingController? textEditingController;
+  late TextEditingController textEditingController;
 
   @override
   void initState() {
     super.initState();
     itemScrollController = ItemScrollController();
     textEditingController = TextEditingController();
-    subjectList = List.from(widget.subjectList);
-
-    subjectNames = subjectList.map((e) => e.name).toList();
-    // short alphabetically
-    SuspensionUtil.sortListBySuspensionTag(subjectList);
-    // create first letter entry
-    SuspensionUtil.setShowSuspensionStatus(subjectList);
+    textEditingController.addListener(() {
+      setState(() {
+        clearable = textEditingController.text.length > 1;
+      });
+    });
   }
 
   @override
@@ -72,21 +72,33 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
                   onPressed: () {
                     var suggestion = extractTop(
                       query: searchPattern,
-                      choices: subjectNames,
+                      choices: widget.subjectList.map((e) => e.name).toList(),
                       limit: 4,
                       cutoff: 50,
                     ).map((e) => e.choice);
-                    var res = subjectList.indexWhere((element) =>
+                    var res = widget.subjectList.indexWhere((element) =>
                         element.name.toLowerCase() ==
                         suggestion.first.toLowerCase());
                     FocusScope.of(context).unfocus();
-                    itemScrollController?.jumpTo(index: res);
+                    itemScrollController.jumpTo(index: res);
                   },
                   icon: const Icon(Icons.search),
                 ),
-                suffixIcon: Transform.rotate(
-                  angle: 0.8,
-                  child: const Icon(Icons.add_circle),
+                suffixIcon: Visibility(
+                  maintainSize: true,
+                  maintainAnimation: true,
+                  maintainState: true,
+                  visible: clearable,
+                  child: InkWell(
+                    onTap: () {
+                      textEditingController.clear();
+                      searchPattern = '';
+                    },
+                    child: Transform.rotate(
+                      angle: 0.8,
+                      child: const Icon(Icons.add_circle),
+                    ),
+                  ),
                 ),
                 hintStyle: Theme.of(context)
                     .textTheme
@@ -96,10 +108,10 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
             ),
             suggestionsCallback: (pattern) {
               if (pattern.isEmpty || pattern.length < 2) return [];
-              searchPattern = pattern;
+
               return extractTop(
                 query: pattern,
-                choices: subjectNames,
+                choices: widget.subjectList.map((e) => e.name).toList(),
                 limit: 4,
                 cutoff: 50,
               ).map((e) => e.choice);
@@ -111,14 +123,14 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
             },
             hideOnEmpty: true,
             onSuggestionSelected: (suggestion) {
-              var matchIndex = subjectList.indexWhere(
+              var matchIndex = widget.subjectList.indexWhere(
                 (element) =>
                     element.name.toLowerCase() == "$suggestion".toLowerCase(),
               );
-              itemScrollController?.jumpTo(
+              itemScrollController.jumpTo(
                 index: matchIndex,
               );
-              textEditingController?.text = '$suggestion';
+              textEditingController.text = '$suggestion';
             },
           ),
         ),
@@ -129,21 +141,22 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
                   con.maxHeight / factor > 12 ? 12 : con.maxHeight / factor;
               return AzListView(
                 itemScrollController: itemScrollController,
-                data: subjectList,
+                data: widget.subjectList,
                 hapticFeedback: true,
                 indexBarItemHeight: con.maxHeight / factor,
                 indexBarAlignment: Alignment.topRight,
                 indexBarOptions:
                     IndexBarOptions(textStyle: TextStyle(fontSize: fontSize)),
                 physics: const BouncingScrollPhysics(),
-                itemCount: subjectList.length,
+                itemCount: widget.subjectList.length,
+                indexBarData: widget.showIndexbar ? kIndexBarData : [],
                 susItemBuilder: (context, index) {
-                  var model = subjectList[index];
+                  var model = widget.subjectList[index];
                   return getSusItem(context, model.getSuspensionTag());
                 },
                 susItemHeight: 36,
                 itemBuilder: (context, index) {
-                  var subject = subjectList[index];
+                  var subject = widget.subjectList[index];
                   var name = subject.name;
                   return ListTile(
                     title: Text(name),
@@ -162,13 +175,11 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
                             ),
                     ),
                     onTap: () {
-                      setState(() {
-                        if (subject.checked) {
-                          widget.onSelect(subject, false);
-                        } else {
-                          widget.onSelect(subject, true);
-                        }
-                      });
+                      if (subject.checked) {
+                        widget.onSelect(subject, false);
+                      } else {
+                        widget.onSelect(subject, true);
+                      }
                     },
                   );
                 },
@@ -195,4 +206,41 @@ class _SubjectListAtoZState extends State<SubjectListAtoZ> {
       ),
     );
   }
+
+  @override
+  void dispose() {
+    textEditingController.dispose();
+    super.dispose();
+  }
+}
+
+class SearchableListItem extends ISuspensionBean {
+  final String id;
+  final String name;
+  final bool checked;
+
+  SearchableListItem({
+    required this.id,
+    required this.name,
+    required this.checked,
+  });
+
+  @override
+  String getSuspensionTag() {
+    if (name.isEmpty) return '#';
+    return name.characters.first.toUpperCase();
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+
+    return other is SearchableListItem &&
+        other.id == id &&
+        other.name == name &&
+        other.checked == checked;
+  }
+
+  @override
+  int get hashCode => id.hashCode ^ name.hashCode ^ checked.hashCode;
 }

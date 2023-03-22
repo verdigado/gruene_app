@@ -1,10 +1,12 @@
+import 'package:azlistview/azlistview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/subject_list.dart';
+import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
 
 class CompetencePage extends StatefulWidget {
   final PageController controller;
@@ -35,15 +37,16 @@ class _CompetencePageState extends State<CompetencePage> {
           child: BlocBuilder<OnboardingBloc, OnboardingState>(
             builder: (context, state) {
               if (state is OnboardingReady) {
-                return SubjectList(
-                  subjectList: state.subject.toList(),
+                return SearchableList(
+                  showIndexbar: false,
+                  subjectList: toSearchableListItem(state.competence),
                   onSelect: (sub, check) {
                     if (check) {
                       BlocProvider.of<OnboardingBloc>(context)
-                          .add(OnboardingSubjectAdd(id: sub.id));
+                          .add(CompetenceAdd(id: sub.id));
                     } else {
                       BlocProvider.of<OnboardingBloc>(context)
-                          .add(OnboardingSubjectRemove(id: sub.id));
+                          .add(CompetenceRemove(id: sub.id));
                     }
                   },
                 );
@@ -67,5 +70,22 @@ class _CompetencePageState extends State<CompetencePage> {
         ),
       ],
     );
+  }
+
+  List<SearchableListItem> toSearchableListItem(Set<Competence> subject) {
+    final items = subject
+        .map((e) =>
+            SearchableListItem(id: e.id, name: e.name, checked: e.checked))
+        .toList()
+      ..sort(
+        (a, b) {
+          var cmp = a.name.compareTo(b.name);
+          if (cmp != 0) return cmp;
+          return a.id.compareTo(b.id);
+        },
+      );
+    // create first letter entry
+    SuspensionUtil.setShowSuspensionStatus(items);
+    return items;
   }
 }
