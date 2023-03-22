@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/net/profile/data/profile.dart';
 
@@ -29,15 +30,15 @@ class ProfileRepositoryImpl extends ProfileRepository {
         politicalParty: 'Bündnis 90/Die Grünen',
         division: 'OV',
         email: [
-          FavouriteValue('gruenerGustav@gruene.de', true),
-          FavouriteValue('gustavGruen@gruene.de', false),
-        ],
+          const FavouriteValue('gruenerGustav@gruene.de', true),
+          const FavouriteValue('gustavGruen@gruene.de', false),
+        ].lock,
         telefon: [
-          FavouriteValue('01725463554', false),
-          FavouriteValue('+491716546335', false),
-          FavouriteValue('004940297234', false),
-          FavouriteValue('0049049301', true)
-        ],
+          const FavouriteValue('01725463554', false),
+          const FavouriteValue('+491716546335', false),
+          const FavouriteValue('004940297234', false),
+          const FavouriteValue('0049049301', true)
+        ].lock,
       ),
     );
   }

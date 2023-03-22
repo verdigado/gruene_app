@@ -13,7 +13,9 @@ class ProfileState extends Equatable {
         profile.description,
         profile.memberProfil,
         profile.memberProfil.email,
-        profile.memberProfil.telefon
+        profile.memberProfil.telefon,
+        profile.initals,
+        status
       ];
 
   ProfileState copyWith({

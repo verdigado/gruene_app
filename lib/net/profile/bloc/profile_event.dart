@@ -38,11 +38,11 @@ class UploadProfileImage extends ProfileEvent {
   List<Object> get props => [img];
 }
 
-class DispatchProfile extends ProfileEvent {
+class SetFavoritProfile extends ProfileEvent {
   final int? favTelfonnumberItemIndex;
   final int? favEmailItemIndex;
 
-  const DispatchProfile({
+  const SetFavoritProfile({
     this.favTelfonnumberItemIndex,
     this.favEmailItemIndex,
   });
