@@ -68,9 +68,8 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('email', value)),
                   onAddFavouriteValue: (favItemIndex) {
-                    context
-                        .read<ProfileBloc>()
-                        .add(DispatchProfile(favEmailItemIndex: favItemIndex));
+                    context.read<ProfileBloc>().add(
+                        SetFavoritProfile(favEmailItemIndex: favItemIndex));
                   },
                   values: [
                     ...state.profile.memberProfil.email.map((e) => e.value)
@@ -113,7 +112,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
                   onAddFavouriteValue: (favItemIndex) {
-                    context.read<ProfileBloc>().add(DispatchProfile(
+                    context.read<ProfileBloc>().add(SetFavoritProfile(
                         favTelfonnumberItemIndex: favItemIndex));
                   },
                   values: [

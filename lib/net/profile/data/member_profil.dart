@@ -1,14 +1,15 @@
 import 'dart:core';
 
 import 'package:equatable/equatable.dart';
+import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
 class MemberProfil extends Equatable {
   final String givenName;
   final String surname;
-  final List<FavouriteValue<String>> email;
-  final List<FavouriteValue<String>> telefon;
+  final IList<FavouriteValue<String>> email;
+  final IList<FavouriteValue<String>> telefon;
   final String politicalParty;
   final String division;
 
@@ -24,8 +25,8 @@ class MemberProfil extends Equatable {
   MemberProfil copyWith({
     String? givenName,
     String? surname,
-    List<FavouriteValue<String>>? email,
-    List<FavouriteValue<String>>? telefon,
+    IList<FavouriteValue<String>>? email,
+    IList<FavouriteValue<String>>? telefon,
     String? politicalParty,
     String? division,
   }) {
