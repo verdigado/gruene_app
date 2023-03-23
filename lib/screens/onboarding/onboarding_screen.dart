@@ -46,90 +46,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
         create: (context) =>
             OnboardingBloc(context.read<OnboardingRepositoryImpl>())
               ..add(OnboardingLoad()),
-        child: SafeArea(
-          child: Scaffold(
-            extendBodyBehindAppBar: true,
-            resizeToAvoidBottomInset: false,
-            appBar: currentPage != 0
-                ? PreferredSize(
-                    preferredSize: const Size(double.infinity, 85),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisSize: MainAxisSize.max,
-                      children: [
-                        IconButton(
-                          icon: const Icon(
-                            Icons.keyboard_backspace,
-                            color: darkGrey,
-                            size: 50,
-                          ),
-                          onPressed: () =>
-                              controller.jumpToPage(currentPage - 1),
-                        ),
-                        progressIndicator(context, pages),
-                      ],
-                    ),
-                  )
-                : PreferredSize(
-                    preferredSize: const Size(0, 0), child: Container()),
-            body: SafeArea(
-              child: PageView(
-                controller: controller,
-                onPageChanged: (value) => setState(() {
-                  currentPage = value;
-                }),
-                physics: const NeverScrollableScrollPhysics(),
-                children: pages,
-              ),
-            ),
-          ),
+        child: Provider(
+          create: (context) =>
+              const ImageProviderDelegate(typ: ImageProviderTyp.cached),
+          child: const OnboardingLayout(),
         ),
       ),
-          create: (context) =>
-              OnboardingBloc(context.read<OnboardingRepository>())
-                ..add(OnboardingLoad()),
-          child: Provider(
-              create: (_) =>
-                  const ImageProviderDelegate(typ: ImageProviderTyp.cached),
-              child: const OnboardingLayout())),
     );
-  }
-
-  PreferredSize progressIndicator(BuildContext context, List<Widget> pages) {
-    return PreferredSize(
-        preferredSize: const Size(double.infinity, 80),
-        child: Padding(
-          padding: const EdgeInsets.only(left: 18, right: 18),
-          child: Column(
-            children: [
-              Align(
-                alignment: Alignment.centerRight,
-                child: Text(
-                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
-                  textAlign: TextAlign.left,
-                ),
-              ),
-              const SizedBox(
-                height: 15,
-              ),
-              ClipRRect(
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: LinearProgressIndicator(
-                    backgroundColor: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withOpacity(0.3),
-                    valueColor: AlwaysStoppedAnimation(
-                        Theme.of(context).colorScheme.secondary),
-                    value: getProgressOfCurrentPage(pages.length - 1)),
-              ),
-            ],
-          ),
-        ));
-  }
-
-  double getProgressOfCurrentPage(int pages) {
-    return currentPage / pages;
   }
 }

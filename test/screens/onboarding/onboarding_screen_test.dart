@@ -60,7 +60,7 @@ void main() {
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
-      when(() => onboardingRepositoryMock.onboardingSend(any(), any()))
+      when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenReturn(true);
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
@@ -99,6 +99,7 @@ void main() {
         () => onboardingRepositoryMock.onboardingSend(
           any(that: containsAll(topics)),
           any(that: containsAll(subjects)),
+          any(that: containsAll(subjects)),
         ),
       );
       verify(
@@ -135,7 +136,7 @@ void main() {
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
-      when(() => onboardingRepositoryMock.onboardingSend(any(), any()))
+      when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenReturn(true);
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
@@ -163,6 +164,7 @@ void main() {
       verify(
         () => onboardingRepositoryMock.onboardingSend(
           any(that: containsAllInOrder([topics.first])),
+          any(that: containsAllInOrder([subjects.first])),
           any(that: containsAllInOrder([subjects.first])),
         ),
       );

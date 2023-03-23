@@ -192,13 +192,9 @@
   "applications":"Anwendungen",
   "account":"Konto",
   "openSettings":"Einstellungen öffnen",
-  "profileImageRemoveErrorMessage":"Fehler beim Löschen vom Profilbild bitte versuchen sie es erneut"
+  "profileImageRemoveErrorMessage":"Fehler beim Löschen vom Profilbild bitte versuchen sie es erneut",
 
   "@subjectHeadline1": {
     "description": "subjectHeadline1"
-  },
-  "tourSliderIntroText":"Oder willst Du erstmal sehen, was Dich hier erwartet?",
-  "@tourSliderIntroText": {
-    "description": "tourSliderIntroText"
   }
 }
