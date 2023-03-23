@@ -49,5 +49,13 @@
 		<true/>
 		<key>UIStatusBarHidden</key>
 		<false/>
+		<key>UISupportedInterfaceOrientations</key>
+        	<array>
+        		<string>UIInterfaceOrientationPortrait</string>
+        	</array>
+       	<key>NSPhotoLibraryUsageDescription</key>
+           <string>$(PRODUCT_NAME) can select a photo for your Profileimage</string>
+       	<key>NSCameraUsageDescription</key>
+       	<string>$(PRODUCT_NAME) can take photo for your Profileimage</string>
 	</dict>
 </plist>

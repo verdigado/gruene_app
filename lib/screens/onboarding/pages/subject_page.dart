@@ -16,6 +16,11 @@ class SubjectPage extends StatelessWidget {
   const SubjectPage(this.controller, {Key? key}) : super(key: key);
 
   @override
+  State<SubjectPage> createState() => _SubjectPageState();
+}
+
+class _SubjectPageState extends State<SubjectPage> {
+  @override
   Widget build(BuildContext context) {
     return Column(
       children: [

@@ -9,6 +9,7 @@ import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/privacy_imprint.dart';
 import 'package:gruene_app/widget/slider_carousel.dart';
+import 'package:vector_graphics/vector_graphics.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -32,8 +33,8 @@ class LoginScreen extends StatelessWidget {
                   rightIcon: Icons.arrow_forward,
                   leftIcon: Icons.arrow_back,
                   iconSize: 35,
-                  backgroundImage: SvgPicture.asset(
-                      Assets.images.gRUENETopicOekologie,
+                  backgroundImage: SvgPicture(
+                      AssetBytesLoader(Assets.images.gruenenTopicOekologieSvg),
                       height: size.height / 100 * 60),
                   controlsBackground: Theme.of(context).primaryColor,
                   pages: [

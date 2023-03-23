@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:fuzzywuzzy/fuzzywuzzy.dart';
+import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 // ignore: depend_on_referenced_packages
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+
 
 class SubjectList extends StatefulWidget {
   final void Function(Subject sub, bool check) onSelect;
@@ -40,6 +42,10 @@ class _SubjectListState extends State<SubjectList> {
     subjectList = List.from(widget.subjectList);
 
     subjectNames = subjectList.map((e) => e.name).toList();
+    // short alphabetically
+    SuspensionUtil.sortListBySuspensionTag(subjectList);
+    // create first letter entry
+    SuspensionUtil.setShowSuspensionStatus(subjectList);
   }
 
   @override
@@ -156,6 +162,22 @@ class _SubjectListState extends State<SubjectList> {
           ),
         )
       ],
+    );
+  }
+
+  Widget getSusItem(BuildContext context, String tag, {double susHeight = 40}) {
+    return Container(
+      height: susHeight,
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.only(left: 16.0),
+      color: Theme.of(context).primaryColorLight,
+      alignment: Alignment.centerLeft,
+      child: Text(
+        tag,
+        softWrap: false,
+        style: const TextStyle(
+            fontSize: 18, color: Colors.black, fontWeight: FontWeight.bold),
+      ),
     );
   }
 }

@@ -5,19 +5,20 @@ import 'package:gruene_app/gen/fonts.gen.dart';
 ///  * CONST Colors
 ///  */
 const MaterialColor mcgpalette0 =
-    MaterialColor(_mcgpalette0PrimaryValue, <int, Color>{
+    MaterialColor(mcgpalette0PrimaryValue, <int, Color>{
   50: Color(0xFFE3ECE6),
   100: Color(0xFFB9CFC2),
   200: Color(0xFF8AAF99),
   300: Color(0xFF5B8F70),
   400: Color(0xFF377751),
-  500: Color(_mcgpalette0PrimaryValue),
+  500: Color(mcgpalette0PrimaryValue),
   600: Color(0xFF12572D),
   700: Color(0xFF0E4D26),
   800: Color(0xFF0B431F),
   900: Color(0xFF063213),
 });
-const int _mcgpalette0PrimaryValue = 0xFF145F32;
+const int mcgpalette0PrimaryValue = 0xFF145F32;
+const greyBackground = Color.fromRGBO(247, 247, 247, 1);
 
 const MaterialColor mcgpalette0Secondary =
     MaterialColor(_mcgpalette0SecondaryValue, <int, Color>{
@@ -26,7 +27,7 @@ const MaterialColor mcgpalette0Secondary =
   200: Color(0xFFA3CB95),
   300: Color(0xFF7EB66B),
   400: Color(0xFF62A64B),
-  500: Color(_mcgpalette0PrimaryValue),
+  500: Color(mcgpalette0PrimaryValue),
   600: Color(0xFF3F8E26),
   700: Color(0xFF378320),
   800: Color(0xFF2F791A),
@@ -127,10 +128,13 @@ const textTheme = TextTheme(
 ///  * ThemeData
 ///  */
 final rootTheme = ThemeData(
-  primaryColor: const Color(_mcgpalette0PrimaryValue),
+  primaryColor: const Color(mcgpalette0PrimaryValue),
   primaryColorLight: const Color(0xFFE3ECE6),
   primaryTextTheme: textTheme,
   fontFamily: FontFamily.ptsans,
+  snackBarTheme: const SnackBarThemeData(
+    backgroundColor: mcgpalette0Secondary,
+  ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
       textStyle: textTheme.labelLarge?.copyWith(color: Colors.white),

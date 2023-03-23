@@ -7,7 +7,7 @@ class ScaffoldWithNavbar extends StatefulWidget {
   final Widget child;
 
   final String titel;
-  final appBarItems = [startScreen, searchScreen];
+  final appBarItems = [startScreen, moreScreen];
 
   ScaffoldWithNavbar({
     Key? key,
@@ -28,7 +28,7 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: Text(widget.titel),
+        title: Text(getTitel(GoRouter.of(context).location)),
       ),
       body: widget.child,
       bottomNavigationBar: BottomNavigationBar(
@@ -39,8 +39,8 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(
-            icon: const Icon(Icons.search),
-            label: AppLocalizations.of(context)!.search,
+            icon: const Icon(Icons.menu),
+            label: AppLocalizations.of(context)!.more,
             backgroundColor: Colors.white,
           ),
         ],

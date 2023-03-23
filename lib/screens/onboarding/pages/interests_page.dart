@@ -32,6 +32,7 @@ class InterestsPage extends StatelessWidget {
                   crossAxisCount: 2,
                   children: state.topics
                       .map((e) => TopicCard(
+                            key: Key('TopicCard_${e.id}'),
                             id: e.id,
                             imgageUrl: e.imageUrl,
                             topic: e.name,
