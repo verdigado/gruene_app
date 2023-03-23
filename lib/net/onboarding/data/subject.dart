@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:azlistview/azlistview.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 

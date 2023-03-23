@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../../../../constants/theme_data.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 
 class ButtonGroupNextPrevious extends StatefulWidget {
   final VoidCallback? next;
