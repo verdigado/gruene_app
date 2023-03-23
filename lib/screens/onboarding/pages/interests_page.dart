@@ -8,12 +8,18 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class InterestsPage extends StatelessWidget {
   final PageController controller;
 
-  const InterestsPage(this.controller, {super.key});
+  final Widget? progressbar;
+
+  const InterestsPage(this.controller, {super.key, this.progressbar});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 100,
+          child: progressbar,
+        ),
         Padding(
           padding: const EdgeInsets.all(18),
           child: Text(
@@ -51,13 +57,14 @@ class InterestsPage extends StatelessWidget {
           },
         ),
         ButtonGroupNextPrevious(
+          buttonNextKey: const Key('ButtonGroupNextInterests'),
           next: () => controller.nextPage(
-              duration: const Duration(microseconds: 700),
-              curve: Curves.easeIn),
+              duration: const Duration(seconds: 1), curve: Curves.ease),
           nextText: AppLocalizations.of(context)!.next,
           previous: () => controller.previousPage(
-              duration: const Duration(microseconds: 700),
-              curve: Curves.easeIn),
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.linear,
+          ),
           previousText: AppLocalizations.of(context)!.skip,
         ),
       ],

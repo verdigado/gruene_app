@@ -14,7 +14,6 @@ class OnboardingLayout extends StatefulWidget {
 }
 
 class _OnboardingLayoutState extends State<OnboardingLayout> {
-  late List<Widget> pages;
   int currentPage = 0;
   late PageController controller;
 
@@ -22,12 +21,6 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
   void initState() {
     super.initState();
     controller = PageController();
-    pages = [
-      IntroPage(controller),
-      InterestsPage(controller),
-      CompetencePage(controller),
-      SubjectPage(controller),
-    ];
   }
 
   @override
@@ -36,23 +29,6 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
       child: Scaffold(
         extendBodyBehindAppBar: true,
         resizeToAvoidBottomInset: false,
-        appBar: currentPage != 0
-            ? PreferredSize(
-                preferredSize: const Size(double.infinity, 80),
-                child: AppBar(
-                  backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-                  leading: CupertinoNavigationBarBackButton(
-                    color: Colors.grey,
-                    previousPageTitle: AppLocalizations.of(context)?.back,
-                    onPressed: () => controller.jumpToPage(currentPage - 1),
-                  ),
-                  elevation: 0,
-                  leadingWidth: 100,
-                  bottom: progressIndicator(context, pages),
-                ),
-              )
-            : PreferredSize(
-                preferredSize: const Size(0, 0), child: Container()),
         body: SafeArea(
           child: PageView(
             key: const Key('Onboarding_PageView'),
@@ -61,14 +37,43 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
               currentPage = value;
             }),
             physics: const NeverScrollableScrollPhysics(),
-            children: pages,
+            children: [
+              IntroPage(controller),
+              InterestsPage(
+                controller,
+                progressbar: getAppBar(context),
+              ),
+              CompetencePage(
+                controller,
+                progressbar: getAppBar(context),
+              ),
+              SubjectPage(
+                controller,
+                progressbar: getAppBar(context),
+              ),
+            ],
           ),
         ),
       ),
     );
   }
 
-  PreferredSize progressIndicator(BuildContext context, List<Widget> pages) {
+  AppBar getAppBar(BuildContext context) {
+    return AppBar(
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+      leading: CupertinoNavigationBarBackButton(
+        color: Colors.grey,
+        previousPageTitle: AppLocalizations.of(context)?.back,
+        onPressed: () => controller.previousPage(
+            duration: const Duration(milliseconds: 700), curve: Curves.linear),
+      ),
+      elevation: 0,
+      leadingWidth: 100,
+      bottom: progressIndicator(context, 3),
+    );
+  }
+
+  PreferredSize progressIndicator(BuildContext context, int stepLength) {
     return PreferredSize(
         preferredSize: const Size(double.infinity, 80),
         child: Padding(
@@ -77,14 +82,21 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
             children: [
               ClipRRect(
                 borderRadius: const BorderRadius.all(Radius.circular(10)),
-                child: LinearProgressIndicator(
-                    backgroundColor: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withOpacity(0.3),
-                    valueColor: AlwaysStoppedAnimation(
-                        Theme.of(context).colorScheme.secondary),
-                    value: getProgressOfCurrentPage(pages.length - 1)),
+                child: TweenAnimationBuilder<double>(
+                    duration: const Duration(seconds: 1),
+                    curve: Curves.easeInOut,
+                    tween: Tween<double>(
+                      begin: currentPage.floorToDouble(),
+                      end: getProgressOfCurrentPage(stepLength),
+                    ),
+                    builder: (context, value, _) => LinearProgressIndicator(
+                        backgroundColor: Theme.of(context)
+                            .colorScheme
+                            .secondary
+                            .withOpacity(0.3),
+                        valueColor: AlwaysStoppedAnimation(
+                            Theme.of(context).colorScheme.secondary),
+                        value: value)),
               ),
               const SizedBox(
                 height: 15,
@@ -92,7 +104,7 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
               Align(
                 alignment: Alignment.bottomLeft,
                 child: Text(
-                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} ${pages.length - 1}',
+                  '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} $stepLength',
                   textAlign: TextAlign.left,
                 ),
               )
@@ -103,5 +115,11 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
 
   double getProgressOfCurrentPage(int pages) {
     return currentPage / pages;
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 }

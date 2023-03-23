@@ -13,12 +13,19 @@ import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart'
 class SubjectPage extends StatelessWidget {
   final PageController controller;
 
-  const SubjectPage(this.controller, {Key? key}) : super(key: key);
+  final Widget? progressbar;
+
+  const SubjectPage(this.controller, {Key? key, this.progressbar})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 100,
+          child: progressbar,
+        ),
         Padding(
           padding: const EdgeInsets.all(18),
           child: Text(
@@ -50,14 +57,15 @@ class SubjectPage extends StatelessWidget {
           ),
         ),
         ButtonGroupNextPrevious(
+          buttonNextKey: const Key('ButtonGroupNextSubject'),
           next: () {
             BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());
             context.go(startScreen);
           },
           nextText: AppLocalizations.of(context)!.next,
           previous: () => controller.previousPage(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
+            duration: const Duration(seconds: 1),
+            curve: Curves.linear,
           ),
           previousText: AppLocalizations.of(context)!.skip,
         ),

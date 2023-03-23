@@ -4,6 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
+import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
@@ -14,6 +15,10 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
 void main() {
+  const double PORTRAIT_WIDTH = 400.0;
+  const double PORTRAIT_HEIGHT = 800.0;
+  const double LANDSCAPE_WIDTH = PORTRAIT_HEIGHT;
+  const double LANDSCAPE_HEIGHT = PORTRAIT_WIDTH;
   group('Onboarding', () {
     tearDown(() async {
       resetMocktailState();
@@ -49,17 +54,33 @@ void main() {
         Topic(
             id: "7",
             name: "Flutter",
+            imageUrl: 'assets/images/Sonnenblume_rgb_aufTransparent.png'),
+        Topic(
+            id: "8",
+            name: "Flutter",
             imageUrl: 'assets/images/Sonnenblume_rgb_aufTransparent.png')
       };
       Set<Subject> subjects = {
-        Subject(id: '1', name: 'Test1'),
-        Subject(id: '2', name: 'Test2'),
-        Subject(id: '3', name: 'Test3')
+        const Subject(id: '1', name: 'Test1'),
+        const Subject(id: '2', name: 'Test2'),
+        const Subject(id: '3', name: 'Test3')
       };
+      Set<Competence> competence = {
+        const Competence(id: '1', name: 'testen', checked: false),
+        const Competence(id: '2', name: 'flutter', checked: false)
+      };
+
+      final TestWidgetsFlutterBinding binding =
+          TestWidgetsFlutterBinding.ensureInitialized();
+
+      await binding.setSurfaceSize(const Size(PORTRAIT_WIDTH, PORTRAIT_HEIGHT));
+
       MockOnboardingRepository onboardingRepositoryMock =
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
+      when(() => onboardingRepositoryMock.listCompetence())
+          .thenReturn(competence);
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenReturn(true);
       final bloc = OnboardingBloc(onboardingRepositoryMock);
@@ -68,7 +89,7 @@ void main() {
       bloc.add(OnboardingLoad());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('intro_page_next_step')));
+      await tester.tap(find.byKey(const Key('ButtonGroupNextIntro')));
       // Because of the PageTransition Animation we need to wait for 1 seconds
       await tester.pumpAndSettle();
       for (var topic in topics) {
@@ -83,23 +104,36 @@ void main() {
         // The grid is 2 x 2 this is the reason that we scroll on every second Card
         if (int.parse(topic.id) % 2 == 0) {
           await tester.drag(find.byKey(const Key('Onboarding_PageView')),
-              const Offset(0.0, -400));
-          await tester.pump();
+              const Offset(0.0, -150));
+          await tester.pumpAndSettle();
         }
       }
-      await tester.tap(find.byKey(const Key('interests_page_next_step')));
+      await tester.tap(find.byKey(const Key('ButtonGroupNextInterests')));
       await tester.pumpAndSettle();
+
+      for (var com in competence) {
+        await tester.tap(find.widgetWithText(ListTile, com.name));
+      }
+
+      await tester.tap(find.byKey(const Key('ButtonGroupNextCompetence')));
+      await tester.pumpAndSettle();
+
       for (var sub in subjects) {
         await tester.tap(find.widgetWithText(ListTile, sub.name));
       }
       await tester.pump();
       bloc.add(OnboardingDone());
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
       verify(
         () => onboardingRepositoryMock.onboardingSend(
-          any(that: containsAll(topics)),
-          any(that: containsAll(subjects)),
-          any(that: containsAll(subjects)),
+          any(that: containsAll(topics.map((e) => e.copyWith(checked: true)))),
+          any(
+              that:
+                  containsAll(subjects.map((e) => e.copyWith(checked: true)))),
+          any(
+              that: containsAll(
+                  competence.map((e) => e.copyWith(checked: true)))),
         ),
       );
       verify(
@@ -107,6 +141,9 @@ void main() {
       ).called(1);
       verify(
         () => onboardingRepositoryMock.listSubject(),
+      ).called(1);
+      verify(
+        () => onboardingRepositoryMock.listCompetence(),
       ).called(1);
     });
 
@@ -128,14 +165,24 @@ void main() {
             imageUrl: 'assets/images/Sonnenblume_rgb_aufTransparent.png'),
       };
       Set<Subject> subjects = {
-        Subject(id: '1', name: 'Test1'),
-        Subject(id: '2', name: 'Test2'),
-        Subject(id: '3', name: 'Test3')
+        const Subject(id: '1', name: 'Test1'),
+        const Subject(id: '2', name: 'Test2'),
+        const Subject(id: '3', name: 'Test3')
       };
+      Set<Competence> competence = {
+        const Competence(id: '1', name: 'a', checked: false),
+        const Competence(id: '2', name: 'b', checked: false)
+      };
+      final TestWidgetsFlutterBinding binding =
+          TestWidgetsFlutterBinding.ensureInitialized();
+
+      await binding.setSurfaceSize(const Size(PORTRAIT_WIDTH, PORTRAIT_HEIGHT));
       MockOnboardingRepository onboardingRepositoryMock =
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
+      when(() => onboardingRepositoryMock.listCompetence())
+          .thenReturn(competence);
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenReturn(true);
       final bloc = OnboardingBloc(onboardingRepositoryMock);
@@ -144,7 +191,7 @@ void main() {
       bloc.add(OnboardingLoad());
       await tester.pumpAndSettle();
 
-      await tester.tap(find.byKey(const Key('intro_page_next_step')));
+      await tester.tap(find.byKey(const Key('ButtonGroupNextIntro')));
       // Because of the PageTransition Animation we need to wait for 1 seconds
       await tester.pumpAndSettle(const Duration(seconds: 1));
       final topicCardKey = find.byKey(Key('TopicCard_${topics.first.id}'));
@@ -152,22 +199,33 @@ void main() {
       await tester.pump();
       var state = tester.state(topicCardKey) as TopicCardState;
       expect(state.checkedState, true);
-      // The grid is 2 x 2 this is the reason that we scroll on every second Card
-      await tester.tap(find.byKey(const Key('interests_page_next_step')));
+      await tester.tap(find.byKey(const Key('ButtonGroupNextInterests')));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+      await tester.tap(find.widgetWithText(ListTile, competence.first.name));
+      await tester.tap(find.byKey(const Key('ButtonGroupNextCompetence')));
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       await tester.tap(find.widgetWithText(ListTile, subjects.first.name));
 
       await tester.pump();
       bloc.add(OnboardingDone());
-      await tester.pumpAndSettle(const Duration(seconds: 1));
+      await tester.pumpAndSettle(const Duration(seconds: 2));
       verify(
         () => onboardingRepositoryMock.onboardingSend(
-          any(that: containsAllInOrder([topics.first])),
-          any(that: containsAllInOrder([subjects.first])),
-          any(that: containsAllInOrder([subjects.first])),
+          any(
+              that: containsAllInOrder(
+                  [topics.first].map((e) => e.copyWith(checked: true)))),
+          any(
+              that: containsAllInOrder(
+                  [subjects.first].map((e) => e.copyWith(checked: true)))),
+          any(
+              that: containsAllInOrder(
+                  [competence.first].map((e) => e.copyWith(checked: true)))),
         ),
       );
+      verify(
+        () => onboardingRepositoryMock.listCompetence(),
+      ).called(1);
       verify(
         () => onboardingRepositoryMock.listTopic(),
       ).called(1);

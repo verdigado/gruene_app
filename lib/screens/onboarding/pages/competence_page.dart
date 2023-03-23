@@ -10,12 +10,22 @@ import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart'
 class CompetencePage extends StatelessWidget {
   final PageController controller;
 
-  const CompetencePage(this.controller, {Key? key}) : super(key: key);
+  final Widget? progressbar;
+
+  const CompetencePage(
+    this.controller, {
+    Key? key,
+    this.progressbar,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
+        SizedBox(
+          height: 100,
+          child: progressbar,
+        ),
         Padding(
           padding: const EdgeInsets.all(18),
           child: SizedBox(
@@ -52,13 +62,13 @@ class CompetencePage extends StatelessWidget {
           ),
         ),
         ButtonGroupNextPrevious(
+          buttonNextKey: const Key('ButtonGroupNextCompetence'),
           next: () => controller.nextPage(
-              duration: const Duration(microseconds: 700),
-              curve: Curves.easeIn),
+              duration: const Duration(seconds: 1), curve: Curves.ease),
           nextText: AppLocalizations.of(context)!.next,
           previous: () => controller.previousPage(
-            duration: const Duration(milliseconds: 300),
-            curve: Curves.easeInOut,
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.linear,
           ),
           previousText: AppLocalizations.of(context)!.skip,
         ),

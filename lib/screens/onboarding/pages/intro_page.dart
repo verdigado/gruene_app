@@ -7,24 +7,18 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
-class IntroPage extends StatefulWidget {
+class IntroPage extends StatelessWidget {
   final PageController controller;
 
   const IntroPage(this.controller, {super.key});
 
   @override
-  State<IntroPage> createState() => _IntroPageState();
-}
-
-class _IntroPageState extends State<IntroPage> {
-  @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         SvgPicture(AssetBytesLoader(Assets.images.gruenenTopicOekologieSvg),
-            height: size.height / 100 * 40),
+            height: 300),
         const SizedBox(height: 10),
         Expanded(
           child: Column(
@@ -49,13 +43,17 @@ class _IntroPageState extends State<IntroPage> {
           ),
         ),
         ButtonGroupNextPrevious(
-          next: () => widget.controller.nextPage(
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.easeIn),
-          nextText: AppLocalizations.of(context)!.askForInterest,
-          previous: () => context.go(startScreen),
-          previousText: AppLocalizations.of(context)!.skip,
-        ),
+            buttonNextKey: const Key('ButtonGroupNextIntro'),
+            nextText: AppLocalizations.of(context)!.askForInterest,
+            previous: () => context.go(startScreen),
+            previousText: AppLocalizations.of(context)!.skip,
+            next: () {
+              controller.nextPage(
+                // duration of Animation should be longer as usual to Load the Images
+                duration: const Duration(seconds: 2),
+                curve: Curves.ease,
+              );
+            }),
       ],
     );
   }

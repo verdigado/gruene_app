@@ -7,12 +7,15 @@ class ButtonGroupNextPrevious extends StatelessWidget {
   final VoidCallback? previous;
   final String previousText;
 
+  final Key? buttonNextKey;
+
   const ButtonGroupNextPrevious({
     Key? key,
     this.next,
     this.nextText = 'Next',
     this.previous,
     this.previousText = 'Previous',
+    this.buttonNextKey,
   }) : super(key: key);
 
   @override
@@ -30,6 +33,7 @@ class ButtonGroupNextPrevious extends StatelessWidget {
           ),
         ),
         ElevatedButton(
+            key: buttonNextKey,
             onPressed: next,
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
