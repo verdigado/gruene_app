@@ -5,16 +5,11 @@ import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class InterestsPage extends StatefulWidget {
+class InterestsPage extends StatelessWidget {
   final PageController controller;
 
   const InterestsPage(this.controller, {super.key});
 
-  @override
-  State<InterestsPage> createState() => _InterestsPageState();
-}
-
-class _InterestsPageState extends State<InterestsPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -55,11 +50,11 @@ class _InterestsPageState extends State<InterestsPage> {
           },
         ),
         ButtonGroupNextPrevious(
-          next: () => widget.controller.nextPage(
+          next: () => controller.nextPage(
               duration: const Duration(microseconds: 700),
               curve: Curves.easeIn),
           nextText: AppLocalizations.of(context)!.next,
-          previous: () => widget.controller.previousPage(
+          previous: () => controller.previousPage(
               duration: const Duration(microseconds: 700),
               curve: Curves.easeIn),
           previousText: AppLocalizations.of(context)!.skip,

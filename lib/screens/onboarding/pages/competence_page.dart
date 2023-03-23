@@ -7,16 +7,11 @@ import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
 
-class CompetencePage extends StatefulWidget {
+class CompetencePage extends StatelessWidget {
   final PageController controller;
 
   const CompetencePage(this.controller, {Key? key}) : super(key: key);
 
-  @override
-  State<CompetencePage> createState() => _CompetencePageState();
-}
-
-class _CompetencePageState extends State<CompetencePage> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -57,11 +52,11 @@ class _CompetencePageState extends State<CompetencePage> {
           ),
         ),
         ButtonGroupNextPrevious(
-          next: () => widget.controller.nextPage(
+          next: () => controller.nextPage(
               duration: const Duration(microseconds: 700),
               curve: Curves.easeIn),
           nextText: AppLocalizations.of(context)!.next,
-          previous: () => widget.controller.previousPage(
+          previous: () => controller.previousPage(
             duration: const Duration(milliseconds: 300),
             curve: Curves.easeInOut,
           ),
