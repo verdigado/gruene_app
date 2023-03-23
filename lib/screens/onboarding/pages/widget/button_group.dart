@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 
-class ButtonGroupNextPrevious extends StatefulWidget {
+class ButtonGroupNextPrevious extends StatelessWidget {
   final VoidCallback? next;
   final String nextText;
   final VoidCallback? previous;
@@ -15,12 +15,6 @@ class ButtonGroupNextPrevious extends StatefulWidget {
     this.previousText = 'Previous',
   }) : super(key: key);
 
-  @override
-  State<ButtonGroupNextPrevious> createState() =>
-      _ButtonGroupNextPreviousState();
-}
-
-class _ButtonGroupNextPreviousState extends State<ButtonGroupNextPrevious> {
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -36,14 +30,14 @@ class _ButtonGroupNextPreviousState extends State<ButtonGroupNextPrevious> {
           ),
         ),
         ElevatedButton(
-            onPressed: widget.next,
-            child: Text(widget.nextText,
+            onPressed: next,
+            child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
         const SizedBox(height: 10),
         ElevatedButton(
-          onPressed: widget.previous,
+          onPressed: previous,
           style: grayButtonStyle,
-          child: Text(widget.previousText,
+          child: Text(previousText,
               style: textTheme.labelLarge?.copyWith(color: darkGrey)),
         ),
         const SizedBox(height: 20),
