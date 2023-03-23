@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:gruene_app/screens/onboarding/pages/competence_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/interests_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/intro_page.dart';
 import 'package:gruene_app/screens/onboarding/pages/subject_page.dart';
@@ -24,7 +25,8 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
     pages = [
       IntroPage(controller),
       InterestsPage(controller),
-      SubjectPage(controller)
+      CompetencePage(controller),
+      SubjectPage(controller),
     ];
   }
 
