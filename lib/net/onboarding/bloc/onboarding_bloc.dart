@@ -94,6 +94,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
 
     on<OnboardingDone>(
       (event, emit) {
+        // ToDo: Loading State should be implemented
         //emit(OnboardingSending());
         final currentState = state;
         if (currentState is OnboardingReady) {
@@ -123,10 +124,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<CompetenceAdd>((event, emit) {
       final currentState = state;
       if (currentState is OnboardingReady) {
-        final markedSubject = currentState.competence
+        final markedCompetence = currentState.competence
             .where((element) => element.id == event.id)
             .first;
-        final toAdd = markedSubject.copyWith(checked: true);
+        final toAdd = markedCompetence.copyWith(checked: true);
         final rest =
             currentState.competence.where((element) => element.id != event.id);
         emit(
@@ -141,10 +142,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     on<CompetenceRemove>((event, emit) {
       final currentState = state;
       if (currentState is OnboardingReady) {
-        final markedSubject = currentState.competence
+        final markedCompetence = currentState.competence
             .where((element) => element.id == event.id)
             .first;
-        final toRemove = markedSubject.copyWith(checked: false);
+        final toRemove = markedCompetence.copyWith(checked: false);
         final rest = currentState.competence
             .where((element) => element.id != event.id)
             .toSet();

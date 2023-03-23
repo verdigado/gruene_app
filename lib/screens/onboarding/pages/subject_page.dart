@@ -31,7 +31,7 @@ class SubjectPage extends StatelessWidget {
             builder: (context, state) {
               if (state is OnboardingReady) {
                 return SearchableList(
-                  subjectList: toSearchableListItem(state.subject),
+                  searchableItemList: toSearchableListItem(state.subject),
                   onSelect: (sub, check) {
                     if (check) {
                       BlocProvider.of<OnboardingBloc>(context)

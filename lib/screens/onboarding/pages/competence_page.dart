@@ -39,14 +39,14 @@ class _CompetencePageState extends State<CompetencePage> {
               if (state is OnboardingReady) {
                 return SearchableList(
                   showIndexbar: false,
-                  subjectList: toSearchableListItem(state.competence),
-                  onSelect: (sub, check) {
+                  searchableItemList: toSearchableListItem(state.competence),
+                  onSelect: (com, check) {
                     if (check) {
                       BlocProvider.of<OnboardingBloc>(context)
-                          .add(CompetenceAdd(id: sub.id));
+                          .add(CompetenceAdd(id: com.id));
                     } else {
                       BlocProvider.of<OnboardingBloc>(context)
-                          .add(CompetenceRemove(id: sub.id));
+                          .add(CompetenceRemove(id: com.id));
                     }
                   },
                 );
@@ -84,8 +84,6 @@ class _CompetencePageState extends State<CompetencePage> {
           return a.id.compareTo(b.id);
         },
       );
-    // create first letter entry
-    SuspensionUtil.setShowSuspensionStatus(items);
     return items;
   }
 }

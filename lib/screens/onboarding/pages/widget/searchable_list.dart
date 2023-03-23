@@ -9,15 +9,15 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:scrollable_positioned_list/scrollable_positioned_list.dart';
 
 class SearchableList extends StatefulWidget {
-  final void Function(SearchableListItem sub, bool check) onSelect;
+  final void Function(SearchableListItem item, bool check) onSelect;
 
-  final List<SearchableListItem> subjectList;
+  final List<SearchableListItem> searchableItemList;
 
   final bool showIndexbar;
 
   const SearchableList({
     Key? key,
-    required this.subjectList,
+    required this.searchableItemList,
     required this.onSelect,
     this.showIndexbar = true,
   }) : super(key: key);
@@ -72,11 +72,12 @@ class _SearchableListState extends State<SearchableList> {
                   onPressed: () {
                     var suggestion = extractTop(
                       query: searchPattern,
-                      choices: widget.subjectList.map((e) => e.name).toList(),
+                      choices:
+                          widget.searchableItemList.map((e) => e.name).toList(),
                       limit: 4,
                       cutoff: 50,
                     ).map((e) => e.choice);
-                    var res = widget.subjectList.indexWhere((element) =>
+                    var res = widget.searchableItemList.indexWhere((element) =>
                         element.name.toLowerCase() ==
                         suggestion.first.toLowerCase());
                     FocusScope.of(context).unfocus();
@@ -111,7 +112,7 @@ class _SearchableListState extends State<SearchableList> {
 
               return extractTop(
                 query: pattern,
-                choices: widget.subjectList.map((e) => e.name).toList(),
+                choices: widget.searchableItemList.map((e) => e.name).toList(),
                 limit: 4,
                 cutoff: 50,
               ).map((e) => e.choice);
@@ -123,7 +124,7 @@ class _SearchableListState extends State<SearchableList> {
             },
             hideOnEmpty: true,
             onSuggestionSelected: (suggestion) {
-              var matchIndex = widget.subjectList.indexWhere(
+              var matchIndex = widget.searchableItemList.indexWhere(
                 (element) =>
                     element.name.toLowerCase() == "$suggestion".toLowerCase(),
               );
@@ -141,28 +142,30 @@ class _SearchableListState extends State<SearchableList> {
                   con.maxHeight / factor > 12 ? 12 : con.maxHeight / factor;
               return AzListView(
                 itemScrollController: itemScrollController,
-                data: widget.subjectList,
+                data: widget.searchableItemList,
                 hapticFeedback: true,
                 indexBarItemHeight: con.maxHeight / factor,
                 indexBarAlignment: Alignment.topRight,
                 indexBarOptions:
                     IndexBarOptions(textStyle: TextStyle(fontSize: fontSize)),
                 physics: const BouncingScrollPhysics(),
-                itemCount: widget.subjectList.length,
+                itemCount: widget.searchableItemList.length,
                 indexBarData: widget.showIndexbar ? kIndexBarData : [],
-                susItemBuilder: (context, index) {
-                  var model = widget.subjectList[index];
-                  return getSusItem(context, model.getSuspensionTag());
-                },
+                susItemBuilder: widget.showIndexbar
+                    ? (context, index) {
+                        var model = widget.searchableItemList[index];
+                        return getSusItem(context, model.getSuspensionTag());
+                      }
+                    : null,
                 susItemHeight: 36,
                 itemBuilder: (context, index) {
-                  var subject = widget.subjectList[index];
-                  var name = subject.name;
+                  var item = widget.searchableItemList[index];
+                  var name = item.name;
                   return ListTile(
                     title: Text(name),
                     trailing: Padding(
                       padding: const EdgeInsets.only(right: 10),
-                      child: subject.checked
+                      child: item.checked
                           ? Icon(
                               Icons.check_circle,
                               color: Theme.of(context).colorScheme.secondary,
@@ -175,10 +178,10 @@ class _SearchableListState extends State<SearchableList> {
                             ),
                     ),
                     onTap: () {
-                      if (subject.checked) {
-                        widget.onSelect(subject, false);
+                      if (item.checked) {
+                        widget.onSelect(item, false);
                       } else {
-                        widget.onSelect(subject, true);
+                        widget.onSelect(item, true);
                       }
                     },
                   );
