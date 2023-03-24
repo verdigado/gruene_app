@@ -15,11 +15,14 @@ class SearchableList extends StatefulWidget {
 
   final bool showIndexbar;
 
+  final bool showDivider;
+
   const SearchableList({
     Key? key,
     required this.searchableItemList,
     required this.onSelect,
     this.showIndexbar = true,
+    this.showDivider = true,
   }) : super(key: key);
 
   @override
@@ -67,7 +70,7 @@ class _SearchableListState extends State<SearchableList> {
                     borderRadius: BorderRadius.circular(8.0)),
                 filled: true,
                 fillColor: unfocusedGrey,
-                hintText: AppLocalizations.of(context)!.subjectSearchHint,
+                hintText: AppLocalizations.of(context)!.search,
                 prefixIcon: IconButton(
                   onPressed: () {
                     var suggestion = extractTop(
@@ -161,29 +164,42 @@ class _SearchableListState extends State<SearchableList> {
                 itemBuilder: (context, index) {
                   var item = widget.searchableItemList[index];
                   var name = item.name;
-                  return ListTile(
-                    title: Text(name),
-                    trailing: Padding(
-                      padding: const EdgeInsets.only(right: 10),
-                      child: item.checked
-                          ? Icon(
-                              Icons.check_circle,
-                              color: Theme.of(context).colorScheme.secondary,
-                              size: 30,
-                            )
-                          : Icon(
-                              Icons.add,
-                              color: Theme.of(context).colorScheme.secondary,
-                              size: 30,
-                            ),
-                    ),
-                    onTap: () {
-                      if (item.checked) {
-                        widget.onSelect(item, false);
-                      } else {
-                        widget.onSelect(item, true);
-                      }
-                    },
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(name),
+                        trailing: Padding(
+                          padding: const EdgeInsets.only(right: 10),
+                          child: item.checked
+                              ? Icon(
+                                  Icons.check_circle,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  size: 30,
+                                )
+                              : Icon(
+                                  Icons.add,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
+                                  size: 30,
+                                ),
+                        ),
+                        onTap: () {
+                          if (item.checked) {
+                            widget.onSelect(item, false);
+                          } else {
+                            widget.onSelect(item, true);
+                          }
+                        },
+                      ),
+                      Visibility(
+                          visible: isLastElementForLetter(name),
+                          maintainSize: true,
+                          maintainAnimation: true,
+                          maintainState: true,
+                          maintainInteractivity: true,
+                          child: const Divider())
+                    ],
                   );
                 },
               );
@@ -192,6 +208,18 @@ class _SearchableListState extends State<SearchableList> {
         )
       ],
     );
+  }
+
+  bool isLastElementForLetter(String name) {
+    return widget.searchableItemList
+            .where(
+              (element) => element.name.characters.first
+                  .startsWith(name.characters.first),
+            )
+            .toList()
+            .last
+            .name !=
+        name;
   }
 
   Widget getSusItem(BuildContext context, String tag, {double susHeight = 40}) {

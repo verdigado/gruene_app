@@ -94,9 +94,7 @@ class TopicCardState extends State<TopicCard> {
             },
             child: Icon(
               checkedState ? Icons.check : Icons.add,
-              color: checkedState
-                  ? Theme.of(context).colorScheme.secondary
-                  : Colors.black,
+              color: Theme.of(context).colorScheme.secondary,
               size: cardSize / 6,
             ),
           ),

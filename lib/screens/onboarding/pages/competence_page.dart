@@ -66,7 +66,7 @@ class CompetencePage extends StatelessWidget {
           next: () => controller.nextPage(
               duration: const Duration(seconds: 1), curve: Curves.ease),
           nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.previousPage(
+          previous: () => controller.nextPage(
             duration: const Duration(milliseconds: 700),
             curve: Curves.linear,
           ),

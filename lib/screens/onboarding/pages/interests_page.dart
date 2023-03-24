@@ -20,11 +20,14 @@ class InterestsPage extends StatelessWidget {
           height: 100,
           child: progressbar,
         ),
-        Padding(
-          padding: const EdgeInsets.all(18),
-          child: Text(
-            AppLocalizations.of(context)!.interestsPageHeadline1,
-            style: Theme.of(context).primaryTextTheme.displayMedium,
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Text(
+              AppLocalizations.of(context)!.interestsPageHeadline1,
+              style: Theme.of(context).primaryTextTheme.displayMedium,
+            ),
           ),
         ),
         BlocBuilder<OnboardingBloc, OnboardingState>(
@@ -61,7 +64,7 @@ class InterestsPage extends StatelessWidget {
           next: () => controller.nextPage(
               duration: const Duration(seconds: 1), curve: Curves.ease),
           nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.previousPage(
+          previous: () => controller.nextPage(
             duration: const Duration(milliseconds: 700),
             curve: Curves.linear,
           ),

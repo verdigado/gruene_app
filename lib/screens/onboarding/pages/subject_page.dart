@@ -15,7 +15,10 @@ class SubjectPage extends StatelessWidget {
 
   final Widget? progressbar;
 
-  const SubjectPage(this.controller, {Key? key, this.progressbar})
+  final double progressbarHeight;
+
+  const SubjectPage(this.controller,
+      {Key? key, this.progressbar, this.progressbarHeight = 100})
       : super(key: key);
 
   @override
@@ -23,7 +26,7 @@ class SubjectPage extends StatelessWidget {
     return Column(
       children: [
         SizedBox(
-          height: 100,
+          height: progressbarHeight,
           child: progressbar,
         ),
         Padding(
@@ -63,10 +66,7 @@ class SubjectPage extends StatelessWidget {
             context.go(startScreen);
           },
           nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.previousPage(
-            duration: const Duration(seconds: 1),
-            curve: Curves.linear,
-          ),
+          previous: () => context.go(startScreen),
           previousText: AppLocalizations.of(context)!.skip,
         ),
       ],
