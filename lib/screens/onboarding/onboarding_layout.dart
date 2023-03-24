@@ -101,10 +101,10 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
           ClipRRect(
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: TweenAnimationBuilder<double>(
-                duration: const Duration(seconds: 1),
-                curve: Curves.easeInOut,
+                duration: const Duration(milliseconds: 1500),
+                curve: Curves.ease,
                 tween: Tween<double>(
-                  begin: currentPage.floorToDouble(),
+                  begin: currentPage.floorToDouble() - 1,
                   end: getProgressOfCurrentPage(stepLength),
                 ),
                 builder: (context, value, _) => LinearProgressIndicator(
