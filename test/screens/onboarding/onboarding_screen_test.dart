@@ -80,7 +80,9 @@ void main() {
       when(() => onboardingRepositoryMock.listCompetence())
           .thenReturn(competence);
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
-          .thenReturn(true);
+          .thenAnswer(
+        (invocation) => Future.value(true),
+      );
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
       await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
@@ -120,8 +122,8 @@ void main() {
         await tester.tap(find.widgetWithText(ListTile, sub.name));
       }
       await tester.pump();
-      bloc.add(OnboardingDone());
-      await tester.pumpAndSettle(const Duration(seconds: 2));
+      bloc.add(OnboardingDone(navigateToNext: false));
+      await tester.pump(const Duration(seconds: 2));
 
       verify(
         () => onboardingRepositoryMock.onboardingSend(
@@ -134,6 +136,9 @@ void main() {
                   competence.map((e) => e.copyWith(checked: true)))),
         ),
       );
+
+      await tester.pumpAndSettle(const Duration(seconds: 2));
+
       verify(
         () => onboardingRepositoryMock.listTopic(),
       ).called(1);
@@ -143,6 +148,7 @@ void main() {
       verify(
         () => onboardingRepositoryMock.listCompetence(),
       ).called(1);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
     });
 
     testWidgets(
@@ -182,7 +188,9 @@ void main() {
       when(() => onboardingRepositoryMock.listCompetence())
           .thenReturn(competence);
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
-          .thenReturn(true);
+          .thenAnswer(
+        (invocation) => Future.value(true),
+      );
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
       await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
@@ -206,7 +214,7 @@ void main() {
       await tester.tap(find.widgetWithText(ListTile, subjects.first.name));
 
       await tester.pump();
-      bloc.add(OnboardingDone());
+      bloc.add(OnboardingDone(navigateToNext: false));
       await tester.pumpAndSettle(const Duration(seconds: 2));
       verify(
         () => onboardingRepositoryMock.onboardingSend(
@@ -230,6 +238,7 @@ void main() {
       verify(
         () => onboardingRepositoryMock.listSubject(),
       ).called(1);
+      await tester.pumpAndSettle(const Duration(seconds: 2));
     });
   });
 }

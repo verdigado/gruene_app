@@ -196,5 +196,7 @@
 
   "@subjectHeadline1": {
     "description": "subjectHeadline1"
-  }
+  },
+
+  "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind"
 }

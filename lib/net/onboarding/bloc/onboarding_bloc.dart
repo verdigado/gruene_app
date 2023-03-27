@@ -102,7 +102,7 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
     );
 
     on<OnboardingDone>(
-      (event, emit) {
+      (event, emit) async {
         // ToDo: Loading State should be implemented
         //emit(OnboardingSending());
         final currentState = state;
@@ -119,11 +119,12 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             'selectedSubjects': sub,
             'selectedCompetence': competence
           }));
-          if (onboardingRepository.onboardingSend(topic, sub, competence)) {
-            final sendEvent = OnboardingSended(
-                selectSubject: sub, selectTopis: topic, competence: competence);
-            emit(sendEvent);
-            emit(OnboardingSending());
+          final sendEvent = OnboardingSending(
+              selectSubject: sub, selectTopis: topic, competence: competence);
+          emit(sendEvent);
+          if (await onboardingRepository.onboardingSend(
+              topic, sub, competence)) {
+            emit(OnboardingSended(navigateToNext: event.navigateToNext));
           } else {
             emit(OnboardingSendFailure());
           }

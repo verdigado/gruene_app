@@ -7,7 +7,7 @@ abstract class OnboardingRepository {
 
   Set<Subject> listSubject();
   Set<Competence> listCompetence();
-  bool onboardingSend(
+  Future<bool> onboardingSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence);
 }
 
@@ -74,9 +74,9 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   }
 
   @override
-  bool onboardingSend(
+  Future<bool> onboardingSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
-    return true;
+    return Future.delayed(Duration(seconds: 2), () => true);
   }
 
   @override

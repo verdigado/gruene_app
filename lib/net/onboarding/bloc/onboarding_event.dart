@@ -4,7 +4,12 @@ abstract class OnboardingEvent {}
 
 class OnboardingLoad extends OnboardingEvent {}
 
-class OnboardingDone extends OnboardingEvent {}
+class OnboardingDone extends OnboardingEvent {
+  final bool navigateToNext;
+  OnboardingDone({
+    this.navigateToNext = true,
+  });
+}
 
 class OnboardingTopicAdd extends OnboardingEvent {
   String id;
