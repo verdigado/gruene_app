@@ -24,7 +24,6 @@ class ButtonGroupNextPrevious extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        const SizedBox(height: 1),
         Container(
           height: 10,
           decoration: const BoxDecoration(

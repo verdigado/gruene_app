@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
@@ -33,6 +34,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
           subject: currentState.subject,
           competence: currentState.competence,
         ));
+      } else {
+        stateError('OnboardingTopicAdd');
       }
     });
     on<OnboardingTopicRemove>(
@@ -48,6 +51,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             subject: currentState.subject,
             competence: currentState.competence,
           ));
+        } else {
+          stateError('OnboardingTopicRemove');
         }
       },
     );
@@ -68,6 +73,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               subject: {toAdd, ...rest},
             ),
           );
+        } else {
+          stateError('OnboardingSubjectAdd');
         }
       },
     );
@@ -88,6 +95,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
                 topics: currentState.topics,
                 competence: currentState.competence),
           );
+        } else {
+          stateError('OnboardingSubjectRemove');
         }
       },
     );
@@ -111,10 +120,10 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             'selectedCompetence': competence
           }));
           if (onboardingRepository.onboardingSend(topic, sub, competence)) {
-            emit(OnboardingSended(
-                selectSubject: sub,
-                selectTopis: topic,
-                competence: competence));
+            final sendEvent = OnboardingSended(
+                selectSubject: sub, selectTopis: topic, competence: competence);
+            emit(sendEvent);
+            emit(OnboardingSending());
           } else {
             emit(OnboardingSendFailure());
           }
@@ -137,6 +146,8 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             competence: {toAdd, ...rest},
           ),
         );
+      } else {
+        stateError('OnboardingSubjectRemove');
       }
     });
     on<CompetenceRemove>((event, emit) {
@@ -155,7 +166,18 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               topics: currentState.topics,
               subject: currentState.subject),
         );
+      } else {
+        stateError('OnboardingSubjectRemove');
       }
     });
+  }
+
+  void stateError(String event) {
+    onError(
+        BlocError(
+            message:
+                'State Error $event is not in the desired State current State is ${state.runtimeType}',
+            expose: false),
+        StackTrace.current);
   }
 }
