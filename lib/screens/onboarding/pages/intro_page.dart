@@ -35,7 +35,7 @@ class IntroPage extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
                   child: Text(
-                    textAlign: TextAlign.center,
+                    textAlign: TextAlign.left,
                     AppLocalizations.of(context)!.customPageHeadline2,
                     style: Theme.of(context).primaryTextTheme.bodyMedium,
                   ),

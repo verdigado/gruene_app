@@ -60,6 +60,7 @@ class InterestsPage extends StatelessWidget {
           },
         ),
         ButtonGroupNextPrevious(
+          onlyNext: true,
           buttonNextKey: const Key('ButtonGroupNextInterests'),
           next: () => controller.nextPage(
               duration: const Duration(seconds: 1), curve: Curves.ease),

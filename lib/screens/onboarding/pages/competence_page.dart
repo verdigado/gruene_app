@@ -62,6 +62,7 @@ class CompetencePage extends StatelessWidget {
           ),
         ),
         ButtonGroupNextPrevious(
+          onlyNext: true,
           buttonNextKey: const Key('ButtonGroupNextCompetence'),
           next: () => controller.nextPage(
               duration: const Duration(seconds: 1), curve: Curves.ease),

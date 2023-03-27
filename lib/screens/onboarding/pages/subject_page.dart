@@ -42,6 +42,7 @@ class SubjectPage extends StatelessWidget {
               if (state is OnboardingReady) {
                 return SearchableList(
                   searchableItemList: toSearchableListItem(state.subject),
+                  paddingTralling: 20,
                   onSelect: (sub, check) {
                     if (check) {
                       BlocProvider.of<OnboardingBloc>(context)
@@ -60,6 +61,7 @@ class SubjectPage extends StatelessWidget {
           ),
         ),
         ButtonGroupNextPrevious(
+          onlyNext: true,
           buttonNextKey: const Key('ButtonGroupNextSubject'),
           next: () {
             BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());

@@ -17,12 +17,15 @@ class SearchableList extends StatefulWidget {
 
   final bool showDivider;
 
+  final double paddingTralling;
+
   const SearchableList({
     Key? key,
     required this.searchableItemList,
     required this.onSelect,
     this.showIndexbar = true,
     this.showDivider = true,
+    this.paddingTralling = 10,
   }) : super(key: key);
 
   @override
@@ -166,10 +169,14 @@ class _SearchableListState extends State<SearchableList> {
                   var name = item.name;
                   return Column(
                     children: [
+                      const SizedBox(
+                        height: 2,
+                      ),
                       ListTile(
                         title: Text(name),
                         trailing: Padding(
-                          padding: const EdgeInsets.only(right: 10),
+                          padding:
+                              EdgeInsets.only(right: widget.paddingTralling),
                           child: item.checked
                               ? Icon(
                                   Icons.check_circle,
@@ -193,12 +200,17 @@ class _SearchableListState extends State<SearchableList> {
                         },
                       ),
                       Visibility(
-                          visible: isLastElementForLetter(name),
+                          visible: (widget.showDivider &&
+                                  widget.searchableItemList.last.name !=
+                                      item.name) ||
+                              isLastElementForLetter(name),
                           maintainSize: true,
                           maintainAnimation: true,
                           maintainState: true,
                           maintainInteractivity: true,
-                          child: const Divider())
+                          child: const Divider(
+                            height: 2,
+                          ))
                     ],
                   );
                 },

@@ -23,6 +23,13 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
   void initState() {
     super.initState();
     controller = PageController();
+    controller.addListener(() {
+      setState(() {
+        if (controller.page != null) {
+          currentPage = controller.page!.toInt();
+        }
+      });
+    });
     SystemChrome.setSystemUIOverlayStyle(
         const SystemUiOverlayStyle(statusBarColor: Colors.black));
   }
@@ -92,7 +99,7 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
             alignment: Alignment.bottomRight,
             child: Text(
               textAlign: TextAlign.right,
-              '${AppLocalizations.of(context)?.step} $currentPage ${AppLocalizations.of(context)?.stepOf} $stepLength',
+              '${AppLocalizations.of(context)?.step} ${currentPage == 0 ? 1 : currentPage} ${AppLocalizations.of(context)?.stepOf} $stepLength',
             ),
           ),
           const SizedBox(
@@ -102,19 +109,20 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
             borderRadius: const BorderRadius.all(Radius.circular(10)),
             child: TweenAnimationBuilder<double>(
                 duration: const Duration(milliseconds: 1500),
-                curve: Curves.ease,
+                curve: Curves.easeIn,
                 tween: Tween<double>(
-                  begin: currentPage.floorToDouble() - 1,
+                  begin: currentPage / stepLength,
                   end: getProgressOfCurrentPage(stepLength),
                 ),
                 builder: (context, value, _) => LinearProgressIndicator(
-                    backgroundColor: Theme.of(context)
-                        .colorScheme
-                        .secondary
-                        .withOpacity(0.3),
-                    valueColor: AlwaysStoppedAnimation(
-                        Theme.of(context).colorScheme.secondary),
-                    value: value)),
+                      backgroundColor: Theme.of(context)
+                          .colorScheme
+                          .secondary
+                          .withOpacity(0.3),
+                      valueColor: AlwaysStoppedAnimation(
+                          Theme.of(context).colorScheme.secondary),
+                      value: value,
+                    )),
           ),
         ],
       ),

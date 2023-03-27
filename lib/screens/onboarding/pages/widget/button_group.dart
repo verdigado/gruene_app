@@ -8,6 +8,7 @@ class ButtonGroupNextPrevious extends StatelessWidget {
   final String previousText;
 
   final Key? buttonNextKey;
+  final bool onlyNext;
 
   const ButtonGroupNextPrevious({
     Key? key,
@@ -16,6 +17,7 @@ class ButtonGroupNextPrevious extends StatelessWidget {
     this.previous,
     this.previousText = 'Previous',
     this.buttonNextKey,
+    this.onlyNext = false,
   }) : super(key: key);
 
   @override
@@ -38,13 +40,15 @@ class ButtonGroupNextPrevious extends StatelessWidget {
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
         const SizedBox(height: 10),
-        ElevatedButton(
-          onPressed: previous,
-          style: grayButtonStyle,
-          child: Text(previousText,
-              style: textTheme.labelLarge?.copyWith(color: darkGrey)),
-        ),
-        const SizedBox(height: 20),
+        if (!onlyNext) ...[
+          ElevatedButton(
+            onPressed: previous,
+            style: grayButtonStyle,
+            child: Text(previousText,
+                style: textTheme.labelLarge?.copyWith(color: darkGrey)),
+          ),
+          const SizedBox(height: 20),
+        ],
       ],
     );
   }
