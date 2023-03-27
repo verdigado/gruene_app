@@ -15,10 +15,8 @@ import 'package:mocktail/mocktail.dart';
 import 'package:provider/provider.dart';
 
 void main() {
-  const double PORTRAIT_WIDTH = 400.0;
-  const double PORTRAIT_HEIGHT = 800.0;
-  const double LANDSCAPE_WIDTH = PORTRAIT_HEIGHT;
-  const double LANDSCAPE_HEIGHT = PORTRAIT_WIDTH;
+  const double PORTRAIT_WIDTH = 1080.0;
+  const double PORTRAIT_HEIGHT = 2160.0;
   group('Onboarding', () {
     tearDown(() async {
       resetMocktailState();
