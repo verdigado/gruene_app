@@ -57,5 +57,16 @@
            <string>$(PRODUCT_NAME) can select a photo for your Profileimage</string>
        	<key>NSCameraUsageDescription</key>
        	<string>$(PRODUCT_NAME) can take photo for your Profileimage</string>
+		<key>CFBundleURLTypes</key>
+			<array>
+				<dict>
+					<key>CFBundleTypeRole</key>
+					<string>Editor</string>
+					<key>CFBundleURLSchemes</key>
+					<array>
+						<string>grueneapp</string>
+					</array>
+				</dict>
+			</array>
 	</dict>
 </plist>

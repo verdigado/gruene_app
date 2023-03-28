@@ -64,6 +64,8 @@ dependencies:
   clickable_list_wheel_view: ^0.2.0
   bloc_test: ^9.1.1
   fast_immutable_collections: ^9.0.0
+  flutter_appauth: ^4.2.1
+  jwt_decoder: ^2.0.1
 
 
 

@@ -9,6 +9,8 @@ import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/privacy_imprint.dart';
 import 'package:gruene_app/widget/slider_carousel.dart';
+import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 class LoginScreen extends StatelessWidget {
@@ -75,7 +77,7 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () => context.go(startScreen),
+                  onPressed: () async => startLogin(),
                   child: Text(AppLocalizations.of(context)!.login,
                       style: Theme.of(context)
                           .primaryTextTheme
@@ -108,5 +110,34 @@ class LoginScreen extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void startLogin() async {
+    const appAuth = FlutterAppAuth();
+    final result = await appAuth.authorizeAndExchangeCode(
+      AuthorizationTokenRequest(
+        'gruene_app',
+        'grueneapp://appAuth',
+        discoveryUrl:
+            'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
+        scopes: [
+          "openid",
+          "address",
+          "acr",
+          "email",
+          "web-origins",
+          "oauth-einverstaendniserklaerung",
+          "oauth-username",
+          "roles",
+          "profile",
+          "phone",
+          "offline_access",
+          "microprofile-jwt"
+        ],
+      ),
+    );
+    var res = result;
+    Map<String, dynamic> decodedToken = JwtDecoder.decode(result!.idToken!);
+    var toke = decodedToken;
   }
 }
