@@ -4,7 +4,12 @@ abstract class OnboardingEvent {}
 
 class OnboardingLoad extends OnboardingEvent {}
 
-class OnboardingDone extends OnboardingEvent {}
+class OnboardingDone extends OnboardingEvent {
+  final bool navigateToNext;
+  OnboardingDone({
+    this.navigateToNext = true,
+  });
+}
 
 class OnboardingTopicAdd extends OnboardingEvent {
   String id;
@@ -30,6 +35,20 @@ class OnboardingSubjectAdd extends OnboardingEvent {
 class OnboardingSubjectRemove extends OnboardingEvent {
   String id;
   OnboardingSubjectRemove({
+    required this.id,
+  });
+}
+
+class CompetenceAdd extends OnboardingEvent {
+  String id;
+  CompetenceAdd({
+    required this.id,
+  });
+}
+
+class CompetenceRemove extends OnboardingEvent {
+  String id;
+  CompetenceRemove({
     required this.id,
   });
 }

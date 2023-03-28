@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+import 'package:gruene_app/net/error_observer.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/repository/profile_repository.dart';
 import 'package:gruene_app/routing/router.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 void runMain() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Bloc.observer = ErrorObserver();
   runApp(const MyApp());
 }
 

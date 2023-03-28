@@ -1,7 +1,7 @@
 {
   "helloWorld": "Hallo Welt!",
   "@helloWorld": {
-    "description": "Eine nettt Begrüßung"
+    "description": "Eine nette Begrüßung"
   },
   "skip": "Überspringen",
   "@skip": {
@@ -124,14 +124,41 @@
     "description": "Login Headline 2"
   },
   "askForInterest":"Verrate uns Deine Interessen",
+  "@askForInterest": {
+    "description": "askForInterest"
+  },
   "skipCustomText":"Gleich loslegen",
+  "@skipCustomText": {
+    "description": "Label for skip custom text"
+  },
   "notificationPageHeadline1":"Halte mich auf dem Laufenden",
+  "@notificationPageHeadline1": {
+    "description": "notificationPageHeadline1"
+  },
   "notificationPageHeadline2":"consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
-
-"interestsPageHeadline1":"Welche Bereiche der Parteiarbeit interessieren Dich besonders?",
+  "@notificationPageHeadline2": {
+    "description": "notificationPageHeadline2"
+  },
+  "interestsPageHeadline1":"Welche Bereiche der Parteiarbeit interessieren Dich besonders?",
+  "@interestsPageHeadline1": {
+    "description": "interestsPageHeadline1"
+  },
   "subjectSearchHint":"Suche",
+  "@subjectSearchHint": {
+    "description": "subjectSearchHint"
+  },
   "step":"Schritt",
+  "@step": {
+    "description": "step"
+  },
   "stepOf": "von",
+  "@stepOf": {
+    "description": "stepOf"
+  },
+  "competenceHeadline1":"Deine Kompetenzen",
+  "@competenceHeadline1": {
+    "description": "competenceHeadline1"
+  },
   "subjectHeadline1":"Welche Themen interessieren Dich?",
   "tourSliderIntroText":"Oder willst Du erstmal sehen, was Dich hier erwartet?",
   "givenName":"Vorname",
@@ -165,6 +192,12 @@
   "applications":"Anwendungen",
   "account":"Konto",
   "openSettings":"Einstellungen öffnen",
-  "profileImageRemoveErrorMessage":"Fehler beim Löschen vom Profilbild bitte versuchen sie es erneut"
+  "profileImageRemoveErrorMessage":"Fehler beim Löschen vom Profilbild bitte versuchen sie es erneut",
 
+  "@subjectHeadline1": {
+    "description": "subjectHeadline1"
+  },
+
+  "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
+  "refresh":"Aktualisieren "
 }

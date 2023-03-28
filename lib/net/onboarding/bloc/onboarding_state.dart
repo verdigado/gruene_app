@@ -1,6 +1,8 @@
 part of 'onboarding_bloc.dart';
 
-abstract class OnboardingState extends Equatable {}
+abstract class OnboardingState extends Equatable {
+  const OnboardingState();
+}
 
 class OnboardingInitial extends OnboardingState {
   @override
@@ -13,36 +15,44 @@ class OnboardingLoading extends OnboardingState {
 }
 
 class OnboardingReady extends OnboardingState {
-  final Set<Topic> topis;
+  final Set<Topic> topics;
   final Set<Subject> subject;
+  final Set<Competence> competence;
 
-  OnboardingReady({
-    required this.topis,
+  const OnboardingReady({
+    required this.topics,
     required this.subject,
+    required this.competence,
   });
 
   @override
-  List<Object?> get props => [topis, subject];
+  List<Object?> get props => [topics, subject, competence];
 }
 
-class OnboardingSended extends OnboardingState {
+class OnboardingSending extends OnboardingState {
   final List<Topic> selectTopis;
   final List<Subject> selectSubject;
-  OnboardingSended({
+  final List<Competence> competence;
+  const OnboardingSending({
     required this.selectTopis,
     required this.selectSubject,
+    required this.competence,
   });
 
   @override
-  List<Object?> get props => [selectSubject, selectTopis];
+  List<Object?> get props => [runtimeType, selectSubject, selectTopis];
 }
 
 class OnboardingSendFailure extends OnboardingState {
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [runtimeType];
 }
 
-class OnboardingSending extends OnboardingState {
+class OnboardingSended extends OnboardingState {
+  final bool navigateToNext;
+
+  const OnboardingSended({this.navigateToNext = true});
+
   @override
-  List<Object?> get props => [];
+  List<Object?> get props => [runtimeType];
 }
