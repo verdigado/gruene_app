@@ -56,7 +56,18 @@ class InterestsPage extends StatelessWidget {
                 ),
               );
             }
-            return Container();
+            return Center(
+              child: Column(
+                children: [
+                  IconButton(
+                    onPressed: () =>
+                        context.read<OnboardingBloc>().add(OnboardingLoad()),
+                    icon: const Icon(Icons.refresh_outlined),
+                  ),
+                  Text(AppLocalizations.of(context)!.refresh)
+                ],
+              ),
+            );
           },
         ),
         ButtonGroupNextPrevious(

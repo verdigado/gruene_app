@@ -55,9 +55,21 @@ class CompetencePage extends StatelessWidget {
                   },
                 );
               }
-              return state is OnboardingSending
-                  ? const Center(child: CircularProgressIndicator())
-                  : Container();
+              if (state is OnboardingSending) {
+                return const Center(child: CircularProgressIndicator());
+              }
+              return Center(
+                child: Column(
+                  children: [
+                    IconButton(
+                      onPressed: () =>
+                          context.read<OnboardingBloc>().add(OnboardingLoad()),
+                      icon: const Icon(Icons.refresh_outlined),
+                    ),
+                    Text(AppLocalizations.of(context)!.refresh)
+                  ],
+                ),
+              );
             },
           ),
         ),

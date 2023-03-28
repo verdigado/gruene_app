@@ -198,5 +198,6 @@
     "description": "subjectHeadline1"
   },
 
-  "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind"
+  "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
+  "refresh":"Aktualisieren "
 }
