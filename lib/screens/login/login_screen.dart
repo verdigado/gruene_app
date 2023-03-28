@@ -5,6 +5,9 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
+import 'package:gruene_app/main.dart';
+import 'package:gruene_app/net/authentication/authentication.dart';
+import 'package:gruene_app/routing/router.dart';
 
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/privacy_imprint.dart';
@@ -12,7 +15,6 @@ import 'package:gruene_app/widget/slider_carousel.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:vector_graphics/vector_graphics.dart';
-import 'package:webview_cookie_manager/webview_cookie_manager.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -78,7 +80,18 @@ class LoginScreen extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
                 ElevatedButton(
-                  onPressed: () async => startLogin(),
+                  onPressed: () async {
+                    final sucess = await startLogin();
+                    if (sucess) {
+                      router.go(startScreen);
+                    } else {
+                      MyApp.scaffoldMessengerKey.currentState
+                          ?.showSnackBar(const SnackBar(
+                              content: Center(
+                        child: Text('Fehler beim Login '),
+                      )));
+                    }
+                  },
                   child: Text(AppLocalizations.of(context)!.login,
                       style: Theme.of(context)
                           .primaryTextTheme
@@ -109,58 +122,6 @@ class LoginScreen extends StatelessWidget {
             ))
           ],
         ),
-      ),
-    );
-  }
-
-  void refreshToken(String? refreshToken) async {
-    const appAuth = FlutterAppAuth();
-    var res = await appAuth.token(TokenRequest(
-      'gruene_app',
-      'grueneapp://appAuth?prompt=login',
-      discoveryUrl:
-          'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
-      refreshToken: refreshToken,
-      scopes: [
-        "openid",
-        "address",
-        "acr",
-        "email",
-        "web-origins",
-        "oauth-einverstaendniserklaerung",
-        "oauth-username",
-        "roles",
-        "profile",
-        "phone",
-        "offline_access",
-        "microprofile-jwt"
-      ],
-    ));
-    res = res;
-  }
-
-  void startLogin() async {
-    const appAuth = FlutterAppAuth();
-    final result = await appAuth.authorizeAndExchangeCode(
-      AuthorizationTokenRequest(
-        'gruene_app',
-        'grueneapp://appAuth',
-        discoveryUrl:
-            'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
-        scopes: [
-          "openid",
-          "address",
-          "acr",
-          "email",
-          "web-origins",
-          "oauth-einverstaendniserklaerung",
-          "oauth-username",
-          "roles",
-          "profile",
-          "phone",
-          "offline_access",
-          "microprofile-jwt"
-        ],
       ),
     );
   }

@@ -66,6 +66,8 @@ dependencies:
   fast_immutable_collections: ^9.0.0
   flutter_appauth: ^4.2.1
   jwt_decoder: ^2.0.1
+  dio: ^5.1.0
+  flutter_secure_storage: ^8.0.0
 
 
 

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -17,6 +18,7 @@ void runMain() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
+  static final dio = Dio();
 
   // This widget is the root of your application.
   @override
