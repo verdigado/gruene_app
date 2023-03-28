@@ -26,7 +26,7 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
     controller.addListener(() {
       setState(() {
         if (controller.page != null) {
-          currentPage = controller.page!.toInt();
+          currentPage = controller.page?.toInt() ?? 0;
         }
       });
     });
