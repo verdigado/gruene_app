@@ -2,7 +2,9 @@ import 'dart:convert';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
@@ -16,35 +18,41 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
     on<OnboardingLoad>((event, emit) {
       emit(OnboardingReady(
-        topis: onboardingRepository.listTopic(),
-        subject: onboardingRepository.listSubject(),
-      ));
+          topics: onboardingRepository.listTopic(),
+          subject: onboardingRepository.listSubject(),
+          competence: onboardingRepository.listCompetence()));
     });
     on<OnboardingTopicAdd>((event, emit) {
       final currentState = state;
       if (currentState is OnboardingReady) {
-        currentState.topis
+        currentState.topics
             .where((element) => element.id == event.id)
             .first
             .checked = true;
         emit(OnboardingReady(
-          topis: currentState.topis,
+          topics: currentState.topics,
           subject: currentState.subject,
+          competence: currentState.competence,
         ));
+      } else {
+        stateError('OnboardingTopicAdd');
       }
     });
     on<OnboardingTopicRemove>(
       (event, emit) {
         final currentState = state;
         if (currentState is OnboardingReady) {
-          currentState.topis
+          currentState.topics
               .where((element) => element.id != event.id)
               .first
               .checked = false;
           emit(OnboardingReady(
-            topis: currentState.topis,
+            topics: currentState.topics,
             subject: currentState.subject,
+            competence: currentState.competence,
           ));
+        } else {
+          stateError('OnboardingTopicRemove');
         }
       },
     );
@@ -52,12 +60,21 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       (event, emit) {
         final currentState = state;
         if (currentState is OnboardingReady) {
-          final toAdd = currentState.subject
+          final markedSubject = currentState.subject
               .where((element) => element.id == event.id)
               .first;
-          toAdd.checked = true;
-          emit(OnboardingReady(
-              topis: currentState.topis, subject: currentState.subject));
+          final toAdd = markedSubject.copyWith(checked: true);
+          final rest =
+              currentState.subject.where((element) => element.id != event.id);
+          emit(
+            OnboardingReady(
+              topics: currentState.topics,
+              competence: currentState.competence,
+              subject: {toAdd, ...rest},
+            ),
+          );
+        } else {
+          stateError('OnboardingSubjectAdd');
         }
       },
     );
@@ -65,34 +82,103 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
       (event, emit) {
         final currentState = state;
         if (currentState is OnboardingReady) {
-          final toRemove = currentState.subject
+          final markedSubject = currentState.subject
               .where((element) => element.id == event.id)
               .first;
-          toRemove.checked = false;
-          emit(OnboardingReady(
-              subject: currentState.subject, topis: currentState.topis));
+          final toRemove = markedSubject.copyWith(checked: false);
+          final rest = currentState.subject
+              .where((element) => element.id != event.id)
+              .toSet();
+          emit(
+            OnboardingReady(
+                subject: {toRemove, ...rest},
+                topics: currentState.topics,
+                competence: currentState.competence),
+          );
+        } else {
+          stateError('OnboardingSubjectRemove');
         }
       },
     );
 
     on<OnboardingDone>(
-      (event, emit) {
+      (event, emit) async {
+        // ToDo: Loading State should be implemented
+        //emit(OnboardingSending());
         final currentState = state;
         if (currentState is OnboardingReady) {
-          emit(OnboardingSending());
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =
-              currentState.topis.where((element) => element.checked).toList();
-          logger.i(
-              jsonEncode({'selectedTopics': topic, 'selectedSubjects': sub}));
-          if (onboardingRepository.onboardingSend(topic, sub)) {
-            emit(OnboardingSended(selectSubject: sub, selectTopis: topic));
+              currentState.topics.where((element) => element.checked).toList();
+          final competence = currentState.competence
+              .where((element) => element.checked)
+              .toList();
+          logger.i(jsonEncode({
+            'selectedTopics': topic,
+            'selectedSubjects': sub,
+            'selectedCompetence': competence
+          }));
+          final sendEvent = OnboardingSending(
+              selectSubject: sub, selectTopis: topic, competence: competence);
+          emit(sendEvent);
+          if (await onboardingRepository.onboardingSend(
+              topic, sub, competence)) {
+            emit(OnboardingSended(navigateToNext: event.navigateToNext));
           } else {
             emit(OnboardingSendFailure());
           }
         }
       },
     );
+    on<CompetenceAdd>((event, emit) {
+      final currentState = state;
+      if (currentState is OnboardingReady) {
+        final markedCompetence = currentState.competence
+            .where((element) => element.id == event.id)
+            .first;
+        final toAdd = markedCompetence.copyWith(checked: true);
+        final rest =
+            currentState.competence.where((element) => element.id != event.id);
+        emit(
+          OnboardingReady(
+            topics: currentState.topics,
+            subject: currentState.subject,
+            competence: {toAdd, ...rest},
+          ),
+        );
+      } else {
+        stateError('OnboardingSubjectRemove');
+      }
+    });
+    on<CompetenceRemove>((event, emit) {
+      final currentState = state;
+      if (currentState is OnboardingReady) {
+        final markedCompetence = currentState.competence
+            .where((element) => element.id == event.id)
+            .first;
+        final toRemove = markedCompetence.copyWith(checked: false);
+        final rest = currentState.competence
+            .where((element) => element.id != event.id)
+            .toSet();
+        emit(
+          OnboardingReady(
+              competence: {toRemove, ...rest},
+              topics: currentState.topics,
+              subject: currentState.subject),
+        );
+      } else {
+        stateError('OnboardingSubjectRemove');
+      }
+    });
+  }
+
+  void stateError(String event) {
+    onError(
+        BlocError(
+            message:
+                'State Error $event is not in the desired State current State is ${state.runtimeType}',
+            expose: false),
+        StackTrace.current);
   }
 }

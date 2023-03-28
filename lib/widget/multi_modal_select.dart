@@ -1,9 +1,9 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/widget/filled_text_field.dart';
-import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MultiModalSelect extends StatefulWidget {

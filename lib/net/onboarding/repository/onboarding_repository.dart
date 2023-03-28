@@ -1,3 +1,4 @@
+import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
 
@@ -5,7 +6,9 @@ abstract class OnboardingRepository {
   Set<Topic> listTopic();
 
   Set<Subject> listSubject();
-  bool onboardingSend(List<Topic> topics, List<Subject> subjects);
+  Set<Competence> listCompetence();
+  Future<bool> onboardingSend(
+      List<Topic> topics, List<Subject> subjects, List<Competence> competence);
 }
 
 class OnboardingRepositoryImpl extends OnboardingRepository {
@@ -44,34 +47,62 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   @override
   Set<Subject> listSubject() {
     return {
-      Subject(id: '534sfd51', name: 'Asylpolitik'),
-      Subject(id: '94sdf3', name: 'Außenpolitik'),
-      Subject(id: '25sdf3', name: 'Bauen'),
-      Subject(id: '332fsd3', name: 'Europa'),
-      Subject(id: '853sfd4', name: 'Zeitpolitik'),
-      Subject(id: '45sdf34', name: 'Friedenspolitik'),
-      Subject(id: '53fdssfd452', name: 'Gesundheit'),
-      Subject(id: '62sfd5', name: 'Globalisierung'),
-      Subject(id: '7sdfsfe53', name: 'Handelsabkommen'),
-      Subject(id: '853fdsf4', name: 'Handelspolitik'),
-      Subject(id: '85fsdf34', name: 'Hamburgpolitik'),
-      Subject(id: '853sdfsfsf4', name: 'Hamsterpolitik'),
-      Subject(id: '853sdfsdfs4', name: 'Hundepolitik'),
-      Subject(id: '83sfsdffd54', name: 'Hauspolitik'),
-      Subject(id: '85sdfs34', name: 'Heimpolitik'),
-      Subject(id: '8sdsf534', name: 'Himmelpolitik'),
-      Subject(id: '85sfsd34', name: 'Handpolitik'),
-      Subject(id: '85sdsdffs34', name: 'Hemdpolitik'),
-      Subject(id: '2344dsfffw', name: 'Hallopolitik'),
-      Subject(id: '53sdfds48', name: 'Haarpolitik'),
-      Subject(id: '83sdf425', name: 'Halspolitik'),
-      Subject(id: '45dsdfssf38', name: 'Handelspolitik'),
-      Subject(id: '53sdf49', name: 'Innenpolitik'),
+      const Subject(id: '534sfd51', name: 'Asylpolitik'),
+      const Subject(id: '94sdf3', name: 'Außenpolitik'),
+      const Subject(id: '25sdf3', name: 'Bauen'),
+      const Subject(id: '332fsd3', name: 'Europa'),
+      const Subject(id: '853sfd4', name: 'Zeitpolitik'),
+      const Subject(id: '45sdf34', name: 'Friedenspolitik'),
+      const Subject(id: '53fdssfd452', name: 'Gesundheit'),
+      const Subject(id: '62sfd5', name: 'Globalisierung'),
+      const Subject(id: '7sdfsfe53', name: 'Handelsabkommen'),
+      const Subject(id: '853fdsf4', name: 'Handelspolitik'),
+      const Subject(id: '85fsdf34', name: 'Hamburgpolitik'),
+      const Subject(id: '853sdfsfsf4', name: 'Hamsterpolitik'),
+      const Subject(id: '853sdfsdfs4', name: 'Hundepolitik'),
+      const Subject(id: '83sfsdffd54', name: 'Hauspolitik'),
+      const Subject(id: '85sdfs34', name: 'Heimpolitik'),
+      const Subject(id: '8sdsf534', name: 'Himmelpolitik'),
+      const Subject(id: '85sfsd34', name: 'Handpolitik'),
+      const Subject(id: '85sdsdffs34', name: 'Hemdpolitik'),
+      const Subject(id: '2344dsfffw', name: 'Hallopolitik'),
+      const Subject(id: '53sdfds48', name: 'Haarpolitik'),
+      const Subject(id: '83sdf425', name: 'Halspolitik'),
+      const Subject(id: '45dsdfssf38', name: 'Handelspolitik'),
+      const Subject(id: '53sdf49', name: 'Innenpolitik'),
     };
   }
 
   @override
-  bool onboardingSend(List<Topic> topics, List<Subject> subjects) {
-    return true;
+  Future<bool> onboardingSend(
+      List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
+    return Future.delayed(Duration(seconds: 2), () => true);
+  }
+
+  @override
+  Set<Competence> listCompetence() {
+    return {
+      const Competence(
+          id: '123fsdf14413', name: 'Programmieren', checked: false),
+      const Competence(
+          id: '12313fdsfas21413',
+          name: 'Soziale Medien betreuen ',
+          checked: false),
+      const Competence(
+          id: '12313fsdsf21413', name: 'Lasten transportieren', checked: false),
+      const Competence(
+          id: '1231fdasfdf321413', name: 'Grafik Design', checked: false),
+      const Competence(
+          id: '1231gsdg3sdf21413', name: 'Kochen und Backen', checked: false),
+      const Competence(
+          id: '1231asd3fsfdy21413',
+          name: 'Professionell fotografieren',
+          checked: false),
+      const Competence(
+          id: '1231asdasd321413',
+          name: 'Handwerkliche Arbeiten erledigen',
+          checked: false),
+      const Competence(id: '1231asd3asd21413', name: 'Reden', checked: false),
+    };
   }
 }

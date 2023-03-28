@@ -1,7 +1,8 @@
 import 'dart:convert';
 
+import 'package:equatable/equatable.dart';
 
-class Topic {
+class Topic extends Equatable {
   String id;
   String name;
   String imageUrl;
@@ -12,6 +13,9 @@ class Topic {
     required this.imageUrl,
     this.checked = false,
   });
+
+  @override
+  List<Object?> get props => [id, name, imageUrl, checked];
 
   Topic copyWith({
     String? id,

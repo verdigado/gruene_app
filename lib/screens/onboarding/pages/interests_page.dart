@@ -1,30 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class InterestsPage extends StatefulWidget {
+class InterestsPage extends StatelessWidget {
   final PageController controller;
 
-  const InterestsPage(this.controller, {super.key});
+  final Widget? progressbar;
 
-  @override
-  State<InterestsPage> createState() => _InterestsPageState();
-}
+  const InterestsPage(this.controller, {super.key, this.progressbar});
 
-class _InterestsPageState extends State<InterestsPage> {
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.all(18),
-          child: Text(
-            AppLocalizations.of(context)!.interestsPageHeadline1,
-            style: Theme.of(context).primaryTextTheme.displayMedium,
+        SizedBox(
+          height: 100,
+          child: progressbar,
+        ),
+        Align(
+          alignment: Alignment.bottomLeft,
+          child: Padding(
+            padding: const EdgeInsets.all(18),
+            child: Text(
+              AppLocalizations.of(context)!.interestsPageHeadline1,
+              style: Theme.of(context).primaryTextTheme.displayMedium,
+            ),
           ),
         ),
         BlocBuilder<OnboardingBloc, OnboardingState>(
@@ -36,7 +39,7 @@ class _InterestsPageState extends State<InterestsPage> {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
-                  children: state.topis
+                  children: state.topics
                       .map((e) => TopicCard(
                             key: Key('TopicCard_${e.id}'),
                             id: e.id,
@@ -53,22 +56,32 @@ class _InterestsPageState extends State<InterestsPage> {
                 ),
               );
             }
-            return Container();
+            return Center(
+              child: Column(
+                children: [
+                  IconButton(
+                    onPressed: () =>
+                        context.read<OnboardingBloc>().add(OnboardingLoad()),
+                    icon: const Icon(Icons.refresh_outlined),
+                  ),
+                  Text(AppLocalizations.of(context)!.refresh)
+                ],
+              ),
+            );
           },
         ),
-        const SizedBox(
-          height: 10,
+        ButtonGroupNextPrevious(
+          onlyNext: true,
+          buttonNextKey: const Key('ButtonGroupNextInterests'),
+          next: () => controller.nextPage(
+              duration: const Duration(seconds: 1), curve: Curves.ease),
+          nextText: AppLocalizations.of(context)!.next,
+          previous: () => controller.nextPage(
+            duration: const Duration(milliseconds: 700),
+            curve: Curves.linear,
+          ),
+          previousText: AppLocalizations.of(context)!.skip,
         ),
-        ElevatedButton(
-            key: const Key('interests_page_next_step'),
-            onPressed: () => widget.controller.nextPage(
-                duration: const Duration(microseconds: 700),
-                curve: Curves.easeIn),
-            child: Text(AppLocalizations.of(context)!.next,
-                style: const TextStyle(color: Colors.white))),
-        TextButton(
-            onPressed: () => context.go(startScreen),
-            child: Text(AppLocalizations.of(context)!.skip))
       ],
     );
   }

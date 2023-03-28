@@ -39,6 +39,7 @@ const Color softGreen = Color(0xFFDCE7E0);
 const Color lightBlack = Color(0xFF201D1B);
 const Color darkGrey = Color(0xFF343433);
 const Color lightGrey = Color(0xFFD9D9D9);
+const Color unfocusedGrey = Color(0xFFF1F0F0);
 const Color disabledGrey = lightGrey;
 
 const textTheme = TextTheme(
@@ -136,13 +137,26 @@ final rootTheme = ThemeData(
   ),
   elevatedButtonTheme: ElevatedButtonThemeData(
     style: ElevatedButton.styleFrom(
-      textStyle: const TextStyle(color: Colors.white),
+      textStyle: textTheme.labelLarge?.copyWith(color: Colors.white),
       minimumSize: const Size(345, 56),
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(12), // <-- Radius
+        borderRadius: BorderRadius.circular(18), // <-- Radius
       ),
+      disabledBackgroundColor: disabledGrey,
     ),
   ),
   colorScheme: ColorScheme.fromSwatch(
       primarySwatch: mcgpalette0, accentColor: mcgpalette0Secondary),
+);
+
+////**
+///  * Custom Themes
+/// */
+///
+/// Theme for the Gray Button
+final grayButtonStyle = ButtonStyle(
+  elevation: MaterialStateProperty.all(0),
+  backgroundColor: MaterialStateProperty.all(unfocusedGrey),
+  textStyle: MaterialStateProperty.all(
+      textTheme.labelLarge?.copyWith(color: darkGrey)),
 );
