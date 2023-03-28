@@ -68,6 +68,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   dio: ^5.1.0
   flutter_secure_storage: ^8.0.0
+  flutter_spinkit: ^5.1.0
 
 
 
