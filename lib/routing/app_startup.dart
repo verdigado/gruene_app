@@ -13,7 +13,6 @@ Future<String?> onAppStartup(BuildContext context, GoRouterState state) async {
   final prefs = await SharedPreferences.getInstance();
   final isFirstTime = prefs.getBool(firstLaunchPreferencesKey) ?? true;
   if (isFirstTime) {
-    // Set the flag to false so that we don't show the onboarding screen again
     // show an onboarding screen
     return intro;
   } else {
