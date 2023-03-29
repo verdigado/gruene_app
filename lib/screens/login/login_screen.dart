@@ -3,6 +3,8 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/app_const.dart';
+import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
@@ -51,7 +53,9 @@ class _LoginScreenState extends State<LoginScreen> {
                       iconSize: 35,
                       // TODO: Remove this navigation on Release, just Dev purpose !
                       backgroundImage: InkWell(
-                        onLongPress: () => context.go(startScreen),
+                        onLongPress: AppConst.values.falavor == Flavors.staging
+                            ? () => context.go(startScreen)
+                            : null,
                         child: SvgPicture(
                             AssetBytesLoader(
                                 Assets.images.gruenenTopicOekologieSvg),
