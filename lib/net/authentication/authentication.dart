@@ -29,7 +29,8 @@ Future<bool> signOut() async {
     ));
     SecureStoreKeys.values.map((e) => authStorage.deleteAll());
     return true;
-  } on Exception catch (e) {
+  } on Exception catch (e, st) {
+    logger.d('Fail on signOut', [e, st]);
     return false;
   }
 }
