@@ -2,6 +2,25 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gruene_app/common/logger.dart';
 
+const discoveryUrl =
+    'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration';
+const clientId = 'gruene_app';
+const redirectUrl = 'grueneapp://appAuth';
+const scopes = [
+  "openid",
+  "address",
+  "acr",
+  "email",
+  "web-origins",
+  "oauth-einverstaendniserklaerung",
+  "oauth-username",
+  "roles",
+  "profile",
+  "phone",
+  "offline_access",
+  "microprofile-jwt"
+];
+
 enum AccessTokenState { authenticated, unauthenticated, refreshable, expired }
 
 enum SecureStoreKeys {
@@ -23,11 +42,11 @@ Future<bool> signOut() async {
   try {
     await appAuth.endSession(EndSessionRequest(
       idTokenHint: await authStorage.read(key: SecureStoreKeys.idToken.name),
-      postLogoutRedirectUrl: 'grueneapp://appAuth',
-      discoveryUrl:
-          'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
+      postLogoutRedirectUrl: redirectUrl,
+      discoveryUrl: discoveryUrl,
+      preferEphemeralSession: true,
     ));
-    SecureStoreKeys.values.map((e) => authStorage.deleteAll());
+    SecureStoreKeys.values.map((e) => authStorage.delete(key: e.name));
     return true;
   } on Exception catch (e, st) {
     logger.d('Fail on signOut', [e, st]);
@@ -40,25 +59,11 @@ Future<bool> refreshToken(String? refreshToken) async {
   try {
     var res = await appAuth.token(
       TokenRequest(
-        'gruene_app',
-        'grueneapp://appAuth',
-        discoveryUrl:
-            'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
+        clientId,
+        redirectUrl,
+        discoveryUrl: discoveryUrl,
         refreshToken: refreshToken,
-        scopes: [
-          "openid",
-          "address",
-          "acr",
-          "email",
-          "web-origins",
-          "oauth-einverstaendniserklaerung",
-          "oauth-username",
-          "roles",
-          "profile",
-          "phone",
-          "offline_access",
-          "microprofile-jwt"
-        ],
+        scopes: scopes,
       ),
     );
     if (res == null) {
@@ -83,24 +88,11 @@ Future<bool> startLogin() async {
   try {
     final result = await appAuth.authorizeAndExchangeCode(
       AuthorizationTokenRequest(
-        'gruene_app',
-        'grueneapp://appAuth',
-        discoveryUrl:
-            'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
-        scopes: [
-          "openid",
-          "address",
-          "acr",
-          "email",
-          "web-origins",
-          "oauth-einverstaendniserklaerung",
-          "oauth-username",
-          "roles",
-          "profile",
-          "phone",
-          "offline_access",
-          "microprofile-jwt"
-        ],
+        preferEphemeralSession: true,
+        clientId,
+        redirectUrl,
+        discoveryUrl: discoveryUrl,
+        scopes: scopes,
       ),
     );
     if (result == null) {
@@ -126,16 +118,17 @@ void saveTokenValuesInSecureStorage({
   required String? accessTokenExpiration,
   required String? refreshExpiresIn,
   required String? idToken,
-}) {
-  authStorage.write(key: SecureStoreKeys.accesToken.name, value: accessToken);
-  authStorage.write(
+}) async {
+  await authStorage.write(
+      key: SecureStoreKeys.accesToken.name, value: accessToken);
+  await authStorage.write(
       key: SecureStoreKeys.refreshtoken.name, value: refreshtoken);
-  authStorage.write(
+  await authStorage.write(
       key: SecureStoreKeys.accessTokenExpiration.name,
       value: accessTokenExpiration);
-  authStorage.write(
+  await authStorage.write(
       key: SecureStoreKeys.refreshExpiresIn.name, value: refreshExpiresIn);
-  authStorage.write(key: SecureStoreKeys.idToken.name, value: idToken);
+  await authStorage.write(key: SecureStoreKeys.idToken.name, value: idToken);
 }
 
 // Check if the User has a valid Login
@@ -167,16 +160,17 @@ AccessTokenState validateAccessToken({
   required String? refreshToken,
   required String? refreshExpiresIn,
 }) {
-  if (accessToken == null) {
+  // TODO: check timezone
+  if (accessToken == null || accessTokenExpiration == null) {
     return AccessTokenState.unauthenticated;
-  } else if (accessTokenExpiration == null) {
-    return AccessTokenState.unauthenticated;
-  } else if (DateTime.now().isAfter(DateTime.parse(accessTokenExpiration))) {
-    if (refreshExpiresIn == null) {
-      return AccessTokenState.unauthenticated;
-    }
+  }
+  DateTime? expirationTime = DateTime.tryParse(accessTokenExpiration);
+  DateTime? refreshExpirationTime = DateTime.tryParse(refreshExpiresIn ?? "");
+
+  if (expirationTime == null || expirationTime.isBefore(DateTime.now())) {
     if (refreshToken == null ||
-        DateTime.now().isAfter(DateTime.parse(refreshExpiresIn))) {
+        refreshExpirationTime == null ||
+        refreshExpirationTime.isBefore(DateTime.now())) {
       return AccessTokenState.expired;
     } else {
       return AccessTokenState.refreshable;

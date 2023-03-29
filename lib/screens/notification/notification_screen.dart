@@ -6,6 +6,7 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/app_startup.dart';
+import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -74,8 +75,7 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                 Padding(
                   padding: const EdgeInsets.only(bottom: 18),
                   child: ElevatedButton(
-                      onPressed: () async =>
-                          handlePermission(context, permission),
+                      onPressed: () async => onNext(context, permission),
                       child: Text(AppLocalizations.of(context)!.next,
                           style: const TextStyle(color: Colors.white))),
                 )
@@ -87,9 +87,9 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
     );
   }
 
-  void handlePermission(BuildContext context, bool activ) async {
+  void onNext(BuildContext context, bool activ) async {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool(firstLaunchPreferencesKey, false);
-    context.go(startScreen);
+    router.go(startScreen);
   }
 }
