@@ -30,17 +30,16 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
         }
       });
     });
-    SystemChrome.setSystemUIOverlayStyle(
-        const SystemUiOverlayStyle(statusBarColor: Colors.black));
   }
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        extendBodyBehindAppBar: true,
-        resizeToAvoidBottomInset: false,
-        body: SafeArea(
+    return Scaffold(
+      extendBodyBehindAppBar: true,
+      resizeToAvoidBottomInset: false,
+      body: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: SafeArea(
           child: PageView(
             key: const Key('Onboarding_PageView'),
             controller: controller,
@@ -136,7 +135,6 @@ class _OnboardingLayoutState extends State<OnboardingLayout> {
   @override
   void dispose() {
     controller.dispose();
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle());
     super.dispose();
   }
 }
