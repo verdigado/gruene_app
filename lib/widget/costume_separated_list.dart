@@ -55,6 +55,7 @@ class CostumeListItem extends StatelessWidget {
   final WidgetBuilder? modalBuilder;
 
   final Future Function()? modalSheet;
+  final void Function()? onTap;
 
   const CostumeListItem({
     super.key,
@@ -68,6 +69,7 @@ class CostumeListItem extends StatelessWidget {
     this.linksTo,
     this.divider = true,
     this.modalSheet,
+    this.onTap,
   });
 
   @override
@@ -90,8 +92,11 @@ class CostumeListItem extends StatelessWidget {
           : null,
       trailing: Icon(iconTralling),
       tileColor: Colors.white,
-      onTap: linksTo != null || modalSheet != null
-          ? () => navigate(context, linksTo)
+      onTap: linksTo != null || onTap != null || modalSheet != null
+          ? () {
+              onTap?.call();
+              navigate(context, linksTo);
+            }
           : null,
     );
   }

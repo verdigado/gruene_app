@@ -8,6 +8,7 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/main.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
+import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/router.dart';
 
 import 'package:gruene_app/routing/routes.dart';
@@ -15,6 +16,7 @@ import 'package:gruene_app/widget/privacy_imprint.dart';
 import 'package:gruene_app/widget/slider_carousel.dart';
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -47,10 +49,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       rightIcon: Icons.arrow_forward,
                       leftIcon: Icons.arrow_back,
                       iconSize: 35,
-                      backgroundImage: SvgPicture(
-                          AssetBytesLoader(
-                              Assets.images.gruenenTopicOekologieSvg),
-                          height: size.height / 100 * 60),
+                      // TODO: Remove this navigation on Release, just Dev purpose !
+                      backgroundImage: InkWell(
+                        onLongPress: () => context.go(startScreen),
+                        child: SvgPicture(
+                            AssetBytesLoader(
+                                Assets.images.gruenenTopicOekologieSvg),
+                            height: size.height / 100 * 60),
+                      ),
                       controlsBackground: Theme.of(context).primaryColor,
                       pages: [
                         SliderCarouselPage(
@@ -98,7 +104,13 @@ class _LoginScreenState extends State<LoginScreen> {
                           });
                           final sucess = await startLogin();
                           if (sucess) {
-                            router.go(startScreen);
+                            final prefs = await SharedPreferences.getInstance();
+                            if (prefs.getBool(firstLaunchPreferencesKey) ??
+                                true) {
+                              router.go(onboarding);
+                            } else {
+                              router.go(startScreen);
+                            }
                           } else {
                             setState(() {
                               showLoadingIndicator = false;

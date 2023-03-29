@@ -1,12 +1,17 @@
+import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+import 'package:gruene_app/net/authentication/authentication.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
+import 'package:gruene_app/routing/app_startup.dart';
+import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_list_view_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({super.key});
@@ -77,9 +82,21 @@ List<CostumeListItem> getItems(BuildContext context) {
         iconLeading: Icons.lock_outline,
         iconTralling: Icons.arrow_forward_ios),
     CostumeListItem(
-        titel: AppLocalizations.of(context)!.logout,
-        spaceBetween: true,
-        iconLeading: Icons.logout_outlined,
-        iconTralling: Icons.arrow_forward_ios),
+      titel: AppLocalizations.of(context)!.logout,
+      spaceBetween: true,
+      iconLeading: Icons.logout_outlined,
+      iconTralling: Icons.arrow_forward_ios,
+      onTap: () async {
+        var res = await showOkCancelAlertDialog(
+            context: context, message: AppLocalizations.of(context)!.logout);
+        if (res.name == OkCancelResult.ok.name) {
+          await signOut();
+          final prefs = await SharedPreferences.getInstance();
+          // TODO: Remove if we can check on the profile api there was are onboaring already done
+          prefs.setBool(firstLaunchPreferencesKey, true);
+          router.go(login);
+        }
+      },
+    ),
   ];
 }

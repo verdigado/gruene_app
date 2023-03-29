@@ -8,7 +8,8 @@ enum SecureStoreKeys {
   accesToken,
   refreshtoken,
   accessTokenExpiration,
-  refreshExpiresIn
+  refreshExpiresIn,
+  idToken
 }
 
 const authStorage = FlutterSecureStorage(
@@ -17,13 +18,29 @@ const authStorage = FlutterSecureStorage(
   ),
 );
 
+Future<bool> signOut() async {
+  const appAuth = FlutterAppAuth();
+  try {
+    await appAuth.endSession(EndSessionRequest(
+      idTokenHint: await authStorage.read(key: SecureStoreKeys.idToken.name),
+      postLogoutRedirectUrl: 'grueneapp://appAuth',
+      discoveryUrl:
+          'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
+    ));
+    SecureStoreKeys.values.map((e) => authStorage.deleteAll());
+    return true;
+  } on Exception catch (e) {
+    return false;
+  }
+}
+
 Future<bool> refreshToken(String? refreshToken) async {
   const appAuth = FlutterAppAuth();
   try {
     var res = await appAuth.token(
       TokenRequest(
         'gruene_app',
-        'grueneapp://appAuth?prompt=login',
+        'grueneapp://appAuth',
         discoveryUrl:
             'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration',
         refreshToken: refreshToken,
@@ -47,12 +64,12 @@ Future<bool> refreshToken(String? refreshToken) async {
       return false;
     }
     saveTokenValuesInSecureStorage(
-      accessToken: res.accessToken,
-      accessTokenExpiration: res.accessTokenExpirationDateTime.toString(),
-      refreshtoken: res.refreshToken,
-      // TODO: Check if value Exist
-      refreshExpiresIn: res.tokenAdditionalParameters?['refresh_expires_in'],
-    );
+        accessToken: res.accessToken,
+        accessTokenExpiration: res.accessTokenExpirationDateTime.toString(),
+        refreshtoken: res.refreshToken,
+        // TODO: Check if value Exist
+        refreshExpiresIn: res.tokenAdditionalParameters?['refresh_expires_in'],
+        idToken: res.idToken);
     return true;
   } on Exception catch (e, st) {
     logger.d('Fail on Authentication', [e, st]);
@@ -89,12 +106,12 @@ Future<bool> startLogin() async {
       return false;
     }
     saveTokenValuesInSecureStorage(
-      accessToken: result.accessToken,
-      accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
-      refreshtoken: result.refreshToken,
-      refreshExpiresIn:
-          result.authorizationAdditionalParameters?['refresh_expires_in'],
-    );
+        accessToken: result.accessToken,
+        accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
+        refreshtoken: result.refreshToken,
+        refreshExpiresIn:
+            result.authorizationAdditionalParameters?['refresh_expires_in'],
+        idToken: result.idToken);
   } on Exception catch (e, st) {
     logger.d('Fail on Authentication', [e, st]);
     return false;
@@ -107,6 +124,7 @@ void saveTokenValuesInSecureStorage({
   required String? refreshtoken,
   required String? accessTokenExpiration,
   required String? refreshExpiresIn,
+  required String? idToken,
 }) {
   authStorage.write(key: SecureStoreKeys.accesToken.name, value: accessToken);
   authStorage.write(
@@ -116,6 +134,7 @@ void saveTokenValuesInSecureStorage({
       value: accessTokenExpiration);
   authStorage.write(
       key: SecureStoreKeys.refreshExpiresIn.name, value: refreshExpiresIn);
+  authStorage.write(key: SecureStoreKeys.idToken.name, value: idToken);
 }
 
 // Check if the User has a valid Login
@@ -124,10 +143,10 @@ Future<bool> checkCurrentAuthState() async {
   var res = validateAccessToken(
     accessToken: await authStorage.read(key: SecureStoreKeys.accesToken.name),
     accessTokenExpiration:
-        await authStorage.read(key: SecureStoreKeys.accesToken.name),
+        await authStorage.read(key: SecureStoreKeys.accessTokenExpiration.name),
     refreshToken: refresh,
     refreshExpiresIn:
-        await authStorage.read(key: SecureStoreKeys.accesToken.name),
+        await authStorage.read(key: SecureStoreKeys.refreshExpiresIn.name),
   );
   switch (res) {
     case AccessTokenState.authenticated:
