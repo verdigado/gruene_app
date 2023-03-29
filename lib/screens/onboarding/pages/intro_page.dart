@@ -3,8 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 class IntroPage extends StatelessWidget {
@@ -46,7 +48,11 @@ class IntroPage extends StatelessWidget {
           ButtonGroupNextPrevious(
               buttonNextKey: const Key('ButtonGroupNextIntro'),
               nextText: AppLocalizations.of(context)!.askForInterest,
-              previous: () => context.go(startScreen),
+              previous: () async {
+                final prefs = await SharedPreferences.getInstance();
+                await prefs.setBool(firstLaunchPreferencesKey, false);
+                context.go(startScreen);
+              },
               previousText: AppLocalizations.of(context)!.skip,
               next: () {
                 controller.nextPage(
