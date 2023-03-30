@@ -49,7 +49,7 @@ Future<bool> signOut() async {
       discoveryUrl: discoveryUrl,
       preferEphemeralSession: true,
     ));
-    SecureStoreKeys.values.map((e) => authStorage.delete(key: e.name));
+    await authStorage.deleteAll();
     return true;
   } on Exception catch (e, st) {
     logger.d('Fail on signOut', [e, st]);
@@ -101,12 +101,12 @@ Future<bool> startLogin() async {
     if (result == null) {
       return false;
     }
-    saveTokenValuesInSecureStorage(
+    var refreshExpiresIn = saveTokenValuesInSecureStorage(
         accessToken: result.accessToken,
         accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
         refreshtoken: result.refreshToken,
         refreshExpiresIn:
-            result.tokenAdditionalParameters?['refresh_expires_in'],
+            result.tokenAdditionalParameters?['refresh_expires_in'].toString(),
         idToken: result.idToken);
   } on Exception catch (e, st) {
     logger.d('Fail on Authentication', [e, st]);

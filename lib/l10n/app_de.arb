@@ -199,5 +199,6 @@
   },
 
   "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
-  "refresh":"Aktualisieren "
+  "refresh":"Aktualisieren ",
+  "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut"
 }
