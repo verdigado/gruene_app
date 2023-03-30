@@ -1,3 +1,4 @@
+import 'package:gruene_api_client/gruene_api_client.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
@@ -14,6 +15,7 @@ abstract class OnboardingRepository {
 class OnboardingRepositoryImpl extends OnboardingRepository {
   @override
   Set<Topic> listTopic() {
+    GrueneApiClient client;
     return {
       Topic(
           id: '1',

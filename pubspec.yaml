@@ -69,6 +69,10 @@ dependencies:
   dio: ^5.1.0
   flutter_secure_storage: ^8.0.0
   flutter_spinkit: ^5.1.0
+  gruene_api_client:
+    git:
+      url: https://github.com/verdigado/gruene_app_api_client.git
+      ref: main
 
 
 
