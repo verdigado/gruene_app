@@ -23,7 +23,7 @@ Future<String?> onAppStartup(BuildContext context, GoRouterState state) async {
       authenticated = await checkCurrentAuthState();
     } on Exception catch (e, st) {
       logger.d('Failure on check AuthStae clear Storage', [e, st]);
-      SecureStoreKeys.values.map((e) => authStorage.delete(key: e.name));
+      await authStorage.deleteAll();
     }
     if (authenticated) {
       return startScreen;

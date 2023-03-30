@@ -91,9 +91,6 @@ List<CostumeListItem> getItems(BuildContext context) {
             context: context, message: AppLocalizations.of(context)!.logout);
         if (res.name == OkCancelResult.ok.name) {
           await signOut();
-          final prefs = await SharedPreferences.getInstance();
-          // TODO: Remove if we can check on the profile api there was are onboaring already done
-          prefs.setBool(firstLaunchPreferencesKey, true);
           router.go(login);
         }
       },
