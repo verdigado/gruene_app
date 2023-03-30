@@ -7,13 +7,13 @@ void main() {
       const accessToken = 'valid_access_token';
       final expirationTime = DateTime.now().add(const Duration(hours: 1));
       const refreshToken = 'valid_refresh_token';
-      final refreshExpiresIn = DateTime.now().add(const Duration(hours: 24));
+
       expect(
         validateAccessToken(
             accessToken: accessToken,
             accessTokenExpiration: expirationTime.toString(),
             refreshToken: refreshToken,
-            refreshExpiresIn: refreshExpiresIn.toString()),
+            refreshExpiresIn: '${refreshWindow + 100}'),
         AccessTokenState.authenticated,
       );
     });
@@ -22,13 +22,12 @@ void main() {
       const accessToken = null;
       final expirationTime = DateTime.now().add(const Duration(hours: 1));
       const refreshToken = 'valid_refresh_token';
-      final refreshExpiresIn = DateTime.now().add(const Duration(hours: 24));
       expect(
         validateAccessToken(
             accessToken: accessToken,
             accessTokenExpiration: expirationTime.toString(),
             refreshToken: refreshToken,
-            refreshExpiresIn: refreshExpiresIn.toString()),
+            refreshExpiresIn: '${refreshWindow + 100}'),
         AccessTokenState.unauthenticated,
       );
     });
@@ -38,13 +37,13 @@ void main() {
       const accessToken = 'expired_access_token';
       final expirationTime = DateTime.now().subtract(const Duration(hours: 1));
       const refreshToken = 'valid_refresh_token';
-      final refreshExpiresIn = DateTime.now().add(const Duration(hours: 24));
+
       expect(
         validateAccessToken(
             accessToken: accessToken,
             accessTokenExpiration: expirationTime.toString(),
             refreshToken: refreshToken,
-            refreshExpiresIn: refreshExpiresIn.toString()),
+            refreshExpiresIn: '${refreshWindow + 100}'),
         AccessTokenState.refreshable,
       );
     });
@@ -72,14 +71,13 @@ void main() {
     test('access token is expired and refresh token is expired', () {
       final accessTokenExpiration =
           DateTime.now().subtract(const Duration(hours: 1));
-      final refreshExpiresIn =
-          DateTime.now().subtract(const Duration(hours: 1));
+
       expect(
           validateAccessToken(
               accessToken: 'my-access-token',
               accessTokenExpiration: accessTokenExpiration.toString(),
               refreshToken: 'my-refresh-token',
-              refreshExpiresIn: refreshExpiresIn.toString()),
+              refreshExpiresIn: '0'),
           equals(AccessTokenState.expired));
     });
 

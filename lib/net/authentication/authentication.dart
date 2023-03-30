@@ -31,6 +31,9 @@ enum SecureStoreKeys {
   idToken
 }
 
+// refreshWindow in sec.
+const refreshWindow = 60;
+
 const authStorage = FlutterSecureStorage(
   aOptions: AndroidOptions(
     encryptedSharedPreferences: true,
@@ -103,7 +106,7 @@ Future<bool> startLogin() async {
         accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
         refreshtoken: result.refreshToken,
         refreshExpiresIn:
-            result.authorizationAdditionalParameters?['refresh_expires_in'],
+            result.tokenAdditionalParameters?['refresh_expires_in'],
         idToken: result.idToken);
   } on Exception catch (e, st) {
     logger.d('Fail on Authentication', [e, st]);
@@ -160,17 +163,14 @@ AccessTokenState validateAccessToken({
   required String? refreshToken,
   required String? refreshExpiresIn,
 }) {
-  // TODO: check timezone
   if (accessToken == null || accessTokenExpiration == null) {
     return AccessTokenState.unauthenticated;
   }
   DateTime? expirationTime = DateTime.tryParse(accessTokenExpiration);
-  DateTime? refreshExpirationTime = DateTime.tryParse(refreshExpiresIn ?? "");
+  var refreshExpirationTime = int.tryParse(refreshExpiresIn ?? '') ?? 0;
 
   if (expirationTime == null || expirationTime.isBefore(DateTime.now())) {
-    if (refreshToken == null ||
-        refreshExpirationTime == null ||
-        refreshExpirationTime.isBefore(DateTime.now())) {
+    if (refreshToken == null || refreshExpirationTime <= refreshWindow) {
       return AccessTokenState.expired;
     } else {
       return AccessTokenState.refreshable;
