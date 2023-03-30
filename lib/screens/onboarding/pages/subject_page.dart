@@ -5,11 +5,13 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/main.dart';
 import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
+import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
 import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class SubjectPage extends StatelessWidget {
   final PageController controller;
@@ -25,11 +27,11 @@ class SubjectPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocListener<OnboardingBloc, OnboardingState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         final currentState = state;
         if (currentState is OnboardingSended) {
           if (currentState.navigateToNext) {
-            context.go(startScreen);
+            context.go(notification);
           }
         }
         if (currentState is OnboardingSendFailure) {

@@ -1,0 +1,181 @@
+import 'package:flutter_appauth/flutter_appauth.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:gruene_app/common/logger.dart';
+
+const discoveryUrl =
+    'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration';
+const clientId = 'gruene_app';
+const redirectUrl = 'grueneapp://appAuth';
+const scopes = [
+  "openid",
+  "address",
+  "acr",
+  "email",
+  "web-origins",
+  "oauth-einverstaendniserklaerung",
+  "oauth-username",
+  "roles",
+  "profile",
+  "phone",
+  "offline_access",
+  "microprofile-jwt"
+];
+
+enum AccessTokenState { authenticated, unauthenticated, refreshable, expired }
+
+enum SecureStoreKeys {
+  accesToken,
+  refreshtoken,
+  accessTokenExpiration,
+  refreshExpiresIn,
+  idToken
+}
+
+const authStorage = FlutterSecureStorage(
+  aOptions: AndroidOptions(
+    encryptedSharedPreferences: true,
+  ),
+);
+
+Future<bool> signOut() async {
+  const appAuth = FlutterAppAuth();
+  try {
+    await appAuth.endSession(EndSessionRequest(
+      idTokenHint: await authStorage.read(key: SecureStoreKeys.idToken.name),
+      postLogoutRedirectUrl: redirectUrl,
+      discoveryUrl: discoveryUrl,
+      preferEphemeralSession: true,
+    ));
+    SecureStoreKeys.values.map((e) => authStorage.delete(key: e.name));
+    return true;
+  } on Exception catch (e, st) {
+    logger.d('Fail on signOut', [e, st]);
+    return false;
+  }
+}
+
+Future<bool> refreshToken(String? refreshToken) async {
+  const appAuth = FlutterAppAuth();
+  try {
+    var res = await appAuth.token(
+      TokenRequest(
+        clientId,
+        redirectUrl,
+        discoveryUrl: discoveryUrl,
+        refreshToken: refreshToken,
+        scopes: scopes,
+      ),
+    );
+    if (res == null) {
+      return false;
+    }
+    saveTokenValuesInSecureStorage(
+        accessToken: res.accessToken,
+        accessTokenExpiration: res.accessTokenExpirationDateTime.toString(),
+        refreshtoken: res.refreshToken,
+        // TODO: Check if value Exist
+        refreshExpiresIn: res.tokenAdditionalParameters?['refresh_expires_in'],
+        idToken: res.idToken);
+    return true;
+  } on Exception catch (e, st) {
+    logger.d('Fail on Authentication', [e, st]);
+    return false;
+  }
+}
+
+Future<bool> startLogin() async {
+  const appAuth = FlutterAppAuth();
+  try {
+    final result = await appAuth.authorizeAndExchangeCode(
+      AuthorizationTokenRequest(
+        preferEphemeralSession: true,
+        clientId,
+        redirectUrl,
+        discoveryUrl: discoveryUrl,
+        scopes: scopes,
+      ),
+    );
+    if (result == null) {
+      return false;
+    }
+    saveTokenValuesInSecureStorage(
+        accessToken: result.accessToken,
+        accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
+        refreshtoken: result.refreshToken,
+        refreshExpiresIn:
+            result.authorizationAdditionalParameters?['refresh_expires_in'],
+        idToken: result.idToken);
+  } on Exception catch (e, st) {
+    logger.d('Fail on Authentication', [e, st]);
+    return false;
+  }
+  return true;
+}
+
+void saveTokenValuesInSecureStorage({
+  required String? accessToken,
+  required String? refreshtoken,
+  required String? accessTokenExpiration,
+  required String? refreshExpiresIn,
+  required String? idToken,
+}) async {
+  await authStorage.write(
+      key: SecureStoreKeys.accesToken.name, value: accessToken);
+  await authStorage.write(
+      key: SecureStoreKeys.refreshtoken.name, value: refreshtoken);
+  await authStorage.write(
+      key: SecureStoreKeys.accessTokenExpiration.name,
+      value: accessTokenExpiration);
+  await authStorage.write(
+      key: SecureStoreKeys.refreshExpiresIn.name, value: refreshExpiresIn);
+  await authStorage.write(key: SecureStoreKeys.idToken.name, value: idToken);
+}
+
+// Check if the User has a valid Login
+Future<bool> checkCurrentAuthState() async {
+  final refresh = await authStorage.read(key: SecureStoreKeys.accesToken.name);
+  var res = validateAccessToken(
+    accessToken: await authStorage.read(key: SecureStoreKeys.accesToken.name),
+    accessTokenExpiration:
+        await authStorage.read(key: SecureStoreKeys.accessTokenExpiration.name),
+    refreshToken: refresh,
+    refreshExpiresIn:
+        await authStorage.read(key: SecureStoreKeys.refreshExpiresIn.name),
+  );
+  switch (res) {
+    case AccessTokenState.authenticated:
+      return true;
+    case AccessTokenState.unauthenticated:
+      return false;
+    case AccessTokenState.refreshable:
+      return refreshToken(refresh);
+    case AccessTokenState.expired:
+      return false;
+  }
+}
+
+AccessTokenState validateAccessToken({
+  required String? accessToken,
+  required String? accessTokenExpiration,
+  required String? refreshToken,
+  required String? refreshExpiresIn,
+}) {
+  // TODO: check timezone
+  if (accessToken == null || accessTokenExpiration == null) {
+    return AccessTokenState.unauthenticated;
+  }
+  DateTime? expirationTime = DateTime.tryParse(accessTokenExpiration);
+  DateTime? refreshExpirationTime = DateTime.tryParse(refreshExpiresIn ?? "");
+
+  if (expirationTime == null || expirationTime.isBefore(DateTime.now())) {
+    if (refreshToken == null ||
+        refreshExpirationTime == null ||
+        refreshExpirationTime.isBefore(DateTime.now())) {
+      return AccessTokenState.expired;
+    } else {
+      return AccessTokenState.refreshable;
+    }
+  } else {
+    return AccessTokenState.authenticated;
+  }
+}

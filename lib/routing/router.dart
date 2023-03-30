@@ -140,9 +140,8 @@ final GoRouter router = GoRouter(
   ],
   redirect: (context, state) async {
     String? firstRoute;
-    firstRoute = await onAppStartup(context, state);
-
     if (!isSplashRemoved) {
+      firstRoute = await onAppStartup(context, state);
       FlutterNativeSplash.remove();
       isSplashRemoved = true;
     }
