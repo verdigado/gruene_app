@@ -77,7 +77,7 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   @override
   Future<bool> onboardingSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
-    return Future.delayed(Duration(seconds: 2), () => true);
+    return Future.delayed(const Duration(seconds: 2), () => true);
   }
 
   @override

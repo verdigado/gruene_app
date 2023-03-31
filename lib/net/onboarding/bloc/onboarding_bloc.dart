@@ -1,11 +1,9 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/net/client.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';

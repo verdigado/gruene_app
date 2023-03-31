@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';

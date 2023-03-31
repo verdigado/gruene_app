@@ -5,13 +5,11 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
-import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_list_view_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileMenu extends StatelessWidget {
   const ProfileMenu({super.key});
