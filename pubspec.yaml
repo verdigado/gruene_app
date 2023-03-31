@@ -72,7 +72,7 @@ dependencies:
   gruene_api_client:
     git:
       url: https://github.com/verdigado/gruene_app_api_client.git
-      ref: main
+      tag: latest
 
 
 

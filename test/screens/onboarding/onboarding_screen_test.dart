@@ -78,7 +78,7 @@ void main() {
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
       when(() => onboardingRepositoryMock.listCompetence())
-          .thenReturn(competence);
+          .thenAnswer((invocation) => Future.value(competence));
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),
@@ -186,7 +186,7 @@ void main() {
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
       when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
       when(() => onboardingRepositoryMock.listCompetence())
-          .thenReturn(competence);
+          .thenAnswer((invocation) => Future.value(competence));
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),

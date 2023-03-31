@@ -33,7 +33,7 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                   alignment: Alignment.topRight,
                   child: SvgPicture(
                       AssetBytesLoader(Assets.images.grueneTopicEuropa1Svg),
-                      height: con.maxHeight / 100 * 45),
+                      height: con.maxHeight / 100 * 40),
                 ),
                 Padding(
                   padding: const EdgeInsets.only(left: 30, right: 30, top: 10),

@@ -1,9 +1,11 @@
 import 'dart:convert';
 
+import 'package:dio/dio.dart';
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/net/client.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
@@ -16,11 +18,20 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingRepository onboardingRepository;
 
   OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
-    on<OnboardingLoad>((event, emit) {
-      emit(OnboardingReady(
-          topics: onboardingRepository.listTopic(),
-          subject: onboardingRepository.listSubject(),
-          competence: onboardingRepository.listCompetence()));
+    on<OnboardingLoad>((event, emit) async {
+      emit(OnboardingLoading());
+      try {
+        final res = await onboardingRepository.listCompetenceAndSubject();
+        emit(OnboardingReady(
+            topics: onboardingRepository.listTopic(),
+            subject: res.subject,
+            competence: res.competence));
+      } catch (e) {
+        onError(
+            BlocError(message: 'Error on Fetch Data from Api', expose: true),
+            StackTrace.current);
+        emit(OnboardingFetchFailure());
+      }
     });
     on<OnboardingTopicAdd>((event, emit) {
       final currentState = state;
