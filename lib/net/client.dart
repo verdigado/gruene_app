@@ -7,17 +7,14 @@ import 'package:gruene_app/routing/routes.dart';
 final api = GrueneApiClient(interceptors: [BearerAuthInterceptor()]);
 
 class BearerAuthInterceptor extends Interceptor {
-  String token = '';
-
   @override
   void onRequest(
     RequestOptions options,
     RequestInterceptorHandler handler,
   ) async {
-    if (token.isEmpty) {
-      token =
-          await authStorage.read(key: SecureStoreKeys.accesToken.name) ?? '';
-    }
+    var token =
+        await authStorage.read(key: SecureStoreKeys.accesToken.name) ?? '';
+
     options.headers['authorization'] = 'Bearer $token';
     super.onRequest(options, handler);
   }
