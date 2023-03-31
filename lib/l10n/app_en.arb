@@ -72,5 +72,6 @@
   "applications":"Applications",
   "account":"Account",
   "openSettings":"Open Settings",
-  "profileImageRemoveErrorMessage":"Failure on deleting the Profile Image, please try again"
+  "profileImageRemoveErrorMessage":"Failure on deleting the Profile Image, please try again",
+  "loginFailure":"Unknown failure on Login, please try again"
 }

@@ -111,22 +111,16 @@ class _LoginScreenState extends State<LoginScreen> {
                             });
                             final success = await startLogin();
                             if (success) {
-                              final prefs =
-                                  await SharedPreferences.getInstance();
-                              if (prefs.getBool(firstLaunchPreferencesKey) ??
-                                  true) {
-                                router.go(onboarding);
-                              } else {
-                                router.go(startScreen);
-                              }
+                              router.go(startScreen);
                             } else {
                               setState(() {
                                 showLoadingIndicator = false;
                               });
                               MyApp.scaffoldMessengerKey.currentState
-                                  ?.showSnackBar(const SnackBar(
+                                  ?.showSnackBar(SnackBar(
                                       content: Center(
-                                child: Text('Fehler beim Login '),
+                                child: Text(
+                                    AppLocalizations.of(context)!.loginFailure),
                               )));
                             }
                           },
