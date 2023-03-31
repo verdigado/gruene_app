@@ -31,8 +31,8 @@ enum SecureStoreKeys {
   idToken
 }
 
-// refreshWindow in sec.
-const refreshWindow = 60;
+// refreshWindow in sec. => 3 Days
+const refreshWindow = 259200;
 
 const authStorage = FlutterSecureStorage(
   aOptions: AndroidOptions(
@@ -101,7 +101,7 @@ Future<bool> startLogin() async {
     if (result == null) {
       return false;
     }
-    var refreshExpiresIn = saveTokenValuesInSecureStorage(
+    saveTokenValuesInSecureStorage(
         accessToken: result.accessToken,
         accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
         refreshtoken: result.refreshToken,
