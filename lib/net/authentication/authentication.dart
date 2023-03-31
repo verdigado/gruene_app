@@ -136,7 +136,8 @@ void saveTokenValuesInSecureStorage({
 
 // Check if the User has a valid Login
 Future<bool> checkCurrentAuthState() async {
-  final refresh = await authStorage.read(key: SecureStoreKeys.accesToken.name);
+  final refresh =
+      await authStorage.read(key: SecureStoreKeys.refreshtoken.name);
   var res = validateAccessToken(
     accessToken: await authStorage.read(key: SecureStoreKeys.accesToken.name),
     accessTokenExpiration:
