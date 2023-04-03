@@ -47,9 +47,9 @@ const textTheme = TextTheme(
       * Headlines
       */
   displayLarge: TextStyle(
-      fontFamily: FontFamily.bereit,
+      fontFamily: FontFamily.ptsans,
       fontWeight: FontWeight.bold,
-      fontSize: 33,
+      fontSize: 34,
       height: 1.16,
       letterSpacing: 1.0,
       color: lightBlack),
@@ -69,7 +69,7 @@ const textTheme = TextTheme(
       color: lightBlack),
   headlineLarge: TextStyle(
       fontFamily: FontFamily.ptsans,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.normal,
       fontSize: 18,
       height: 1.33,
       letterSpacing: 1.0,

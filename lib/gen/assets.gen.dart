@@ -16,6 +16,9 @@ class $AssetsImagesGen {
   AssetGenImage get sonnenblumeRgbAufTransparent =>
       const AssetGenImage('assets/images/Sonnenblume_rgb_aufTransparent.png');
 
+  /// File path: assets/images/bicycle_man.svg
+  String get bicycleMan => 'assets/images/bicycle_man.svg';
+
   /// File path: assets/images/gruene_topic_economy.svg
   String get grueneTopicEconomy => 'assets/images/gruene_topic_economy.svg';
 
@@ -41,6 +44,7 @@ class $AssetsImagesGen {
   /// List of all assets
   List<dynamic> get values => [
         sonnenblumeRgbAufTransparent,
+        bicycleMan,
         grueneTopicEconomy,
         grueneTopicEconomySvg,
         grueneTopicEuropa1,
