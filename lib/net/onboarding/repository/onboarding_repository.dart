@@ -1,4 +1,5 @@
 import 'package:gruene_api_client/gruene_api_client.dart';
+import 'package:gruene_app/constants/app_const.dart';
 import 'package:gruene_app/net/client.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
@@ -82,7 +83,7 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
 
   @override
   Future<OnboardingListResult> listCompetenceAndSubject() async {
-    final response = await api.getTagsApi().findTags();
+    final response = await AppConst.values.api.getTagsApi().findTags();
     var competence = response.data?.items
             .map((tag) => tag)
             .where((tag) => tag.type == TagTypeEnum.skill)
