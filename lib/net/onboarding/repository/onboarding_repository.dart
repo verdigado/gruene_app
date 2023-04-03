@@ -85,13 +85,11 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   Future<OnboardingListResult> listCompetenceAndSubject() async {
     final response = await AppConst.values.api.getTagsApi().findTags();
     var competence = response.data?.items
-            .map((tag) => tag)
             .where((tag) => tag.type == TagTypeEnum.skill)
             .map((tag) => Competence(id: tag.id, name: tag.tag, checked: false))
             .toSet() ??
         {};
     var subject = response.data?.items
-            .map((tag) => tag)
             .where((tag) => tag.type == TagTypeEnum.interest)
             .map((tag) => Subject(id: tag.id, name: tag.tag, checked: false))
             .toSet() ??
