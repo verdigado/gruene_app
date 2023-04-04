@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:dio_smart_retry/dio_smart_retry.dart';
 import 'package:flutter/foundation.dart';
 import 'package:gruene_api_client/gruene_api_client.dart';
+import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
@@ -56,6 +57,8 @@ class BearerAuthInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
       if (!await checkCurrentAuthState()) {
+        logger.d('RefreshBearerAuthToken failed redirect to Login');
+        handler.reject(err);
         router.go(login);
         return;
       }
