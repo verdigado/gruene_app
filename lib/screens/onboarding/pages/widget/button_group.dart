@@ -30,8 +30,8 @@ class ButtonGroupNextPrevious extends StatelessWidget {
             onPressed: next,
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
-        const SizedBox(height: 10),
         if (!onlyNext) ...[
+          const SizedBox(height: 10),
           ElevatedButton(
             onPressed: previous,
             style: grayButtonStyle,
@@ -39,9 +39,7 @@ class ButtonGroupNextPrevious extends StatelessWidget {
                 style: textTheme.labelLarge?.copyWith(color: darkGrey)),
           ),
         ],
-        const SizedBox(
-          height: 10,
-        )
+        const SizedBox(height: 20),
       ],
     );
   }
