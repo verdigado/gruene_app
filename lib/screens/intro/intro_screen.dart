@@ -35,11 +35,14 @@ class _IntroScreenState extends State<IntroScreen> {
   void initState() {
     super.initState();
     snappingSheetController = SnappingSheetController();
+    WidgetsBinding.instance!.addPostFrameCallback((_) {
+      firstSnap();
+      // executes after build
+    });
   }
 
   @override
   Widget build(BuildContext context) {
-    firstSnap();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
@@ -51,7 +54,9 @@ class _IntroScreenState extends State<IntroScreen> {
 
             controller: snappingSheetController,
             onSnapStart: (positionData, snappingPosition) {
-              print('snapStart');
+              setState(() {
+                first = false;
+              });
             },
             grabbing: Container(
               decoration: BoxDecoration(
@@ -102,25 +107,32 @@ class _IntroScreenState extends State<IntroScreen> {
     );
   }
 
-  void firstSnap() {
+  Future<void> firstSnap() async {
     if (snappingSheetController.isAttached && first) {
-      snappingSheetController.snapToPosition(SnappingPosition.factor(
-        positionFactor: 0.03,
-        snappingCurve: Curves.easeOutExpo,
-        snappingDuration: Duration(seconds: 1),
-        grabbingContentOffset: GrabbingContentOffset.top,
-      ));
-      setState(() {
-        first = false;
-      });
-      Future.delayed(
-        const Duration(milliseconds: 800),
+      var down = false;
+      await Future.delayed(
+        const Duration(seconds: 3),
         () {
-          setState(() {
-            snappingSheetController.snapToPosition(widget.snappingPositions[0]);
-          });
+          if (first) {
+            snappingSheetController
+                .snapToPosition(const SnappingPosition.factor(
+              positionFactor: 0.03,
+              snappingCurve: Curves.easeOutExpo,
+              snappingDuration: Duration(seconds: 1),
+              grabbingContentOffset: GrabbingContentOffset.top,
+            ));
+            down = true;
+          }
         },
       );
+      if (down) {
+        Future.delayed(
+          const Duration(milliseconds: 800),
+          () {
+            snappingSheetController.snapToPosition(widget.snappingPositions[0]);
+          },
+        );
+      }
     }
   }
 }
