@@ -89,6 +89,8 @@ Future<bool> refreshToken(String? refreshToken) async {
 }
 
 Future<bool> startLogin() async {
+  if (await checkCurrentAuthState()) return true;
+
   const appAuth = FlutterAppAuth();
   try {
     final result = await appAuth.authorizeAndExchangeCode(
@@ -141,8 +143,10 @@ void saveTokenValuesInSecureStorage({
 Future<bool> checkCurrentAuthState() async {
   final refresh =
       await authStorage.read(key: SecureStoreKeys.refreshtoken.name);
+  String? accessToken =
+      await authStorage.read(key: SecureStoreKeys.accesToken.name);
   var res = validateAccessToken(
-    accessToken: await authStorage.read(key: SecureStoreKeys.accesToken.name),
+    accessToken: accessToken,
     accessTokenExpiration:
         await authStorage.read(key: SecureStoreKeys.accessTokenExpiration.name),
     refreshToken: refresh,
@@ -151,6 +155,7 @@ Future<bool> checkCurrentAuthState() async {
   );
   switch (res) {
     case AccessTokenState.authenticated:
+      GruneAppData.values.api.setBearerAuth('bearer', accessToken ?? '');
       return true;
     case AccessTokenState.unauthenticated:
       return false;
