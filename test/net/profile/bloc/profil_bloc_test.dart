@@ -33,7 +33,7 @@ void main() {
       );
 
       blocTest(
-        'shouldAddTelefonnumberAsFavWhenMemberProfileAddValueEventIsEmitet',
+        'shouldAddTelefonnumberAsFavTitleWhenMemberProfileAddValueEventIsEmitet',
         seed: () {
           return ProfileState(
             profile: Profile(
@@ -68,7 +68,7 @@ void main() {
       );
 
       blocTest(
-        'shouldAddEmailAsFavWhenMemberProfileAddValueEventIsEmitet',
+        'shouldAddEmailAsFavTitleWhenMemberProfileAddValueEventIsEmitet',
         seed: () {
           return ProfileState(
             profile: Profile(
@@ -99,7 +99,7 @@ void main() {
         ],
       );
       blocTest(
-        'shouldSetSelectedEmailAsFavWhenAddFavoritProfileEventIsEmitet',
+        'shouldSetSelectedEmailAsFavTitleWhenAddFavoritProfileEventIsEmitet',
         seed: () {
           return ProfileState(
             profile: Profile(
@@ -132,7 +132,7 @@ void main() {
         ],
       );
       blocTest(
-        'shouldSetSelectedTelefonnumberAsFavWhenAddFavoritProfileEventIsEmitet',
+        'shouldSetSelectedTelefonnumberAsFavTitleWhenAddFavoritProfileEventIsEmitet',
         seed: () {
           return ProfileState(
             profile: Profile(
