@@ -8,11 +8,12 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
 class MyGrueneApiClient extends GrueneApiClient {
-  MyGrueneApiClient(
-      {super.basePathOverride,
-      super.dio,
-      super.interceptors,
-      super.serializers});
+  MyGrueneApiClient({
+    super.basePathOverride,
+    super.dio,
+    super.interceptors,
+    super.serializers,
+  });
 
   factory MyGrueneApiClient.withRetry(
       {basePathOverride, dio, interceptors, serializers}) {
@@ -46,6 +47,7 @@ class BearerAuthInterceptor extends Interceptor {
   ) async {
     var token =
         await authStorage.read(key: SecureStoreKeys.accesToken.name) ?? '';
+
     options.headers['authorization'] = 'Bearer $token';
     super.onRequest(options, handler);
   }

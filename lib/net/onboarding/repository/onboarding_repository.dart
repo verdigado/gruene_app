@@ -83,7 +83,7 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
 
   @override
   Future<OnboardingListResult> listCompetenceAndSubject() async {
-    final response = await AppConst.values.api.getTagsApi().findTags();
+    final response = await GruneAppData.values.api.getTagsApi().findTags();
     var competence = response.data?.items
             .where((tag) => tag.type == TagTypeEnum.skill)
             .map((tag) => Competence(id: tag.id, name: tag.tag, checked: false))

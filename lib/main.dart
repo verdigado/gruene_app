@@ -20,7 +20,6 @@ void runMain() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
-  static final dio = Dio();
 
   // This widget is the root of your application.
   @override
