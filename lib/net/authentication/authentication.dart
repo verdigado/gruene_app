@@ -1,6 +1,7 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/constants/app_const.dart';
 
 const discoveryUrl =
     'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration';
@@ -122,6 +123,7 @@ void saveTokenValuesInSecureStorage({
   required String? refreshExpiresIn,
   required String? idToken,
 }) async {
+  GruneAppData.values.api.setBearerAuth('bearer', accessToken ?? '');
   await authStorage.write(
       key: SecureStoreKeys.accesToken.name, value: accessToken);
   await authStorage.write(

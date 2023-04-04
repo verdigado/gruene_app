@@ -21,38 +21,30 @@ class MyGrueneApiClient extends GrueneApiClient {
     final client = MyGrueneApiClient(
       basePathOverride: basePathOverride,
       dio: dio,
-      interceptors: interceptors,
       serializers: serializers,
     );
-    client.dio.interceptors.add(RetryInterceptor(
-      dio: client.dio,
-      logPrint: print, // specify log function (optional)
-      retries: 3, // retry count (optional)
-      retryableExtraStatuses: {401},
-      retryDelays: const [
-        // set delays between retries (optional)
-        Duration(seconds: 1), // wait 1 sec before first retry
-        Duration(seconds: 2), // wait 2 sec before second retry
-        Duration(seconds: 3), // wait 3 sec before third retry
+    client.dio.interceptors.addAll(
+      [
+        ...interceptors,
+        RetryInterceptor(
+          dio: client.dio,
+          logPrint: print, // specify log function (optional)
+          retries: 3, // retry count (optional)
+          retryableExtraStatuses: {401},
+          retryDelays: const [
+            // set delays between retries (optional)
+            Duration(seconds: 1), // wait 1 sec before first retry
+            Duration(seconds: 2), // wait 2 sec before second retry
+            Duration(seconds: 3), // wait 3 sec before third retry
+          ],
+        ),
       ],
-    ));
+    );
     return client;
   }
 }
 
 class BearerAuthInterceptor extends Interceptor {
-  @override
-  void onRequest(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    var token =
-        await authStorage.read(key: SecureStoreKeys.accesToken.name) ?? '';
-
-    options.headers['authorization'] = 'Bearer $token';
-    super.onRequest(options, handler);
-  }
-
   @override
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
