@@ -29,6 +29,6 @@ class GruneAppData {
   late MyGrueneApiClient _api;
 
   late Flavors _flavors;
-  Flavors get falavor => _flavors;
+  Flavors get flavor => _flavors;
   MyGrueneApiClient get api => _api;
 }

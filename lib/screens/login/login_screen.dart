@@ -51,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // TODO: Remove this navigation on Release, just Dev purpose !
                         backgroundImage: InkWell(
                           onLongPress:
-                              GruneAppData.values.falavor == Flavors.staging
+                              GruneAppData.values.flavor == Flavors.staging
                                   ? () => context.go(startScreen)
                                   : null,
                           child: SvgPicture(
