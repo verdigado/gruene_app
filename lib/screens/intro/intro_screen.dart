@@ -8,39 +8,55 @@ import 'package:snapping_sheet/snapping_sheet.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
+  final snappingPositions = const [
+    SnappingPosition.factor(
+      positionFactor: 0.0,
+      snappingCurve: Curves.easeOutExpo,
+      snappingDuration: Duration(milliseconds: 500),
+      grabbingContentOffset: GrabbingContentOffset.top,
+    ),
+    SnappingPosition.factor(
+      positionFactor: 1.0,
+      snappingCurve: Curves.bounceOut,
+      snappingDuration: Duration(seconds: 1),
+      grabbingContentOffset: GrabbingContentOffset.bottom,
+    ),
+  ];
 
   @override
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
 class _IntroScreenState extends State<IntroScreen> {
+  late SnappingSheetController snappingSheetController;
+  bool first = true;
+
+  @override
+  void initState() {
+    super.initState();
+    snappingSheetController = SnappingSheetController();
+  }
+
   @override
   Widget build(BuildContext context) {
+    firstSnap();
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: SafeArea(
           child: SnappingSheet(
-            snappingPositions: const [
-              SnappingPosition.factor(
-                positionFactor: 0.0,
-                snappingCurve: Curves.easeOutExpo,
-                snappingDuration: Duration(milliseconds: 500),
-                grabbingContentOffset: GrabbingContentOffset.top,
-              ),
-              SnappingPosition.factor(
-                positionFactor: 1.0,
-                snappingCurve: Curves.bounceOut,
-                snappingDuration: Duration(seconds: 1),
-                grabbingContentOffset: GrabbingContentOffset.bottom,
-              ),
-            ],
+            snappingPositions: widget.snappingPositions,
             child: const IntroContentBelow(), // TODO: Add your content here
             grabbingHeight: 75,
+
+            controller: snappingSheetController,
+            onSnapStart: (positionData, snappingPosition) {
+              print('snapStart');
+            },
             grabbing: Container(
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondary,
-                borderRadius: BorderRadius.only(
+                borderRadius: const BorderRadius.only(
                     topLeft: Radius.circular(20),
                     topRight: Radius.circular(20)),
               ),
@@ -49,7 +65,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Align(
+                    const Align(
                         alignment: Alignment.topCenter,
                         child: ModalTopLine(color: Colors.white)),
                     Text(
@@ -59,7 +75,7 @@ class _IntroScreenState extends State<IntroScreen> {
                           .headlineSmall
                           ?.copyWith(color: Colors.white, fontSize: 18),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       height: 8,
                     ),
                     Text(
@@ -77,12 +93,34 @@ class _IntroScreenState extends State<IntroScreen> {
               draggable: true,
               child: Container(
                 color: Theme.of(context).colorScheme.secondary,
-                child: Text('Content'),
+                child: const Text('Content'),
               ), // TODO: Add your sheet content here
             ),
           ),
         ),
       ),
     );
+  }
+
+  void firstSnap() {
+    if (snappingSheetController.isAttached && first) {
+      snappingSheetController.snapToPosition(SnappingPosition.factor(
+        positionFactor: 0.03,
+        snappingCurve: Curves.easeOutExpo,
+        snappingDuration: Duration(seconds: 1),
+        grabbingContentOffset: GrabbingContentOffset.top,
+      ));
+      setState(() {
+        first = false;
+      });
+      Future.delayed(
+        const Duration(milliseconds: 800),
+        () {
+          setState(() {
+            snappingSheetController.snapToPosition(widget.snappingPositions[0]);
+          });
+        },
+      );
+    }
   }
 }
