@@ -41,6 +41,9 @@ class $AssetsImagesGen {
   String get gruenenTopicOekologieSvg =>
       'assets/images/gruenen_topic_oekologie.svg.vec';
 
+  /// File path: assets/images/user.svg
+  String get user => 'assets/images/user.svg';
+
   /// List of all assets
   List<dynamic> get values => [
         sonnenblumeRgbAufTransparent,
@@ -50,7 +53,8 @@ class $AssetsImagesGen {
         grueneTopicEuropa1,
         grueneTopicEuropa1Svg,
         gruenenTopicOekologie,
-        gruenenTopicOekologieSvg
+        gruenenTopicOekologieSvg,
+        user
       ];
 }
 

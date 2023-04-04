@@ -1,19 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/constants/theme_data.dart';
-import 'package:gruene_app/gen/assets.gen.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/main.dart';
-import 'package:gruene_app/net/authentication/authentication.dart';
-import 'package:gruene_app/routing/router.dart';
-import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/screens/intro/intro_content_below.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
-import 'package:gruene_app/widget/privacy_imprint.dart';
-import 'package:sliding_up_panel/sliding_up_panel.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -23,100 +14,75 @@ class IntroScreen extends StatefulWidget {
 }
 
 class _IntroScreenState extends State<IntroScreen> {
-  bool showLoadingIndicator = false;
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
-    final panelMinHeight = size.height / 100 * 10;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-          body: SafeArea(
-        child: Stack(children: [
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: SvgPicture(
-                        AssetBytesLoader(Assets.images.grueneTopicEconomySvg),
-                        height: size.height / 100 * 60),
-                  ),
-                  Flexible(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        AppLocalizations.of(context)!.introHeadline1,
-                        style: Theme.of(context).primaryTextTheme.displayLarge,
-                      ),
-                    ),
-                  ),
-                  Flexible(
-                    flex: 2,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        AppLocalizations.of(context)!.introHeadline2,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .displaySmall
-                            ?.copyWith(color: darkGrey),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: AbsorbPointer(
-                        absorbing: showLoadingIndicator,
-                        child: ElevatedButton(
-                            onPressed: () async {
-                              setState(() {
-                                showLoadingIndicator = true;
-                              });
-                              final success = await startLogin();
-                              if (success) {
-                                router.go(onboarding);
-                              } else {
-                                setState(() {
-                                  showLoadingIndicator = false;
-                                });
-                                MyApp.scaffoldMessengerKey.currentState
-                                    ?.showSnackBar(SnackBar(
-                                        content: Center(
-                                  child: Text(AppLocalizations.of(context)!
-                                      .loginFailure),
-                                )));
-                              }
-                            },
-                            child: Text(AppLocalizations.of(context)!.login,
-                                style: const TextStyle(color: Colors.white))),
-                      ),
-                    ),
-                  ),
-                ],
+        body: SafeArea(
+          child: SnappingSheet(
+            snappingPositions: const [
+              SnappingPosition.factor(
+                positionFactor: 0.0,
+                snappingCurve: Curves.easeOutExpo,
+                snappingDuration: Duration(milliseconds: 500),
+                grabbingContentOffset: GrabbingContentOffset.top,
               ),
+              SnappingPosition.factor(
+                positionFactor: 1.0,
+                snappingCurve: Curves.bounceOut,
+                snappingDuration: Duration(seconds: 1),
+                grabbingContentOffset: GrabbingContentOffset.bottom,
+              ),
+            ],
+            child: const IntroContentBelow(), // TODO: Add your content here
+            grabbingHeight: 75,
+            grabbing: Container(
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.secondary,
+                borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(20),
+                    topRight: Radius.circular(20)),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(small),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Align(
+                        alignment: Alignment.topCenter,
+                        child: ModalTopLine(color: Colors.white)),
+                    Text(
+                      'App erkunden',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(color: Colors.white, fontSize: 18),
+                    ),
+                    SizedBox(
+                      height: 8,
+                    ),
+                    Text(
+                      'Erfahre hier, was Dich erwartet.',
+                      style: Theme.of(context)
+                          .textTheme
+                          .headlineSmall
+                          ?.copyWith(color: Colors.white, fontSize: 14),
+                    )
+                  ],
+                ),
+              ),
+            ), // TODO: Add your grabbing widget here,
+            sheetBelow: SnappingSheetContent(
+              draggable: true,
+              child: Container(
+                color: Theme.of(context).colorScheme.secondary,
+                child: Text('Content'),
+              ), // TODO: Add your sheet content here
             ),
           ),
-          Align(alignment: Alignment.bottomCenter, child: DatImpContainer()),
-          if (showLoadingIndicator) ...[
-            Positioned.fill(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: SpinKitThreeBounce(
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 50.0,
-                    )))
-          ]
-        ]),
-      )),
+        ),
+      ),
     );
   }
 }
