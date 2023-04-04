@@ -56,7 +56,6 @@ class BearerAuthInterceptor extends Interceptor {
   void onError(DioError err, ErrorInterceptorHandler handler) async {
     if (err.response?.statusCode == 401) {
       if (!await checkCurrentAuthState()) {
-        super.onError(err, handler);
         router.go(login);
       }
     }
