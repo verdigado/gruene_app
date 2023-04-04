@@ -78,7 +78,8 @@ Future<bool> refreshToken(String? refreshToken) async {
         accessTokenExpiration: res.accessTokenExpirationDateTime.toString(),
         refreshtoken: res.refreshToken,
         // TODO: Check if value Exist
-        refreshExpiresIn: res.tokenAdditionalParameters?['refresh_expires_in'],
+        refreshExpiresIn:
+            res.tokenAdditionalParameters?['refresh_expires_in'].toString(),
         idToken: res.idToken);
     return true;
   } on Exception catch (e, st) {
