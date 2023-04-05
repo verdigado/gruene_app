@@ -118,7 +118,8 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                     crossAxisAlignment: CrossAxisAlignment.baseline,
                     children: [
                       Text(
-                        AppLocalizations.of(context)!.chooseFav,
+                        // AppLocalizations.of(context)!.chooseFav,
+                        widget.inputHeadline,
                         style: Theme.of(context).primaryTextTheme.displaySmall,
                       ),
                       Visibility(
@@ -192,7 +193,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                           ]),
                     ),
                   ),
-                  const Divider(),
+                  /* const Divider(),
                   Visibility(
                     visible: inputValue.isNotEmpty &&
                         inputValue != widget.initalTextinputValue,
@@ -216,15 +217,15 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                         ),
                       ),
                     ),
-                  ),
-                  Text(
+                  ), */
+                  /*Text(
                     widget.inputHeadline,
                     style: Theme.of(context).primaryTextTheme.displaySmall,
                   ),
                   const SizedBox(
                     height: medium1,
                   ),
-                  FilledTextField(
+                   FilledTextField(
                     textEditingController: textEditControler,
                     focusNode: focusNode,
                     keyboardType: widget.textInputType,
@@ -233,7 +234,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                     },
                     labelText: widget.inputLabel,
                     hintText: widget.inputHint,
-                  ),
+                  ), */
                   const SizedBox(
                     height: medium1,
                   ),
