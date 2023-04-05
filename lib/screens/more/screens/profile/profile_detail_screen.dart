@@ -9,7 +9,7 @@ import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
-import 'package:gruene_app/widget/modal_top_line.dart';
+import 'package:gruene_app/widget/modals/modal_top_line.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
