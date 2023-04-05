@@ -4,7 +4,7 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/data/member_profil.dart';
 import 'package:gruene_app/widget/costume_separated_list.dart';
-import 'package:gruene_app/widget/multi_modal_select.dart';
+import 'package:gruene_app/widget/modals/multi_modal_select.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MemberProfilScreen extends StatefulWidget {
@@ -61,7 +61,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                  inputHeadline: AppLocalizations.of(context)!.emailAsFavTitle,
+                  inputHeadline: AppLocalizations.of(context)!.emailAsFav,
                   inputHint: AppLocalizations.of(context)!.emailAdress,
                   inputLabel: AppLocalizations.of(context)!.emailAdress,
                   onAddValue: (String value) => context
@@ -107,7 +107,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                   inputHint: AppLocalizations.of(context)!.telefonnumber,
                   inputLabel: AppLocalizations.of(context)!.telefonnumber,
                   inputHeadline:
-                      AppLocalizations.of(context)!.telefonnumberAsFavTitle,
+                      AppLocalizations.of(context)!.telefonnumberAsFav,
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
