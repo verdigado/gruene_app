@@ -53,6 +53,8 @@ class TopicCardState extends State<TopicCard> {
               borderRadius: BorderRadius.circular(cardBorder),
             ),
             child: Image(
+              color: Colors.black.withOpacity(0.25),
+              colorBlendMode: BlendMode.darken,
               image: context
                   .read<ImageProviderDelegate>()
                   .provide(widget.imgageUrl),
@@ -118,7 +120,7 @@ class TopicCardState extends State<TopicCard> {
             child: Icon(
               checkedState ? Icons.check : Icons.add,
               color: Theme.of(context).colorScheme.secondary,
-              size: cardSize / 6,
+              size: cardSize / 5,
             ),
           ),
         ),
@@ -130,7 +132,7 @@ class TopicCardState extends State<TopicCard> {
               style: const TextStyle(
                   color: Colors.white,
                   fontFamily: FontFamily.bereit,
-                  fontSize: 26),
+                  fontSize: 28),
             ),
           ),
         ),
