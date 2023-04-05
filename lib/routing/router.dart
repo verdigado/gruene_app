@@ -17,10 +17,11 @@ import 'package:gruene_app/screens/more/screens/profile/profile_detail_screen.da
 import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
 import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
-import 'package:gruene_app/screens/onboarding/onboarding_screen.dart';
+import 'package:gruene_app/screens/interests/interest_start_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
+import '../screens/interests/interest_pages_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -95,9 +96,16 @@ final GoRouter router = GoRouter(
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
-      path: onboarding,
+      path: interests,
       pageBuilder: (context, state) {
-        return const CustomNoTransitionPage(child: OnboardingScreen());
+        return const CustomNoTransitionPage(child: InterestStartScreen());
+      },
+    ),
+    GoRoute(
+      path: interestpages,
+      parentNavigatorKey: rootNavigatorKey,
+      pageBuilder: (context, state) {
+        return const CustomNoTransitionPage(child: InterestPagesScreen());
       },
     ),
     GoRoute(
