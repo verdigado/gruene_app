@@ -70,6 +70,7 @@ dependencies:
   flutter_secure_storage: ^8.0.0
   flutter_spinkit: ^5.1.0
   snapping_sheet: ^3.1.0
+  step_progress_indicator: ^1.0.2
 
 
 

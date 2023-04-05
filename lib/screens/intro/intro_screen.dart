@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/constants/theme_data.dart';
+import 'package:step_progress_indicator/step_progress_indicator.dart';
+import 'package:vector_graphics/vector_graphics.dart';
+import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/screens/intro/intro_content_below.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
@@ -30,12 +34,13 @@ class IntroScreen extends StatefulWidget {
 class _IntroScreenState extends State<IntroScreen> {
   late SnappingSheetController snappingSheetController;
   bool first = true;
+  bool snapIsTop = false;
 
   @override
   void initState() {
     super.initState();
     snappingSheetController = SnappingSheetController();
-    WidgetsBinding.instance!.addPostFrameCallback((_) {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       firstSnap();
       // executes after build
     });
@@ -48,58 +53,100 @@ class _IntroScreenState extends State<IntroScreen> {
       child: Scaffold(
         body: SafeArea(
           child: SnappingSheet(
+            lockOverflowDrag: true,
+            onSheetMoved: (positionData) {
+              setState(() {
+                snapIsTop = positionData.relativeToSheetHeight >= 0.9;
+              });
+            },
             snappingPositions: widget.snappingPositions,
             child: const IntroContentBelow(), // TODO: Add your content here
-            grabbingHeight: 75,
-
+            grabbingHeight: 100,
             controller: snappingSheetController,
             onSnapStart: (positionData, snappingPosition) {
               setState(() {
                 first = false;
               });
             },
-            grabbing: Container(
-              decoration: BoxDecoration(
-                color: Theme.of(context).colorScheme.secondary,
-                borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(20),
-                    topRight: Radius.circular(20)),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(small),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Align(
-                        alignment: Alignment.topCenter,
-                        child: ModalTopLine(color: Colors.white)),
-                    Text(
-                      'App erkunden',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: Colors.white, fontSize: 18),
-                    ),
-                    const SizedBox(
-                      height: 8,
-                    ),
-                    Text(
-                      'Erfahre hier, was Dich erwartet.',
-                      style: Theme.of(context)
-                          .textTheme
-                          .headlineSmall
-                          ?.copyWith(color: Colors.white, fontSize: 14),
-                    )
-                  ],
-                ),
-              ),
-            ), // TODO: Add your grabbing widget here,
+            grabbing: const GrabbingContent(),
             sheetBelow: SnappingSheetContent(
               draggable: true,
-              child: Container(
-                color: Theme.of(context).colorScheme.secondary,
-                child: const Text('Content'),
-              ), // TODO: Add your sheet content here
+              sizeBehavior: SheetSizeStatic(size: 100),
+              child: LayoutBuilder(builder: (ctx, con) {
+                return Container(
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: Stack(
+                    clipBehavior: Clip.antiAlias,
+                    alignment: Alignment.topCenter,
+                    fit: StackFit.expand,
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: SvgPicture(
+                          AssetBytesLoader(Assets.images.womanSofa),
+                        ),
+                      ),
+                      Positioned(
+                        top: con.maxHeight / 100 * 50,
+                        width: con.maxWidth / 2,
+                        right: con.maxWidth / 100 * 45,
+                        child: Visibility(
+                          maintainAnimation: true,
+                          maintainInteractivity: true,
+                          maintainSemantics: true,
+                          maintainSize: true,
+                          maintainState: true,
+                          visible: snapIsTop,
+                          child: AnimatedOpacity(
+                            opacity: snapIsTop ? 1 : 0,
+                            duration: const Duration(seconds: 1),
+                            curve: Curves.fastOutSlowIn,
+                            child: StepProgressIndicator(
+                              totalSteps: 5,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: con.maxHeight / 100 * 50,
+                        width: con.maxWidth,
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Padding(
+                            padding: const EdgeInsets.all(medium1),
+                            child: Text('Deine Lieblingsnews immer dabei',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .displayLarge
+                                    ?.copyWith(color: Colors.white)),
+                          ),
+                        ),
+                      ),
+                      Positioned(
+                        top: con.maxHeight / 100 * 68,
+                        width: con.maxWidth,
+                        child: Align(
+                          alignment: Alignment.bottomLeft,
+                          child: Padding(
+                              padding: const EdgeInsets.all(medium1),
+                              child: Visibility.maintain(
+                                visible: snapIsTop,
+                                child: AnimatedOpacity(
+                                  opacity: snapIsTop ? 1 : 0,
+                                  duration: const Duration(seconds: 1),
+                                  curve: Curves.fastOutSlowIn,
+                                  child: Text(
+                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.',
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                ),
+                              )),
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              }),
             ),
           ),
         ),
@@ -134,5 +181,50 @@ class _IntroScreenState extends State<IntroScreen> {
         );
       }
     }
+  }
+}
+
+class GrabbingContent extends StatelessWidget {
+  const GrabbingContent({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: const BorderRadius.only(
+            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(medium1),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Align(
+                alignment: Alignment.topCenter,
+                child: ModalTopLine(color: Colors.white)),
+            Text(
+              'App erkunden',
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
+              height: 8,
+            ),
+            Text(
+              'Erfahre hier, was Dich erwartet.',
+              style: Theme.of(context)
+                  .textTheme
+                  .headlineSmall
+                  ?.copyWith(color: Colors.white, fontSize: 14),
+            )
+          ],
+        ),
+      ),
+    );
   }
 }
