@@ -21,7 +21,7 @@ class _StartScreenState extends State<StartScreen> {
             onPressed: () => context.push(notification),
             child: const Text('Push Notification')),
         TextButton(
-            onPressed: () => context.push(onboarding),
+            onPressed: () => context.push(interests),
             child: const Text('Start Customization')),
         const Center(child: Text('StartScreen')),
       ],
