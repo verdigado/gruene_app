@@ -3,14 +3,19 @@ const startScreen = '/';
 const moreScreen = '/more';
 const searchScreen = '/search';
 const newsScreen = '/news';
+const interests = '/interests';
+// Subroutes of interests
+const interestpages = '/interestpages';
+
 const intro = '/intro';
 const login = '/login';
 const onboarding = '/onboarding';
 const notification = '/notification';
+const profile = '/profile';
+// Subroutes of profile
 const profileDetail = 'profileDetail';
 const memberProfil = 'memberProfil';
 const memberCard = 'memberCard';
-const profile = '/profile';
 
 // NAMED
 const profileScreenName = 'profilescreen';
@@ -20,25 +25,29 @@ const memberCardScreenName = 'memberCard';
 
 // TODO: Make l10n
 String getTitel(String route) {
-  if (startScreen == route) {
-    return 'Start';
-  } else if (moreScreen == route) {
-    return 'Mehr';
-  } else if (searchScreen == route) {
-    return 'Suche';
-  } else if (newsScreen == route) {
-    return 'News';
-  } else if (intro == route) {
-    return 'Intro';
-  } else if (login == route) {
-    return 'Login';
-  } else if (onboarding == route) {
-    return 'Onboarding';
-  } else if (notification == route) {
-    return 'Benachrichtigung';
-  } else if (profileDetail == route) {
-    return 'Profil Details';
-  } else {
-    return 'NoneTitel';
+  switch (route) {
+    case startScreen:
+      return 'Start';
+    case moreScreen:
+      return 'Mehr';
+    case searchScreen:
+      return 'Suche';
+    case newsScreen:
+      return 'News';
+    case intro:
+      return 'Intro';
+    case interests:
+      return 'Interessen';
+    case login:
+      return 'Login';
+    case onboarding:
+      return 'Onboarding';
+    case notification:
+      return 'Benachrichtigung';
+    case profileDetail:
+      return 'Profil Details';
+    // default case
+    default:
+      return '';
   }
 }
