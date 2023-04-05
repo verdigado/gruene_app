@@ -3,6 +3,11 @@ library slider_carousel;
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
+/**
+ * SliderCarousel:
+ * A Carousel Slider
+ */
+
 class SliderCarousel extends StatefulWidget {
   // Background Color
   final Color? backgroundColor;
