@@ -4,13 +4,13 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
-import 'package:gruene_app/net/onboarding/data/topic.dart';
-import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
+import 'package:gruene_app/net/interests/data/topic.dart';
+import 'package:gruene_app/net/interests/repository/interests_repository.dart';
 
-part 'onboarding_event.dart';
-part 'onboarding_state.dart';
+part 'interests_event.dart';
+part 'interests_state.dart';
 
 class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingRepository onboardingRepository;

@@ -3,24 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/main.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
+import 'package:gruene_app/widget/searchable_list.dart';
 
 class SubjectPage extends StatelessWidget {
-  final PageController controller;
-
-  final Widget? progressbar;
-
-  final double progressbarHeight;
-
-  const SubjectPage(this.controller,
-      {Key? key, this.progressbar, this.progressbarHeight = 100})
-      : super(key: key);
+  const SubjectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -45,10 +36,6 @@ class SubjectPage extends StatelessWidget {
       },
       child: Column(
         children: [
-          SizedBox(
-            height: progressbarHeight,
-            child: progressbar,
-          ),
           Padding(
             padding: const EdgeInsets.all(18),
             child: Text(
@@ -93,16 +80,6 @@ class SubjectPage extends StatelessWidget {
                 );
               },
             ),
-          ),
-          ButtonGroupNextPrevious(
-            onlyNext: true,
-            buttonNextKey: const Key('ButtonGroupNextSubject'),
-            next: () {
-              BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());
-            },
-            nextText: AppLocalizations.of(context)!.next,
-            previous: () => context.go(startScreen),
-            previousText: AppLocalizations.of(context)!.skip,
           ),
         ],
       ),

@@ -3,12 +3,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:gruene_app/common/utils/image_provider_delegate.dart';
 import 'package:gruene_app/constants/theme_data.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
-import 'package:gruene_app/net/onboarding/data/topic.dart';
-import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
-import 'package:gruene_app/screens/onboarding/onboarding_layout.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
+import 'package:gruene_app/net/interests/data/topic.dart';
+import 'package:gruene_app/net/interests/repository/interests_repository.dart';
+import 'package:gruene_app/screens/interests/interest_pages_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:mocktail/mocktail.dart';
@@ -85,7 +85,8 @@ void main() {
       );
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
-      await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
+      await tester
+          .pumpWidget(makeTestWidget(const InterestPagesScreen(), bloc));
       bloc.add(OnboardingLoad());
       await tester.pumpAndSettle();
 
@@ -191,7 +192,8 @@ void main() {
       );
       final bloc = OnboardingBloc(onboardingRepositoryMock);
 
-      await tester.pumpWidget(makeTestWidget(const OnboardingLayout(), bloc));
+      await tester
+          .pumpWidget(makeTestWidget(const InterestPagesScreen(), bloc));
       bloc.add(OnboardingLoad());
       await tester.pumpAndSettle();
 
