@@ -1,3 +1,6 @@
+import 'package:gruene_api_client/gruene_api_client.dart';
+import 'package:gruene_app/constants/app_const.dart';
+import 'package:gruene_app/net/client.dart';
 import 'package:gruene_app/net/onboarding/data/competence.dart';
 import 'package:gruene_app/net/onboarding/data/subject.dart';
 import 'package:gruene_app/net/onboarding/data/topic.dart';
@@ -5,8 +8,7 @@ import 'package:gruene_app/net/onboarding/data/topic.dart';
 abstract class OnboardingRepository {
   Set<Topic> listTopic();
 
-  Set<Subject> listSubject();
-  Set<Competence> listCompetence();
+  Future<OnboardingListResult> listCompetenceAndSubject();
   Future<bool> onboardingSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence);
 }
@@ -76,33 +78,29 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   @override
   Future<bool> onboardingSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
-    return Future.delayed(Duration(seconds: 2), () => true);
+    return Future.delayed(const Duration(seconds: 2), () => true);
   }
 
   @override
-  Set<Competence> listCompetence() {
-    return {
-      const Competence(
-          id: '123fsdf14413', name: 'Programmieren', checked: false),
-      const Competence(
-          id: '12313fdsfas21413',
-          name: 'Soziale Medien betreuen ',
-          checked: false),
-      const Competence(
-          id: '12313fsdsf21413', name: 'Lasten transportieren', checked: false),
-      const Competence(
-          id: '1231fdasfdf321413', name: 'Grafik Design', checked: false),
-      const Competence(
-          id: '1231gsdg3sdf21413', name: 'Kochen und Backen', checked: false),
-      const Competence(
-          id: '1231asd3fsfdy21413',
-          name: 'Professionell fotografieren',
-          checked: false),
-      const Competence(
-          id: '1231asdasd321413',
-          name: 'Handwerkliche Arbeiten erledigen',
-          checked: false),
-      const Competence(id: '1231asd3asd21413', name: 'Reden', checked: false),
-    };
+  Future<OnboardingListResult> listCompetenceAndSubject() async {
+    final response = await GruneAppData.values.api.getTagsApi().findTags();
+    var competence = response.data?.items
+            .where((tag) => tag.type == TagTypeEnum.skill)
+            .map((tag) => Competence(id: tag.id, name: tag.tag, checked: false))
+            .toSet() ??
+        {};
+    var subject = response.data?.items
+            .where((tag) => tag.type == TagTypeEnum.interest)
+            .map((tag) => Subject(id: tag.id, name: tag.tag, checked: false))
+            .toSet() ??
+        {};
+    return OnboardingListResult(competence, subject);
   }
+}
+
+class OnboardingListResult {
+  final Set<Competence> competence;
+  final Set<Subject> subject;
+
+  OnboardingListResult(this.competence, this.subject);
 }

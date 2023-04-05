@@ -1,6 +1,7 @@
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/constants/app_const.dart';
 
 const discoveryUrl =
     'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration';
@@ -31,8 +32,8 @@ enum SecureStoreKeys {
   idToken
 }
 
-// refreshWindow in sec.
-const refreshWindow = 60;
+// refreshWindow in sec. => 3 Days
+const refreshWindow = 259200;
 
 const authStorage = FlutterSecureStorage(
   aOptions: AndroidOptions(
@@ -77,7 +78,8 @@ Future<bool> refreshToken(String? refreshToken) async {
         accessTokenExpiration: res.accessTokenExpirationDateTime.toString(),
         refreshtoken: res.refreshToken,
         // TODO: Check if value Exist
-        refreshExpiresIn: res.tokenAdditionalParameters?['refresh_expires_in'],
+        refreshExpiresIn:
+            res.tokenAdditionalParameters?['refresh_expires_in'].toString(),
         idToken: res.idToken);
     return true;
   } on Exception catch (e, st) {
@@ -87,6 +89,8 @@ Future<bool> refreshToken(String? refreshToken) async {
 }
 
 Future<bool> startLogin() async {
+  if (await checkCurrentAuthState()) return true;
+
   const appAuth = FlutterAppAuth();
   try {
     final result = await appAuth.authorizeAndExchangeCode(
@@ -101,7 +105,7 @@ Future<bool> startLogin() async {
     if (result == null) {
       return false;
     }
-    var refreshExpiresIn = saveTokenValuesInSecureStorage(
+    saveTokenValuesInSecureStorage(
         accessToken: result.accessToken,
         accessTokenExpiration: result.accessTokenExpirationDateTime.toString(),
         refreshtoken: result.refreshToken,
@@ -122,6 +126,7 @@ void saveTokenValuesInSecureStorage({
   required String? refreshExpiresIn,
   required String? idToken,
 }) async {
+  GruneAppData.values.api.setBearerAuth('bearer', accessToken ?? '');
   await authStorage.write(
       key: SecureStoreKeys.accesToken.name, value: accessToken);
   await authStorage.write(
@@ -136,9 +141,12 @@ void saveTokenValuesInSecureStorage({
 
 // Check if the User has a valid Login
 Future<bool> checkCurrentAuthState() async {
-  final refresh = await authStorage.read(key: SecureStoreKeys.accesToken.name);
+  final refresh =
+      await authStorage.read(key: SecureStoreKeys.refreshtoken.name);
+  String? accessToken =
+      await authStorage.read(key: SecureStoreKeys.accesToken.name);
   var res = validateAccessToken(
-    accessToken: await authStorage.read(key: SecureStoreKeys.accesToken.name),
+    accessToken: accessToken,
     accessTokenExpiration:
         await authStorage.read(key: SecureStoreKeys.accessTokenExpiration.name),
     refreshToken: refresh,
@@ -147,6 +155,7 @@ Future<bool> checkCurrentAuthState() async {
   );
   switch (res) {
     case AccessTokenState.authenticated:
+      GruneAppData.values.api.setBearerAuth('bearer', accessToken ?? '');
       return true;
     case AccessTokenState.unauthenticated:
       return false;

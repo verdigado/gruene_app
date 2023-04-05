@@ -16,11 +16,20 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
   OnboardingRepository onboardingRepository;
 
   OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
-    on<OnboardingLoad>((event, emit) {
-      emit(OnboardingReady(
-          topics: onboardingRepository.listTopic(),
-          subject: onboardingRepository.listSubject(),
-          competence: onboardingRepository.listCompetence()));
+    on<OnboardingLoad>((event, emit) async {
+      emit(OnboardingLoading());
+      try {
+        final res = await onboardingRepository.listCompetenceAndSubject();
+        emit(OnboardingReady(
+            topics: onboardingRepository.listTopic(),
+            subject: res.subject,
+            competence: res.competence));
+      } catch (e) {
+        onError(
+            BlocError(message: 'Error on Fetch Data from Api', expose: true),
+            StackTrace.current);
+        emit(OnboardingFetchFailure());
+      }
     });
     on<OnboardingTopicAdd>((event, emit) {
       final currentState = state;

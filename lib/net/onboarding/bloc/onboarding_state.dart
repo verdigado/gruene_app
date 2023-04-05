@@ -48,6 +48,11 @@ class OnboardingSendFailure extends OnboardingState {
   List<Object?> get props => [runtimeType];
 }
 
+class OnboardingFetchFailure extends OnboardingState {
+  @override
+  List<Object?> get props => [runtimeType];
+}
+
 class OnboardingSended extends OnboardingState {
   final bool navigateToNext;
 

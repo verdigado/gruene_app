@@ -10,15 +10,11 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/main.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
-import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/router.dart';
 
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/privacy_imprint.dart';
 import 'package:gruene_app/widget/slider_carousel.dart';
-import 'package:flutter_appauth/flutter_appauth.dart';
-import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
 class LoginScreen extends StatefulWidget {
@@ -55,7 +51,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         // TODO: Remove this navigation on Release, just Dev purpose !
                         backgroundImage: InkWell(
                           onLongPress:
-                              AppConst.values.falavor == Flavors.staging
+                              GruneAppData.values.flavor == Flavors.staging
                                   ? () => context.go(startScreen)
                                   : null,
                           child: SvgPicture(
