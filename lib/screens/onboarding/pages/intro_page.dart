@@ -23,14 +23,14 @@ class IntroPage extends StatelessWidget {
       children: [
         const Spacer(),
         Flexible(
-          flex: 5,
+          flex: 6,
           child: SvgPicture(
             AssetBytesLoader(Assets.images.bicycleMan),
           ),
         ),
         const Spacer(),
         Flexible(
-          flex: 8,
+          flex: 12,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [

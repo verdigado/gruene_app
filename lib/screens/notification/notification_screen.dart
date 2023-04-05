@@ -26,68 +26,80 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Scaffold(
-        body: LayoutBuilder(
-          builder: (ctx, con) {
-            return SafeArea(
-              child: Column(
-                children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: SvgPicture(
-                        AssetBytesLoader(Assets.images.grueneTopicEuropa1Svg),
-                        height: con.maxHeight / 100 * 45),
+        body: SafeArea(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Flexible(
+                flex: 12,
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: SvgPicture(
+                    AssetBytesLoader(Assets.images.grueneTopicEuropa1Svg),
                   ),
-                  Padding(
-                    padding:
-                        const EdgeInsets.only(left: 30, right: 30, top: 10),
-                    child: Wrap(
-                      children: [
-                        Text(
-                            AppLocalizations.of(context)!
-                                .notificationPageHeadline1,
-                            style: Theme.of(context)
-                                .primaryTextTheme
-                                .displayLarge),
-                        Text(
+                ),
+              ),
+              Flexible(
+                flex: 14,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 30,
+                    right: 30,
+                  ),
+                  child: Column(
+                    children: [
+                      Text(
+                          AppLocalizations.of(context)!
+                              .notificationPageHeadline1,
+                          style:
+                              Theme.of(context).primaryTextTheme.displayLarge),
+                      Padding(
+                        padding: const EdgeInsets.only(top: 8),
+                        child: Text(
                           AppLocalizations.of(context)!
                               .notificationPageHeadline2,
-                          style: const TextStyle(height: 2),
                         ),
-                      ],
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 10),
-                    child: FlutterSwitch(
-                      value: permission,
-                      activeColor: mcgpalette0Secondary,
-                      inactiveIcon: const Icon(
-                        Icons.close,
-                        color: Colors.red,
                       ),
-                      activeIcon: const Icon(
-                        Icons.check,
-                        color: mcgpalette0Secondary,
-                      ),
-                      onToggle: (value) {
-                        setState(() {
-                          permission = value;
-                        });
-                      },
-                    ),
+                    ],
                   ),
-                  const Spacer(),
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 18),
-                    child: ElevatedButton(
-                        onPressed: () async => onNext(context, permission),
-                        child: Text(AppLocalizations.of(context)!.next,
-                            style: const TextStyle(color: Colors.white))),
-                  )
-                ],
+                ),
               ),
-            );
-          },
+              Flexible(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: FlutterSwitch(
+                    value: permission,
+                    activeColor: mcgpalette0Secondary,
+                    inactiveIcon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                    ),
+                    activeIcon: const Icon(
+                      Icons.check,
+                      color: mcgpalette0Secondary,
+                    ),
+                    onToggle: (value) {
+                      setState(() {
+                        permission = value;
+                      });
+                    },
+                  ),
+                ),
+              ),
+              const Spacer(),
+              Flexible(
+                flex: 6,
+                child: Padding(
+                  padding: const EdgeInsets.only(bottom: 18),
+                  child: ElevatedButton(
+                      onPressed: () async => onNext(context, permission),
+                      child: Text(AppLocalizations.of(context)!.next,
+                          style: const TextStyle(color: Colors.white))),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
