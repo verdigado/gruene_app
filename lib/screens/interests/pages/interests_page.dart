@@ -1,29 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InterestsPage extends StatelessWidget {
-  final PageController controller;
-
-  final Widget? progressbar;
-
-  const InterestsPage(this.controller, {super.key, this.progressbar});
+  const InterestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 100,
-          child: progressbar,
-        ),
         Align(
           alignment: Alignment.bottomLeft,
           child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(16),
             child: Text(
               AppLocalizations.of(context)!.interestsPageHeadline1,
               style: Theme.of(context).primaryTextTheme.displayMedium,
@@ -70,18 +61,6 @@ class InterestsPage extends StatelessWidget {
               ),
             );
           },
-        ),
-        ButtonGroupNextPrevious(
-          onlyNext: true,
-          buttonNextKey: const Key('ButtonGroupNextInterests'),
-          next: () => controller.nextPage(
-              duration: const Duration(seconds: 1), curve: Curves.ease),
-          nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.nextPage(
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.linear,
-          ),
-          previousText: AppLocalizations.of(context)!.skip,
         ),
       ],
     );

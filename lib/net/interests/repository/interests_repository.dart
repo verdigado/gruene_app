@@ -1,9 +1,9 @@
 import 'package:gruene_api_client/gruene_api_client.dart';
-import 'package:gruene_app/constants/app_const.dart';
-import 'package:gruene_app/net/client.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
-import 'package:gruene_app/net/onboarding/data/topic.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
+import 'package:gruene_app/net/interests/data/topic.dart';
+
+import '../../../constants/app_const.dart';
 
 abstract class OnboardingRepository {
   Set<Topic> listTopic();
