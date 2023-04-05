@@ -115,11 +115,11 @@
   "@loginHeadline1": {
     "description": "Login Headline 1"
   },
-  "customPageHeadline1": "Wir würden gern die App auf Deine Bedürfnisse zu schneiden.",
+  "customPageHeadline1": "App auf Deine Bedürfnisse anpassen",
   "@customPageHeadline1": {
     "description": "Login Headline 1"
   },
-  "customPageHeadline2": "consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolorealiquyam erat, sed diam voluptua.",
+  "customPageHeadline2": "Wir würden gern die App auf Deine Bedürfnisse anpassen",
   "@customPageHeadline2": {
     "description": "Login Headline 2"
   },
@@ -163,10 +163,10 @@
   "tourSliderIntroText":"Oder willst Du erstmal sehen, was Dich hier erwartet?",
   "givenName":"Vorname",
   "surename":"Nachname",
-  "emailAdress":"E-Mail Adresse",
-  "emailAsFav":"E-Mail Adresse als Favorit hinzufügen",
+  "emailAdress":"E-Mail-Adresse",
+  "emailAsFavTitle":"E-Mail-Adresse auswählen",
   "telefonnumber":"Telefonnummer",
-  "telefonnumberAsFav":"Telefonnummer als Favorit hinzufügen",
+  "telefonnumberAsFavTitle":"Telefonnummer auswählen",
   "more":"Mehr",
   "profilPhotoDelete":"Profilbild löschen",
   "permissonDeniedOpenSettings":"Zugriff verweigert öffnen Sie die Einstellungen und erlauben Sie die Ressource ",

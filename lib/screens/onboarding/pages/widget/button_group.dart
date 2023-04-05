@@ -23,6 +23,7 @@ class ButtonGroupNextPrevious extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
       children: [
         Container(
           height: 10,
@@ -46,8 +47,10 @@ class ButtonGroupNextPrevious extends StatelessWidget {
             child: Text(previousText,
                 style: textTheme.labelLarge?.copyWith(color: darkGrey)),
           ),
-          const SizedBox(height: 20),
         ],
+        const SizedBox(
+          height: 10,
+        )
       ],
     );
   }
