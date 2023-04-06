@@ -33,8 +33,10 @@ class IntroScreen extends StatefulWidget {
 
 class _IntroScreenState extends State<IntroScreen> {
   late SnappingSheetController snappingSheetController;
+  final totalSteps = 5;
   bool first = true;
   bool snapIsTop = false;
+  int currentStep = 1;
 
   @override
   void initState() {
@@ -60,7 +62,6 @@ class _IntroScreenState extends State<IntroScreen> {
               });
             },
             snappingPositions: widget.snappingPositions,
-            child: const IntroContentBelow(), // TODO: Add your content here
             grabbingHeight: 100,
             controller: snappingSheetController,
             onSnapStart: (positionData, snappingPosition) {
@@ -102,7 +103,16 @@ class _IntroScreenState extends State<IntroScreen> {
                             duration: const Duration(seconds: 1),
                             curve: Curves.fastOutSlowIn,
                             child: StepProgressIndicator(
-                              totalSteps: 5,
+                              totalSteps: totalSteps,
+                              selectedColor: Colors.white,
+                              currentStep: currentStep,
+                              onTap: (i) {
+                                return () {
+                                  setState(() {
+                                    currentStep = i + 1;
+                                  });
+                                };
+                              },
                             ),
                           ),
                         ),
@@ -148,6 +158,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 );
               }),
             ),
+            child: const IntroContentBelow(),
           ),
         ),
       ),
