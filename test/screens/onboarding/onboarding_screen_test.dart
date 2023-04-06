@@ -76,9 +76,9 @@ void main() {
       MockOnboardingRepository onboardingRepositoryMock =
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
-      when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
-      when(() => onboardingRepositoryMock.listCompetence())
-          .thenReturn(competence);
+      when(() => onboardingRepositoryMock.listCompetenceAndSubject())
+          .thenAnswer((invocation) =>
+              Future.value(OnboardingListResult(competence, subjects)));
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),
@@ -143,11 +143,9 @@ void main() {
         () => onboardingRepositoryMock.listTopic(),
       ).called(1);
       verify(
-        () => onboardingRepositoryMock.listSubject(),
+        () => onboardingRepositoryMock.listCompetenceAndSubject(),
       ).called(1);
-      verify(
-        () => onboardingRepositoryMock.listCompetence(),
-      ).called(1);
+
       await tester.pumpAndSettle(const Duration(seconds: 2));
     });
 
@@ -184,9 +182,9 @@ void main() {
       MockOnboardingRepository onboardingRepositoryMock =
           MockOnboardingRepository();
       when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
-      when(() => onboardingRepositoryMock.listSubject()).thenReturn(subjects);
-      when(() => onboardingRepositoryMock.listCompetence())
-          .thenReturn(competence);
+      when(() => onboardingRepositoryMock.listCompetenceAndSubject())
+          .thenAnswer((invocation) =>
+              Future.value(OnboardingListResult(competence, subjects)));
       when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),
@@ -230,13 +228,10 @@ void main() {
         ),
       );
       verify(
-        () => onboardingRepositoryMock.listCompetence(),
+        () => onboardingRepositoryMock.listCompetenceAndSubject(),
       ).called(1);
       verify(
         () => onboardingRepositoryMock.listTopic(),
-      ).called(1);
-      verify(
-        () => onboardingRepositoryMock.listSubject(),
       ).called(1);
       await tester.pumpAndSettle(const Duration(seconds: 2));
     });

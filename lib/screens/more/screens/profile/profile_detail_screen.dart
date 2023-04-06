@@ -7,7 +7,6 @@ import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
-import 'package:gruene_app/common/utils/snackbars.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';

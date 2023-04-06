@@ -12,5 +12,5 @@ Future<void> loadEnvVars({required Flavors flavor}) async {
     logger.i(
         'Failure loading the Env File .env.$flavor. Make sure you have placed the correct Env File in the Root Directory');
   }
-  AppConst.forEnv(flavor);
+  GruneAppData.forEnv(flavor);
 }
