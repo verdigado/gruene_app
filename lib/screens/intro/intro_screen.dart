@@ -1,14 +1,16 @@
+import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:gruene_app/constants/layout.dart';
-import 'package:gruene_app/constants/theme_data.dart';
+import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
 import 'package:vector_graphics/vector_graphics.dart';
+
+import 'package:gruene_app/constants/layout.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/screens/intro/intro_content_below.dart';
 import 'package:gruene_app/widget/modal_top_line.dart';
-import 'package:snapping_sheet/snapping_sheet.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});
@@ -31,17 +33,62 @@ class IntroScreen extends StatefulWidget {
   State<IntroScreen> createState() => _IntroScreenState();
 }
 
+class DiscoverItem {
+  String titel;
+  String subtitel;
+  Widget img;
+  DiscoverItem({
+    required this.titel,
+    required this.subtitel,
+    required this.img,
+  });
+}
+
 class _IntroScreenState extends State<IntroScreen> {
   late SnappingSheetController snappingSheetController;
+  late CarouselController carouselController;
   final totalSteps = 5;
   bool first = true;
   bool snapIsTop = false;
-  int currentStep = 1;
+  int currentStep = 0;
+
+  final items = [
+    DiscoverItem(
+      titel: 'Deine Lieblingsnews immer dabei',
+      subtitel:
+          'Warum haben Vögel eigentlich so viel Glück? Weil sie beim Aufwachen einfach zwitschern können, statt sich den Wecker stellen zu müssen!',
+      img: SvgPicture(AssetBytesLoader(Assets.images.womanSofa)),
+    ),
+    DiscoverItem(
+      titel: 'Deine Lieblingsnews immer nicht dabei',
+      subtitel: 'Wenn ich Zeit habe, lese ich gerne Bücher oder schaue Filme.',
+      img: SvgPicture(AssetBytesLoader(Assets.images.bicycleMan)),
+    ),
+    DiscoverItem(
+      titel: 'Deine Lieblingsnews wirklich dabei',
+      subtitel:
+          'Meine Lieblingsfarbe ist blau, weil sie mich an den Ozean erinnert.',
+      img: SvgPicture(AssetBytesLoader(Assets.images.womanSofa)),
+    ),
+    DiscoverItem(
+      titel: 'Deine Lieblingsnews wirklick versprochen sind dabei',
+      subtitel:
+          'Letzte Woche war ich auf einem Musikfestival und habe viele tolle Bands gesehen.',
+      img: SvgPicture(AssetBytesLoader(Assets.images.womanSofa)),
+    ),
+    DiscoverItem(
+      titel: 'Deine Lieblingsnews sind doch nicht dabei',
+      subtitel:
+          'Ich gehe heute Abend mit meinen Freunden ins Kino und wir werden den neuen Actionfilm sehen.',
+      img: SvgPicture(AssetBytesLoader(Assets.images.bicycleMan)),
+    )
+  ];
 
   @override
   void initState() {
     super.initState();
     snappingSheetController = SnappingSheetController();
+    carouselController = CarouselController();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       firstSnap();
       // executes after build
@@ -91,16 +138,29 @@ class _IntroScreenState extends State<IntroScreen> {
                         flex: 6,
                         child: Align(
                           alignment: Alignment.topCenter,
-                          child: SvgPicture(
-                              AssetBytesLoader(Assets.images.womanSofa)),
+                          child: CarouselSlider(
+                            carouselController: carouselController,
+                            options: CarouselOptions(
+                              height: double.infinity,
+                              initialPage: 0,
+                              viewportFraction: 1,
+                              reverse: false,
+                              autoPlay: snapIsTop,
+                              autoPlayInterval: const Duration(seconds: 10),
+                              autoPlayAnimationDuration:
+                                  const Duration(milliseconds: 800),
+                              autoPlayCurve: Curves.fastOutSlowIn,
+                              onPageChanged: (index, reason) {
+                                setState(() {
+                                  currentStep = index;
+                                });
+                              },
+                            ),
+                            items: [...items.map((e) => e.img)],
+                          ),
                         ),
                       ),
-                      Visibility(
-                        maintainAnimation: true,
-                        maintainInteractivity: true,
-                        maintainSemantics: true,
-                        maintainSize: true,
-                        maintainState: true,
+                      Visibility.maintain(
                         visible: snapIsTop,
                         child: AnimatedOpacity(
                           opacity: snapIsTop ? 1 : 0,
@@ -123,6 +183,7 @@ class _IntroScreenState extends State<IntroScreen> {
                                     currentStep: currentStep,
                                     onTap: (i) {
                                       return () {
+                                        carouselController.jumpToPage(i);
                                         setState(() {
                                           currentStep = i + 1;
                                         });
@@ -140,7 +201,9 @@ class _IntroScreenState extends State<IntroScreen> {
                                         color: Colors.white,
                                         size: 50,
                                       ),
-                                      onPressed: () => print('Ho')),
+                                      onPressed: () {
+                                        carouselController.nextPage();
+                                      }),
                                 ),
                               ),
                             ],
@@ -150,7 +213,7 @@ class _IntroScreenState extends State<IntroScreen> {
                       Padding(
                         padding: const EdgeInsets.only(bottom: medium2),
                         child: Text(
-                          'Deine Lieblingsnews immer dabei',
+                          items[currentStep].titel,
                           style: Theme.of(context)
                               .primaryTextTheme
                               .displayLarge
@@ -165,9 +228,9 @@ class _IntroScreenState extends State<IntroScreen> {
                               opacity: snapIsTop ? 1 : 0,
                               duration: const Duration(seconds: 1),
                               curve: Curves.fastOutSlowIn,
-                              child: const Text(
-                                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.',
-                                style: TextStyle(color: Colors.white),
+                              child: Text(
+                                items[currentStep].subtitel,
+                                style: const TextStyle(color: Colors.white),
                               ),
                             ),
                           ))
