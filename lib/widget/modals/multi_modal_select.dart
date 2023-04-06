@@ -3,7 +3,6 @@ import 'package:clickable_list_wheel_view/clickable_list_wheel_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/routing/router.dart';
-import 'package:gruene_app/widget/filled_text_field.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MultiModalSelect extends StatefulWidget {
@@ -96,31 +95,18 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       InkWell(
-                          onTap: () async {
-                            if (await dismissDialog(context)) {
-                              rootNavigatorKey.currentState?.pop();
-                            }
-                          },
-                          child: const Icon(
-                            Icons.close_outlined,
-                            size: medium2,
-                          )),
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: selectedItem > 0
-                        ? MainAxisAlignment.spaceBetween
-                        : MainAxisAlignment.start,
-                    textBaseline: TextBaseline.alphabetic,
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    children: [
-                      Text(
-                        // AppLocalizations.of(context)!.chooseFav,
-                        widget.inputHeadline,
-                        style: Theme.of(context).primaryTextTheme.displaySmall,
+                        onTap: () async {
+                          if (await dismissDialog(context)) {
+                            rootNavigatorKey.currentState?.pop();
+                          }
+                        },
+                        child: const Icon(
+                          Icons.close_outlined,
+                          size: medium2,
+                        ),
                       ),
                       Visibility(
                         maintainSize: true,
@@ -144,6 +130,18 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                                   )),
                         ),
                       )
+                    ],
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    textBaseline: TextBaseline.alphabetic,
+                    crossAxisAlignment: CrossAxisAlignment.baseline,
+                    children: [
+                      Text(
+                        // AppLocalizations.of(context)!.chooseFav,
+                        widget.inputHeadline,
+                        style: Theme.of(context).primaryTextTheme.displaySmall,
+                      ),
                     ],
                   ),
                   SizedBox(
@@ -236,7 +234,7 @@ class _MultiModalSelectState extends State<MultiModalSelect> {
                     hintText: widget.inputHint,
                   ), */
                   const SizedBox(
-                    height: medium1,
+                    height: large2,
                   ),
                 ],
               ),
