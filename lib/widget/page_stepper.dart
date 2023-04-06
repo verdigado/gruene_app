@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/widget/button_group.dart';
+import 'package:gruene_app/widget/previous_button.dart';
 import 'package:gruene_app/widget/progress_stepper.dart';
 
 /**
@@ -63,30 +64,12 @@ class _PageStepperState extends State<PageStepper> {
     return Column(
       children: [
         // Back button:
-        // if the current page is the first page, the back button is hidden
-        if (currentPage == 0) ...[
-          const SizedBox(
-            height: 50,
-          ),
-        ] else
-          // if the current page is not the first page, the back button is displayed
-          Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.max,
-            children: [
-              IconButton(
-                icon: const Icon(
-                  Icons.keyboard_backspace,
-                  color: darkGrey,
-                  size: 50,
-                ),
-                onPressed: () => controller.previousPage(
-                    duration: const Duration(milliseconds: 700),
-                    curve: Curves.linear),
-              ),
-            ],
-          ),
+        PreviousButton(
+          onClick: () => controller.previousPage(
+              duration: const Duration(milliseconds: 700),
+              curve: Curves.linear),
+          isHidden: currentPage == 0,
+        ),
         // Progressbar:
         // if the progressbar should not be hidden, it is displayed
         if (!widget.hideProgressbar) ...[
