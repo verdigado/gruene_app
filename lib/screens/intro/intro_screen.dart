@@ -58,7 +58,13 @@ class _IntroScreenState extends State<IntroScreen> {
             lockOverflowDrag: true,
             onSheetMoved: (positionData) {
               setState(() {
-                snapIsTop = positionData.relativeToSheetHeight >= 0.9;
+                // Some Space betwin
+                if (positionData.relativeToSheetHeight >= 0.9251) {
+                  snapIsTop = true;
+                }
+                if (positionData.relativeToSheetHeight <= 0.88) {
+                  snapIsTop = false;
+                }
               });
             },
             snappingPositions: widget.snappingPositions,
@@ -69,7 +75,7 @@ class _IntroScreenState extends State<IntroScreen> {
                 first = false;
               });
             },
-            grabbing: const GrabbingContent(),
+            grabbing: GrabbingContent(snapIsTop: snapIsTop),
             sheetBelow: SnappingSheetContent(
               draggable: true,
               sizeBehavior: SheetSizeStatic(size: 100),
@@ -195,18 +201,26 @@ class _IntroScreenState extends State<IntroScreen> {
   }
 }
 
-class GrabbingContent extends StatelessWidget {
-  const GrabbingContent({
-    super.key,
-  });
+class GrabbingContent extends StatefulWidget {
+  bool snapIsTop;
+  GrabbingContent({super.key, this.snapIsTop = false});
 
   @override
+  State<GrabbingContent> createState() => _GrabbingContentState();
+}
+
+class _GrabbingContentState extends State<GrabbingContent> {
+  @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 500),
+      curve: Curves.fastOutSlowIn,
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.secondary,
-        borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(20), topRight: Radius.circular(20)),
+        borderRadius: widget.snapIsTop
+            ? BorderRadius.zero
+            : const BorderRadius.only(
+                topLeft: Radius.circular(20), topRight: Radius.circular(20)),
       ),
       child: Padding(
         padding: const EdgeInsets.all(medium1),
