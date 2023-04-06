@@ -22,94 +22,92 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
   bool showLoadingIndicator = false;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Stack(
-        children: [
-          Positioned.fill(
-            child: Align(
-              alignment: Alignment.center,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Expanded(
-                    flex: 5,
-                    child: SvgPicture(
-                      AssetBytesLoader(Assets.images.user),
+    return Stack(
+      children: [
+        Positioned.fill(
+          child: Align(
+            alignment: Alignment.center,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Expanded(
+                  flex: 5,
+                  child: SvgPicture(
+                    AssetBytesLoader(Assets.images.user),
+                  ),
+                ),
+                const Spacer(),
+                Flexible(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      AppLocalizations.of(context)!.introHeadline1,
+                      style: Theme.of(context).primaryTextTheme.displayLarge,
                     ),
                   ),
-                  const Spacer(),
-                  Flexible(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 20, right: 20),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        AppLocalizations.of(context)!.introHeadline1,
-                        style: Theme.of(context).primaryTextTheme.displayLarge,
-                      ),
+                ),
+                Flexible(
+                  flex: 3,
+                  child: Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      AppLocalizations.of(context)!.introHeadline2,
+                      style: Theme.of(context)
+                          .primaryTextTheme
+                          .displaySmall
+                          ?.copyWith(color: darkGrey),
                     ),
                   ),
-                  Flexible(
-                    flex: 3,
-                    child: Padding(
-                      padding: const EdgeInsets.all(20),
-                      child: Text(
-                        textAlign: TextAlign.center,
-                        AppLocalizations.of(context)!.introHeadline2,
-                        style: Theme.of(context)
-                            .primaryTextTheme
-                            .displaySmall
-                            ?.copyWith(color: darkGrey),
-                      ),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomCenter,
-                    child: Padding(
-                      padding: EdgeInsets.only(bottom: 10),
-                      child: AbsorbPointer(
-                        absorbing: showLoadingIndicator,
-                        child: ElevatedButton(
-                            onPressed: () async {
+                ),
+                Align(
+                  alignment: Alignment.bottomCenter,
+                  child: Padding(
+                    padding: const EdgeInsets.only(bottom: 10),
+                    child: AbsorbPointer(
+                      absorbing: showLoadingIndicator,
+                      child: ElevatedButton(
+                          onPressed: () async {
+                            setState(() {
+                              showLoadingIndicator = true;
+                            });
+                            final success = await startLogin();
+                            if (success) {
+                              router.go(onboarding);
+                            } else {
                               setState(() {
-                                showLoadingIndicator = true;
+                                showLoadingIndicator = false;
                               });
-                              final success = await startLogin();
-                              if (success) {
-                                router.go(onboarding);
-                              } else {
-                                setState(() {
-                                  showLoadingIndicator = false;
-                                });
-                                MyApp.scaffoldMessengerKey.currentState
-                                    ?.showSnackBar(SnackBar(
-                                        content: Center(
-                                  child: Text(AppLocalizations.of(context)!
-                                      .loginFailure),
-                                )));
-                              }
-                            },
-                            child: Text(AppLocalizations.of(context)!.login,
-                                style: const TextStyle(color: Colors.white))),
-                      ),
+                              MyApp.scaffoldMessengerKey.currentState
+                                  ?.showSnackBar(SnackBar(
+                                      content: Center(
+                                child: Text(
+                                    AppLocalizations.of(context)!.loginFailure),
+                              )));
+                            }
+                          },
+                          child: Text(AppLocalizations.of(context)!.login,
+                              style: const TextStyle(color: Colors.white))),
                     ),
                   ),
-                ],
-              ),
+                ),
+                DatImpContainer()
+              ],
             ),
           ),
-          Align(alignment: Alignment.bottomCenter, child: DatImpContainer()),
-          if (showLoadingIndicator) ...[
-            Positioned.fill(
-                child: Align(
-                    alignment: Alignment.center,
-                    child: SpinKitThreeBounce(
-                      color: Theme.of(context).colorScheme.secondary,
-                      size: 50.0,
-                    )))
-          ],
+        ),
+        if (showLoadingIndicator) ...[
+          Positioned.fill(
+              child: Align(
+                  alignment: Alignment.center,
+                  child: SpinKitThreeBounce(
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 50.0,
+                  )))
         ],
-      ),
+      ],
     );
   }
 }

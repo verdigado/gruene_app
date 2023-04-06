@@ -78,91 +78,106 @@ class _IntroScreenState extends State<IntroScreen> {
             grabbing: GrabbingContent(snapIsTop: snapIsTop),
             sheetBelow: SnappingSheetContent(
               draggable: true,
-              sizeBehavior: SheetSizeStatic(size: 100),
-              child: LayoutBuilder(builder: (ctx, con) {
-                return Container(
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: Stack(
-                    clipBehavior: Clip.antiAlias,
-                    alignment: Alignment.topCenter,
-                    fit: StackFit.expand,
+              sizeBehavior: SheetSizeStatic(size: 350),
+              child: Container(
+                width: double.infinity,
+                height: double.infinity,
+                color: Theme.of(context).colorScheme.secondary,
+                child: Padding(
+                  padding: const EdgeInsets.all(medium1),
+                  child: Column(
                     children: [
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: SvgPicture(
-                          AssetBytesLoader(Assets.images.womanSofa),
-                        ),
-                      ),
-                      Positioned(
-                        top: con.maxHeight / 100 * 50,
-                        width: con.maxWidth / 2,
-                        right: con.maxWidth / 100 * 45,
-                        child: Visibility(
-                          maintainAnimation: true,
-                          maintainInteractivity: true,
-                          maintainSemantics: true,
-                          maintainSize: true,
-                          maintainState: true,
-                          visible: snapIsTop,
-                          child: AnimatedOpacity(
-                            opacity: snapIsTop ? 1 : 0,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.fastOutSlowIn,
-                            child: StepProgressIndicator(
-                              totalSteps: totalSteps,
-                              selectedColor: Colors.white,
-                              currentStep: currentStep,
-                              onTap: (i) {
-                                return () {
-                                  setState(() {
-                                    currentStep = i + 1;
-                                  });
-                                };
-                              },
-                            ),
-                          ),
-                        ),
-                      ),
-                      Positioned(
-                        top: con.maxHeight / 100 * 50,
-                        width: con.maxWidth,
+                      Flexible(
+                        flex: 6,
                         child: Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: const EdgeInsets.all(medium1),
-                            child: Text('Deine Lieblingsnews immer dabei',
-                                style: Theme.of(context)
-                                    .primaryTextTheme
-                                    .displayLarge
-                                    ?.copyWith(color: Colors.white)),
-                          ),
+                          alignment: Alignment.topCenter,
+                          child: SvgPicture(
+                              AssetBytesLoader(Assets.images.womanSofa)),
                         ),
                       ),
-                      Positioned(
-                        top: con.maxHeight / 100 * 68,
-                        width: con.maxWidth,
-                        child: Align(
-                          alignment: Alignment.bottomLeft,
-                          child: Padding(
-                              padding: const EdgeInsets.all(medium1),
-                              child: Visibility.maintain(
-                                visible: snapIsTop,
-                                child: AnimatedOpacity(
-                                  opacity: snapIsTop ? 1 : 0,
-                                  duration: const Duration(seconds: 1),
-                                  curve: Curves.fastOutSlowIn,
-                                  child: Text(
-                                    'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.',
-                                    style: TextStyle(color: Colors.white),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Flexible(
+                            flex: 3,
+                            child: Visibility(
+                              maintainAnimation: true,
+                              maintainInteractivity: true,
+                              maintainSemantics: true,
+                              maintainSize: true,
+                              maintainState: true,
+                              visible: snapIsTop,
+                              child: AnimatedOpacity(
+                                opacity: snapIsTop ? 1 : 0,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.fastOutSlowIn,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      right: 100,
+                                      top: medium2,
+                                      bottom: medium2),
+                                  child: StepProgressIndicator(
+                                    totalSteps: totalSteps,
+                                    customColor: (i) => i + 1 == currentStep
+                                        ? Colors.white
+                                        : darkGrey,
+                                    currentStep: currentStep,
+                                    onTap: (i) {
+                                      return () {
+                                        setState(() {
+                                          currentStep = i + 1;
+                                        });
+                                      };
+                                    },
                                   ),
                                 ),
-                              )),
+                              ),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 16),
+                            child: Transform.rotate(
+                              angle: 3.14,
+                              child: IconButton(
+                                  icon: const Icon(
+                                    Icons.keyboard_backspace_outlined,
+                                    color: Colors.white,
+                                    size: 50,
+                                  ),
+                                  onPressed: () => print('Ho')),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: medium2),
+                        child: Text(
+                          'Deine Lieblingsnews immer dabei',
+                          style: Theme.of(context)
+                              .primaryTextTheme
+                              .displayLarge
+                              ?.copyWith(color: Colors.white),
                         ),
                       ),
+                      Flexible(
+                          flex: 2,
+                          child: Visibility.maintain(
+                            visible: snapIsTop,
+                            child: AnimatedOpacity(
+                              opacity: snapIsTop ? 1 : 0,
+                              duration: const Duration(seconds: 1),
+                              curve: Curves.fastOutSlowIn,
+                              child: const Text(
+                                'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ))
                     ],
                   ),
-                );
-              }),
+                ),
+              ),
             ),
             child: const IntroContentBelow(),
           ),
