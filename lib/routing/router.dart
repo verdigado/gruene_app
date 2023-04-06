@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -105,14 +106,22 @@ final GoRouter router = GoRouter(
       path: interestpages,
       parentNavigatorKey: rootNavigatorKey,
       pageBuilder: (context, state) {
-        return const CustomNoTransitionPage(child: InterestPagesScreen());
+        return CustomTransitionPage(
+          child: const InterestPagesScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              slideAnimation(animation, child),
+        );
       },
     ),
     GoRoute(
       parentNavigatorKey: rootNavigatorKey,
       path: notification,
       pageBuilder: (context, state) {
-        return const NoTransitionPage(child: NotfificationScreen());
+        return CustomTransitionPage(
+          child: const NotfificationScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              slideAnimation(animation, child),
+        );
       },
     ),
     GoRoute(

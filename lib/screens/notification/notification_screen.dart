@@ -11,6 +11,7 @@ import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:vector_graphics/vector_graphics.dart';
 
 class NotfificationScreen extends StatefulWidget {
@@ -59,24 +60,37 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                               .notificationPageHeadline2,
                         ),
                       ),
-                      FlutterSwitch(
-                        value: permission,
-                        activeColor: mcgpalette0Secondary,
-                        inactiveIcon: const Icon(
-                          Icons.close,
-                          color: Colors.red,
-                        ),
-                        activeIcon: const Icon(
-                          Icons.check,
-                          color: mcgpalette0Secondary,
-                        ),
-                        onToggle: (value) {
-                          setState(() {
-                            permission = value;
-                          });
-                        },
-                      ),
                     ],
+                  ),
+                ),
+              ),
+              Flexible(
+                flex: 3,
+                child: Padding(
+                  padding: const EdgeInsets.only(top: 10),
+                  child: /* FlutterSwitch(
+                      value: permission,
+                      activeColor: mcgpalette0Secondary,
+                      inactiveIcon: const Icon(
+                        Icons.close,
+                        color: Colors.red,
+                      ), */
+                      FlutterSwitch(
+                    value: permission,
+                    activeColor: mcgpalette0Secondary,
+                    inactiveIcon: const Icon(
+                      Icons.close,
+                      color: Colors.red,
+                    ),
+                    activeIcon: const Icon(
+                      Icons.check,
+                      color: mcgpalette0Secondary,
+                    ),
+                    onToggle: (value) {
+                      setState(() {
+                        permission = value;
+                      });
+                    },
                   ),
                 ),
               ),
@@ -90,7 +104,7 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                       child: Text(AppLocalizations.of(context)!.next,
                           style: const TextStyle(color: Colors.white))),
                 ),
-              )
+              ),
             ],
           ),
         ),

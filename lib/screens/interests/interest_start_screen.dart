@@ -55,15 +55,16 @@ class InterestStartScreen extends StatelessWidget {
                     ),
                   ),
                   ButtonGroupNextPrevious(
-                      buttonNextKey: const Key('ButtonGroupNextIntro'),
-                      nextText: AppLocalizations.of(context)!.askForInterest,
-                      previous: () async {
-                        final prefs = await SharedPreferences.getInstance();
-                        await prefs.setBool(firstLaunchPreferencesKey, false);
-                        context.go(startScreen);
-                      },
-                      previousText: AppLocalizations.of(context)!.skip,
-                      next: () => {context.go(interestpages)}),
+                    buttonNextKey: const Key('ButtonGroupNextIntro'),
+                    nextText: AppLocalizations.of(context)!.askForInterest,
+                    next: () => {context.go(interestpages)},
+                    previousText: AppLocalizations.of(context)!.skip,
+                    previous: () async {
+                      final prefs = await SharedPreferences.getInstance();
+                      await prefs.setBool(firstLaunchPreferencesKey, false);
+                      context.push(notification);
+                    },
+                  ),
                 ],
               );
             },
