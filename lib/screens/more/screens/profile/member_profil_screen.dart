@@ -61,7 +61,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
             return BlocBuilder<ProfileBloc, ProfileState>(
               builder: (context, state) {
                 return MultiModalSelect(
-                  inputHeadline: AppLocalizations.of(context)!.emailAsFav,
+                  inputHeadline: AppLocalizations.of(context)!.emailAsFavTitle,
                   inputHint: AppLocalizations.of(context)!.emailAdress,
                   inputLabel: AppLocalizations.of(context)!.emailAdress,
                   onAddValue: (String value) => context
@@ -107,7 +107,7 @@ class _MemberProfilScreenState extends State<MemberProfilScreen> {
                   inputHint: AppLocalizations.of(context)!.telefonnumber,
                   inputLabel: AppLocalizations.of(context)!.telefonnumber,
                   inputHeadline:
-                      AppLocalizations.of(context)!.telefonnumberAsFav,
+                      AppLocalizations.of(context)!.telefonnumberAsFavTitle,
                   onAddValue: (String value) => context
                       .read<ProfileBloc>()
                       .add(MemberProfileAddValue('telefon', value)),
