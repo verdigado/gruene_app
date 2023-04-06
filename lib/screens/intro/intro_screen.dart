@@ -95,28 +95,26 @@ class _IntroScreenState extends State<IntroScreen> {
                               AssetBytesLoader(Assets.images.womanSofa)),
                         ),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Flexible(
-                            flex: 3,
-                            child: Visibility(
-                              maintainAnimation: true,
-                              maintainInteractivity: true,
-                              maintainSemantics: true,
-                              maintainSize: true,
-                              maintainState: true,
-                              visible: snapIsTop,
-                              child: AnimatedOpacity(
-                                opacity: snapIsTop ? 1 : 0,
-                                duration: const Duration(seconds: 1),
-                                curve: Curves.fastOutSlowIn,
+                      Visibility(
+                        maintainAnimation: true,
+                        maintainInteractivity: true,
+                        maintainSemantics: true,
+                        maintainSize: true,
+                        maintainState: true,
+                        visible: snapIsTop,
+                        child: AnimatedOpacity(
+                          opacity: snapIsTop ? 1 : 0,
+                          duration: const Duration(seconds: 1),
+                          curve: Curves.fastOutSlowIn,
+                          child: Row(
+                            crossAxisAlignment: CrossAxisAlignment.baseline,
+                            textBaseline: TextBaseline.alphabetic,
+                            children: [
+                              Flexible(
+                                flex: 7,
                                 child: Padding(
                                   padding: const EdgeInsets.only(
-                                      right: 100,
-                                      top: medium2,
-                                      bottom: medium2),
+                                      right: medium3, top: 12),
                                   child: StepProgressIndicator(
                                     totalSteps: totalSteps,
                                     customColor: (i) => i + 1 == currentStep
@@ -133,22 +131,21 @@ class _IntroScreenState extends State<IntroScreen> {
                                   ),
                                 ),
                               ),
-                            ),
+                              Flexible(
+                                child: Transform.rotate(
+                                  angle: 3.14,
+                                  child: IconButton(
+                                      icon: const Icon(
+                                        Icons.keyboard_backspace_outlined,
+                                        color: Colors.white,
+                                        size: 50,
+                                      ),
+                                      onPressed: () => print('Ho')),
+                                ),
+                              ),
+                            ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 16),
-                            child: Transform.rotate(
-                              angle: 3.14,
-                              child: IconButton(
-                                  icon: const Icon(
-                                    Icons.keyboard_backspace_outlined,
-                                    color: Colors.white,
-                                    size: 50,
-                                  ),
-                                  onPressed: () => print('Ho')),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.only(bottom: medium2),
