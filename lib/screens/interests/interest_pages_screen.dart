@@ -36,7 +36,7 @@ class InterestPagesScreen extends StatelessWidget {
               child: SafeArea(
                 child: PageStepper(
                   onlyNextBtn: true,
-                  onLastPage: () => {context.go(startScreen)},
+                  onLastPage: () => {context.push(notification)},
                   pages: const [
                     InterestsPage(),
                     CompetencePage(),
