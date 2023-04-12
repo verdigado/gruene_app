@@ -139,49 +139,85 @@ class _IntroScreenState extends State<IntroScreen> {
                 color: Theme.of(context).colorScheme.secondary,
                 child: Padding(
                   padding: const EdgeInsets.all(medium1),
-                  child: Column(
+                  child: Stack(
+                    fit: StackFit.expand,
                     children: [
-                      Flexible(
-                        flex: 6,
-                        child: Align(
-                          alignment: Alignment.topCenter,
-                          child: CarouselSlider(
-                            carouselController: carouselController,
-                            options: CarouselOptions(
-                              height: double.infinity,
-                              initialPage: 0,
-                              viewportFraction: 1,
-                              reverse: false,
-                              autoPlay: snapIsTop,
-                              autoPlayInterval: const Duration(seconds: 10),
-                              autoPlayAnimationDuration:
-                                  const Duration(milliseconds: 800),
-                              autoPlayCurve: Curves.fastOutSlowIn,
-                              onPageChanged: (index, reason) {
-                                setState(() {
-                                  currentStep = index;
-                                });
-                              },
-                            ),
-                            items: [...items.map((e) => e.img)],
+                      Positioned.fill(
+                        child: CarouselSlider.builder(
+                          carouselController: carouselController,
+                          options: CarouselOptions(
+                            height: double.infinity,
+                            initialPage: 0,
+                            viewportFraction: 1,
+                            reverse: false,
+                            autoPlay: snapIsTop,
+                            autoPlayInterval: const Duration(seconds: 10),
+                            autoPlayAnimationDuration:
+                                const Duration(milliseconds: 800),
+                            autoPlayCurve: Curves.fastOutSlowIn,
+                            onPageChanged: (index, reason) {
+                              setState(() {
+                                currentStep = index;
+                              });
+                            },
                           ),
+                          itemCount: items.length,
+                          itemBuilder: (context, index, realIndex) {
+                            return Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Expanded(flex: 12, child: items[index].img),
+                                const Spacer(),
+                                Flexible(
+                                  flex: 8,
+                                  child: Visibility.maintain(
+                                    visible: sheetHeight > 0.5,
+                                    child: AnimatedOpacity(
+                                      opacity: titelOpacity,
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.fastOutSlowIn,
+                                      child: Text(items[index].titel,
+                                          style: Theme.of(context)
+                                              .primaryTextTheme
+                                              .displayLarge
+                                              ?.copyWith(color: Colors.white)),
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                Flexible(
+                                  flex: 4,
+                                  child: Visibility.maintain(
+                                    visible: snapIsTop,
+                                    child: AnimatedOpacity(
+                                      opacity: snapIsTop ? 1 : 0,
+                                      duration: const Duration(seconds: 1),
+                                      curve: Curves.fastOutSlowIn,
+                                      child: Text(
+                                        items[index].subtitel,
+                                        style: const TextStyle(
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
                         ),
                       ),
-                      Visibility.maintain(
-                        visible: snapIsTop,
-                        child: AnimatedOpacity(
-                          opacity: snapIsTop ? 1 : 0,
-                          duration: const Duration(seconds: 1),
-                          curve: Curves.fastOutSlowIn,
-                          child: Row(
-                            crossAxisAlignment: CrossAxisAlignment.baseline,
-                            textBaseline: TextBaseline.alphabetic,
-                            children: [
-                              Flexible(
-                                flex: 7,
+                      Positioned.fill(
+                          bottom: 50,
+                          child: Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Visibility.maintain(
+                              visible: snapIsTop,
+                              child: AnimatedOpacity(
+                                opacity: snapIsTop ? 1 : 0,
+                                duration: const Duration(seconds: 1),
+                                curve: Curves.fastOutSlowIn,
                                 child: Padding(
-                                  padding: const EdgeInsets.only(
-                                      right: medium3, top: 12),
+                                  padding: const EdgeInsets.only(top: 12),
                                   child: StepProgressIndicator(
                                     totalSteps: items.length,
                                     customColor: (i) => i == currentStep
@@ -190,68 +226,17 @@ class _IntroScreenState extends State<IntroScreen> {
                                     currentStep: currentStep,
                                     onTap: (i) {
                                       return () {
-                                        carouselController.jumpToPage(i);
                                         setState(() {
                                           currentStep = i;
                                         });
+                                        carouselController.jumpToPage(i);
                                       };
                                     },
                                   ),
                                 ),
                               ),
-                              Flexible(
-                                child: Transform.rotate(
-                                  angle: 3.14,
-                                  child: IconButton(
-                                      icon: const Icon(
-                                        Icons.keyboard_backspace_outlined,
-                                        color: Colors.white,
-                                        size: 50,
-                                      ),
-                                      onPressed: () {
-                                        carouselController.nextPage();
-                                      }),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 100,
-                        width: double.infinity,
-                        child: Padding(
-                          padding: const EdgeInsets.only(bottom: medium2),
-                          child: Visibility.maintain(
-                            visible: sheetHeight > 0.5,
-                            child: AnimatedOpacity(
-                              opacity: titelOpacity,
-                              duration: const Duration(seconds: 1),
-                              curve: Curves.fastOutSlowIn,
-                              child: Text(items[currentStep].titel,
-                                  style: Theme.of(context)
-                                      .primaryTextTheme
-                                      .displayLarge
-                                      ?.copyWith(color: Colors.white)),
                             ),
-                          ),
-                        ),
-                      ),
-                      Flexible(
-                        flex: 2,
-                        child: Visibility.maintain(
-                          visible: snapIsTop,
-                          child: AnimatedOpacity(
-                            opacity: snapIsTop ? 1 : 0,
-                            duration: const Duration(seconds: 1),
-                            curve: Curves.fastOutSlowIn,
-                            child: Text(
-                              items[currentStep].subtitel,
-                              style: const TextStyle(color: Colors.white),
-                            ),
-                          ),
-                        ),
-                      )
+                          ))
                     ],
                   ),
                 ),
