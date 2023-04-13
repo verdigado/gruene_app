@@ -200,5 +200,10 @@
 
   "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
   "refresh":"Aktualisieren ",
-  "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut"
+  "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut",
+  "discoverItemTitel1":"Deine Lieblingsnews",
+  "discoverItemSubtitel1":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.",
+  "snapTeaser":"App erkunden",
+  "snapTeaserSubtitel":"Erfahre hier, was Dich erwartet."
+
 }
