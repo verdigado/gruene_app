@@ -103,11 +103,11 @@
   "@registerMemberLabel": {
     "description": "Noch kein Mitglied?"
   },
-  "introHeadline1": "Hallo, Lorem Ipsum et Entdecke und erfahre",
+  "introHeadline1": "Willkommen",
   "@introHeadline1": {
     "description": "Intro Headline 1"
   },
-  "introHeadline2": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore",
+  "introHeadline2": "Melde dich an und leg direkt los",
   "@introHeadline2": {
     "description": "Intro Headline 2"
   },
@@ -200,5 +200,10 @@
 
   "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
   "refresh":"Aktualisieren ",
-  "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut"
+  "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut",
+  "discoverItemTitel1":"Deine Lieblingsnews",
+  "discoverItemSubtitel1":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.",
+  "snapTeaser":"App erkunden",
+  "snapTeaserSubtitel":"Erfahre hier, was Dich erwartet."
+
 }

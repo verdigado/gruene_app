@@ -41,6 +41,21 @@ class $AssetsImagesGen {
   String get gruenenTopicOekologieSvg =>
       'assets/images/gruenen_topic_oekologie.svg.vec';
 
+  /// File path: assets/images/man_sitting.svg
+  String get manSitting => 'assets/images/man_sitting.svg';
+
+  /// File path: assets/images/user.svg
+  String get user => 'assets/images/user.svg';
+
+  /// File path: assets/images/user_group.svg
+  String get userGroup => 'assets/images/user_group.svg';
+
+  /// File path: assets/images/user_phone.svg
+  String get userPhone => 'assets/images/user_phone.svg';
+
+  /// File path: assets/images/woman_sofa.svg
+  String get womanSofa => 'assets/images/woman_sofa.svg';
+
   /// List of all assets
   List<dynamic> get values => [
         sonnenblumeRgbAufTransparent,
@@ -50,7 +65,12 @@ class $AssetsImagesGen {
         grueneTopicEuropa1,
         grueneTopicEuropa1Svg,
         gruenenTopicOekologie,
-        gruenenTopicOekologieSvg
+        gruenenTopicOekologieSvg,
+        manSitting,
+        user,
+        userGroup,
+        userPhone,
+        womanSofa
       ];
 }
 
