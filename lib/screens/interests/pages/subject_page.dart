@@ -8,7 +8,7 @@ import 'package:gruene_app/net/interests/data/subject.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/widget/searchable_list.dart';
+import 'package:gruene_app/widget/lists/searchable_list.dart';
 
 class SubjectPage extends StatelessWidget {
   const SubjectPage({super.key});

@@ -4,7 +4,7 @@ import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/net/interests/data/competence.dart';
-import 'package:gruene_app/widget/searchable_list.dart';
+import 'package:gruene_app/widget/lists/searchable_list.dart';
 
 class CompetencePage extends StatelessWidget {
   const CompetencePage({super.key});
