@@ -1,52 +1,52 @@
 part of 'interests_bloc.dart';
 
-abstract class OnboardingEvent {}
+abstract class InterestsEvent {}
 
-class OnboardingLoad extends OnboardingEvent {}
+class InterestsLoad extends InterestsEvent {}
 
-class OnboardingDone extends OnboardingEvent {
+class InterestsDone extends InterestsEvent {
   final bool navigateToNext;
-  OnboardingDone({
+  InterestsDone({
     this.navigateToNext = true,
   });
 }
 
-class OnboardingTopicAdd extends OnboardingEvent {
+class InterestsTopicAdd extends InterestsEvent {
   String id;
-  OnboardingTopicAdd({
+  InterestsTopicAdd({
     required this.id,
   });
 }
 
-class OnboardingTopicRemove extends OnboardingEvent {
+class InterestsTopicRemove extends InterestsEvent {
   String id;
-  OnboardingTopicRemove({
+  InterestsTopicRemove({
     required this.id,
   });
 }
 
-class OnboardingSubjectAdd extends OnboardingEvent {
+class InterestsSubjectAdd extends InterestsEvent {
   String id;
-  OnboardingSubjectAdd({
+  InterestsSubjectAdd({
     required this.id,
   });
 }
 
-class OnboardingSubjectRemove extends OnboardingEvent {
+class InterestsSubjectRemove extends InterestsEvent {
   String id;
-  OnboardingSubjectRemove({
+  InterestsSubjectRemove({
     required this.id,
   });
 }
 
-class CompetenceAdd extends OnboardingEvent {
+class CompetenceAdd extends InterestsEvent {
   String id;
   CompetenceAdd({
     required this.id,
   });
 }
 
-class CompetenceRemove extends OnboardingEvent {
+class CompetenceRemove extends InterestsEvent {
   String id;
   CompetenceRemove({
     required this.id,

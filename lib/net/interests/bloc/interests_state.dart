@@ -1,25 +1,25 @@
 part of 'interests_bloc.dart';
 
-abstract class OnboardingState extends Equatable {
-  const OnboardingState();
+abstract class InterestsState extends Equatable {
+  const InterestsState();
 }
 
-class OnboardingInitial extends OnboardingState {
+class InterestsInitial extends InterestsState {
   @override
   List<Object?> get props => [];
 }
 
-class OnboardingLoading extends OnboardingState {
+class InterestsLoading extends InterestsState {
   @override
   List<Object?> get props => [];
 }
 
-class OnboardingReady extends OnboardingState {
+class InterestsReady extends InterestsState {
   final Set<Topic> topics;
   final Set<Subject> subject;
   final Set<Competence> competence;
 
-  const OnboardingReady({
+  const InterestsReady({
     required this.topics,
     required this.subject,
     required this.competence,
@@ -29,11 +29,11 @@ class OnboardingReady extends OnboardingState {
   List<Object?> get props => [topics, subject, competence];
 }
 
-class OnboardingSending extends OnboardingState {
+class InterestsSending extends InterestsState {
   final List<Topic> selectTopis;
   final List<Subject> selectSubject;
   final List<Competence> competence;
-  const OnboardingSending({
+  const InterestsSending({
     required this.selectTopis,
     required this.selectSubject,
     required this.competence,
@@ -43,20 +43,20 @@ class OnboardingSending extends OnboardingState {
   List<Object?> get props => [runtimeType, selectSubject, selectTopis];
 }
 
-class OnboardingSendFailure extends OnboardingState {
+class InterestsSendFailure extends InterestsState {
   @override
   List<Object?> get props => [runtimeType];
 }
 
-class OnboardingFetchFailure extends OnboardingState {
+class InterestsFetchFailure extends InterestsState {
   @override
   List<Object?> get props => [runtimeType];
 }
 
-class OnboardingSended extends OnboardingState {
+class InterestsSended extends InterestsState {
   final bool navigateToNext;
 
-  const OnboardingSended({this.navigateToNext = true});
+  const InterestsSended({this.navigateToNext = true});
 
   @override
   List<Object?> get props => [runtimeType];

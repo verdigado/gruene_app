@@ -17,7 +17,7 @@ import 'package:provider/provider.dart';
 void main() {
   const double PORTRAIT_WIDTH = 1080.0;
   const double PORTRAIT_HEIGHT = 2160.0;
-  group('Onboarding', () {
+  group('Interests', () {
     tearDown(() async {
       resetMocktailState();
     });
@@ -73,21 +73,21 @@ void main() {
 
       await binding.setSurfaceSize(const Size(PORTRAIT_WIDTH, PORTRAIT_HEIGHT));
 
-      MockOnboardingRepository onboardingRepositoryMock =
-          MockOnboardingRepository();
-      when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
-      when(() => onboardingRepositoryMock.listCompetenceAndSubject())
-          .thenAnswer((invocation) =>
-              Future.value(OnboardingListResult(competence, subjects)));
-      when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
+      MockInterestsRepository interestsRepositoryMock =
+          MockInterestsRepository();
+      when(() => interestsRepositoryMock.listTopic()).thenReturn(topics);
+      when(() => interestsRepositoryMock.listCompetenceAndSubject()).thenAnswer(
+          (invocation) =>
+              Future.value(InterestsListResult(competence, subjects)));
+      when(() => interestsRepositoryMock.interestsSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),
       );
-      final bloc = OnboardingBloc(onboardingRepositoryMock);
+      final bloc = InterestsBloc(interestsRepositoryMock);
 
       await tester
           .pumpWidget(makeTestWidget(const InterestPagesScreen(), bloc));
-      bloc.add(OnboardingLoad());
+      bloc.add(InterestsLoad());
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('ButtonGroupNextIntro')));
@@ -104,7 +104,7 @@ void main() {
         await tester.pump();
         // The grid is 2 x 2 this is the reason that we scroll on every second Card
         if (int.parse(topic.id) % 2 == 0) {
-          await tester.drag(find.byKey(const Key('Onboarding_PageView')),
+          await tester.drag(find.byKey(const Key('Interests_PageView')),
               const Offset(0.0, -150));
           await tester.pumpAndSettle();
         }
@@ -123,11 +123,11 @@ void main() {
         await tester.tap(find.widgetWithText(ListTile, sub.name));
       }
       await tester.pump();
-      bloc.add(OnboardingDone(navigateToNext: false));
+      bloc.add(InterestsDone(navigateToNext: false));
       await tester.pump(const Duration(seconds: 2));
 
       verify(
-        () => onboardingRepositoryMock.onboardingSend(
+        () => interestsRepositoryMock.interestsSend(
           any(that: containsAll(topics.map((e) => e.copyWith(checked: true)))),
           any(
               that:
@@ -141,10 +141,10 @@ void main() {
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       verify(
-        () => onboardingRepositoryMock.listTopic(),
+        () => interestsRepositoryMock.listTopic(),
       ).called(1);
       verify(
-        () => onboardingRepositoryMock.listCompetenceAndSubject(),
+        () => interestsRepositoryMock.listCompetenceAndSubject(),
       ).called(1);
 
       await tester.pumpAndSettle(const Duration(seconds: 2));
@@ -180,21 +180,21 @@ void main() {
           TestWidgetsFlutterBinding.ensureInitialized();
 
       await binding.setSurfaceSize(const Size(PORTRAIT_WIDTH, PORTRAIT_HEIGHT));
-      MockOnboardingRepository onboardingRepositoryMock =
-          MockOnboardingRepository();
-      when(() => onboardingRepositoryMock.listTopic()).thenReturn(topics);
-      when(() => onboardingRepositoryMock.listCompetenceAndSubject())
-          .thenAnswer((invocation) =>
-              Future.value(OnboardingListResult(competence, subjects)));
-      when(() => onboardingRepositoryMock.onboardingSend(any(), any(), any()))
+      MockInterestsRepository interestsRepositoryMock =
+          MockInterestsRepository();
+      when(() => interestsRepositoryMock.listTopic()).thenReturn(topics);
+      when(() => interestsRepositoryMock.listCompetenceAndSubject()).thenAnswer(
+          (invocation) =>
+              Future.value(InterestsListResult(competence, subjects)));
+      when(() => interestsRepositoryMock.interestsSend(any(), any(), any()))
           .thenAnswer(
         (invocation) => Future.value(true),
       );
-      final bloc = OnboardingBloc(onboardingRepositoryMock);
+      final bloc = InterestsBloc(interestsRepositoryMock);
 
       await tester
           .pumpWidget(makeTestWidget(const InterestPagesScreen(), bloc));
-      bloc.add(OnboardingLoad());
+      bloc.add(InterestsLoad());
       await tester.pumpAndSettle();
 
       await tester.tap(find.byKey(const Key('ButtonGroupNextIntro')));
@@ -214,10 +214,10 @@ void main() {
       await tester.tap(find.widgetWithText(ListTile, subjects.first.name));
 
       await tester.pump();
-      bloc.add(OnboardingDone(navigateToNext: false));
+      bloc.add(InterestsDone(navigateToNext: false));
       await tester.pumpAndSettle(const Duration(seconds: 2));
       verify(
-        () => onboardingRepositoryMock.onboardingSend(
+        () => interestsRepositoryMock.interestsSend(
           any(
               that: containsAllInOrder(
                   [topics.first].map((e) => e.copyWith(checked: true)))),
@@ -230,17 +230,17 @@ void main() {
         ),
       );
       verify(
-        () => onboardingRepositoryMock.listCompetenceAndSubject(),
+        () => interestsRepositoryMock.listCompetenceAndSubject(),
       ).called(1);
       verify(
-        () => onboardingRepositoryMock.listTopic(),
+        () => interestsRepositoryMock.listTopic(),
       ).called(1);
       await tester.pumpAndSettle(const Duration(seconds: 2));
     });
   });
 }
 
-Widget makeTestWidget(Widget child, OnboardingBloc bloc) {
+Widget makeTestWidget(Widget child, InterestsBloc bloc) {
   return MaterialApp(
     home: BlocProvider(
       create: (context) => bloc,
@@ -255,4 +255,4 @@ Widget makeTestWidget(Widget child, OnboardingBloc bloc) {
   );
 }
 
-class MockOnboardingRepository extends Mock implements OnboardingRepository {}
+class MockInterestsRepository extends Mock implements InterestsRepository {}
