@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import '../constants/theme_data.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 
 class PreviousButton extends StatelessWidget {
   // click event function
@@ -23,10 +23,7 @@ class PreviousButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Visibility(
-          maintainSize: true,
-          maintainAnimation: true,
-          maintainState: true,
+        Visibility.maintain(
           visible: !isHidden,
           child: IconButton(
             icon: const Icon(

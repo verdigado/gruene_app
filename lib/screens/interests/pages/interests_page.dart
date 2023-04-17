@@ -21,12 +21,12 @@ class InterestsPage extends StatelessWidget {
             ),
           ),
         ),
-        BlocBuilder<OnboardingBloc, OnboardingState>(
+        BlocBuilder<InterestsBloc, InterestsState>(
           builder: (context, state) {
-            if (state is OnboardingLoading) {
+            if (state is InterestsLoading) {
               return const CircularProgressIndicator();
             }
-            if (state is OnboardingReady) {
+            if (state is InterestsReady) {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -39,10 +39,10 @@ class InterestsPage extends StatelessWidget {
                             topic: e.name,
                             checked: e.checked,
                             onTap: (check, id) => check
-                                ? BlocProvider.of<OnboardingBloc>(context)
-                                    .add(OnboardingTopicAdd(id: id))
-                                : BlocProvider.of<OnboardingBloc>(context)
-                                    .add(OnboardingTopicRemove(id: id)),
+                                ? BlocProvider.of<InterestsBloc>(context)
+                                    .add(InterestsTopicAdd(id: id))
+                                : BlocProvider.of<InterestsBloc>(context)
+                                    .add(InterestsTopicRemove(id: id)),
                           ))
                       .toList(),
                 ),
@@ -53,7 +53,7 @@ class InterestsPage extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () =>
-                        context.read<OnboardingBloc>().add(OnboardingLoad()),
+                        context.read<InterestsBloc>().add(InterestsLoad()),
                     icon: const Icon(Icons.refresh_outlined),
                   ),
                   Text(AppLocalizations.of(context)!.refresh)

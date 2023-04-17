@@ -82,7 +82,7 @@ class _PageStepperState extends State<PageStepper> {
         // the pages are displayed in a PageView
         Expanded(
           child: PageView(
-            key: widget.key ?? const Key('PageStepper_PageView'),
+            key: widget.key,
             controller: controller,
             onPageChanged: (value) => setState(() {
               currentPage = value;

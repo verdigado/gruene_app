@@ -9,7 +9,7 @@ const interestpages = '/interestpages';
 
 const intro = '/intro';
 const login = '/login';
-const onboarding = '/onboarding';
+// const onboarding = '/onboarding';
 const notification = '/notification';
 const profile = '/profile';
 // Subroutes of profile
@@ -40,8 +40,8 @@ String getTitel(String route) {
       return 'Interessen';
     case login:
       return 'Login';
-    case onboarding:
-      return 'Onboarding';
+    // case onboarding:
+    // return 'Onboarding';
     case notification:
       return 'Benachrichtigung';
     case profileDetail:

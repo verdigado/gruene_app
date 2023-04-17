@@ -25,24 +25,24 @@ class CompetencePage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: BlocBuilder<OnboardingBloc, OnboardingState>(
+          child: BlocBuilder<InterestsBloc, InterestsState>(
             builder: (context, state) {
-              if (state is OnboardingReady) {
+              if (state is InterestsReady) {
                 return SearchableList(
                   showIndexbar: false,
                   searchableItemList: toSearchableListItem(state.competence),
                   onSelect: (com, check) {
                     if (check) {
-                      BlocProvider.of<OnboardingBloc>(context)
+                      BlocProvider.of<InterestsBloc>(context)
                           .add(CompetenceAdd(id: com.id));
                     } else {
-                      BlocProvider.of<OnboardingBloc>(context)
+                      BlocProvider.of<InterestsBloc>(context)
                           .add(CompetenceRemove(id: com.id));
                     }
                   },
                 );
               }
-              if (state is OnboardingSending) {
+              if (state is InterestsSending) {
                 return const Center(child: CircularProgressIndicator());
               }
               return Center(
@@ -50,7 +50,7 @@ class CompetencePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () =>
-                          context.read<OnboardingBloc>().add(OnboardingLoad()),
+                          context.read<InterestsBloc>().add(InterestsLoad()),
                       icon: const Icon(Icons.refresh_outlined),
                     ),
                     Text(AppLocalizations.of(context)!.refresh)
