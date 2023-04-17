@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/widget/button_group.dart';
-import 'package:gruene_app/widget/previous_button.dart';
-import 'package:gruene_app/widget/progress_stepper.dart';
+import 'package:gruene_app/widget/buttons/button_group.dart';
+import 'package:gruene_app/widget/buttons/previous_button.dart';
+import 'package:gruene_app/widget/steppers/progress_stepper.dart';
 
 /**
  * PageStepper:
