@@ -44,6 +44,12 @@ class $AssetsImagesGen {
   /// File path: assets/images/man_sitting.svg
   String get manSitting => 'assets/images/man_sitting.svg';
 
+  /// File path: assets/images/sunflower_white.svg
+  String get sunflowerWhite => 'assets/images/sunflower_white.svg';
+
+  /// File path: assets/images/sunflower_white.svg.vec
+  String get sunflowerWhiteSvg => 'assets/images/sunflower_white.svg.vec';
+
   /// File path: assets/images/user.svg
   String get user => 'assets/images/user.svg';
 
@@ -67,6 +73,8 @@ class $AssetsImagesGen {
         gruenenTopicOekologie,
         gruenenTopicOekologieSvg,
         manSitting,
+        sunflowerWhite,
+        sunflowerWhiteSvg,
         user,
         userGroup,
         userPhone,
