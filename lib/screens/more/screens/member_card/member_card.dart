@@ -12,6 +12,7 @@ import 'package:no_screenshot/no_screenshot.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 import 'package:vector_graphics/vector_graphics.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
@@ -44,7 +45,7 @@ class _MemberCardScreenState extends State<MemberCardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Deine Mitgliedskarte'),
+        title: Text(AppLocalizations.of(context)!.membercardTitel),
         elevation: 0,
       ),
       body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -242,7 +243,7 @@ class MemberCard extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'Mitgliedskarte',
+                                    AppLocalizations.of(context)!.membercard,
                                     style: Theme.of(context)
                                         .textTheme
                                         .bodyMedium
@@ -331,7 +332,8 @@ class MemberCard extends StatelessWidget {
                                                 ?.copyWith(color: Colors.white),
                                           ),
                                           Text(
-                                            "Mitgliedernummer:",
+                                            AppLocalizations.of(context)!
+                                                .memberId,
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .bodyMedium

@@ -204,6 +204,8 @@
   "discoverItemTitel1":"Deine Lieblingsnews",
   "discoverItemSubtitel1":"Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy ut labore hjkwsadf.",
   "snapTeaser":"App erkunden",
-  "snapTeaserSubtitel":"Erfahre hier, was Dich erwartet."
-
+  "snapTeaserSubtitel":"Erfahre hier, was Dich erwartet.",
+  "memberId":"Mitgliedernummer:",
+  "membercard":"Mitgliedskarte",
+  "membercardTitel": "Deine Mitgliedskarte"
 }
