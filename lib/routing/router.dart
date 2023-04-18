@@ -11,6 +11,7 @@ import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/more/more_screen.dart';
+import 'package:gruene_app/screens/more/screens/member_card/member_card.dart';
 import 'package:gruene_app/screens/more/screens/profile/member_profil_screen.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_detail_screen.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_menu.dart';
@@ -132,6 +133,16 @@ final GoRouter router = GoRouter(
               return getPlattformPage(
                 context: context,
                 child: const MemberProfilScreen(),
+              );
+            }),
+        GoRoute(
+            path: memberCard,
+            parentNavigatorKey: rootNavigatorKey,
+            name: memberCardScreenName,
+            pageBuilder: (context, state) {
+              return getPlattformPage(
+                context: context,
+                child: const MemberCardScreen(),
               );
             }),
       ],

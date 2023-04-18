@@ -9,12 +9,14 @@ const onboarding = '/onboarding';
 const notification = '/notification';
 const profileDetail = 'profileDetail';
 const memberProfil = 'memberProfil';
+const memberCard = 'memberCard';
 const profile = '/profile';
 
 // NAMED
 const profileScreenName = 'profilescreen';
 const profileDetailScreenName = 'profiledetailscreen';
 const memberprofilScreenName = 'memberprofilscreen';
+const memberCardScreenName = 'memberCard';
 
 // TODO: Make l10n
 String getTitel(String route) {

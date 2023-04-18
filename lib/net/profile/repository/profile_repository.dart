@@ -28,7 +28,8 @@ class ProfileRepositoryImpl extends ProfileRepository {
         givenName: 'Gustav',
         surname: 'Grün',
         politicalParty: 'Bündnis 90/Die Grünen',
-        division: 'OV',
+        division: 'Kreisverband',
+        memberId: '1064536',
         email: [
           const FavouriteValue('gruenerGustav@gruene.de', true),
           const FavouriteValue('gustavGruen@gruene.de', false),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/app_const.dart';
+import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -32,8 +35,13 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
               children: [
                 Expanded(
                   flex: 5,
-                  child: SvgPicture(
-                    AssetBytesLoader(Assets.images.user),
+                  child: InkWell(
+                    onLongPress: GruneAppData.values.flavor == Flavors.staging
+                        ? () => context.go(startScreen)
+                        : null,
+                    child: SvgPicture(
+                      AssetBytesLoader(Assets.images.user),
+                    ),
                   ),
                 ),
                 const Spacer(),

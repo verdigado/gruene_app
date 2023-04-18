@@ -27,9 +27,15 @@ class MoreScreen extends StatelessWidget {
         iconTralling: Icons.arrow_forward_ios,
       ),
       CostumeListItem(
-          titel: AppLocalizations.of(context)!.applications,
-          iconTralling: Icons.arrow_forward_ios,
-          spaceBetween: true),
+        titel: AppLocalizations.of(context)!.applications,
+        iconTralling: Icons.arrow_forward_ios,
+      ),
+      CostumeListItem(
+        titel: AppLocalizations.of(context)!.membercardMenuTitel,
+        iconTralling: Icons.arrow_forward_ios,
+        spaceBetween: true,
+        linksTo: memberCard,
+      ),
       CostumeListItem(titel: AppLocalizations.of(context)!.account, bold: true),
       CostumeListItem(
         titel: AppLocalizations.of(context)!.profile,
