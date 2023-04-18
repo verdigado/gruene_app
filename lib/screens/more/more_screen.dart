@@ -30,8 +30,8 @@ class MoreScreen extends StatelessWidget {
         titel: AppLocalizations.of(context)!.applications,
         iconTralling: Icons.arrow_forward_ios,
       ),
-      const CostumeListItem(
-        titel: "Dein Mitgliedsauweis ",
+      CostumeListItem(
+        titel: AppLocalizations.of(context)!.membercardMenuTitel,
         iconTralling: Icons.arrow_forward_ios,
         spaceBetween: true,
         linksTo: memberCard,

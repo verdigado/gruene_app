@@ -207,5 +207,6 @@
   "snapTeaserSubtitel":"Erfahre hier, was Dich erwartet.",
   "memberId":"Mitgliedernummer:",
   "membercard":"Mitgliedskarte",
-  "membercardTitel": "Deine Mitgliedskarte"
+  "membercardTitel": "Deine Mitgliedskarte",
+  "membercardMenuTitel" :"Dein Mitgliedsauweis"
 }
