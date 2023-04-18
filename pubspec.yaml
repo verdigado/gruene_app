@@ -79,6 +79,9 @@ dependencies:
   dio_smart_retry: ^5.0.0
   carousel_slider: ^4.2.1
   qr_flutter: ^4.0.0
+  screen_brightness: ^0.2.2
+  no_screenshot: ^0.0.1+6
+  dismissible_page: ^1.0.1
 
 
 

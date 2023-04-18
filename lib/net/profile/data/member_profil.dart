@@ -12,6 +12,7 @@ class MemberProfil extends Equatable {
   final IList<FavouriteValue<String>> telefon;
   final String politicalParty;
   final String division;
+  final String memberId;
 
   const MemberProfil({
     this.givenName = '',
@@ -20,6 +21,7 @@ class MemberProfil extends Equatable {
     required this.telefon,
     this.politicalParty = '',
     this.division = '',
+    this.memberId = '',
   });
 
   MemberProfil copyWith({
