@@ -33,20 +33,34 @@ class InterestPagesScreen extends StatelessWidget {
             body: AnnotatedRegion<SystemUiOverlayStyle>(
               value: SystemUiOverlayStyle.dark,
               child: SafeArea(
-                child: PageStepper(
-                  onlyNextBtn: true,
-                  onLastPage: () => context.push(notification),
-                  pages: const [
-                    InterestsPage(),
-                    CompetencePage(),
-                    SubjectPage(),
-                  ],
-                ),
+                child: InterestStepper(
+                    onLastPage: () => context.push(notification)),
               ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class InterestStepper extends StatelessWidget {
+  final VoidCallback onLastPage;
+  const InterestStepper({
+    super.key,
+    required this.onLastPage,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return PageStepper(
+      onlyNextBtn: true,
+      onLastPage: onLastPage,
+      pages: const [
+        InterestsPage(),
+        CompetencePage(),
+        SubjectPage(),
+      ],
     );
   }
 }
