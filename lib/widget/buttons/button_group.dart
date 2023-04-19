@@ -38,13 +38,14 @@ class ButtonGroupNextPrevious extends StatelessWidget {
           ),
         ),
         ElevatedButton(
-            key: buttonNextKey,
+            key: const Key('ButtonGroupNextButton'),
             onPressed: next,
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
         if (!onlyNext) ...[
           const SizedBox(height: 8),
           ElevatedButton(
+            key: const Key('ButtonGroupPreviousButton'),
             onPressed: previous,
             style: grayButtonStyle,
             child: Text(previousText,
