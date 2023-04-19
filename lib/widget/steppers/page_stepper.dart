@@ -53,7 +53,7 @@ class _PageStepperState extends State<PageStepper> {
     controller.addListener(() {
       setState(() {
         if (controller.page != null) {
-          currentPage = controller.page?.toInt() ?? 0;
+          currentPage = controller.page!.toInt();
         }
       });
     });
@@ -74,7 +74,7 @@ class _PageStepperState extends State<PageStepper> {
         // if the progressbar should not be hidden, it is displayed
         if (!widget.hideProgressbar) ...[
           ProgressStepper(
-            currentPage: currentPage,
+            currentPage: currentPage + 1,
             stepLength: widget.pages.length,
           ),
         ],
