@@ -222,6 +222,7 @@ class _IntroScreenState extends State<IntroScreen> {
         const Duration(seconds: 3),
         () {
           if (first) {
+            if (mounted == false) return;
             snappingSheetController
                 .snapToPosition(const SnappingPosition.factor(
               positionFactor: 0.03,
