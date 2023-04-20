@@ -39,6 +39,7 @@ class InterestsPage extends StatelessWidget {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
+                  padding: const EdgeInsets.only(left: 18, right: 18),
                   children: state.topics
                       .map((e) => TopicCard(
                             key: Key('TopicCard_${e.id}'),

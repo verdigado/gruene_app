@@ -7,20 +7,7 @@ const discoveryUrl =
     'https://saml.gruene.de/realms/gruenes-netz/.well-known/openid-configuration';
 const clientId = 'gruene_app';
 const redirectUrl = 'grueneapp://appAuth';
-const scopes = [
-  "openid",
-  "address",
-  "acr",
-  "email",
-  "web-origins",
-  "oauth-einverstaendniserklaerung",
-  "oauth-username",
-  "roles",
-  "profile",
-  "phone",
-  "offline_access",
-  "microprofile-jwt"
-];
+const scopes = ["openid", "offline_access", "microprofile-jwt"];
 
 enum AccessTokenState { authenticated, unauthenticated, refreshable, expired }
 

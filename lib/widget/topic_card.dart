@@ -42,7 +42,7 @@ class TopicCardState extends State<TopicCard> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    final cardSize = size.width / 2 - 20;
+    final cardSize = size.width / 2 + 26;
     return InkWell(
       onTap: () => check(),
       child: Stack(children: [
