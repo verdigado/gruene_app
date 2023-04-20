@@ -67,7 +67,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             preserveImageSpace: false,
                             title: "Schau Dir Deine neue Mitglieder-App an",
                             titleFontWeight: FontWeight.bold,
-                            titleFontSize: 33,
                             body:
                                 "First impressions are everything in business, even in chat service. It’s important to show professionalism and courtesy from the start",
                           ),

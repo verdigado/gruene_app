@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -19,11 +18,11 @@ class IntroPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      mainAxisAlignment: MainAxisAlignment.center,
       children: [
         const Spacer(),
         Flexible(
-          flex: 6,
+          flex: 8,
           child: SvgPicture(
             AssetBytesLoader(Assets.images.bicycleMan),
           ),
@@ -54,9 +53,10 @@ class IntroPage extends StatelessWidget {
                       AppLocalizations.of(context)!.customPageHeadline2,
                       style: Theme.of(context)
                           .primaryTextTheme
-                          .headlineLarge
+                          .headlineSmall
                           ?.copyWith(
                             color: darkGrey,
+                            fontWeight: FontWeight.normal,
                           ),
                     ),
                   ),

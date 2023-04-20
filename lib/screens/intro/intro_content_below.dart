@@ -6,7 +6,6 @@ import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gruene_app/constants/theme_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/main.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
@@ -32,9 +31,10 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
             alignment: Alignment.center,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  flex: 5,
+                  flex: 12,
                   child: InkWell(
                     onLongPress: GruneAppData.values.flavor == Flavors.staging
                         ? () => context.go(startScreen)
@@ -46,27 +46,14 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
                 ),
                 const Spacer(),
                 Flexible(
-                  flex: 3,
+                  flex: 5,
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 20, right: 20),
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, bottom: 20),
                     child: Text(
                       textAlign: TextAlign.center,
                       AppLocalizations.of(context)!.introHeadline1,
                       style: Theme.of(context).primaryTextTheme.displayLarge,
-                    ),
-                  ),
-                ),
-                Flexible(
-                  flex: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(20),
-                    child: Text(
-                      textAlign: TextAlign.center,
-                      AppLocalizations.of(context)!.introHeadline2,
-                      style: Theme.of(context)
-                          .primaryTextTheme
-                          .displaySmall
-                          ?.copyWith(color: darkGrey),
                     ),
                   ),
                 ),
@@ -101,7 +88,10 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
                     ),
                   ),
                 ),
-                DatImpContainer()
+                DatImpContainer(),
+                const SizedBox(
+                  height: 100,
+                )
               ],
             ),
           ),
