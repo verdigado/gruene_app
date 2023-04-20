@@ -62,6 +62,7 @@ class _SearchableListState extends State<SearchableList> {
           child: TypeAheadField(
             animationDuration: const Duration(milliseconds: 600),
             debounceDuration: const Duration(milliseconds: 600),
+            animationStart: 1,
             textFieldConfiguration: TextFieldConfiguration(
               controller: textEditingController,
               style: DefaultTextStyle.of(context).style,
