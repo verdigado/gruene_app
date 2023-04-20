@@ -25,15 +25,6 @@ class ButtonGroupNextPrevious extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
-          height: 10,
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                  width: 1, color: lightGrey, style: BorderStyle.solid),
-            ),
-          ),
-        ),
         ElevatedButton(
             key: buttonNextKey,
             onPressed: next,

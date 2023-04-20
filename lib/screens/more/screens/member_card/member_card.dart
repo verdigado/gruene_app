@@ -17,12 +17,6 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 
-const mockModel = MemberCardModel(
-    divison: 'Kreisverband',
-    givenname: 'Rosenberg',
-    surename: 'Rosa',
-    memberId: '1000345');
-
 class MemberCardScreen extends StatefulWidget {
   const MemberCardScreen({super.key});
 
@@ -30,14 +24,12 @@ class MemberCardScreen extends StatefulWidget {
   State<MemberCardScreen> createState() => _MemberCardScreenState();
 }
 
-class _MemberCardScreenState extends State<MemberCardScreen>
-    with WidgetsBindingObserver {
+class _MemberCardScreenState extends State<MemberCardScreen> {
   final _noScreenshot = NoScreenshot.instance;
   @override
   void initState() {
     setBrightness(1.0);
     _noScreenshot.screenshotOff();
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
@@ -45,7 +37,6 @@ class _MemberCardScreenState extends State<MemberCardScreen>
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(AppLocalizations.of(context)!.membercardTitel),
         elevation: 0,
       ),
       body: BlocBuilder<ProfileBloc, ProfileState>(
@@ -77,7 +68,6 @@ class _MemberCardScreenState extends State<MemberCardScreen>
   @override
   dispose() {
     resetBrightness();
-    WidgetsBinding.instance.removeObserver(this);
     _noScreenshot.screenshotOn();
     super.dispose();
   }
@@ -97,19 +87,6 @@ class _MemberCardScreenState extends State<MemberCardScreen>
       logger.d('Failed to reset brightness', [e]);
     }
   }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed ||
-        state == AppLifecycleState.inactive ||
-        state == AppLifecycleState.paused) {
-      _noScreenshot.screenshotOff();
-    }
-    if (state == AppLifecycleState.detached) {
-      _noScreenshot.screenshotOn();
-    }
-    super.didChangeAppLifecycleState(state);
-  }
 }
 
 class MemberCardFullScreenView extends StatelessWidget {
@@ -126,10 +103,13 @@ class MemberCardFullScreenView extends StatelessWidget {
         backgroundColor: Colors.white,
         onDismissed: () => context.pop(),
         child: SafeArea(
-          child: SizedBox(
-            height: double.infinity,
-            width: double.infinity,
-            child: card,
+          child: GestureDetector(
+            onTap: () => context.pop(),
+            child: SizedBox(
+              height: double.infinity,
+              width: double.infinity,
+              child: card,
+            ),
           ),
         ),
       ),

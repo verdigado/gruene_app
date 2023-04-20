@@ -289,7 +289,7 @@ class SliderCarouselPage extends StatelessWidget {
     this.body,
     this.image,
     this.preserveImageSpace = true,
-    this.titleFontSize = 33,
+    this.titleFontSize = 30,
     this.bodyFontSize = 16,
     this.titleFontWeight = FontWeight.bold,
     this.bodyFontWeight = FontWeight.normal,

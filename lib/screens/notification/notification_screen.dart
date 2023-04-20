@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_switch/flutter_switch.dart';
+import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -32,15 +33,13 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
             children: [
               Flexible(
                 flex: 12,
-                child: Align(
-                  alignment: Alignment.topRight,
-                  child: SvgPicture(
-                    AssetBytesLoader(Assets.images.grueneTopicEuropa1Svg),
-                  ),
+                child: SvgPicture(
+                  AssetBytesLoader(Assets.images.manSitting),
                 ),
               ),
+              const Spacer(),
               Flexible(
-                flex: 14,
+                flex: 16,
                 child: Padding(
                   padding: const EdgeInsets.only(
                     left: 30,
@@ -54,36 +53,30 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                           style:
                               Theme.of(context).primaryTextTheme.displayLarge),
                       Padding(
-                        padding: const EdgeInsets.only(top: 8),
+                        padding: const EdgeInsets.only(top: 8, bottom: medium1),
                         child: Text(
                           AppLocalizations.of(context)!
                               .notificationPageHeadline2,
                         ),
                       ),
+                      FlutterSwitch(
+                        value: permission,
+                        activeColor: mcgpalette0Secondary,
+                        inactiveIcon: const Icon(
+                          Icons.close,
+                          color: Colors.red,
+                        ),
+                        activeIcon: const Icon(
+                          Icons.check,
+                          color: mcgpalette0Secondary,
+                        ),
+                        onToggle: (value) {
+                          setState(() {
+                            permission = value;
+                          });
+                        },
+                      ),
                     ],
-                  ),
-                ),
-              ),
-              Flexible(
-                flex: 3,
-                child: Padding(
-                  padding: const EdgeInsets.only(top: 10),
-                  child: FlutterSwitch(
-                    value: permission,
-                    activeColor: mcgpalette0Secondary,
-                    inactiveIcon: const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                    activeIcon: const Icon(
-                      Icons.check,
-                      color: mcgpalette0Secondary,
-                    ),
-                    onToggle: (value) {
-                      setState(() {
-                        permission = value;
-                      });
-                    },
                   ),
                 ),
               ),

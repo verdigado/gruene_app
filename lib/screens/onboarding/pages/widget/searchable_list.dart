@@ -60,11 +60,11 @@ class _SearchableListState extends State<SearchableList> {
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: TypeAheadField(
+            animationDuration: const Duration(milliseconds: 600),
+            debounceDuration: const Duration(milliseconds: 600),
             textFieldConfiguration: TextFieldConfiguration(
               controller: textEditingController,
-              style: DefaultTextStyle.of(context)
-                  .style
-                  .copyWith(fontStyle: FontStyle.italic),
+              style: DefaultTextStyle.of(context).style,
               decoration: InputDecoration(
                 contentPadding: const EdgeInsets.all(0),
                 enabledBorder:
@@ -81,7 +81,7 @@ class _SearchableListState extends State<SearchableList> {
                       choices:
                           widget.searchableItemList.map((e) => e.name).toList(),
                       limit: 4,
-                      cutoff: 50,
+                      cutoff: 70,
                     ).map((e) => e.choice);
                     var res = widget.searchableItemList.indexWhere((element) =>
                         element.name.toLowerCase() ==
@@ -120,7 +120,7 @@ class _SearchableListState extends State<SearchableList> {
                 query: pattern,
                 choices: widget.searchableItemList.map((e) => e.name).toList(),
                 limit: 4,
-                cutoff: 50,
+                cutoff: 70,
               ).map((e) => e.choice);
             },
             itemBuilder: (context, suggestion) {

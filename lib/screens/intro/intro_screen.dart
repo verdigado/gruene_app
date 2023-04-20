@@ -57,7 +57,7 @@ class _IntroScreenState extends State<IntroScreen> {
   @override
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.light,
+      value: SystemUiOverlayStyle.dark,
       child: Scaffold(
         body: SafeArea(
           child: SnappingSheet(
@@ -65,7 +65,6 @@ class _IntroScreenState extends State<IntroScreen> {
             onSheetMoved: (positionData) {
               setState(() {
                 sheetHeight = positionData.relativeToSheetHeight;
-                // Some Space betwin
                 if (positionData.relativeToSheetHeight >= 0.50) {
                   titelOpacity = 1.0;
                 }
@@ -85,7 +84,17 @@ class _IntroScreenState extends State<IntroScreen> {
                 first = false;
               });
             },
-            grabbing: GrabbingContent(snapIsTop: snapIsTop),
+            grabbing: InkWell(
+                onTap: () {
+                  if (snapIsTop) {
+                    snappingSheetController
+                        .snapToPosition(widget.snappingPositions[0]);
+                  } else {
+                    snappingSheetController
+                        .snapToPosition(widget.snappingPositions[1]);
+                  }
+                },
+                child: GrabbingContent(snapIsTop: snapIsTop)),
             sheetBelow: SnappingSheetContent(
               draggable: true,
               sizeBehavior: SheetSizeStatic(size: 350),

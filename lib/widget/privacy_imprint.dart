@@ -28,7 +28,10 @@ class DatImpContainer extends StatelessWidget {
           TextButton(
             onPressed: () => _launchUrl(context, _urlPrivacy),
             child: Text(AppLocalizations.of(context)!.privacyPolicy,
-                style: Theme.of(context).primaryTextTheme.bodySmall),
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 10)),
           ),
           const SizedBox(width: 10),
           Container(
@@ -43,7 +46,10 @@ class DatImpContainer extends StatelessWidget {
           TextButton(
             onPressed: () => _launchUrl(context, _urlImprint),
             child: Text(AppLocalizations.of(context)!.imprint,
-                style: Theme.of(context).primaryTextTheme.bodySmall),
+                style: Theme.of(context)
+                    .primaryTextTheme
+                    .bodySmall
+                    ?.copyWith(fontSize: 10)),
           ),
         ],
       ),

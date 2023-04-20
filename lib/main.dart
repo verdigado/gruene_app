@@ -1,4 +1,3 @@
-import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -9,6 +8,9 @@ import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/net/profile/repository/profile_repository.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:no_screenshot/no_screenshot.dart';
+
+import 'routing/routes.dart';
 
 void runMain() async {
   var widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -17,11 +19,24 @@ void runMain() async {
   runApp(const MyApp());
 }
 
-class MyApp extends StatelessWidget {
+class MyApp extends StatefulWidget {
   const MyApp({super.key});
   static final scaffoldMessengerKey = GlobalKey<ScaffoldMessengerState>();
 
+  @override
+  State<MyApp> createState() => _MyAppState();
+}
+
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
+  final _noScreenshot = NoScreenshot.instance;
   // This widget is the root of your application.
+  @override
+  void initState() {
+    _noScreenshot.screenshotOff();
+    WidgetsBinding.instance.addObserver(this);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations([
@@ -43,12 +58,36 @@ class MyApp extends StatelessWidget {
         child: MaterialApp.router(
           title: 'Grüne App',
           routerConfig: router,
-          scaffoldMessengerKey: scaffoldMessengerKey,
+          scaffoldMessengerKey: MyApp.scaffoldMessengerKey,
           theme: rootTheme,
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
         ),
       ),
     );
+  }
+
+  @override
+  dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    _noScreenshot.screenshotOn();
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    if (router.location.contains(memberCard)) {
+      print(router.location);
+      if (state == AppLifecycleState.resumed ||
+          state == AppLifecycleState.inactive ||
+          state == AppLifecycleState.paused) {
+        _noScreenshot.screenshotOff();
+      } else {
+        _noScreenshot.screenshotOn();
+      }
+    } else {
+      _noScreenshot.screenshotOn();
+    }
+    super.didChangeAppLifecycleState(state);
   }
 }
