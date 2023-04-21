@@ -82,6 +82,29 @@ class TopicCardState extends State<TopicCard> {
             ),
           ),
         ),
+        Positioned.fill(
+          child: Card(
+            color: Colors.transparent,
+            child: checkedState
+                ? Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.topCenter,
+                        end: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromRGBO(0, 0, 0, 0.3),
+                          Color.fromRGBO(53, 211, 0, 0.3),
+                        ],
+                        stops: [
+                          0.0072,
+                          0.3971,
+                        ],
+                      ),
+                    ),
+                  )
+                : Container(),
+          ),
+        ),
         Positioned(
           top: cardSize / 100 * 4,
           left: size.width / 2 - cardSize / 3,
