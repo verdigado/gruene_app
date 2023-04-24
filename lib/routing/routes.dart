@@ -11,12 +11,14 @@ const profileDetail = 'profileDetail';
 const memberProfil = 'memberProfil';
 const memberCard = 'memberCard';
 const profile = '/profile';
+const debug = '/debug';
 
 // NAMED
 const profileScreenName = 'profilescreen';
 const profileDetailScreenName = 'profiledetailscreen';
 const memberprofilScreenName = 'memberprofilscreen';
 const memberCardScreenName = 'memberCard';
+const debugScreen = 'debugScreen';
 
 // TODO: Make l10n
 String getTitel(String route) {

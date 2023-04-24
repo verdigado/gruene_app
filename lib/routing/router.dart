@@ -8,6 +8,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 
 import 'package:gruene_app/routing/routes.dart';
+import 'package:gruene_app/screens/debug/debug_screen.dart';
 import 'package:gruene_app/screens/intro/intro_screen.dart';
 import 'package:gruene_app/screens/login/login_screen.dart';
 import 'package:gruene_app/screens/more/more_screen.dart';
@@ -105,6 +106,14 @@ final GoRouter router = GoRouter(
       path: notification,
       pageBuilder: (context, state) {
         return const NoTransitionPage(child: NotfificationScreen());
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: debug,
+      name: debugScreen,
+      pageBuilder: (context, state) {
+        return const NoTransitionPage(child: DebugScreen());
       },
     ),
     GoRoute(
