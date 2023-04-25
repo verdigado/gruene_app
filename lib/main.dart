@@ -32,7 +32,6 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   // This widget is the root of your application.
   @override
   void initState() {
-    _noScreenshot.screenshotOff();
     WidgetsBinding.instance.addObserver(this);
     super.initState();
   }

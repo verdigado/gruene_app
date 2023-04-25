@@ -12,14 +12,18 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
+  final GlobalKey<LatestTabState> latestTabKey = GlobalKey();
+  int currentTab = 0;
   @override
   Widget build(BuildContext context) {
     List<Tab> tabs = <Tab>[
       Tab(
-        child: Text(
-          'Aktuelles',
-          style: Theme.of(context).textTheme.displayLarge?.copyWith(
-              fontSize: 16, color: Theme.of(context).colorScheme.primary),
+        child: GestureDetector(
+          child: Text(
+            'Aktuelles',
+            style: Theme.of(context).textTheme.displayLarge?.copyWith(
+                fontSize: 16, color: Theme.of(context).colorScheme.primary),
+          ),
         ),
       ),
       Tab(
@@ -37,13 +41,24 @@ class _StartScreenState extends State<StartScreen> {
         ),
       ),
     ];
+
     return DefaultTabController(
       length: tabs.length,
       child: Scaffold(
         appBar: TabBar(
-            tabs: tabs, indicatorColor: const Color(mcgpalette0PrimaryValue)),
-        body: const TabBarView(
-            children: [LatestTab(), InterestTab(), SavedTab()]),
+            onTap: (value) {
+              if (value == 0 && currentTab == 0) {
+                latestTabKey.currentState?.scrollTop();
+              }
+              currentTab = value;
+            },
+            tabs: tabs,
+            indicatorColor: const Color(mcgpalette0PrimaryValue)),
+        body: TabBarView(children: [
+          LatestTab(key: latestTabKey),
+          const InterestTab(),
+          const SavedTab()
+        ]),
       ),
     );
   }
