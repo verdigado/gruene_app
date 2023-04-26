@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/screens/start/tabs/interest_tab.dart';
-import 'package:gruene_app/screens/start/tabs/latest_tab.dart';
+import 'package:gruene_app/screens/start/tabs/lastes_tab.dart';
+import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:gruene_app/screens/start/tabs/saved_tab.dart';
 
 class StartScreen extends StatefulWidget {
@@ -12,7 +13,7 @@ class StartScreen extends StatefulWidget {
 }
 
 class _StartScreenState extends State<StartScreen> {
-  final GlobalKey<LatestTabState> latestTabKey = GlobalKey();
+  final GlobalKey<NewsCardPaginationListViewState> latestTabKey = GlobalKey();
   int currentTab = 0;
   @override
   Widget build(BuildContext context) {
@@ -55,9 +56,9 @@ class _StartScreenState extends State<StartScreen> {
             tabs: tabs,
             indicatorColor: const Color(mcgpalette0PrimaryValue)),
         body: TabBarView(children: [
-          LatestTab(key: latestTabKey),
+          LatestTab(listViewKey: latestTabKey),
           const InterestTab(),
-          const SavedTab()
+          SavedTab()
         ]),
       ),
     );

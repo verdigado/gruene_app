@@ -1,63 +1,69 @@
 import 'dart:math';
 
-import 'package:faker/faker.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:gruene_app/widget/news_card.dart';
 
-class LatestTab extends StatefulWidget {
-  const LatestTab({super.key});
+class NewsCardPaginationListView extends StatefulWidget {
+  final PagingController<int, News> pagingController;
+  final void Function(News news) onBookmarked;
 
+  final int pageSize;
+
+  const NewsCardPaginationListView({
+    super.key,
+    required this.getNews,
+    required this.pagingController,
+    required this.pageSize,
+    required this.onBookmarked,
+  });
+  final NewsPaginationResult Function(int pageSize, int pagekey) getNews;
   @override
-  State<LatestTab> createState() => LatestTabState();
+  State<NewsCardPaginationListView> createState() =>
+      NewsCardPaginationListViewState();
 }
 
-class LatestTabState extends State<LatestTab>
-    with AutomaticKeepAliveClientMixin<LatestTab> {
-  final PagingController<int, News> _pagingController =
-      PagingController<int, News>(
-          firstPageKey: 1, invisibleItemsThreshold: _pageSize ~/ 2);
+class NewsCardPaginationListViewState
+    extends State<NewsCardPaginationListView> {
   final ScrollController _scrollController = ScrollController();
-  static const int _pageSize = 10;
 
   @override
   void initState() {
-    // First fetch;
-
-    _pagingController.addPageRequestListener((pageKey) async {
-      print(pageKey);
-      await Future.delayed(
-          Duration(seconds: Random().nextInt(6).toInt()), () => fetch(pageKey));
+    widget.pagingController.addPageRequestListener((pageKey) async {
+      logger.d(pageKey);
+      // TODO: Remove Delay
+      await Future.delayed(Duration(seconds: Random().nextInt(6).toInt()),
+          () => fetch(widget.pageSize, pageKey));
     });
     super.initState();
   }
 
-  void fetch(int pageKey) {
+  void fetch(int pageSize, int pageKey) {
     try {
-      var newItems = getNews(_pageSize, pageKey);
-      final isLastPage = newItems.news.length < _pageSize;
+      var newItems = widget.getNews(pageSize, pageKey);
+      final isLastPage = newItems.news.length < pageSize;
       if (isLastPage) {
-        _pagingController.appendLastPage(newItems.news);
+        widget.pagingController.appendLastPage(newItems.news);
       } else {
-        _pagingController.appendPage(newItems.news, newItems.next);
+        widget.pagingController.appendPage(newItems.news, newItems.next);
       }
     } catch (err) {
-      _pagingController.error = err;
+      widget.pagingController.error = err;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    super.build(context);
     return RefreshIndicator(
         onRefresh: () => Future.sync(
-              () => _pagingController.refresh(),
+              () => widget.pagingController.refresh(),
             ),
         child: PagedListView(
-          pagingController: _pagingController,
+          pagingController: widget.pagingController,
           physics: const BouncingScrollPhysics(),
           scrollController: _scrollController,
           builderDelegate: PagedChildBuilderDelegate<News>(
@@ -67,12 +73,12 @@ class LatestTabState extends State<LatestTab>
                   onTap: () {
                     print('hi');
                   },
+                  bookmarked: item.bookmarked,
                   heroTag: item.titel,
-                  imageUrl: item.imageUrl,
-                  typ: item.typ,
-                  titel: item.titel,
-                  subtitel: item.subtitel,
-                  chipLabel: item.chipLabel);
+                  news: item,
+                  onBookmarked: (news) {
+                    widget.onBookmarked(news);
+                  });
             },
             newPageProgressIndicatorBuilder: (context) => SpinKitThreeBounce(
               color: Theme.of(context).primaryColor,
@@ -89,12 +95,13 @@ class LatestTabState extends State<LatestTab>
               ),
             ),
             firstPageErrorIndicatorBuilder: (_) => PageErrorIndicator(
-              error: _pagingController.error,
-              onTryAgain: () => _pagingController.refresh(),
+              error: widget.pagingController.error,
+              onTryAgain: () => widget.pagingController.refresh(),
             ),
             newPageErrorIndicatorBuilder: (_) => PageErrorIndicator(
-              error: _pagingController.error,
-              onTryAgain: () => _pagingController.retryLastFailedRequest(),
+              error: widget.pagingController.error,
+              onTryAgain: () =>
+                  widget.pagingController.retryLastFailedRequest(),
             ),
             noItemsFoundIndicatorBuilder: (context) => const Center(
               child: Text('Kein Einträge gefunden'),
@@ -105,7 +112,6 @@ class LatestTabState extends State<LatestTab>
 
   @override
   void dispose() {
-    _pagingController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -114,9 +120,6 @@ class LatestTabState extends State<LatestTab>
     _scrollController.animateTo(0,
         duration: const Duration(milliseconds: 800), curve: Curves.linear);
   }
-
-  @override
-  bool get wantKeepAlive => true;
 }
 
 class PageErrorIndicator extends StatelessWidget {
@@ -155,11 +158,18 @@ class NewsPaginationResult {
   final int self;
   final int next;
   final int prev;
-  NewsPaginationResult({
+  const NewsPaginationResult({
     required this.news,
     required this.self,
     required this.next,
     required this.prev,
+  });
+
+  const NewsPaginationResult.noItems({
+    this.news = const [],
+    this.self = 0,
+    this.next = 0,
+    this.prev = 0,
   });
 }
 
@@ -169,13 +179,16 @@ class News {
   final String titel;
   final String subtitel;
   final String chipLabel;
-  News({
-    required this.imageUrl,
-    required this.typ,
-    required this.titel,
-    required this.subtitel,
-    required this.chipLabel,
-  });
+  final String newsUrl;
+  final bool bookmarked;
+  News(
+      {required this.imageUrl,
+      required this.typ,
+      required this.titel,
+      required this.subtitel,
+      required this.chipLabel,
+      required this.newsUrl,
+      required this.bookmarked});
 }
 
 Iterable<int> get positiveIntegers sync* {
@@ -183,48 +196,4 @@ Iterable<int> get positiveIntegers sync* {
   while (true) {
     yield i++;
   }
-}
-
-NewsPaginationResult getNews(int pagesize, int pagekey) {
-  if (pagekey > 100) {
-    return NewsPaginationResult(news: [
-      News(
-        imageUrl:
-            'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
-        typ: 'Veranstaltung',
-        titel: faker.lorem.sentences(1).join(),
-        subtitel: faker.lorem.sentences(3).join(),
-        chipLabel: 'Kreisverband',
-      ),
-      News(
-        imageUrl:
-            'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
-        typ: 'Veranstaltung',
-        titel: faker.lorem.sentences(3).join(),
-        subtitel: faker.lorem.sentences(30).join(),
-        chipLabel: 'Kreisverband',
-      ),
-      News(
-        imageUrl:
-            'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
-        typ: 'Veranstaltung',
-        titel: faker.lorem.sentences(3).join(),
-        subtitel: faker.lorem.sentences(30).join(),
-        chipLabel: 'Kreisverband',
-      )
-    ], self: pagekey, next: pagekey + pagesize, prev: pagekey - pagesize);
-  }
-  return NewsPaginationResult(news: [
-    ...positiveIntegers
-        .skip(1) // don't use 0
-        .take(pagesize) // take 10 numbers
-        .map((e) => News(
-              imageUrl:
-                  'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
-              typ: 'Veranstaltung',
-              titel: faker.lorem.sentences(1).join(),
-              subtitel: faker.lorem.sentences(3).join(),
-              chipLabel: 'Kreisverband',
-            ))
-  ], self: pagekey, next: pagekey + pagesize, prev: pagekey - pagesize);
 }

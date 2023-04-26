@@ -8,7 +8,13 @@ import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
 class NewsPage extends StatelessWidget {
   final String heroTag;
-  const NewsPage({super.key, required this.heroTag});
+
+  final String url;
+  const NewsPage({
+    super.key,
+    required this.heroTag,
+    required this.url,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -55,8 +61,7 @@ class NewsPage extends StatelessWidget {
                         gestureRecognizers: {}..add(
                             Factory<VerticalDragGestureRecognizer>(
                                 () => VerticalDragGestureRecognizer())),
-                        initialUrlRequest: URLRequest(
-                            url: Uri.tryParse('https://dominikp30.github.io/')),
+                        initialUrlRequest: URLRequest(url: Uri.tryParse(url)),
                       ))
                     ],
                   ),

@@ -1,6 +1,7 @@
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:gruene_app/widget/news_page.dart';
 
 class NewsCard extends StatelessWidget {
@@ -10,31 +11,23 @@ class NewsCard extends StatelessWidget {
 
   final double imageWidth;
 
-  final String imageUrl;
-
-  final String typ;
-  final String titel;
-
-  final String subtitel;
-
-  final String chipLabel;
-
   final void Function() onTap;
 
   final String heroTag;
+
+  final News news;
+
+  final void Function(News news) onBookmarked;
 
   const NewsCard(
       {super.key,
       this.imageHeight = 190.00,
       this.imageWidth = 1000.0,
       this.bookmarked = false,
-      required this.imageUrl,
-      required this.typ,
-      required this.titel,
-      required this.subtitel,
-      required this.chipLabel,
+      required this.news,
       required this.onTap,
-      required this.heroTag});
+      required this.heroTag,
+      required this.onBookmarked});
 
   @override
   Widget build(BuildContext context) {
@@ -44,7 +37,10 @@ class NewsCard extends StatelessWidget {
         duration: const Duration(milliseconds: 110),
         onPressed: () {
           context.pushTransparentRoute(
-            NewsPage(heroTag: heroTag),
+            NewsPage(
+              heroTag: heroTag,
+              url: news.newsUrl,
+            ),
             rootNavigator: true,
           );
         },
@@ -80,7 +76,7 @@ class NewsCard extends StatelessWidget {
                               alignment: Alignment.topCenter,
                               width: imageWidth,
                               height: imageHeight,
-                              image: NetworkImage(imageUrl),
+                              image: NetworkImage(news.imageUrl),
                               frameBuilder: (context, child, frame,
                                   wasSynchronouslyLoaded) {
                                 return child;
@@ -114,7 +110,7 @@ class NewsCard extends StatelessWidget {
                                     Align(
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          typ,
+                                          news.typ,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall
@@ -127,10 +123,11 @@ class NewsCard extends StatelessWidget {
                                         child: IconButton(
                                           splashRadius: 0.001,
                                           onPressed: () {
-                                            print('bookmarked');
+                                            onBookmarked(news);
                                           },
                                           color: bookmarked
-                                              ? Theme.of(context).primaryColor
+                                              ? const Color.fromARGB(
+                                                  255, 197, 178, 4)
                                               : Colors.white,
                                           icon: const Icon(
                                             Icons.bookmark_add_outlined,
@@ -147,7 +144,7 @@ class NewsCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                         child: Text(
-                          titel,
+                          news.titel,
                           textAlign: TextAlign.left,
                           style: Theme.of(context)
                               .textTheme
@@ -165,7 +162,7 @@ class NewsCard extends StatelessWidget {
                         child: Container(
                           constraints: const BoxConstraints(minHeight: 100),
                           child: Text(
-                            subtitel,
+                            news.subtitel,
                             textAlign: TextAlign.left,
                             maxLines: 5,
                             overflow: TextOverflow.ellipsis,
@@ -184,7 +181,7 @@ class NewsCard extends StatelessWidget {
                                 side: BorderSide(
                                     color: Theme.of(context).primaryColor)),
                             label: Text(
-                              chipLabel,
+                              news.chipLabel,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
