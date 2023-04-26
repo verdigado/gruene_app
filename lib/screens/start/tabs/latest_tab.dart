@@ -67,6 +67,7 @@ class LatestTabState extends State<LatestTab>
                   onTap: () {
                     print('hi');
                   },
+                  heroTag: item.titel,
                   imageUrl: item.imageUrl,
                   typ: item.typ,
                   titel: item.titel,

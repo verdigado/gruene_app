@@ -86,6 +86,8 @@ dependencies:
   infinite_scroll_pagination: ^3.2.0
   faker: ^2.1.0
   blurrycontainer: ^1.0.2
+  flutter_bounce: ^1.1.0
+  flutter_inappwebview: ^5.7.2+3
  
 
 

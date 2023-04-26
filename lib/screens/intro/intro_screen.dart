@@ -244,6 +244,7 @@ class _IntroScreenState extends State<IntroScreen> {
         },
       );
       if (down) {
+        if (mounted == false) return;
         Future.delayed(
           const Duration(milliseconds: 800),
           () {
