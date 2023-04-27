@@ -1,10 +1,20 @@
 part of 'news_bloc.dart';
 
-abstract class NewsState extends Equatable {
-  const NewsState();
-  
-  @override
-  List<Object> get props => [];
-}
+class NewsState extends Equatable {
+  final NewsPaginationResult latest;
+  final NewsPaginationResult interested;
+  final NewsPaginationResult saved;
 
-class NewsInitial extends NewsState {}
+  final bool dirty;
+  final NewsFilters index;
+  const NewsState({
+    required this.latest,
+    required this.interested,
+    required this.saved,
+    this.dirty = false,
+    this.index = NewsFilters.none,
+  });
+
+  @override
+  List<Object> get props => [latest, interested, saved, dirty];
+}

@@ -1,11 +1,9 @@
-import 'dart:math';
-
+import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
+import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/widget/news_card.dart';
 
 class NewsCardPaginationListView extends StatefulWidget {
@@ -16,12 +14,11 @@ class NewsCardPaginationListView extends StatefulWidget {
 
   const NewsCardPaginationListView({
     super.key,
-    required this.getNews,
     required this.pagingController,
     required this.pageSize,
     required this.onBookmarked,
   });
-  final NewsPaginationResult Function(int pageSize, int pagekey) getNews;
+
   @override
   State<NewsCardPaginationListView> createState() =>
       NewsCardPaginationListViewState();
@@ -30,31 +27,6 @@ class NewsCardPaginationListView extends StatefulWidget {
 class NewsCardPaginationListViewState
     extends State<NewsCardPaginationListView> {
   final ScrollController _scrollController = ScrollController();
-
-  @override
-  void initState() {
-    widget.pagingController.addPageRequestListener((pageKey) async {
-      logger.d(pageKey);
-      // TODO: Remove Delay
-      await Future.delayed(Duration(seconds: Random().nextInt(6).toInt()),
-          () => fetch(widget.pageSize, pageKey));
-    });
-    super.initState();
-  }
-
-  void fetch(int pageSize, int pageKey) {
-    try {
-      var newItems = widget.getNews(pageSize, pageKey);
-      final isLastPage = newItems.news.length < pageSize;
-      if (isLastPage) {
-        widget.pagingController.appendLastPage(newItems.news);
-      } else {
-        widget.pagingController.appendPage(newItems.news, newItems.next);
-      }
-    } catch (err) {
-      widget.pagingController.error = err;
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -120,6 +92,12 @@ class NewsCardPaginationListViewState
     _scrollController.animateTo(0,
         duration: const Duration(milliseconds: 800), curve: Curves.linear);
   }
+
+  void refresh() {
+    Future.delayed(const Duration(seconds: 1), () {
+      widget.pagingController.refresh();
+    });
+  }
 }
 
 class PageErrorIndicator extends StatelessWidget {
@@ -152,7 +130,7 @@ class PageErrorIndicator extends StatelessWidget {
   }
 }
 
-class NewsPaginationResult {
+class NewsPaginationResult extends Equatable {
   final List<News> news;
   // Pagekey
   final int self;
@@ -171,24 +149,56 @@ class NewsPaginationResult {
     this.next = 0,
     this.prev = 0,
   });
+
+  @override
+  List<Object> get props => [news, self, next, prev];
 }
 
-class News {
+class News extends Equatable {
+  final String id;
   final String imageUrl;
   final String typ;
   final String titel;
   final String subtitel;
   final String chipLabel;
   final String newsUrl;
-  final bool bookmarked;
-  News(
-      {required this.imageUrl,
-      required this.typ,
-      required this.titel,
-      required this.subtitel,
-      required this.chipLabel,
-      required this.newsUrl,
-      required this.bookmarked});
+  bool bookmarked;
+  News({
+    required this.id,
+    required this.imageUrl,
+    required this.typ,
+    required this.titel,
+    required this.subtitel,
+    required this.chipLabel,
+    required this.newsUrl,
+    required this.bookmarked,
+  });
+
+  @override
+  List<Object> get props =>
+      [id, imageUrl, typ, titel, subtitel, chipLabel, newsUrl];
+
+  News copyWith({
+    String? id,
+    String? imageUrl,
+    String? typ,
+    String? titel,
+    String? subtitel,
+    String? chipLabel,
+    String? newsUrl,
+    bool? bookmarked,
+  }) {
+    return News(
+      id: id ?? this.id,
+      imageUrl: imageUrl ?? this.imageUrl,
+      typ: typ ?? this.typ,
+      titel: titel ?? this.titel,
+      subtitel: subtitel ?? this.subtitel,
+      chipLabel: chipLabel ?? this.chipLabel,
+      newsUrl: newsUrl ?? this.newsUrl,
+      bookmarked: bookmarked ?? this.bookmarked,
+    );
+  }
 }
 
 Iterable<int> get positiveIntegers sync* {

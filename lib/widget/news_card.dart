@@ -4,7 +4,7 @@ import 'package:flutter_bounce/flutter_bounce.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:gruene_app/widget/news_page.dart';
 
-class NewsCard extends StatelessWidget {
+class NewsCard extends StatefulWidget {
   final bool bookmarked;
 
   final double imageHeight;
@@ -30,6 +30,18 @@ class NewsCard extends StatelessWidget {
       required this.onBookmarked});
 
   @override
+  State<NewsCard> createState() => _NewsCardState();
+}
+
+class _NewsCardState extends State<NewsCard> {
+  late bool bookmarked;
+  @override
+  void initState() {
+    bookmarked = widget.bookmarked;
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.all(16),
@@ -38,8 +50,8 @@ class NewsCard extends StatelessWidget {
         onPressed: () {
           context.pushTransparentRoute(
             NewsPage(
-              heroTag: heroTag,
-              url: news.newsUrl,
+              heroTag: widget.heroTag,
+              url: widget.news.newsUrl,
             ),
             rootNavigator: true,
           );
@@ -58,7 +70,7 @@ class NewsCard extends StatelessWidget {
               Radius.circular(12.0),
             ),
             child: Hero(
-              tag: heroTag,
+              tag: widget.heroTag,
               child: Material(
                 type: MaterialType.transparency,
                 child: Container(
@@ -74,9 +86,9 @@ class NewsCard extends StatelessWidget {
                           children: [
                             Image(
                               alignment: Alignment.topCenter,
-                              width: imageWidth,
-                              height: imageHeight,
-                              image: NetworkImage(news.imageUrl),
+                              width: widget.imageWidth,
+                              height: widget.imageHeight,
+                              image: NetworkImage(widget.news.imageUrl),
                               frameBuilder: (context, child, frame,
                                   wasSynchronouslyLoaded) {
                                 return child;
@@ -87,14 +99,14 @@ class NewsCard extends StatelessWidget {
                                   return child;
                                 }
                                 return SizedBox(
-                                  width: imageWidth,
-                                  height: imageHeight,
+                                  width: widget.imageWidth,
+                                  height: widget.imageHeight,
                                 );
                               },
                               errorBuilder: (context, error, stackTrace) {
                                 return SizedBox(
-                                  width: imageWidth,
-                                  height: imageHeight,
+                                  width: widget.imageWidth,
+                                  height: widget.imageHeight,
                                 );
                               },
                             ),
@@ -110,7 +122,7 @@ class NewsCard extends StatelessWidget {
                                     Align(
                                         alignment: Alignment.topLeft,
                                         child: Text(
-                                          news.typ,
+                                          widget.news.typ,
                                           style: Theme.of(context)
                                               .textTheme
                                               .bodySmall
@@ -123,11 +135,14 @@ class NewsCard extends StatelessWidget {
                                         child: IconButton(
                                           splashRadius: 0.001,
                                           onPressed: () {
-                                            onBookmarked(news);
+                                            setState(() {
+                                              bookmarked = !bookmarked;
+                                            });
+                                            widget.onBookmarked(widget.news);
                                           },
                                           color: bookmarked
                                               ? const Color.fromARGB(
-                                                  255, 197, 178, 4)
+                                                  255, 255, 255, 0)
                                               : Colors.white,
                                           icon: const Icon(
                                             Icons.bookmark_add_outlined,
@@ -144,7 +159,7 @@ class NewsCard extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.fromLTRB(16, 0, 8, 0),
                         child: Text(
-                          news.titel,
+                          widget.news.titel,
                           textAlign: TextAlign.left,
                           style: Theme.of(context)
                               .textTheme
@@ -162,7 +177,7 @@ class NewsCard extends StatelessWidget {
                         child: Container(
                           constraints: const BoxConstraints(minHeight: 100),
                           child: Text(
-                            news.subtitel,
+                            widget.news.subtitel,
                             textAlign: TextAlign.left,
                             maxLines: 5,
                             overflow: TextOverflow.ellipsis,
@@ -181,7 +196,7 @@ class NewsCard extends StatelessWidget {
                                 side: BorderSide(
                                     color: Theme.of(context).primaryColor)),
                             label: Text(
-                              news.chipLabel,
+                              widget.news.chipLabel,
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
