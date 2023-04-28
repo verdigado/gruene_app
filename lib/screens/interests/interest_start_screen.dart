@@ -10,6 +10,8 @@ import 'package:gruene_app/widget/buttons/button_group.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vector_graphics/vector_graphics.dart';
 
+import '../../constants/theme_data.dart';
+
 class InterestStartScreen extends StatelessWidget {
   const InterestStartScreen({super.key});
 
@@ -24,46 +26,69 @@ class InterestStartScreen extends StatelessWidget {
           child: LayoutBuilder(
             builder: (ctx, con) {
               return Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  SvgPicture(
-                      AssetBytesLoader(Assets.images.gruenenTopicOekologieSvg),
-                      height: con.maxHeight / 100 * 40),
-                  const SizedBox(height: 10),
-                  Expanded(
+                  const Spacer(),
+                  Flexible(
+                    flex: 8,
+                    child: SvgPicture(
+                      AssetBytesLoader(Assets.images.bicycleMan),
+                    ),
+                  ),
+                  const Spacer(),
+                  Flexible(
+                    flex: 12,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 20, right: 20),
-                          child: Text(
-                            textAlign: TextAlign.center,
-                            AppLocalizations.of(context)!.customPageHeadline1,
-                            style:
-                                Theme.of(context).primaryTextTheme.displayLarge,
-                          ),
+                        Column(
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                left: 20,
+                                right: 20,
+                              ),
+                              child: Text(
+                                textAlign: TextAlign.left,
+                                AppLocalizations.of(context)!
+                                    .customPageHeadline1,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .displayLarge,
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
+                              child: Text(
+                                textAlign: TextAlign.left,
+                                AppLocalizations.of(context)!
+                                    .customPageHeadline2,
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headlineSmall
+                                    ?.copyWith(
+                                      color: darkGrey,
+                                      fontWeight: FontWeight.normal,
+                                    ),
+                              ),
+                            ),
+                          ],
                         ),
-                        Padding(
-                          padding: const EdgeInsets.fromLTRB(20, 10, 20, 5),
-                          child: Text(
-                            textAlign: TextAlign.left,
-                            AppLocalizations.of(context)!.customPageHeadline2,
-                            style:
-                                Theme.of(context).primaryTextTheme.bodyMedium,
-                          ),
+                        ButtonGroupNextPrevious(
+                          buttonNextKey: const Key('ButtonGroupNextIntro'),
+                          nextText:
+                              AppLocalizations.of(context)!.askForInterest,
+                          next: () => {context.go(interestpages)},
+                          previousText: AppLocalizations.of(context)!.skip,
+                          previous: () async {
+                            final prefs = await SharedPreferences.getInstance();
+                            await prefs.setBool(
+                                firstLaunchPreferencesKey, false);
+                            context.push(notification);
+                          },
                         ),
                       ],
                     ),
-                  ),
-                  ButtonGroupNextPrevious(
-                    buttonNextKey: const Key('ButtonGroupNextIntro'),
-                    nextText: AppLocalizations.of(context)!.askForInterest,
-                    next: () => {context.go(interestpages)},
-                    previousText: AppLocalizations.of(context)!.skip,
-                    previous: () async {
-                      final prefs = await SharedPreferences.getInstance();
-                      await prefs.setBool(firstLaunchPreferencesKey, false);
-                      context.push(notification);
-                    },
                   ),
                 ],
               );
