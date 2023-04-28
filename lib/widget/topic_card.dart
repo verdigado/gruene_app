@@ -120,7 +120,7 @@ class TopicCardState extends State<TopicCard> {
             child: Icon(
               checkedState ? Icons.check : Icons.add,
               color: Theme.of(context).colorScheme.secondary,
-              size: cardSize / 5,
+              size: cardSize / 6,
             ),
           ),
         ),
@@ -132,7 +132,7 @@ class TopicCardState extends State<TopicCard> {
               style: const TextStyle(
                   color: Colors.white,
                   fontFamily: FontFamily.bereit,
-                  fontSize: 28),
+                  fontSize: 26),
             ),
           ),
         ),
