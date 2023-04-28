@@ -11,7 +11,7 @@ class NewsCard extends StatefulWidget {
 
   final double imageWidth;
 
-  final void Function() onTap;
+  final void Function()? onTap;
 
   final String heroTag;
 
@@ -25,7 +25,7 @@ class NewsCard extends StatefulWidget {
       this.imageWidth = 1000.0,
       this.bookmarked = false,
       required this.news,
-      required this.onTap,
+      this.onTap,
       required this.heroTag,
       required this.onBookmarked});
 

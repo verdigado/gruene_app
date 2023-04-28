@@ -53,6 +53,9 @@ class _LatestTabState extends State<LatestTab>
         pageSize: LatestTab.pageSize,
         pagingController: pagingController,
         onBookmarked: (news) {
+          setState(() {
+            news.bookmarked = !news.bookmarked;
+          });
           context.read<NewsBloc>().add(
                 BookmarkNews(news.id, news.bookmarked, NewsFilters.latest),
               );

@@ -42,9 +42,6 @@ class NewsCardPaginationListViewState
             animateTransitions: true,
             itemBuilder: (context, item, index) {
               return NewsCard(
-                  onTap: () {
-                    print('hi');
-                  },
                   bookmarked: item.bookmarked,
                   heroTag: item.titel,
                   news: item,
@@ -76,7 +73,7 @@ class NewsCardPaginationListViewState
                   widget.pagingController.retryLastFailedRequest(),
             ),
             noItemsFoundIndicatorBuilder: (context) => const Center(
-              child: Text('Kein Einträge gefunden'),
+              child: Text('Keine Einträge gefunden'),
             ),
           ),
         ));
@@ -94,7 +91,7 @@ class NewsCardPaginationListViewState
   }
 
   void refresh() {
-    Future.delayed(const Duration(seconds: 1), () {
+    Future.delayed(const Duration(milliseconds: 500), () {
       widget.pagingController.refresh();
     });
   }
