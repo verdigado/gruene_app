@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/constants/theme_data.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gruene_app/widget/buttons/button_group.dart';
 import 'package:gruene_app/widget/buttons/previous_button.dart';
 import 'package:gruene_app/widget/steppers/progress_stepper.dart';
 
-/**
- * PageStepper:
- * Pageview with a progressbar and a next and previous button
- */
+/// PageStepper:
+/// Pageview with a progressbar and a next and previous button
 
 class PageStepper extends StatefulWidget {
   // List of pages to be displayed
@@ -24,6 +22,8 @@ class PageStepper extends StatefulWidget {
   // if true, the progressbar is hidden
   final bool hideProgressbar;
 
+  final bool hideBackButtonOnFirstPage;
+
   final VoidCallback onLastPage;
 
   // constructor
@@ -31,6 +31,7 @@ class PageStepper extends StatefulWidget {
     Key? key,
     required this.pages,
     required this.onLastPage,
+    this.hideBackButtonOnFirstPage = true,
     this.isManualScrollable = false,
     this.onlyNextBtn = false,
     this.hideProgressbar = false,
@@ -65,10 +66,11 @@ class _PageStepperState extends State<PageStepper> {
       children: [
         // Back button:
         PreviousButton(
-          onClick: () => controller.previousPage(
-              duration: const Duration(milliseconds: 700),
-              curve: Curves.linear),
-          isHidden: currentPage == 0,
+          onClick: () => currentPage == 0
+              ? context.pop()
+              : controller.previousPage(
+                  duration: const Duration(milliseconds: 700),
+                  curve: Curves.linear),
         ),
         // Progressbar:
         // if the progressbar should not be hidden, it is displayed

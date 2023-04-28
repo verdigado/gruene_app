@@ -6,14 +6,10 @@ class PreviousButton extends StatelessWidget {
   // click event function
   final VoidCallback onClick;
 
-  // button is hidden
-  final bool isHidden;
-
   // constructor
   const PreviousButton({
     super.key,
     required this.onClick,
-    this.isHidden = false,
   });
 
   @override
@@ -23,16 +19,13 @@ class PreviousButton extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       mainAxisSize: MainAxisSize.max,
       children: [
-        Visibility.maintain(
-          visible: !isHidden,
-          child: IconButton(
-            icon: const Icon(
-              Icons.keyboard_backspace,
-              color: darkGrey,
-              size: 50,
-            ),
-            onPressed: onClick,
+        IconButton(
+          icon: const Icon(
+            Icons.keyboard_backspace,
+            color: darkGrey,
+            size: 50,
           ),
+          onPressed: onClick,
         ),
       ],
     );
