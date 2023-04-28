@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
+
+import '../../widget/buttons/button_group.dart';
 
 class TwoFactorApprove extends StatefulWidget {
   const TwoFactorApprove({super.key});
