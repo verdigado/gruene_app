@@ -5,16 +5,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/net/news/bloc/news_bloc.dart';
 import 'package:gruene_app/net/news/data/news_filters.dart';
-import 'package:gruene_app/net/news/repository/news_repositoty.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 class SavedTab extends StatefulWidget {
-  final repo = NewsRepositoryImpl();
   static const pageSize = 20;
   final GlobalKey<NewsCardPaginationListViewState> listViewKey;
-  SavedTab({super.key, required this.listViewKey});
+  const SavedTab({super.key, required this.listViewKey});
 
   @override
   State<SavedTab> createState() => _SavedTabState();

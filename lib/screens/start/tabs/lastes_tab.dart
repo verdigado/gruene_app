@@ -13,9 +13,8 @@ import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 class LatestTab extends StatefulWidget {
   final GlobalKey<NewsCardPaginationListViewState> listViewKey;
   static const pageSize = 20;
-  final repo = NewsRepositoryImpl();
 
-  LatestTab({super.key, required this.listViewKey});
+  const LatestTab({super.key, required this.listViewKey});
 
   @override
   State<LatestTab> createState() => _LatestTabState();
