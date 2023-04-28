@@ -9,8 +9,6 @@ class ButtonGroupNextPrevious extends StatelessWidget {
   final String nextText;
   final VoidCallback? previous;
   final String previousText;
-
-  final Key? buttonNextKey;
   final bool onlyNext;
 
   const ButtonGroupNextPrevious({
@@ -19,7 +17,6 @@ class ButtonGroupNextPrevious extends StatelessWidget {
     this.nextText = 'Next',
     this.previous,
     this.previousText = 'Previous',
-    this.buttonNextKey,
     this.onlyNext = false,
   }) : super(key: key);
 
@@ -28,22 +25,13 @@ class ButtonGroupNextPrevious extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
-        Container(
-          height: 16,
-          decoration: const BoxDecoration(
-            border: Border(
-              top: BorderSide(
-                  width: 1, color: lightGrey, style: BorderStyle.solid),
-            ),
-          ),
-        ),
         ElevatedButton(
             key: const Key('ButtonGroupNextButton'),
             onPressed: next,
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
+        const SizedBox(height: 10),
         if (!onlyNext) ...[
-          const SizedBox(height: 8),
           ElevatedButton(
             key: const Key('ButtonGroupPreviousButton'),
             onPressed: previous,
@@ -52,7 +40,9 @@ class ButtonGroupNextPrevious extends StatelessWidget {
                 style: textTheme.labelLarge?.copyWith(color: darkGrey)),
           ),
         ],
-        const SizedBox(height: 32),
+        const SizedBox(
+          height: 10,
+        )
       ],
     );
   }
