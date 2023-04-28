@@ -44,3 +44,6 @@ app.*.map.json
 /android/app/release
 
 # Env Files
+
+# Script files
+package.json
