@@ -21,7 +21,8 @@ import 'package:gruene_app/screens/interests/interest_start_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/external_webview.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
-
+import 'package:gruene_app/screens/twofactor/twofactor_approve.dart';
+import 'package:gruene_app/screens/twofactor/twofactor_registration.dart';
 import 'package:gruene_app/screens/interests/interest_pages_screen.dart';
 import 'app_startup.dart';
 
@@ -132,6 +133,30 @@ final GoRouter router = GoRouter(
       pageBuilder: (context, state) {
         return CustomTransitionPage(
           child: const NotfificationScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              slideAnimation(animation, child),
+        );
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: twofactorapprove,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const TwoFactorApprove(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) =>
+              slideAnimation(animation, child),
+        );
+      },
+    ),
+    GoRoute(
+      parentNavigatorKey: rootNavigatorKey,
+      path: twofactorregistration,
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          child: const TwoFactorRegistration(
+            email: '',
+          ),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               slideAnimation(animation, child),
         );

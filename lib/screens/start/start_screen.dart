@@ -23,6 +23,9 @@ class _StartScreenState extends State<StartScreen> {
         TextButton(
             onPressed: () => context.push(interests),
             child: const Text('Start Customization')),
+        TextButton(
+            onPressed: () => context.push(twofactorapprove),
+            child: const Text('Start 2FA')),
         const Center(child: Text('StartScreen')),
       ],
     );
