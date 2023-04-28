@@ -8,6 +8,7 @@ import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/buttons/button_group.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+// ignore: depend_on_referenced_packages
 import 'package:vector_graphics/vector_graphics.dart';
 
 import '../../constants/theme_data.dart';
@@ -75,10 +76,9 @@ class InterestStartScreen extends StatelessWidget {
                           ],
                         ),
                         ButtonGroupNextPrevious(
-                          buttonNextKey: const Key('ButtonGroupNextIntro'),
                           nextText:
                               AppLocalizations.of(context)!.askForInterest,
-                          next: () => {context.go(interestpages)},
+                          next: () => {context.push(interestpages)},
                           previousText: AppLocalizations.of(context)!.skip,
                           previous: () async {
                             final prefs = await SharedPreferences.getInstance();
