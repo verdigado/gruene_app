@@ -31,13 +31,22 @@ class _StartScreenState extends State<StartScreen> {
   }
 }
 
-void apppend(NewsPaginationResult newItems,
+void apppend(List<NewsPaginationResult> newItems,
     PagingController<int, News> pagingController) {
-  final isLastPage = newItems.news.length < LatestTab.pageSize;
+  final isLastPage = newItems.last.news.length < LatestTab.pageSize;
+  var news = newItems.expand((element) => element.news).toList();
   if (isLastPage) {
-    pagingController.appendLastPage(newItems.news);
+    pagingController.value = PagingState<int, News>(
+      itemList: news,
+      error: null,
+      nextPageKey: null,
+    );
   } else {
-    pagingController.appendPage(newItems.news, newItems.next);
+    pagingController.value = PagingState<int, News>(
+      itemList: news,
+      error: null,
+      nextPageKey: newItems.last.next,
+    );
   }
 }
 
@@ -57,24 +66,7 @@ class _NewsTabViewState extends State<NewsTabView>
   @override
   void initState() {
     tabController = TabController(length: 3, vsync: this);
-    tabController.addListener(() {
-      var bookMarked = context.read<NewsBloc>().state;
 
-      if (bookMarked.dirty) {
-        if (bookMarked.index == NewsFilters.latest) {
-          savedTabKey.currentState?.refresh();
-        }
-
-        if (bookMarked.index == NewsFilters.saved) {
-          latestTabKey.currentState?.refresh();
-        }
-
-        context.read<NewsBloc>().add(Clean());
-        setState(() {
-          currentTab = tabController.index;
-        });
-      }
-    });
     super.initState();
   }
 
@@ -118,6 +110,16 @@ class _NewsTabViewState extends State<NewsTabView>
               }
             }
             currentTab = value;
+            if (value == 0) {
+              context
+                  .read<NewsBloc>()
+                  .add(const NewsFilterChange(NewsFilters.latest));
+            }
+            if (value == 2) {
+              context
+                  .read<NewsBloc>()
+                  .add(const NewsFilterChange(NewsFilters.saved));
+            }
           },
           tabs: tabs,
           indicatorColor: const Color(mcgpalette0PrimaryValue)),

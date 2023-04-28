@@ -20,13 +20,25 @@ class NextNews extends NewsEvent {
 class BookmarkNews extends NewsEvent {
   final String id;
   final bool bookmarked;
-  final NewsFilters filters;
-  const BookmarkNews(this.id, this.bookmarked, this.filters);
+  const BookmarkNews(this.id, this.bookmarked);
   @override
-  List<Object> get props => [id, bookmarked, filters];
+  List<Object> get props => [id, bookmarked];
 }
 
-class Clean extends NewsEvent {
+class NewsFilterChange extends NewsEvent {
+  final NewsFilters filters;
+
+  const NewsFilterChange(this.filters);
   @override
-  List<Object> get props => [this];
+  List<Object> get props => [filters];
+}
+
+class NewsRefresh extends NewsEvent {
+  final NewsFilters filters;
+  final int pageSize;
+  final int pageKey;
+
+  const NewsRefresh(this.filters, this.pageSize, this.pageKey);
+  @override
+  List<Object> get props => [filters, pageSize, pageKey];
 }

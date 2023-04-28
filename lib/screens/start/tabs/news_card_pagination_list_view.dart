@@ -1,6 +1,8 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:gruene_app/net/news/bloc/news_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
@@ -31,9 +33,14 @@ class NewsCardPaginationListViewState
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-        onRefresh: () => Future.sync(
-              () => widget.pagingController.refresh(),
-            ),
+        onRefresh: () {
+          return Future.sync(
+            () {
+              context.read<NewsBloc>();
+              widget.pagingController.refresh();
+            },
+          );
+        },
         child: PagedListView(
           pagingController: widget.pagingController,
           physics: const BouncingScrollPhysics(),
@@ -92,7 +99,7 @@ class NewsCardPaginationListViewState
 
   void refresh() {
     Future.delayed(const Duration(milliseconds: 500), () {
-      widget.pagingController.refresh();
+      //widget.pagingController.refresh();
     });
   }
 }

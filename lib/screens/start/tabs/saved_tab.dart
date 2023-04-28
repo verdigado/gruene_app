@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/logger.dart';
@@ -28,8 +26,7 @@ class _SavedTabState extends State<SavedTab>
         firstPageKey: 0, invisibleItemsThreshold: SavedTab.pageSize ~/ 2);
     pagingController.addPageRequestListener((pageKey) async {
       logger.d(pageKey);
-      await Future.delayed(Duration(seconds: Random().nextInt(6).toInt()),
-          () => fetch(SavedTab.pageSize, pageKey));
+      fetch(SavedTab.pageSize, pageKey);
     });
     super.initState();
   }
@@ -56,9 +53,7 @@ class _SavedTabState extends State<SavedTab>
         pageSize: SavedTab.pageSize,
         pagingController: pagingController,
         onBookmarked: (news) {
-          context
-              .read<NewsBloc>()
-              .add(BookmarkNews(news.id, news.bookmarked, NewsFilters.saved));
+          context.read<NewsBloc>().add(BookmarkNews(news.id, !news.bookmarked));
         },
       ),
     );

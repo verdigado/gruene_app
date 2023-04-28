@@ -1,1 +1,1 @@
-enum NewsFilters { latest, interest, saved, none }
+enum NewsFilters { latest, interest, saved }

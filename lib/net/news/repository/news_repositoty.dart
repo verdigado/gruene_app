@@ -15,7 +15,7 @@ class NewsRepositoryImpl extends NewsRepository {
     if (pageKey > 100) {
       return NewsPaginationResult(news: [
         News(
-          id: pageKey.toString(),
+          id: '465f54sgf5',
           imageUrl:
               'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
           newsUrl: 'https://dominikp30.github.io/',
@@ -26,7 +26,7 @@ class NewsRepositoryImpl extends NewsRepository {
           bookmarked: false,
         ),
         News(
-          id: pageKey.toString(),
+          id: 'fs54fs544522e',
           imageUrl:
               'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
           newsUrl: 'https://dominikp30.github.io/',
@@ -37,7 +37,7 @@ class NewsRepositoryImpl extends NewsRepository {
           bookmarked: false,
         ),
         News(
-          id: pageKey.toString(),
+          id: 'f4654feqq3dc3v',
           imageUrl:
               'https://picsum.photos/seed/${Random().nextInt(10000000)}/1000/500',
           newsUrl: 'https://dominikp30.github.io/',

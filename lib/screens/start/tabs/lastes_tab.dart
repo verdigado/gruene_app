@@ -5,7 +5,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/net/news/bloc/news_bloc.dart';
 import 'package:gruene_app/net/news/data/news_filters.dart';
-import 'package:gruene_app/net/news/repository/news_repositoty.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
@@ -52,11 +51,8 @@ class _LatestTabState extends State<LatestTab>
         pageSize: LatestTab.pageSize,
         pagingController: pagingController,
         onBookmarked: (news) {
-          setState(() {
-            news.bookmarked = !news.bookmarked;
-          });
           context.read<NewsBloc>().add(
-                BookmarkNews(news.id, news.bookmarked, NewsFilters.latest),
+                BookmarkNews(news.id, !news.bookmarked),
               );
         },
       ),
@@ -64,12 +60,8 @@ class _LatestTabState extends State<LatestTab>
   }
 
   void fetch(int pageSize, int pageKey) {
-    Future.delayed(
-        const Duration(seconds: 3),
-        () => context.read<NewsBloc>().add(NextNews(
-            pageKey: pageKey,
-            pageSize: pageSize,
-            filters: NewsFilters.latest)));
+    context.read<NewsBloc>().add(NextNews(
+        pageKey: pageKey, pageSize: pageSize, filters: NewsFilters.latest));
   }
 
   @override
