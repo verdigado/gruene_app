@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +19,7 @@ import 'package:gruene_app/screens/news/news_screen.dart';
 import 'package:gruene_app/screens/notification/notification_screen.dart';
 import 'package:gruene_app/screens/interests/interest_start_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
+import 'package:gruene_app/widget/external_webview.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
 import '../screens/interests/interest_pages_screen.dart';
@@ -110,6 +110,19 @@ final GoRouter router = GoRouter(
           child: const InterestPagesScreen(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               slideAnimation(animation, child),
+        );
+      },
+    ),
+    GoRoute(
+      path: webView,
+      name: webViewScreen,
+      parentNavigatorKey: rootNavigatorKey,
+      pageBuilder: (context, state) {
+        final url = state.queryParams['url'] ?? '';
+        return NoTransitionPage(
+          child: ExternalWebview(
+            url: url,
+          ),
         );
       },
     ),
