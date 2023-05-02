@@ -61,11 +61,30 @@ class _NewsTabViewState extends State<NewsTabView>
     with SingleTickerProviderStateMixin {
   final GlobalKey<NewsCardPaginationListViewState> latestTabKey = GlobalKey();
   final GlobalKey<NewsCardPaginationListViewState> savedTabKey = GlobalKey();
+
+  late List<Widget> tabChilds;
   int currentTab = 0;
   late TabController tabController;
   @override
   void initState() {
-    tabController = TabController(length: 3, vsync: this);
+    tabChilds = [
+      LatestTab(listViewKey: latestTabKey),
+      const InterestTab(),
+      SavedTab(listViewKey: savedTabKey)
+    ];
+
+    tabController = TabController(length: tabChilds.length, vsync: this);
+
+    tabController.addListener(() {
+      if (tabController.index == 0) {
+        context
+            .read<NewsBloc>()
+            .add(const NewsFilterChange(NewsFilters.latest));
+      }
+      if (tabController.index == 2) {
+        context.read<NewsBloc>().add(const NewsFilterChange(NewsFilters.saved));
+      }
+    });
 
     super.initState();
   }
@@ -97,6 +116,7 @@ class _NewsTabViewState extends State<NewsTabView>
         ),
       ),
     ];
+
     return Scaffold(
       appBar: TabBar(
           controller: tabController,
@@ -110,24 +130,10 @@ class _NewsTabViewState extends State<NewsTabView>
               }
             }
             currentTab = value;
-            if (value == 0) {
-              context
-                  .read<NewsBloc>()
-                  .add(const NewsFilterChange(NewsFilters.latest));
-            }
-            if (value == 2) {
-              context
-                  .read<NewsBloc>()
-                  .add(const NewsFilterChange(NewsFilters.saved));
-            }
           },
           tabs: tabs,
           indicatorColor: const Color(mcgpalette0PrimaryValue)),
-      body: TabBarView(controller: tabController, children: [
-        LatestTab(listViewKey: latestTabKey),
-        const InterestTab(),
-        SavedTab(listViewKey: savedTabKey)
-      ]),
+      body: TabBarView(controller: tabController, children: tabChilds),
     );
   }
 }
