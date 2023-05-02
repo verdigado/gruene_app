@@ -42,7 +42,9 @@ List<CostumeListItem> getItems(BuildContext context) {
       titel: AppLocalizations.of(context)!.memberProfil,
       iconLeading: Icons.person_outlined,
       iconTralling: Icons.arrow_forward_ios,
-      linksTo: memberprofilScreenName,
+      onTap: () => context.pushNamed(webViewScreen, queryParams: {
+        'url': "https://www.maxmomentum.de/Mitgliederservice-Dummy/dummy.html"
+      }),
     ),
     CostumeListItem(
         titel: AppLocalizations.of(context)!.visibilityProfil,

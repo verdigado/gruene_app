@@ -12,6 +12,8 @@ const login = '/login';
 // const onboarding = '/onboarding';
 const notification = '/notification';
 const profile = '/profile';
+// WebView
+const webView = '/inAppWebview';
 // Subroutes of profile
 const profileDetail = 'profileDetail';
 const memberProfil = 'memberProfil';
@@ -22,6 +24,7 @@ const profileScreenName = 'profilescreen';
 const profileDetailScreenName = 'profiledetailscreen';
 const memberprofilScreenName = 'memberprofilscreen';
 const memberCardScreenName = 'memberCard';
+const webViewScreen = 'webView';
 
 // TODO: Make l10n
 String getTitel(String route) {
