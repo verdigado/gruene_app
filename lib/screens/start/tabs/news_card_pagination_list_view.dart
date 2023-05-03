@@ -1,8 +1,6 @@
 import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
-import 'package:gruene_app/net/news/bloc/news_bloc.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
@@ -36,7 +34,6 @@ class NewsCardPaginationListViewState
         onRefresh: () {
           return Future.sync(
             () {
-              context.read<NewsBloc>();
               widget.pagingController.refresh();
             },
           );
@@ -95,12 +92,6 @@ class NewsCardPaginationListViewState
   void scrollTop() {
     _scrollController.animateTo(0,
         duration: const Duration(milliseconds: 800), curve: Curves.linear);
-  }
-
-  void refresh() {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      //widget.pagingController.refresh();
-    });
   }
 }
 
