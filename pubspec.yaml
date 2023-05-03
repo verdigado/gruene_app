@@ -84,8 +84,7 @@ dependencies:
   dismissible_page: ^1.0.1
   flutter_webview_plugin: ^0.4.0
   mobile_scanner: ^3.2.0
-  blurrycontainer: ^1.0.2
-  blur: ^3.1.0
+  flutter_inappwebview: ^5.7.2+3
 
 
 
