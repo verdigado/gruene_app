@@ -55,11 +55,13 @@ class NewsBloc extends Bloc<NewsEvent, NewsState> {
       }
     });
     on<BookmarkNews>((event, emit) {
+      var action = repo.bookmarked(event.id, event.bookmarked);
       var newState = NewsState(
-        latest: bookmark(state.latest, event.id, event.bookmarked),
-        interested: bookmark(state.interested, event.id, event.bookmarked),
-        saved: bookmark(state.saved, event.id, event.bookmarked),
+        latest: bookmark(state.latest, event.id, action),
+        interested: bookmark(state.interested, event.id, action),
+        saved: bookmark(state.saved, event.id, action),
       );
+
       emit(newState);
     });
     on<NewsFilterChange>((event, emit) {

@@ -70,6 +70,6 @@ class NewsRepositoryImpl extends NewsRepository {
 
   @override
   bool bookmarked(String id, bool action) {
-    return true;
+    return action;
   }
 }
