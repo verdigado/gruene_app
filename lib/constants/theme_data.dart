@@ -42,6 +42,10 @@ const Color darkGrey = Color(0xFF343433);
 const Color lightGrey = Color(0xFFD9D9D9);
 const Color unfocusedGrey = Color(0xFFF1F0F0);
 const Color disabledGrey = lightGrey;
+const bookmarkedColor = Color.fromARGB(255, 255, 255, 0);
+
+const white = Colors.white;
+const black = Colors.black;
 
 const textTheme = TextTheme(
   /**

@@ -1,6 +1,7 @@
 import 'package:dismissible_page/dismissible_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bounce/flutter_bounce.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:gruene_app/widget/news_page.dart';
 
@@ -127,7 +128,7 @@ class _NewsCardState extends State<NewsCard> {
                                               .textTheme
                                               .bodySmall
                                               ?.copyWith(
-                                                  color: Colors.white,
+                                                  color: white,
                                                   fontWeight: FontWeight.bold),
                                         )),
                                     Align(
@@ -141,9 +142,8 @@ class _NewsCardState extends State<NewsCard> {
                                             widget.onBookmarked(widget.news);
                                           },
                                           color: bookmarked
-                                              ? const Color.fromARGB(
-                                                  255, 255, 255, 0)
-                                              : Colors.white,
+                                              ? bookmarkedColor
+                                              : white,
                                           icon: const Icon(
                                             Icons.bookmark_add_outlined,
                                             size: 32,
@@ -165,9 +165,7 @@ class _NewsCardState extends State<NewsCard> {
                               .textTheme
                               .displayMedium
                               ?.copyWith(
-                                  color: Colors.black,
-                                  fontSize: 26,
-                                  height: 1.2),
+                                  color: black, fontSize: 26, height: 1.2),
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -200,7 +198,7 @@ class _NewsCardState extends State<NewsCard> {
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall
-                                  ?.copyWith(color: Colors.black),
+                                  ?.copyWith(color: black),
                             ),
                           ),
                         ),

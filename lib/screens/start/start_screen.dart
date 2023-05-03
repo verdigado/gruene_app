@@ -4,9 +4,10 @@ import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/news/bloc/news_bloc.dart';
 import 'package:gruene_app/net/news/data/news_filters.dart';
 import 'package:gruene_app/net/news/repository/news_repositoty.dart';
-import 'package:gruene_app/screens/start/tabs/lastes_tab.dart';
+import 'package:gruene_app/screens/start/tabs/latest_tab.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'tabs/interest_tab.dart';
 import 'tabs/saved_tab.dart';
@@ -95,7 +96,7 @@ class _NewsTabViewState extends State<NewsTabView>
       Tab(
         child: GestureDetector(
           child: Text(
-            'Aktuelles',
+            AppLocalizations.of(context)!.newsTab1,
             style: Theme.of(context).textTheme.displayLarge?.copyWith(
                 fontSize: 16, color: Theme.of(context).colorScheme.primary),
           ),
@@ -103,14 +104,14 @@ class _NewsTabViewState extends State<NewsTabView>
       ),
       Tab(
         child: Text(
-          'Interessen',
+          AppLocalizations.of(context)!.newsTab2,
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
               fontSize: 16, color: Theme.of(context).colorScheme.primary),
         ),
       ),
       Tab(
         child: Text(
-          'Gespeichert',
+          AppLocalizations.of(context)!.newsTab3,
           style: Theme.of(context).textTheme.displayLarge?.copyWith(
               fontSize: 16, color: Theme.of(context).colorScheme.primary),
         ),
