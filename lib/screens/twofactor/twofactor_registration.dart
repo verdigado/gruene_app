@@ -1,5 +1,7 @@
 // create stateless widget which will be used to register the user with the 2FA service via scanning a QR code
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/widget/qr_scanner.dart';
 
 class TwoFactorRegistration extends StatelessWidget {
   // create a variable to store the user's email address
@@ -13,7 +15,12 @@ class TwoFactorRegistration extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // return a scaffold widget
-    return Scaffold(
+    return QrScanner(onDetect: (a, b) {
+      print(a);
+      context.pop();
+    });
+    // old codeW
+    /* Scaffold(
       // set the app bar
       appBar: AppBar(
         // set the title
@@ -26,19 +33,11 @@ class TwoFactorRegistration extends StatelessWidget {
           // set the alignment of the column
           mainAxisAlignment: MainAxisAlignment.center,
           // set the children of the column
-          children: const [
-            // create a text widget to display the instructions
-            Text(
-              'Scan the QR code below with your 2FA app',
-              // set the style of the text
-              style: TextStyle(
-                // set the font size
-                fontSize: 20,
-              ),
-            ),
+          children: [
+            TextButton(onPressed: () => context.push(location)), child: child)
           ],
         ),
       ),
-    );
+    ); */
   }
 }
