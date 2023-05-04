@@ -17,11 +17,10 @@ class _QrScannerState extends State<QrScanner> {
   @override
   void initState() {
     controller = MobileScannerController(
-      detectionSpeed: DetectionSpeed.normal,
+      detectionSpeed: DetectionSpeed.unrestricted,
       facing: CameraFacing.back,
       autoStart: true,
       formats: [BarcodeFormat.all],
-      detectionTimeoutMs: 10000,
     );
     super.initState();
   }
