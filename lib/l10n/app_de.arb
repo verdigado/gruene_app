@@ -75,6 +75,7 @@
   "@profile": {
     "description": "Profil"
   },
+  "profileShow": "Profil anzeigen",
   "home": "Start",
   "@home": {
     "description": "Start"

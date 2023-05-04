@@ -2,6 +2,7 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_switch/flutter_switch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
@@ -10,6 +11,7 @@ import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/widget/modals/modal_top_line.dart';
+import 'package:gruene_app/widget/modals/multi_modal_select.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -42,13 +44,16 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
             },
             child: Padding(
               padding: const EdgeInsets.only(
-                  left: medium1, bottom: small, top: small),
+                  left: medium1, bottom: small, top: small, right: medium1),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    AppLocalizations.of(context)!.profile,
+                    AppLocalizations.of(context)!.profileShow,
                     style: Theme.of(context).primaryTextTheme.displaySmall,
+                  ),
+                  const SizedBox(
+                    height: medium1,
                   ),
                   if (state.status == ProfileStatus.ready) ...[
                     InkWell(
@@ -66,7 +71,126 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                     const SizedBox(
                       height: medium1,
                     ),
-                    Text(state.profile.description),
+                    Text(state.profile.displayName,
+                        style:
+                            Theme.of(context).primaryTextTheme.headlineSmall),
+                    Card(
+                        margin: const EdgeInsets.all(0).copyWith(top: medium1),
+                        elevation: 0.6,
+                        borderOnForeground: true,
+                        child: FractionallySizedBox(
+                          widthFactor: 1,
+                          child: Column(
+                            children: [
+                              Align(
+                                alignment: Alignment.topRight,
+                                child: TextButton(
+                                    onPressed: () {
+                                      showModalBottomSheet(
+                                        context: context,
+                                        isScrollControlled: true,
+                                        builder: (context) {
+                                          return BlocBuilder<ProfileBloc,
+                                              ProfileState>(
+                                            builder: (context, state) {
+                                              return MultiModalSelect(
+                                                inputHeadline:
+                                                    AppLocalizations.of(
+                                                            context)!
+                                                        .emailAsFavTitle,
+                                                inputHint: AppLocalizations.of(
+                                                        context)!
+                                                    .emailAdress,
+                                                inputLabel: AppLocalizations.of(
+                                                        context)!
+                                                    .emailAdress,
+                                                onAddValue: (String value) =>
+                                                    context
+                                                        .read<ProfileBloc>()
+                                                        .add(
+                                                            MemberProfileAddValue(
+                                                                'email',
+                                                                value)),
+                                                onAddFavouriteValue:
+                                                    (favItemIndex) {
+                                                  context
+                                                      .read<ProfileBloc>()
+                                                      .add(SetFavoritProfile(
+                                                          favEmailItemIndex:
+                                                              favItemIndex));
+                                                },
+                                                values: [
+                                                  ...state.profile.memberProfil
+                                                      .email
+                                                      .map((e) => e.value)
+                                                ],
+                                                textInputType:
+                                                    TextInputType.emailAddress,
+                                                validate: (value) {
+                                                  return value != null &&
+                                                      value.isNotEmpty &&
+                                                      !state.profile
+                                                          .memberProfil.email
+                                                          .map((e) => e.value)
+                                                          .contains(value) &&
+                                                      value.contains('@');
+                                                },
+                                              );
+                                            },
+                                          );
+                                        },
+                                      );
+                                    },
+                                    child: const Text(
+                                      'Bearbeiten',
+                                      style: TextStyle(),
+                                    )),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    const Text('E-Mail-Adresse:'),
+                                    const SizedBox(width: small),
+                                    Text(
+                                      state.profile.memberProfil.email.first
+                                          .value,
+                                      style: const TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    const Text(
+                                      'Öffentlich sichtbar ',
+                                      style: TextStyle(),
+                                    ),
+                                    const SizedBox(
+                                      width: small,
+                                      height: large1,
+                                    ),
+                                    FlutterSwitch(
+                                      width: 48,
+                                      height: 29,
+                                      value: true,
+                                      onToggle: (value) => print('ggg'),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              const SizedBox(
+                                height: small,
+                              ),
+                            ],
+                          ),
+                        ))
                   ]
                 ],
               ),

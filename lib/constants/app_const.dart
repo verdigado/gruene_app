@@ -3,6 +3,9 @@ import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/net/client.dart';
 import 'package:pretty_dio_logger/pretty_dio_logger.dart';
 
+final Uri urlImprint = Uri.parse('https://www.gruene.de/service/impressum');
+final Uri urlPrivacy = Uri.parse('https://www.gruene.de/service/datenschutz');
+
 class GruneAppData {
   static final GruneAppData _instance = GruneAppData._internal();
   factory GruneAppData.forEnv(Flavors flavor) {

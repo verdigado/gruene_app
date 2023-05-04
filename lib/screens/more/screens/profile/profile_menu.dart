@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/constants/app_const.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
@@ -57,19 +58,6 @@ List<CostumeListItem> getItems(BuildContext context) {
       },
     ),
     CostumeListItem(
-        titel: AppLocalizations.of(context)!.visibilityProfil,
-        iconLeading: Icons.policy_outlined,
-        iconTralling: Icons.arrow_forward_ios),
-    CostumeListItem(
-        titel: AppLocalizations.of(context)!.memberData,
-        iconLeading: Icons.face_outlined,
-        iconTralling: Icons.arrow_forward_ios),
-    CostumeListItem(
-        titel: AppLocalizations.of(context)!.groups,
-        spaceBetween: true,
-        iconLeading: Icons.group_outlined,
-        iconTralling: Icons.arrow_forward_ios),
-    CostumeListItem(
         titel: AppLocalizations.of(context)!.guide,
         iconLeading: Icons.explore_outlined,
         iconTralling: Icons.arrow_forward_ios),
@@ -81,11 +69,34 @@ List<CostumeListItem> getItems(BuildContext context) {
     CostumeListItem(
         titel: AppLocalizations.of(context)!.imprint,
         iconLeading: Icons.plagiarism_outlined,
-        iconTralling: Icons.arrow_forward_ios),
+        iconTralling: Icons.arrow_forward_ios,
+        onTap: () {
+          final ChromeSafariBrowser browser = ChromeSafariBrowser();
+          browser.open(
+              url: urlImprint,
+              options: ChromeSafariBrowserClassOptions(
+                  android: AndroidChromeCustomTabsOptions(
+                      shareState: CustomTabsShareState.SHARE_STATE_OFF),
+                  ios: IOSSafariOptions(
+                    barCollapsingEnabled: true,
+                  )));
+        }),
     CostumeListItem(
-        titel: AppLocalizations.of(context)!.privacyPolicy,
-        iconLeading: Icons.privacy_tip_outlined,
-        iconTralling: Icons.arrow_forward_ios),
+      titel: AppLocalizations.of(context)!.privacyPolicy,
+      iconLeading: Icons.privacy_tip_outlined,
+      iconTralling: Icons.arrow_forward_ios,
+      onTap: () {
+        final ChromeSafariBrowser browser = ChromeSafariBrowser();
+        browser.open(
+            url: urlPrivacy,
+            options: ChromeSafariBrowserClassOptions(
+                android: AndroidChromeCustomTabsOptions(
+                    shareState: CustomTabsShareState.SHARE_STATE_OFF),
+                ios: IOSSafariOptions(
+                  barCollapsingEnabled: true,
+                )));
+      },
+    ),
     CostumeListItem(
         titel: AppLocalizations.of(context)!.usernameAndPassword,
         spaceBetween: true,

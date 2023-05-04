@@ -1,14 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/common/logger.dart';
+import 'package:gruene_app/constants/app_const.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class DatImpContainer extends StatelessWidget {
-  DatImpContainer({super.key});
-
-  final Uri _urlImprint = Uri.parse('https://www.gruene.de/service/impressum');
-  final Uri _urlPrivacy =
-      Uri.parse('https://www.gruene.de/service/datenschutz');
+  const DatImpContainer({super.key});
 
   Future<void> _launchUrl(BuildContext context, Uri url) async {
     if (!await launchUrl(url)) {
@@ -26,7 +23,7 @@ class DatImpContainer extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextButton(
-            onPressed: () => _launchUrl(context, _urlPrivacy),
+            onPressed: () => _launchUrl(context, urlPrivacy),
             child: Text(AppLocalizations.of(context)!.privacyPolicy,
                 style: Theme.of(context)
                     .primaryTextTheme
@@ -44,7 +41,7 @@ class DatImpContainer extends StatelessWidget {
           ),
           const SizedBox(width: 10),
           TextButton(
-            onPressed: () => _launchUrl(context, _urlImprint),
+            onPressed: () => _launchUrl(context, urlImprint),
             child: Text(AppLocalizations.of(context)!.imprint,
                 style: Theme.of(context)
                     .primaryTextTheme
