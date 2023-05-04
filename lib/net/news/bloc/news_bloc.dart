@@ -1,7 +1,7 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:gruene_app/net/news/data/news_filters.dart';
-import 'package:gruene_app/net/news/repository/news_repositoty.dart';
+import 'package:gruene_app/net/news/repository/news_repository.dart';
 import 'package:gruene_app/screens/start/tabs/news_card_pagination_list_view.dart';
 
 part 'news_event.dart';

@@ -2,6 +2,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:infinite_scroll_pagination/infinite_scroll_pagination.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/widget/news_card.dart';
@@ -110,7 +111,7 @@ class PageErrorIndicator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         Text(
-          'Retry',
+          AppLocalizations.of(context)!.retry,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(fontSize: 22),
         ),
         IconButton(
