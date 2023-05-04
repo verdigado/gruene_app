@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:go_router/go_router.dart';
@@ -22,7 +21,7 @@ import 'package:gruene_app/screens/interests/interest_start_screen.dart';
 import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
-import '../screens/interests/interest_pages_screen.dart';
+import 'package:gruene_app/screens/interests/interest_pages_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();

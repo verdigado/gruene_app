@@ -11,7 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:vector_graphics/vector_graphics.dart';
 
-import '../../constants/theme_data.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 
 class InterestStartScreen extends StatelessWidget {
   const InterestStartScreen({super.key});
