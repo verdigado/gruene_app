@@ -22,7 +22,7 @@ import 'package:gruene_app/screens/start/start_screen.dart';
 import 'package:gruene_app/widget/external_webview.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
-import '../screens/interests/interest_pages_screen.dart';
+import 'package:gruene_app/screens/interests/interest_pages_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
