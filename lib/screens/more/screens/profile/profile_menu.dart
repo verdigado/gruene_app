@@ -1,6 +1,7 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
@@ -42,9 +43,18 @@ List<CostumeListItem> getItems(BuildContext context) {
       titel: AppLocalizations.of(context)!.memberProfil,
       iconLeading: Icons.person_outlined,
       iconTralling: Icons.arrow_forward_ios,
-      onTap: () => context.pushNamed(webViewScreen, queryParams: {
-        'url': "https://www.maxmomentum.de/Mitgliederservice-Dummy/dummy.html"
-      }),
+      onTap: () {
+        final ChromeSafariBrowser browser = ChromeSafariBrowser();
+        browser.open(
+            url: Uri.parse(
+                'https://www.maxmomentum.de/Mitgliederservice-Dummy/dummy.html'),
+            options: ChromeSafariBrowserClassOptions(
+                android: AndroidChromeCustomTabsOptions(
+                    shareState: CustomTabsShareState.SHARE_STATE_OFF),
+                ios: IOSSafariOptions(
+                  barCollapsingEnabled: true,
+                )));
+      },
     ),
     CostumeListItem(
         titel: AppLocalizations.of(context)!.visibilityProfil,
