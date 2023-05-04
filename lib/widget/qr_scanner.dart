@@ -19,6 +19,9 @@ class _QrScannerState extends State<QrScanner> {
     controller = MobileScannerController(
       detectionSpeed: DetectionSpeed.normal,
       facing: CameraFacing.back,
+      autoStart: true,
+      formats: [BarcodeFormat.all],
+      detectionTimeoutMs: 10000,
     );
     super.initState();
   }
@@ -26,17 +29,21 @@ class _QrScannerState extends State<QrScanner> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          MobileScanner(
-            controller: controller,
-            onDetect: (barcodes) {
-              widget.onDetect(barcodes, controller);
-            },
-          ),
-          QRScannerOverlay(overlayColour: Colors.black.withOpacity(0.5))
-        ],
-      ),
+      body: LayoutBuilder(builder: (ctx, con) {
+        return Stack(
+          children: [
+            MobileScanner(
+              controller: controller,
+              onDetect: (barcodes) {
+                widget.onDetect(barcodes, controller);
+              },
+            ),
+            QRScannerOverlay(
+              overlayColour: Colors.black.withOpacity(0.5),
+            )
+          ],
+        );
+      }),
     );
   }
 
