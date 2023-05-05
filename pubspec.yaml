@@ -88,7 +88,7 @@ dependencies:
   blurrycontainer: ^1.0.2
   flutter_bounce: ^1.1.0
   flutter_inappwebview: ^5.7.2+3
- 
+  mobile_scanner: ^3.2.0
 
 
 

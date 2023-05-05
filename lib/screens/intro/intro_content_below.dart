@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/app_const.dart';
 import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
+// ignore: depend_on_referenced_packages
 import 'package:vector_graphics/vector_graphics.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -70,7 +71,7 @@ class _IntroContentBelowState extends State<IntroContentBelow> {
                             });
                             final success = await startLogin();
                             if (success) {
-                              router.go(onboarding);
+                              router.go(interests);
                             } else {
                               setState(() {
                                 showLoadingIndicator = false;

@@ -173,7 +173,7 @@
   "takePhoto" :"Foto Aufnehmen",
   "selectFromLibary":"Aus der Bibliothek auswählen",
   "showProfile":"Profil anzeigen",
-  "memberProfil":"Mitgliedsprofil",
+  "memberProfil":"Mitgliedsdaten ändern",
   "visibilityProfil":"Sichtbarkeit Profil",
   "memberData":"Mitgliederdaten",
   "groups": "Gruppen",
@@ -198,7 +198,7 @@
     "description": "subjectHeadline1"
   },
 
-  "errorSendingOnboarding":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
+  "errorSendingInterests":"Fehler beim Speichern, bitte gehen Sie sicher das Sie Online sind",
   "refresh":"Aktualisieren ",
   "loginFailure":"Unbekannter Fehler beim Login, mit versuchen Sie es erneut",
   "discoverItemTitel1":"Deine Lieblingsnews",

@@ -4,71 +4,71 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:gruene_app/common/exception/bloc_exception.dart';
 import 'package:gruene_app/common/logger.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
-import 'package:gruene_app/net/onboarding/data/topic.dart';
-import 'package:gruene_app/net/onboarding/repository/onboarding_repository.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
+import 'package:gruene_app/net/interests/data/topic.dart';
+import 'package:gruene_app/net/interests/repository/interests_repository.dart';
 
-part 'onboarding_event.dart';
-part 'onboarding_state.dart';
+part 'interests_event.dart';
+part 'interests_state.dart';
 
-class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
-  OnboardingRepository onboardingRepository;
+class InterestsBloc extends Bloc<InterestsEvent, InterestsState> {
+  InterestsRepository interestsRepository;
 
-  OnboardingBloc(this.onboardingRepository) : super(OnboardingInitial()) {
-    on<OnboardingLoad>((event, emit) async {
-      emit(OnboardingLoading());
+  InterestsBloc(this.interestsRepository) : super(InterestsInitial()) {
+    on<InterestsLoad>((event, emit) async {
+      emit(InterestsLoading());
       try {
-        final res = await onboardingRepository.listCompetenceAndSubject();
-        emit(OnboardingReady(
-            topics: onboardingRepository.listTopic(),
+        final res = await interestsRepository.listCompetenceAndSubject();
+        emit(InterestsReady(
+            topics: interestsRepository.listTopic(),
             subject: res.subject,
             competence: res.competence));
       } catch (e) {
         onError(
             BlocError(message: 'Error on Fetch Data from Api', expose: true),
             StackTrace.current);
-        emit(OnboardingFetchFailure());
+        emit(InterestsFetchFailure());
       }
     });
-    on<OnboardingTopicAdd>((event, emit) {
+    on<InterestsTopicAdd>((event, emit) {
       final currentState = state;
-      if (currentState is OnboardingReady) {
+      if (currentState is InterestsReady) {
         currentState.topics
             .where((element) => element.id == event.id)
             .first
             .checked = true;
-        emit(OnboardingReady(
+        emit(InterestsReady(
           topics: currentState.topics,
           subject: currentState.subject,
           competence: currentState.competence,
         ));
       } else {
-        stateError('OnboardingTopicAdd');
+        stateError('InterestsTopicAdd');
       }
     });
-    on<OnboardingTopicRemove>(
+    on<InterestsTopicRemove>(
       (event, emit) {
         final currentState = state;
-        if (currentState is OnboardingReady) {
+        if (currentState is InterestsReady) {
           currentState.topics
               .where((element) => element.id != event.id)
               .first
               .checked = false;
-          emit(OnboardingReady(
+          emit(InterestsReady(
             topics: currentState.topics,
             subject: currentState.subject,
             competence: currentState.competence,
           ));
         } else {
-          stateError('OnboardingTopicRemove');
+          stateError('InterestsTopicRemove');
         }
       },
     );
-    on<OnboardingSubjectAdd>(
+    on<InterestsSubjectAdd>(
       (event, emit) {
         final currentState = state;
-        if (currentState is OnboardingReady) {
+        if (currentState is InterestsReady) {
           final markedSubject = currentState.subject
               .where((element) => element.id == event.id)
               .first;
@@ -76,21 +76,21 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
           final rest =
               currentState.subject.where((element) => element.id != event.id);
           emit(
-            OnboardingReady(
+            InterestsReady(
               topics: currentState.topics,
               competence: currentState.competence,
               subject: {toAdd, ...rest},
             ),
           );
         } else {
-          stateError('OnboardingSubjectAdd');
+          stateError('InterestsSubjectAdd');
         }
       },
     );
-    on<OnboardingSubjectRemove>(
+    on<InterestsSubjectRemove>(
       (event, emit) {
         final currentState = state;
-        if (currentState is OnboardingReady) {
+        if (currentState is InterestsReady) {
           final markedSubject = currentState.subject
               .where((element) => element.id == event.id)
               .first;
@@ -99,23 +99,23 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
               .where((element) => element.id != event.id)
               .toSet();
           emit(
-            OnboardingReady(
+            InterestsReady(
                 subject: {toRemove, ...rest},
                 topics: currentState.topics,
                 competence: currentState.competence),
           );
         } else {
-          stateError('OnboardingSubjectRemove');
+          stateError('InterestsSubjectRemove');
         }
       },
     );
 
-    on<OnboardingDone>(
+    on<InterestsDone>(
       (event, emit) async {
         // ToDo: Loading State should be implemented
-        //emit(OnboardingSending());
+        //emit(InterestsSending());
         final currentState = state;
-        if (currentState is OnboardingReady) {
+        if (currentState is InterestsReady) {
           final sub =
               currentState.subject.where((element) => element.checked).toList();
           final topic =
@@ -128,21 +128,20 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             'selectedSubjects': sub,
             'selectedCompetence': competence
           }));
-          final sendEvent = OnboardingSending(
+          final sendEvent = InterestsSending(
               selectSubject: sub, selectTopis: topic, competence: competence);
           emit(sendEvent);
-          if (await onboardingRepository.onboardingSend(
-              topic, sub, competence)) {
-            emit(OnboardingSended(navigateToNext: event.navigateToNext));
+          if (await interestsRepository.interestsSend(topic, sub, competence)) {
+            emit(InterestsSended(navigateToNext: event.navigateToNext));
           } else {
-            emit(OnboardingSendFailure());
+            emit(InterestsSendFailure());
           }
         }
       },
     );
     on<CompetenceAdd>((event, emit) {
       final currentState = state;
-      if (currentState is OnboardingReady) {
+      if (currentState is InterestsReady) {
         final markedCompetence = currentState.competence
             .where((element) => element.id == event.id)
             .first;
@@ -150,19 +149,19 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
         final rest =
             currentState.competence.where((element) => element.id != event.id);
         emit(
-          OnboardingReady(
+          InterestsReady(
             topics: currentState.topics,
             subject: currentState.subject,
             competence: {toAdd, ...rest},
           ),
         );
       } else {
-        stateError('OnboardingSubjectRemove');
+        stateError('InterestsSubjectRemove');
       }
     });
     on<CompetenceRemove>((event, emit) {
       final currentState = state;
-      if (currentState is OnboardingReady) {
+      if (currentState is InterestsReady) {
         final markedCompetence = currentState.competence
             .where((element) => element.id == event.id)
             .first;
@@ -171,13 +170,13 @@ class OnboardingBloc extends Bloc<OnboardingEvent, OnboardingState> {
             .where((element) => element.id != event.id)
             .toSet();
         emit(
-          OnboardingReady(
+          InterestsReady(
               competence: {toRemove, ...rest},
               topics: currentState.topics,
               subject: currentState.subject),
         );
       } else {
-        stateError('OnboardingSubjectRemove');
+        stateError('InterestsSubjectRemove');
       }
     });
   }

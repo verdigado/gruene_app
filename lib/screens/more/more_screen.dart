@@ -3,7 +3,7 @@ import 'package:gruene_app/constants/app_const.dart';
 import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/widget/costume_separated_list.dart';
+import 'package:gruene_app/widget/lists/costume_separated_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MoreScreen extends StatelessWidget {

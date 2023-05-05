@@ -53,6 +53,8 @@ class TopicCardState extends State<TopicCard> {
               borderRadius: BorderRadius.circular(cardBorder),
             ),
             child: Image(
+              color: Colors.black.withOpacity(0.25),
+              colorBlendMode: BlendMode.darken,
               image: context
                   .read<ImageProviderDelegate>()
                   .provide(widget.imgageUrl),

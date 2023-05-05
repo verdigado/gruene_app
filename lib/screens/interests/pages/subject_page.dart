@@ -3,41 +3,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/main.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
 import 'package:gruene_app/routing/routes.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
+import 'package:gruene_app/widget/lists/searchable_list.dart';
 
 class SubjectPage extends StatelessWidget {
-  final PageController controller;
-
-  final Widget? progressbar;
-
-  final double progressbarHeight;
-
-  const SubjectPage(this.controller,
-      {Key? key, this.progressbar, this.progressbarHeight = 100})
-      : super(key: key);
+  const SubjectPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<OnboardingBloc, OnboardingState>(
+    return BlocListener<InterestsBloc, InterestsState>(
       listener: (context, state) async {
         final currentState = state;
-        if (currentState is OnboardingSended) {
+        if (currentState is InterestsSended) {
           if (currentState.navigateToNext) {
             context.go(notification);
           }
         }
-        if (currentState is OnboardingSendFailure) {
+        if (currentState is InterestsSendFailure) {
           MyApp.scaffoldMessengerKey.currentState?.showSnackBar(SnackBar(
               duration: const Duration(seconds: 2),
               content: Center(
                 child:
-                    Text(AppLocalizations.of(context)!.errorSendingOnboarding),
+                    Text(AppLocalizations.of(context)!.errorSendingInterests),
               )));
           Future.delayed(
               const Duration(seconds: 3), () => context.go(startScreen));
@@ -45,10 +36,6 @@ class SubjectPage extends StatelessWidget {
       },
       child: Column(
         children: [
-          SizedBox(
-            height: progressbarHeight,
-            child: progressbar,
-          ),
           Padding(
             padding: const EdgeInsets.all(18),
             child: Text(
@@ -57,24 +44,24 @@ class SubjectPage extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: BlocBuilder<OnboardingBloc, OnboardingState>(
+            child: BlocBuilder<InterestsBloc, InterestsState>(
               builder: (context, state) {
-                if (state is OnboardingReady) {
+                if (state is InterestsReady) {
                   return SearchableList(
                     searchableItemList: toSearchableListItem(state.subject),
                     paddingTralling: 20,
                     onSelect: (sub, check) {
                       if (check) {
-                        BlocProvider.of<OnboardingBloc>(context)
-                            .add(OnboardingSubjectAdd(id: sub.id));
+                        BlocProvider.of<InterestsBloc>(context)
+                            .add(InterestsSubjectAdd(id: sub.id));
                       } else {
-                        BlocProvider.of<OnboardingBloc>(context)
-                            .add(OnboardingSubjectRemove(id: sub.id));
+                        BlocProvider.of<InterestsBloc>(context)
+                            .add(InterestsSubjectRemove(id: sub.id));
                       }
                     },
                   );
                 }
-                if (state is OnboardingSending) {
+                if (state is InterestsSending) {
                   return const Center(
                       child: CircularProgressIndicator.adaptive());
                 }
@@ -82,9 +69,8 @@ class SubjectPage extends StatelessWidget {
                   child: Column(
                     children: [
                       IconButton(
-                        onPressed: () => context
-                            .read<OnboardingBloc>()
-                            .add(OnboardingLoad()),
+                        onPressed: () =>
+                            context.read<InterestsBloc>().add(InterestsLoad()),
                         icon: const Icon(Icons.refresh_outlined),
                       ),
                       Text(AppLocalizations.of(context)!.refresh)
@@ -93,16 +79,6 @@ class SubjectPage extends StatelessWidget {
                 );
               },
             ),
-          ),
-          ButtonGroupNextPrevious(
-            onlyNext: true,
-            buttonNextKey: const Key('ButtonGroupNextSubject'),
-            next: () {
-              BlocProvider.of<OnboardingBloc>(context).add(OnboardingDone());
-            },
-            nextText: AppLocalizations.of(context)!.next,
-            previous: () => context.go(startScreen),
-            previousText: AppLocalizations.of(context)!.skip,
           ),
         ],
       ),

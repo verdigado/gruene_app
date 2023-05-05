@@ -1,41 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
 import 'package:gruene_app/widget/topic_card.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class InterestsPage extends StatelessWidget {
-  final PageController controller;
-
-  final Widget? progressbar;
-
-  const InterestsPage(this.controller, {super.key, this.progressbar});
+  const InterestsPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 100,
-          child: progressbar,
-        ),
         Align(
           alignment: Alignment.bottomLeft,
           child: Padding(
-            padding: const EdgeInsets.all(18),
+            padding: const EdgeInsets.all(16),
             child: Text(
               AppLocalizations.of(context)!.interestsPageHeadline1,
               style: Theme.of(context).primaryTextTheme.displayMedium,
             ),
           ),
         ),
-        BlocBuilder<OnboardingBloc, OnboardingState>(
+        BlocBuilder<InterestsBloc, InterestsState>(
           builder: (context, state) {
-            if (state is OnboardingLoading) {
+            if (state is InterestsLoading) {
               return const CircularProgressIndicator();
             }
-            if (state is OnboardingReady) {
+            if (state is InterestsReady) {
               return Expanded(
                 child: GridView.count(
                   crossAxisCount: 2,
@@ -48,10 +39,10 @@ class InterestsPage extends StatelessWidget {
                             topic: e.name,
                             checked: e.checked,
                             onTap: (check, id) => check
-                                ? BlocProvider.of<OnboardingBloc>(context)
-                                    .add(OnboardingTopicAdd(id: id))
-                                : BlocProvider.of<OnboardingBloc>(context)
-                                    .add(OnboardingTopicRemove(id: id)),
+                                ? BlocProvider.of<InterestsBloc>(context)
+                                    .add(InterestsTopicAdd(id: id))
+                                : BlocProvider.of<InterestsBloc>(context)
+                                    .add(InterestsTopicRemove(id: id)),
                           ))
                       .toList(),
                 ),
@@ -62,7 +53,7 @@ class InterestsPage extends StatelessWidget {
                 children: [
                   IconButton(
                     onPressed: () =>
-                        context.read<OnboardingBloc>().add(OnboardingLoad()),
+                        context.read<InterestsBloc>().add(InterestsLoad()),
                     icon: const Icon(Icons.refresh_outlined),
                   ),
                   Text(AppLocalizations.of(context)!.refresh)
@@ -70,18 +61,6 @@ class InterestsPage extends StatelessWidget {
               ),
             );
           },
-        ),
-        ButtonGroupNextPrevious(
-          onlyNext: true,
-          buttonNextKey: const Key('ButtonGroupNextInterests'),
-          next: () => controller.nextPage(
-              duration: const Duration(seconds: 1), curve: Curves.ease),
-          nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.nextPage(
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.linear,
-          ),
-          previousText: AppLocalizations.of(context)!.skip,
         ),
       ],
     );

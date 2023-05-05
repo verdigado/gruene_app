@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 
+/// ButtonGroupNextPrevious:
+/// A group of buttons containing a next and previous button
+
 class ButtonGroupNextPrevious extends StatelessWidget {
   final VoidCallback? next;
   final String nextText;
   final VoidCallback? previous;
   final String previousText;
-
-  final Key? buttonNextKey;
   final bool onlyNext;
 
   const ButtonGroupNextPrevious({
@@ -16,7 +17,6 @@ class ButtonGroupNextPrevious extends StatelessWidget {
     this.nextText = 'Next',
     this.previous,
     this.previousText = 'Previous',
-    this.buttonNextKey,
     this.onlyNext = false,
   }) : super(key: key);
 
@@ -26,13 +26,14 @@ class ButtonGroupNextPrevious extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         ElevatedButton(
-            key: buttonNextKey,
+            key: const Key('ButtonGroupNextButton'),
             onPressed: next,
             child: Text(nextText,
                 style: textTheme.labelLarge?.copyWith(color: Colors.white))),
         const SizedBox(height: 10),
         if (!onlyNext) ...[
           ElevatedButton(
+            key: const Key('ButtonGroupPreviousButton'),
             onPressed: previous,
             style: grayButtonStyle,
             child: Text(previousText,

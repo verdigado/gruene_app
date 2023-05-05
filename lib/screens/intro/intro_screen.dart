@@ -5,13 +5,14 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:snapping_sheet/snapping_sheet.dart';
 import 'package:step_progress_indicator/step_progress_indicator.dart';
-import 'package:vector_graphics/vector_graphics.dart';
+import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:gruene_app/widget/modals/modal_top_line.dart';
+// ignore: depend_on_referenced_packages
+import 'package:vector_graphics/vector_graphics.dart';
 
 import 'package:gruene_app/constants/layout.dart';
-import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:gruene_app/screens/intro/intro_content_below.dart';
-import 'package:gruene_app/widget/modal_top_line.dart';
 
 class IntroScreen extends StatefulWidget {
   const IntroScreen({super.key});

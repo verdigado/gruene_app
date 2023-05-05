@@ -1,13 +1,14 @@
 import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/authentication/authentication.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
-import 'package:gruene_app/widget/costume_separated_list.dart';
+import 'package:gruene_app/widget/lists/costume_separated_list.dart';
 import 'package:gruene_app/screens/more/screens/profile/profile_list_view_header.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -42,7 +43,18 @@ List<CostumeListItem> getItems(BuildContext context) {
       titel: AppLocalizations.of(context)!.memberProfil,
       iconLeading: Icons.person_outlined,
       iconTralling: Icons.arrow_forward_ios,
-      linksTo: memberprofilScreenName,
+      onTap: () {
+        final ChromeSafariBrowser browser = ChromeSafariBrowser();
+        browser.open(
+            url: Uri.parse(
+                'https://www.maxmomentum.de/Mitgliederservice-Dummy/dummy.html'),
+            options: ChromeSafariBrowserClassOptions(
+                android: AndroidChromeCustomTabsOptions(
+                    shareState: CustomTabsShareState.SHARE_STATE_OFF),
+                ios: IOSSafariOptions(
+                  barCollapsingEnabled: true,
+                )));
+      },
     ),
     CostumeListItem(
         titel: AppLocalizations.of(context)!.visibilityProfil,

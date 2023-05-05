@@ -1,19 +1,18 @@
 import 'package:gruene_api_client/gruene_api_client.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/net/interests/data/subject.dart';
+import 'package:gruene_app/net/interests/data/topic.dart';
 import 'package:gruene_app/constants/app_const.dart';
-import 'package:gruene_app/net/client.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/net/onboarding/data/subject.dart';
-import 'package:gruene_app/net/onboarding/data/topic.dart';
 
-abstract class OnboardingRepository {
+abstract class InterestsRepository {
   Set<Topic> listTopic();
 
-  Future<OnboardingListResult> listCompetenceAndSubject();
-  Future<bool> onboardingSend(
+  Future<InterestsListResult> listCompetenceAndSubject();
+  Future<bool> interestsSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence);
 }
 
-class OnboardingRepositoryImpl extends OnboardingRepository {
+class InterestsRepositoryImpl extends InterestsRepository {
   @override
   Set<Topic> listTopic() {
     return {
@@ -76,13 +75,13 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
   }
 
   @override
-  Future<bool> onboardingSend(
+  Future<bool> interestsSend(
       List<Topic> topics, List<Subject> subjects, List<Competence> competence) {
     return Future.delayed(const Duration(seconds: 2), () => true);
   }
 
   @override
-  Future<OnboardingListResult> listCompetenceAndSubject() async {
+  Future<InterestsListResult> listCompetenceAndSubject() async {
     final response = await GruneAppData.values.api.getTagsApi().findTags();
     var competence = response.data?.items
             .where((tag) => tag.type == TagTypeEnum.skill)
@@ -94,13 +93,13 @@ class OnboardingRepositoryImpl extends OnboardingRepository {
             .map((tag) => Subject(id: tag.id, name: tag.tag, checked: false))
             .toSet() ??
         {};
-    return OnboardingListResult(competence, subject);
+    return InterestsListResult(competence, subject);
   }
 }
 
-class OnboardingListResult {
+class InterestsListResult {
   final Set<Competence> competence;
   final Set<Subject> subject;
 
-  OnboardingListResult(this.competence, this.subject);
+  InterestsListResult(this.competence, this.subject);
 }

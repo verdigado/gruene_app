@@ -1,31 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/net/onboarding/bloc/onboarding_bloc.dart';
+import 'package:gruene_app/net/interests/bloc/interests_bloc.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:gruene_app/net/onboarding/data/competence.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/button_group.dart';
-import 'package:gruene_app/screens/onboarding/pages/widget/searchable_list.dart';
+import 'package:gruene_app/net/interests/data/competence.dart';
+import 'package:gruene_app/widget/lists/searchable_list.dart';
 
 class CompetencePage extends StatelessWidget {
-  final PageController controller;
-
-  final Widget? progressbar;
-
-  const CompetencePage(
-    this.controller, {
-    Key? key,
-    this.progressbar,
-  }) : super(key: key);
+  const CompetencePage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        SizedBox(
-          height: 100,
-          child: progressbar,
-        ),
         Padding(
           padding: const EdgeInsets.all(18),
           child: SizedBox(
@@ -38,24 +25,24 @@ class CompetencePage extends StatelessWidget {
           ),
         ),
         Expanded(
-          child: BlocBuilder<OnboardingBloc, OnboardingState>(
+          child: BlocBuilder<InterestsBloc, InterestsState>(
             builder: (context, state) {
-              if (state is OnboardingReady) {
+              if (state is InterestsReady) {
                 return SearchableList(
                   showIndexbar: false,
                   searchableItemList: toSearchableListItem(state.competence),
                   onSelect: (com, check) {
                     if (check) {
-                      BlocProvider.of<OnboardingBloc>(context)
+                      BlocProvider.of<InterestsBloc>(context)
                           .add(CompetenceAdd(id: com.id));
                     } else {
-                      BlocProvider.of<OnboardingBloc>(context)
+                      BlocProvider.of<InterestsBloc>(context)
                           .add(CompetenceRemove(id: com.id));
                     }
                   },
                 );
               }
-              if (state is OnboardingSending) {
+              if (state is InterestsSending) {
                 return const Center(child: CircularProgressIndicator());
               }
               return Center(
@@ -63,7 +50,7 @@ class CompetencePage extends StatelessWidget {
                   children: [
                     IconButton(
                       onPressed: () =>
-                          context.read<OnboardingBloc>().add(OnboardingLoad()),
+                          context.read<InterestsBloc>().add(InterestsLoad()),
                       icon: const Icon(Icons.refresh_outlined),
                     ),
                     Text(AppLocalizations.of(context)!.refresh)
@@ -72,18 +59,6 @@ class CompetencePage extends StatelessWidget {
               );
             },
           ),
-        ),
-        ButtonGroupNextPrevious(
-          onlyNext: true,
-          buttonNextKey: const Key('ButtonGroupNextCompetence'),
-          next: () => controller.nextPage(
-              duration: const Duration(seconds: 1), curve: Curves.ease),
-          nextText: AppLocalizations.of(context)!.next,
-          previous: () => controller.nextPage(
-            duration: const Duration(milliseconds: 700),
-            curve: Curves.linear,
-          ),
-          previousText: AppLocalizations.of(context)!.skip,
         ),
       ],
     );
