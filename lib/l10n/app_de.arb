@@ -208,5 +208,11 @@
   "memberId":"Mitgliedernummer:",
   "membercard":"Mitgliedskarte",
   "membercardTitel": "Deine Mitgliedskarte",
-  "membercardMenuTitel" :"Dein Mitgliedsauweis"
+  "membercardMenuTitel" :"Dein Mitgliedsauweis",
+  "newsTab1":"Aktuelles",
+  "newsTab2":"Interessen",
+  "newsTab3":"Gespeichert",
+  "retry":"Wiederholen"
+
+
 }

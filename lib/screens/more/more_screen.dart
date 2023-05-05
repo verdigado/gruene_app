@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/constants/app_const.dart';
+import 'package:gruene_app/constants/flavors.dart';
 import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:gruene_app/widget/lists/costume_separated_list.dart';
@@ -45,6 +47,9 @@ class MoreScreen extends StatelessWidget {
       CostumeListItem(
         titel: AppLocalizations.of(context)!.settings,
         iconTralling: Icons.arrow_forward_ios,
+        // ToDo: For Testing
+        linksTo:
+            GruneAppData.values.flavor == Flavors.staging ? debugScreen : null,
       )
     ];
   }

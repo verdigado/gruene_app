@@ -82,8 +82,13 @@ dependencies:
   screen_brightness: ^0.2.2
   no_screenshot: ^0.0.1+6
   dismissible_page: ^1.0.1
-  mobile_scanner: ^3.2.0
+  package_info_plus: ^3.1.0
+  infinite_scroll_pagination: ^3.2.0
+  faker: ^2.1.0
+  blurrycontainer: ^1.0.2
+  flutter_bounce: ^1.1.0
   flutter_inappwebview: ^5.7.2+3
+  mobile_scanner: ^3.2.0
 
 
 
