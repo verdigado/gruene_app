@@ -18,7 +18,6 @@ const webView = '/inAppWebview';
 const profileDetail = 'profileDetail';
 const memberProfil = 'memberProfil';
 const memberCard = 'memberCard';
-const profile = '/profile';
 const debug = '/debug';
 
 // NAMED

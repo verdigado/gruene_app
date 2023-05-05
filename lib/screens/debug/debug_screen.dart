@@ -25,7 +25,7 @@ class DebugScreen extends StatelessWidget {
                 onPressed: () => context.push(notification),
                 child: const Text('Push Notification')),
             TextButton(
-                onPressed: () => context.push(onboarding),
+                onPressed: () => context.push(interests),
                 child: const Text('Start Customization')),
             FutureBuilder(
               future: PackageInfo.fromPlatform(),
