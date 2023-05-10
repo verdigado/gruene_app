@@ -154,9 +154,7 @@ final GoRouter router = GoRouter(
       path: twofactorregistration,
       pageBuilder: (context, state) {
         return CustomTransitionPage(
-          child: const TwoFactorRegistration(
-            email: '',
-          ),
+          child: TwoFactorRegistration(),
           transitionsBuilder: (context, animation, secondaryAnimation, child) =>
               slideAnimation(animation, child),
         );
