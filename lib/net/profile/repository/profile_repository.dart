@@ -30,16 +30,20 @@ class ProfileRepositoryImpl extends ProfileRepository {
         politicalParty: 'Bündnis 90/Die Grünen',
         division: 'Kreisverband',
         memberId: '1064536',
-        email: [
-          const FavouriteValue('gruenerGustav@gruene.de', true),
-          const FavouriteValue('gustavGruen@gruene.de', false),
-        ].lock,
-        telefon: [
-          const FavouriteValue('01725463554', false),
-          const FavouriteValue('+491716546335', false),
-          const FavouriteValue('004940297234', false),
-          const FavouriteValue('0049049301', true)
-        ].lock,
+        email: Visibility(
+            [
+              const FavouriteValue('Gustav@gruen.de', true),
+              const FavouriteValue('GrünerGustav@gruenB90.de', false),
+              const FavouriteValue('gg@gruen.de', false)
+            ].lock,
+            true),
+        telefon: Visibility(
+            [
+              const FavouriteValue('+49 01724516165', true),
+              const FavouriteValue('+42 0115475563', false),
+              const FavouriteValue('+43 01855451616', false)
+            ].lock,
+            true),
       ),
     );
   }

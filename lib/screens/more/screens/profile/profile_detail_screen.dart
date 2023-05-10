@@ -2,7 +2,6 @@ import 'package:adaptive_dialog/adaptive_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/common/exception/permisson_exception.dart';
 import 'package:gruene_app/common/logger.dart';
@@ -12,6 +11,7 @@ import 'package:gruene_app/constants/layout.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/widget/modals/modal_top_line.dart';
 import 'package:gruene_app/widget/modals/multi_modal_select.dart';
+import 'package:gruene_app/widget/profil_value_card.dart';
 import 'package:image_picker/image_picker.dart';
 
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -74,123 +74,25 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
                     Text(state.profile.displayName,
                         style:
                             Theme.of(context).primaryTextTheme.headlineSmall),
-                    Card(
-                        margin: const EdgeInsets.all(0).copyWith(top: medium1),
-                        elevation: 0.6,
-                        borderOnForeground: true,
-                        child: FractionallySizedBox(
-                          widthFactor: 1,
-                          child: Column(
-                            children: [
-                              Align(
-                                alignment: Alignment.topRight,
-                                child: TextButton(
-                                    onPressed: () {
-                                      showModalBottomSheet(
-                                        context: context,
-                                        isScrollControlled: true,
-                                        builder: (context) {
-                                          return BlocBuilder<ProfileBloc,
-                                              ProfileState>(
-                                            builder: (context, state) {
-                                              return MultiModalSelect(
-                                                inputHeadline:
-                                                    AppLocalizations.of(
-                                                            context)!
-                                                        .emailAsFavTitle,
-                                                inputHint: AppLocalizations.of(
-                                                        context)!
-                                                    .emailAdress,
-                                                inputLabel: AppLocalizations.of(
-                                                        context)!
-                                                    .emailAdress,
-                                                onAddValue: (String value) =>
-                                                    context
-                                                        .read<ProfileBloc>()
-                                                        .add(
-                                                            MemberProfileAddValue(
-                                                                'email',
-                                                                value)),
-                                                onAddFavouriteValue:
-                                                    (favItemIndex) {
-                                                  context
-                                                      .read<ProfileBloc>()
-                                                      .add(SetFavoritProfile(
-                                                          favEmailItemIndex:
-                                                              favItemIndex));
-                                                },
-                                                values: [
-                                                  ...state.profile.memberProfil
-                                                      .email
-                                                      .map((e) => e.value)
-                                                ],
-                                                textInputType:
-                                                    TextInputType.emailAddress,
-                                                validate: (value) {
-                                                  return value != null &&
-                                                      value.isNotEmpty &&
-                                                      !state.profile
-                                                          .memberProfil.email
-                                                          .map((e) => e.value)
-                                                          .contains(value) &&
-                                                      value.contains('@');
-                                                },
-                                              );
-                                            },
-                                          );
-                                        },
-                                      );
-                                    },
-                                    child: const Text(
-                                      'Bearbeiten',
-                                      style: TextStyle(),
-                                    )),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    const Text('E-Mail-Adresse:'),
-                                    const SizedBox(width: small),
-                                    Text(
-                                      state.profile.memberProfil.email.first
-                                          .value,
-                                      style: const TextStyle(
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    const Text(
-                                      'Öffentlich sichtbar ',
-                                      style: TextStyle(),
-                                    ),
-                                    const SizedBox(
-                                      width: small,
-                                      height: large1,
-                                    ),
-                                    FlutterSwitch(
-                                      width: 48,
-                                      height: 29,
-                                      value: true,
-                                      onToggle: (value) => print('ggg'),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(
-                                height: small,
-                              ),
-                            ],
-                          ),
-                        ))
+                    ProfilValueCard(
+                      label: 'E-Mail-Adresse',
+                      value: state.profile.memberProfil.email.value.first.value,
+                      visibility: state.profile.memberProfil.email.visible,
+                      ontoggleVisibility: (v) => context
+                          .read<ProfileBloc>()
+                          .add(UpdateProfileValueVisibility('email', v)),
+                      onEdit: () => openEmailEditModal(),
+                    ),
+                    ProfilValueCard(
+                      label: 'Telefon',
+                      value:
+                          state.profile.memberProfil.telefon.value.first.value,
+                      visibility: state.profile.memberProfil.telefon.visible,
+                      ontoggleVisibility: (v) => context
+                          .read<ProfileBloc>()
+                          .add(UpdateProfileValueVisibility('telefon', v)),
+                      onEdit: () => openTelefonlEditModal(),
+                    )
                   ]
                 ],
               ),
@@ -201,7 +103,85 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
     );
   }
 
-  openImagePickerModal(BuildContext context) {
+  Future<void> openTelefonlEditModal() {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return MultiModalSelect(
+              inputHint: AppLocalizations.of(context)!.telefonnumber,
+              inputLabel: AppLocalizations.of(context)!.telefonnumber,
+              inputHeadline:
+                  AppLocalizations.of(context)!.telefonnumberAsFavTitle,
+              onAddValue: (String value) => context
+                  .read<ProfileBloc>()
+                  .add(MemberProfileAddValue('telefon', value)),
+              onAddFavouriteValue: (favItemIndex) {
+                context.read<ProfileBloc>().add(
+                    SetFavoritProfile(favTelfonnumberItemIndex: favItemIndex));
+              },
+              values: [
+                ...state.profile.memberProfil.telefon.value.map((e) => e.value)
+              ],
+              initalTextinputValue: '+49',
+              textInputType: TextInputType.phone,
+              validate: (value) {
+                return value != null &&
+                    value.isNotEmpty &&
+                    !state.profile.memberProfil.telefon.value
+                        .map((e) => e.value)
+                        .contains(value) &&
+                    value.startsWith('+') &&
+                    value.length <= 16;
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Future<void> openEmailEditModal() {
+    return showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (context) {
+        return BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return MultiModalSelect(
+              inputHeadline: AppLocalizations.of(context)!.emailAsFavTitle,
+              inputHint: AppLocalizations.of(context)!.emailAdress,
+              inputLabel: AppLocalizations.of(context)!.emailAdress,
+              onAddValue: (String value) => context
+                  .read<ProfileBloc>()
+                  .add(MemberProfileAddValue('email', value)),
+              onAddFavouriteValue: (favItemIndex) {
+                context
+                    .read<ProfileBloc>()
+                    .add(SetFavoritProfile(favEmailItemIndex: favItemIndex));
+              },
+              values: [
+                ...state.profile.memberProfil.email.value.map((e) => e.value)
+              ],
+              textInputType: TextInputType.emailAddress,
+              validate: (value) {
+                return value != null &&
+                    value.isNotEmpty &&
+                    !state.profile.memberProfil.email.value
+                        .map((e) => e.value)
+                        .contains(value) &&
+                    value.contains('@');
+              },
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void openImagePickerModal(BuildContext context) {
     showModalBottomSheet(
       context: context,
       builder: (context) {

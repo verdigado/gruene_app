@@ -19,8 +19,8 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
             profile: Profile(
               profileImageUrl: Uint8List(0),
               memberProfil: MemberProfil(
-                email: IList(const []),
-                telefon: IList(const []),
+                email: Visibility(<FavouriteValue<String>>[].lock, true),
+                telefon: Visibility(<FavouriteValue<String>>[].lock, true),
               ),
             ),
             status: ProfileStatus.initial)) {
@@ -62,18 +62,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
     });
     on<GetProfile>((event, emit) {
       final profil = profileRepository.getProfile();
+      var newTelfon = IList([...profil.memberProfil.telefon.value]..sort(
+          (a, b) => a.compareTo(b.isFavourite),
+        ));
       profil.copyWith(
         memberProfil: profil.memberProfil.copyWith(
-          telefon: IList([...profil.memberProfil.telefon]..sort(
-              (a, b) => a.compareTo(b.isFavourite),
-            )),
+          telefon: Visibility(newTelfon, profil.memberProfil.telefon.visible),
         ),
       );
+      var newEmail = IList([...profil.memberProfil.email.value]..sort(
+          (a, b) => a.compareTo(b.isFavourite),
+        ));
       profil.copyWith(
         memberProfil: profil.memberProfil.copyWith(
-          email: IList([...profil.memberProfil.email]..sort(
-              (a, b) => a.compareTo(b.isFavourite),
-            )),
+          email: Visibility(newEmail, profil.memberProfil.email.visible),
         ),
       );
       emit(
@@ -102,19 +104,38 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
         );
       }
     });
+    on<UpdateProfileValueVisibility>((event, emit) {
+      final profil = state.profile;
+      if (event.fieldName == 'email') {
+        var newProfil = profil.copyWith(
+            memberProfil: state.profile.memberProfil.copyWith(
+                email: profil.memberProfil.email
+                    .copyWith(visible: event.visibel)));
+        emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
+      }
+      if (event.fieldName == 'telefon') {
+        var newProfil = profil.copyWith(
+            memberProfil: state.profile.memberProfil.copyWith(
+                telefon: profil.memberProfil.telefon
+                    .copyWith(visible: event.visibel)));
+        emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
+      }
+    });
   }
 
   void profileTelefonnumberAdd(MemberProfil memberProfil,
       MemberProfileAddValue event, Emitter<ProfileState> emit) {
     final newMemberProfil = memberProfil.copyWith(
-      telefon: IList(
-        [
-          FavouriteValue(event.value, true),
-          ...memberProfil.telefon.map(
-            (e) => FavouriteValue(e.value, false),
+      telefon: Visibility(
+          IList(
+            [
+              FavouriteValue(event.value, true),
+              ...memberProfil.telefon.value.map(
+                (e) => FavouriteValue(e.value, false),
+              ),
+            ],
           ),
-        ],
-      ),
+          memberProfil.telefon.visible),
     );
     emit(
       ProfileState(
@@ -126,12 +147,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void profilEmailAdd(MemberProfil memberProfil, MemberProfileAddValue event,
       Emitter<ProfileState> emit) {
     final newMemberProfil = memberProfil.copyWith(
-      email: IList([
-        FavouriteValue(event.value, true),
-        ...memberProfil.email.map(
-          (e) => FavouriteValue(e.value, false),
-        ),
-      ]),
+      email: Visibility(
+          IList([
+            FavouriteValue(event.value, true),
+            ...memberProfil.email.value.map(
+              (e) => FavouriteValue(e.value, false),
+            ),
+          ]),
+          memberProfil.email.visible),
     );
     emit(
       ProfileState(
@@ -142,18 +165,20 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
 
   void dispatchEmail(SetFavoritProfile event, Emitter<ProfileState> emit) {
     final memberprofil = state.profile.memberProfil;
-    var newFavItem = memberprofil.email[event.favEmailItemIndex!]
+    var newFavItem = memberprofil.email.value[event.favEmailItemIndex!]
         .copyWith(isFavourite: true);
-    var removedList = [...memberprofil.email]
+    var removedList = [...memberprofil.email.value]
       ..removeAt(event.favEmailItemIndex!);
     final newProfil = state.profile.copyWith(
       memberProfil: memberprofil.copyWith(
-        email: [
-          newFavItem,
-          ...removedList.map(
-            (e) => FavouriteValue(e.value, false),
-          )
-        ].lock,
+        email: Visibility(
+            [
+              newFavItem,
+              ...removedList.map(
+                (e) => FavouriteValue(e.value, false),
+              )
+            ].lock,
+            memberprofil.email.visible),
       ),
     );
     emit(
@@ -164,20 +189,22 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
   void dispatchTelefonnumber(
       SetFavoritProfile event, Emitter<ProfileState> emit) {
     final memberprofil = state.profile.memberProfil;
-    var newFavItem = memberprofil.telefon[event.favTelfonnumberItemIndex!]
+    var newFavItem = memberprofil.telefon.value[event.favTelfonnumberItemIndex!]
         .copyWith(isFavourite: true);
-    var removedNumbers = [...memberprofil.telefon]
+    var removedNumbers = [...memberprofil.telefon.value]
       ..removeAt(event.favTelfonnumberItemIndex!);
     final newProfil = state.profile.copyWith(
       memberProfil: memberprofil.copyWith(
-        telefon: IList(
-          [
-            newFavItem,
-            ...removedNumbers.map(
-              (e) => FavouriteValue(e.value, false),
-            )
-          ],
-        ),
+        telefon: Visibility(
+            IList(
+              [
+                newFavItem,
+                ...removedNumbers.map(
+                  (e) => FavouriteValue(e.value, false),
+                )
+              ],
+            ),
+            memberprofil.telefon.visible),
       ),
     );
     emit(

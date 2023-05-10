@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:flutter_switch/flutter_switch.dart';
 import 'package:gruene_app/constants/layout.dart';
-import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/gen/assets.gen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:gruene_app/routing/app_startup.dart';
 import 'package:gruene_app/routing/router.dart';
 import 'package:gruene_app/routing/routes.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:gruene_app/widget/default_switch.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 // ignore: depend_on_referenced_packages
 import 'package:vector_graphics/vector_graphics.dart';
@@ -75,17 +74,10 @@ class _NotfificationScreenState extends State<NotfificationScreen> {
                         Icons.close,
                         color: Colors.red,
                       ), */
-                      FlutterSwitch(
+                      DefaultSwitch(
                     value: permission,
-                    activeColor: mcgpalette0Secondary,
-                    inactiveIcon: const Icon(
-                      Icons.close,
-                      color: Colors.red,
-                    ),
-                    activeIcon: const Icon(
-                      Icons.check,
-                      color: mcgpalette0Secondary,
-                    ),
+                    width: 75.0,
+                    height: 35.0,
                     onToggle: (value) {
                       setState(() {
                         permission = value;

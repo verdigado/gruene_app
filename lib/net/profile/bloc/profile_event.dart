@@ -49,3 +49,12 @@ class SetFavoritProfile extends ProfileEvent {
   @override
   List<Object> get props => [this];
 }
+
+class UpdateProfileValueVisibility extends ProfileEvent {
+  final String fieldName;
+  final bool visibel;
+
+  const UpdateProfileValueVisibility(this.fieldName, this.visibel);
+  @override
+  List<Object> get props => [fieldName, visibel];
+}

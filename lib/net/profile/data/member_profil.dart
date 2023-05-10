@@ -5,11 +5,28 @@ import 'package:fast_immutable_collections/fast_immutable_collections.dart';
 import 'package:flutter/foundation.dart';
 
 @immutable
+class Visibility<T> {
+  final T value;
+  final bool visible;
+  const Visibility(this.value, this.visible);
+
+  Visibility<T> copyWith({
+    T? value,
+    bool? visible,
+  }) {
+    return Visibility<T>(
+      value ?? this.value,
+      visible ?? this.visible,
+    );
+  }
+}
+
+@immutable
 class MemberProfil extends Equatable {
   final String givenName;
   final String surname;
-  final IList<FavouriteValue<String>> email;
-  final IList<FavouriteValue<String>> telefon;
+  final Visibility<IList<FavouriteValue<String>>> email;
+  final Visibility<IList<FavouriteValue<String>>> telefon;
   final String politicalParty;
   final String division;
   final String memberId;
@@ -27,8 +44,8 @@ class MemberProfil extends Equatable {
   MemberProfil copyWith({
     String? givenName,
     String? surname,
-    IList<FavouriteValue<String>>? email,
-    IList<FavouriteValue<String>>? telefon,
+    Visibility<IList<FavouriteValue<String>>>? email,
+    Visibility<IList<FavouriteValue<String>>>? telefon,
     String? politicalParty,
     String? division,
   }) {
