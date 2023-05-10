@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/net/mfa/auth.dart';
 import 'package:gruene_app/routing/routes.dart';
-
-import '../../widget/buttons/button_group.dart';
+import 'package:gruene_app/widget/buttons/button_group.dart';
 
 class TwoFactorApprove extends StatefulWidget {
   const TwoFactorApprove({super.key});
@@ -78,9 +78,9 @@ class _TwoFactorApproveState extends State<TwoFactorApprove> {
               ),
               ButtonGroupNextPrevious(
                 nextText: 'Ja, bestätigen',
-                next: () => context.go(twofactorregistration),
+                next: () => registerMFADevice(),
                 previousText: 'Ablehnen',
-                previous: () => context.go(twofactorregistration),
+                previous: () => getMFAChallenge(),
               ),
             ],
           ),
