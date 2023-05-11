@@ -30,6 +30,13 @@ class ProfileRepositoryImpl extends ProfileRepository {
         politicalParty: 'Bündnis 90/Die Grünen',
         division: 'Kreisverband',
         memberId: '1064536',
+        memberships: const Visibility(
+            Memberships(
+                client: 'client',
+                organization: ' LV - Bayern, KV - Neustadt/Aisch-Bad Windsheim',
+                position:
+                    ' Schriftführer*in (Kreisvorstand), Ortsvorsitzende*, Mitglied eines Kommunalparlaments'),
+            true),
         email: Visibility(
             [
               const FavouriteValue('Gustav@gruen.de', true),

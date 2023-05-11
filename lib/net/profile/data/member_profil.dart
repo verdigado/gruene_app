@@ -30,6 +30,7 @@ class MemberProfil extends Equatable {
   final String politicalParty;
   final String division;
   final String memberId;
+  final Visibility<Memberships> memberships;
 
   const MemberProfil({
     this.givenName = '',
@@ -39,7 +40,19 @@ class MemberProfil extends Equatable {
     this.politicalParty = '',
     this.division = '',
     this.memberId = '',
+    this.memberships = const Visibility(Memberships(), true),
   });
+
+  @override
+  List<Object?> get props => [
+        givenName,
+        surname,
+        email,
+        telefon,
+        politicalParty,
+        division,
+        memberships
+      ];
 
   MemberProfil copyWith({
     String? givenName,
@@ -48,6 +61,8 @@ class MemberProfil extends Equatable {
     Visibility<IList<FavouriteValue<String>>>? telefon,
     String? politicalParty,
     String? division,
+    String? memberId,
+    Visibility<Memberships>? memberships,
   }) {
     return MemberProfil(
       givenName: givenName ?? this.givenName,
@@ -56,12 +71,31 @@ class MemberProfil extends Equatable {
       telefon: telefon ?? this.telefon,
       politicalParty: politicalParty ?? this.politicalParty,
       division: division ?? this.division,
+      memberId: memberId ?? this.memberId,
+      memberships: memberships ?? this.memberships,
     );
   }
+}
 
-  @override
-  List<Object?> get props =>
-      [givenName, surname, email, telefon, politicalParty, division];
+class Memberships {
+  final String organization;
+  final String position;
+  final String client;
+
+  const Memberships(
+      {this.organization = '', this.position = '', this.client = ''});
+
+  Memberships copyWith({
+    String? organization,
+    String? position,
+    String? client,
+  }) {
+    return Memberships(
+      organization: organization ?? this.organization,
+      position: position ?? this.position,
+      client: client ?? this.client,
+    );
+  }
 }
 
 class FavouriteValue<T> extends Equatable implements Comparable<bool> {

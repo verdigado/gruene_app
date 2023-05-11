@@ -8,6 +8,7 @@ import 'package:gruene_app/common/logger.dart';
 import 'package:gruene_app/common/utils/avatar_utils.dart';
 import 'package:gruene_app/common/utils/image_utils.dart';
 import 'package:gruene_app/constants/layout.dart';
+import 'package:gruene_app/constants/theme_data.dart';
 import 'package:gruene_app/net/profile/bloc/profile_bloc.dart';
 import 'package:gruene_app/widget/modals/modal_top_line.dart';
 import 'package:gruene_app/widget/modals/multi_modal_select.dart';
@@ -29,78 +30,235 @@ class _ProfileDetailScreenState extends State<ProfileDetailScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(),
-      body: BlocBuilder<ProfileBloc, ProfileState>(
-        builder: (context, state) {
-          return BlocListener<ProfileBloc, ProfileState>(
-            listener: (context, state) {
-              if (state.status == ProfileStatus.profileImageRemoveError) {
-                ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-                    content: Center(
-                  child: Text(AppLocalizations.of(context)!
-                      .profileImageRemoveErrorMessage),
-                )));
-                context.read<ProfileBloc>().add(const GetProfile());
-              }
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(
-                  left: medium1, bottom: small, top: small, right: medium1),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    AppLocalizations.of(context)!.profileShow,
-                    style: Theme.of(context).primaryTextTheme.displaySmall,
-                  ),
-                  const SizedBox(
-                    height: medium1,
-                  ),
-                  if (state.status == ProfileStatus.ready) ...[
-                    InkWell(
-                      onTap: () => openImagePickerModal(context),
-                      child: state.profile.profileImageUrl != null &&
-                              state.profile.profileImageUrl!.isNotEmpty
-                          ? CircleAvatarImage(
-                              imageUrl: state.profile.profileImageUrl,
-                            )
-                          : CircleAvatarInitials(
-                              initals: state.profile.initals,
-                              editable: true,
-                            ),
+      body: SingleChildScrollView(
+        child: BlocBuilder<ProfileBloc, ProfileState>(
+          builder: (context, state) {
+            return BlocListener<ProfileBloc, ProfileState>(
+              listener: (context, state) {
+                if (state.status == ProfileStatus.profileImageRemoveError) {
+                  ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                      content: Center(
+                    child: Text(AppLocalizations.of(context)!
+                        .profileImageRemoveErrorMessage),
+                  )));
+                  context.read<ProfileBloc>().add(const GetProfile());
+                }
+              },
+              child: Padding(
+                padding: const EdgeInsets.only(
+                    left: medium1, bottom: small, top: small, right: medium1),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      AppLocalizations.of(context)!.profileShow,
+                      style: Theme.of(context).primaryTextTheme.displaySmall,
                     ),
                     const SizedBox(
                       height: medium1,
                     ),
-                    Text(state.profile.displayName,
-                        style:
-                            Theme.of(context).primaryTextTheme.headlineSmall),
-                    ProfilValueCard(
-                      label: 'E-Mail-Adresse',
-                      value: state.profile.memberProfil.email.value.first.value,
-                      visibility: state.profile.memberProfil.email.visible,
-                      ontoggleVisibility: (v) => context
-                          .read<ProfileBloc>()
-                          .add(UpdateProfileValueVisibility('email', v)),
-                      onEdit: () => openEmailEditModal(),
-                    ),
-                    ProfilValueCard(
-                      label: 'Telefon',
-                      value:
-                          state.profile.memberProfil.telefon.value.first.value,
-                      visibility: state.profile.memberProfil.telefon.visible,
-                      ontoggleVisibility: (v) => context
-                          .read<ProfileBloc>()
-                          .add(UpdateProfileValueVisibility('telefon', v)),
-                      onEdit: () => openTelefonlEditModal(),
-                    )
-                  ]
-                ],
+                    if (state.status == ProfileStatus.ready) ...[
+                      InkWell(
+                        onTap: () => openImagePickerModal(context),
+                        child: state.profile.profileImageUrl != null &&
+                                state.profile.profileImageUrl!.isNotEmpty
+                            ? CircleAvatarImage(
+                                imageUrl: state.profile.profileImageUrl,
+                              )
+                            : CircleAvatarInitials(
+                                initals: state.profile.initals,
+                                editable: true,
+                              ),
+                      ),
+                      const SizedBox(
+                        height: medium1,
+                      ),
+                      Text(
+                        state.profile.displayName,
+                        style: Theme.of(context).primaryTextTheme.headlineSmall,
+                      ),
+                      ProfilValueCard(
+                        visibility:
+                            state.profile.memberProfil.memberships.visible,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: membershipTextLayout(context, state),
+                        ),
+                        ontoggleVisibility: (v) => context
+                            .read<ProfileBloc>()
+                            .add(
+                                UpdateProfileValueVisibility('memberships', v)),
+                      ),
+                      ProfilValueCard(
+                        visibility: state.profile.memberProfil.email.visible,
+                        ontoggleVisibility: (v) => context
+                            .read<ProfileBloc>()
+                            .add(UpdateProfileValueVisibility('email', v)),
+                        onEdit: () => openEmailEditModal(),
+                        child: SingleRowProfileValue(
+                          label: 'Email',
+                          value: state
+                              .profile.memberProfil.email.value.first.value,
+                        ),
+                      ),
+                      ProfilValueCard(
+                        visibility: state.profile.memberProfil.telefon.visible,
+                        ontoggleVisibility: (v) => context
+                            .read<ProfileBloc>()
+                            .add(UpdateProfileValueVisibility('telefon', v)),
+                        onEdit: () => openTelefonlEditModal(),
+                        child: SingleRowProfileValue(
+                          label: 'Telefon',
+                          value: state
+                              .profile.memberProfil.telefon.value.first.value,
+                        ),
+                      ),
+                      ProfilValueCard(
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(children: const [
+                              Icon(Icons.visibility_outlined),
+                              Text(' Nur für dich sichtbar ')
+                            ]),
+                            const SizedBox(
+                              height: medium1,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Personnummer ',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                        color: darkGrey,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.22),
+                                children: [
+                                  TextSpan(
+                                    text: state.profile.memberProfil.memberId,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: medium1,
+                            ),
+                            RichText(
+                              text: TextSpan(
+                                text: 'Grünes Netz Username ',
+                                style: Theme.of(context)
+                                    .primaryTextTheme
+                                    .headlineMedium
+                                    ?.copyWith(
+                                        color: darkGrey,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.22),
+                                children: [
+                                  TextSpan(
+                                    text: state.profile.memberProfil.surname,
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      )
+                    ]
+                  ],
+                ),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
+  }
+
+  List<Widget> membershipTextLayout(BuildContext context, ProfileState state) {
+    return [
+      Text(
+        'Mitgliedschaften',
+        style: Theme.of(context).primaryTextTheme.headlineMedium?.copyWith(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              height: 1.22,
+            ),
+      ),
+      const SizedBox(
+        height: medium1,
+      ),
+      RichText(
+        text: TextSpan(
+          text: 'Gliederung',
+          style: Theme.of(context).primaryTextTheme.headlineMedium?.copyWith(
+              color: darkGrey,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              height: 1.22),
+          children: [
+            TextSpan(
+              text: state.profile.memberProfil.memberships.value.organization,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: medium1,
+      ),
+      RichText(
+        text: TextSpan(
+          text: 'Parteifunktionen',
+          style: Theme.of(context).primaryTextTheme.headlineMedium?.copyWith(
+              color: darkGrey,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              height: 1.22),
+          children: [
+            TextSpan(
+              text: state.profile.memberProfil.memberships.value.position,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      ),
+      const SizedBox(
+        height: medium1,
+      ),
+      RichText(
+        text: TextSpan(
+          text: 'Mandat ',
+          style: Theme.of(context).primaryTextTheme.headlineMedium?.copyWith(
+              color: darkGrey,
+              fontSize: 18,
+              fontWeight: FontWeight.w400,
+              height: 1.22),
+          children: [
+            TextSpan(
+              text: state.profile.memberProfil.memberships.value.client,
+              style: const TextStyle(
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ],
+        ),
+      )
+    ];
   }
 
   Future<void> openTelefonlEditModal() {

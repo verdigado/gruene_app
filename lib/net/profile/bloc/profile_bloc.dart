@@ -113,6 +113,14 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
                     .copyWith(visible: event.visibel)));
         emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
       }
+      if (event.fieldName == 'memberships') {
+        var newProfil = profil.copyWith(
+            memberProfil: state.profile.memberProfil.copyWith(
+                memberships: profil.memberProfil.memberships
+                    .copyWith(visible: event.visibel)));
+        emit(ProfileState(profile: newProfil, status: ProfileStatus.ready));
+      }
+
       if (event.fieldName == 'telefon') {
         var newProfil = profil.copyWith(
             memberProfil: state.profile.memberProfil.copyWith(
