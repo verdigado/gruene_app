@@ -28,24 +28,3 @@ jobs:
           cache: true
       - name: Building Android application
         run: flutter build apk --target lib/main_${{env.FLUTTER_FLAVOR}}.dart --flavor ${{env.FLUTTER_FLAVOR}} --release
-      - name: Transmit to AppCenter
-        env:
-          APP_CENTER_TOKEN: ${{ secrets.APP_CENTER_ANDROID }}
-        run: |
-          echo 'Installing App Center CLI tools'
-          npm install -g appcenter-cli
-          echo "Find build artifacts"
-          apkPath=$(find . -name "app*release.apk" | head -1)
-          echo "Found apk at $apkPath"
-          if [[ -z ${apkPath} ]]
-          then
-            echo "No apks were found, skip publishing to App Center"
-          else
-            echo "Publishing $apkPath to App Center"
-            appcenter distribute release \
-            --group ${{env.APPSTORE_GROUP}} \
-            --file "${apkPath}" \
-            --release-notes '${{ github.event.head_commit.message }}' \
-            --app Die-Gruenen/Gruene-App-Android \
-            --token "${APP_CENTER_TOKEN}"
-          fi
