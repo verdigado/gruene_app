@@ -15,9 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Flutter action
-        uses: subosito/flutter-action@v2.8.0
+        uses: subosito/flutter-action@v2.12.0
         with:
-          flutter-version: "3.7.3"
+          flutter-version: "3.19.0"
           channel: "stable"
           cache: true
       - name: Fetching Flutter dependencies
