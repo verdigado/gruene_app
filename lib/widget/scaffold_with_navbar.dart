@@ -7,7 +7,7 @@ class ScaffoldWithNavbar extends StatefulWidget {
   final Widget child;
 
   final String titel;
-  final appBarItems = [startScreen, moreScreen];
+  final appBarItems = [startScreen, mapScreen, moreScreen];
 
   ScaffoldWithNavbar({
     Key? key,
@@ -36,6 +36,11 @@ class _ScaffoldWithNavbarState extends State<ScaffoldWithNavbar> {
           BottomNavigationBarItem(
             icon: const Icon(Icons.home),
             label: AppLocalizations.of(context)!.home,
+            backgroundColor: Colors.white,
+          ),
+          BottomNavigationBarItem(
+            icon: const Icon(Icons.map),
+            label: AppLocalizations.of(context)!.map,
             backgroundColor: Colors.white,
           ),
           BottomNavigationBarItem(

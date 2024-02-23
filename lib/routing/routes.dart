@@ -1,5 +1,6 @@
 // PATHS
 const startScreen = '/';
+const mapScreen = '/map';
 const moreScreen = '/more';
 const searchScreen = '/search';
 const newsScreen = '/news';
@@ -33,6 +34,8 @@ String getTitel(String route) {
   switch (route) {
     case startScreen:
       return 'Start';
+    case mapScreen:
+      return 'Karte';
     case moreScreen:
       return 'Mehr';
     case searchScreen:

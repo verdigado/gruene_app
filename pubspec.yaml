@@ -89,6 +89,10 @@ dependencies:
   flutter_bounce: ^1.1.0
   flutter_inappwebview: ^5.7.2+3
   mobile_scanner: ^3.2.0
+  maplibre_gl:
+    git:
+      url: https://github.com/maplibre/flutter-maplibre-gl.git
+      ref: main
 
 
 

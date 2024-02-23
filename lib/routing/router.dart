@@ -24,6 +24,7 @@ import 'package:gruene_app/widget/external_webview.dart';
 import 'package:gruene_app/widget/scaffold_with_navbar.dart';
 
 import 'package:gruene_app/screens/interests/interest_pages_screen.dart';
+import 'package:gruene_app/screens/map/map_screen.dart';
 import 'app_startup.dart';
 
 final GlobalKey<NavigatorState> rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -52,6 +53,12 @@ final GoRouter router = GoRouter(
           path: startScreen,
           pageBuilder: (context, state) {
             return const CustomNoTransitionPage(child: StartScreen());
+          },
+        ),
+        GoRoute(
+          path: mapScreen,
+          pageBuilder: (context, state) {
+            return const CustomNoTransitionPage(child: MapScreen());
           },
         ),
         GoRoute(
