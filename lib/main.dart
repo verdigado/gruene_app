@@ -1,6 +1,10 @@
 import 'package:flutter/widgets.dart';
 
+import 'i18n/translations.g.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  LocaleSettings.useDeviceLocale();
   runApp(const MyApp());
 }
 

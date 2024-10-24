@@ -1,0 +1,17 @@
+{
+  "news": {
+    "news": "Artikel"
+  },
+  "campaign": {
+    "campaign": "Wahlkampf"
+  },
+  "profile": {
+    "profiles": "Mitglieder"
+  },
+  "twoFactorAuthentication": {
+    "twoFactorAuthentication": "2FA"
+  },
+  "tools": {
+    "tools": "Tools"
+  }
+}
