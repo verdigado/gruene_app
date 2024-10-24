@@ -1,0 +1,8 @@
+{
+  "scripts": {
+    "format": "fvm dart format -l 120 .",
+    "analyze": "fvm dart analyze",
+    "fix": "fvm dart fix --apply",
+    "fix:dry": "fvm dart fix --dry-run"
+  }
+}
