@@ -1,4 +1,7 @@
 {
+  "common": {
+    "appName": "Grüne App"
+  },
   "news": {
     "news": "Artikel"
   },
