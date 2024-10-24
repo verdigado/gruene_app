@@ -1,5 +1,5 @@
-# Created by https://www.toptal.com/developers/gitignore/api/flutter,intellij
-# Edit at https://www.toptal.com/developers/gitignore?templates=flutter,intellij
+# Created by https://www.toptal.com/developers/gitignore/api/flutter,intellij,visualstudiocode
+# Edit at https://www.toptal.com/developers/gitignore?templates=flutter,intellij,visualstudiocode
 
 ### Flutter ###
 # Flutter/Dart/Pub related
@@ -178,4 +178,23 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 
-# End of https://www.toptal.com/developers/gitignore/api/flutter,intellij
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+# End of https://www.toptal.com/developers/gitignore/api/flutter,intellij,visualstudiocode
