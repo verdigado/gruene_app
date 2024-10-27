@@ -33,6 +33,7 @@ class BottomNavigationState extends State<BottomNavigation> {
       height: 64.0,
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
+        backgroundColor: ThemeColors.white,
         items: bottomNavigationItems.map((item) {
           return BottomNavigationBarItem(
             icon: Padding(
