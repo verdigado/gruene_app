@@ -2,6 +2,13 @@
   "common": {
     "appName": "Grüne App"
   },
+  "bottomNavigation": {
+    "news": "Artikel",
+    "campaigns": "Wahlkampf",
+    "profiles": "Mitglieder",
+    "mfa": "2FA",
+    "apps": "Tools"
+  },
   "news": {
     "news": "Artikel"
   },

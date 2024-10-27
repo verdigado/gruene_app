@@ -7,5 +7,8 @@ CustomTransitionPage buildPageWithoutAnimation<T>({
   required Widget child,
 }) {
   return CustomTransitionPage<T>(
-      key: state.pageKey, child: child, transitionsBuilder: (context, animation, secondaryAnimation, child) => child,);
+    key: state.pageKey,
+    child: child,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) => child,
+  );
 }
