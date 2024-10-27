@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/constants/bottom_navigation_items.dart';
 import 'package:gruene_app/app/constants/theme_colors.dart';
 import 'package:gruene_app/app/constants/theme_text_styles.dart';
-
-import '../constants/bottom_navigation_items.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -20,8 +19,7 @@ class BottomNavigationState extends State<BottomNavigation> {
   void didChangeDependencies() {
     super.didChangeDependencies();
     final currentRoute = GoRouterState.of(context).path;
-    final index =
-        bottomNavigationItems.indexWhere((item) => item.route == currentRoute);
+    final index = bottomNavigationItems.indexWhere((item) => item.route == currentRoute);
     if (index != -1) {
       _currentIndex = index;
     }
@@ -48,7 +46,7 @@ class BottomNavigationState extends State<BottomNavigation> {
                           _currentIndex == bottomNavigationItems.indexOf(item)
                               ? ThemeColors.stateHoverGreen
                               : ThemeColors.middleGrey,
-                          BlendMode.srcIn),
+                          BlendMode.srcIn,),
                     ),
                   ],
                 ),

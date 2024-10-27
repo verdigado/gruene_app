@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gruene_app/app/router.dart';
-
-import 'i18n/translations.g.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
