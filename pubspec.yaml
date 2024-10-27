@@ -55,6 +55,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/bottom_navigation/
 
 
   # To add assets to your application, add an assets section, like this:
