@@ -1,0 +1,4 @@
+base_locale: de
+fallback_strategy: base_locale
+input_file_pattern: .json
+output_file_name: translations.g.dart

@@ -30,10 +30,13 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  flutter_localizations:
+    sdk: flutter
   flutter_bloc: ^8.1.6
   get_it: ^8.0.0
   dio: ^5.7.0
-  slang: ^3.32.0
+  slang: ^4.1.0
+  slang_flutter: ^4.1.0
   go_router: ^14.3.0
 
 dev_dependencies:
