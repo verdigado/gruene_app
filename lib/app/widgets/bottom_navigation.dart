@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/bottom_navigation_items.dart';
-import 'package:gruene_app/app/constants/theme_colors.dart';
-import 'package:gruene_app/app/constants/theme_text_styles.dart';
+import 'package:gruene_app/app/theme.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class BottomNavigation extends StatefulWidget {
@@ -60,10 +59,6 @@ class BottomNavigationState extends State<BottomNavigation> {
           );
         }).toList(),
         currentIndex: _currentIndex,
-        unselectedItemColor: ThemeColors.middleGrey,
-        selectedItemColor: ThemeColors.stateHoverGreen,
-        unselectedLabelStyle: ThemeTextStyles.smallText,
-        selectedLabelStyle: ThemeTextStyles.smallText,
         onTap: (index) {
           context.go(bottomNavigationItems[index].route);
         },
