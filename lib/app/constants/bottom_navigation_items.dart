@@ -13,13 +13,13 @@ class BottomNavigationItem {
 }
 
 final List<BottomNavigationItem> bottomNavigationItems = [
-  BottomNavigationItem(iconPath: 'assets/bottom_navigation/news.svg', labelKey: 'news', route: Routes.news),
+   BottomNavigationItem(iconPath: 'assets/bottom_navigation/news.svg', getTitle: (BuildContext context) => t.news.news, route: Routes.news),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/campaigns.svg',
-    labelKey: 'campaigns',
+    getTitle: (BuildContext context) => t.campaigns.campaigns,
     route: Routes.campaigns,
   ),
-  BottomNavigationItem(iconPath: 'assets/bottom_navigation/profiles.svg', labelKey: 'profiles', route: Routes.profiles),
-  BottomNavigationItem(iconPath: 'assets/bottom_navigation/mfa.svg', labelKey: 'mfa', route: Routes.mfa),
-  BottomNavigationItem(iconPath: 'assets/bottom_navigation/apps.svg', labelKey: 'apps', route: Routes.apps),
+  BottomNavigationItem(iconPath: 'assets/bottom_navigation/profiles.svg', getTitle: (BuildContext context) => t.profiles.profiles, route: Routes.profiles),
+  BottomNavigationItem(iconPath: 'assets/bottom_navigation/mfa.svg', getTitle: (BuildContext context) => t.mfa.mfa, route: Routes.mfa),
+  BottomNavigationItem(iconPath: 'assets/bottom_navigation/apps.svg', getTitle: (BuildContext context) => t.apps.apps, route: Routes.apps),
 ];
