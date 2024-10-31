@@ -2,7 +2,7 @@ import 'package:gruene_app/app/constants/routes.dart';
 
 class BottomNavigationItem {
   final String iconPath;
-  final String labelKey;
+  final String Function(BuildContext) getTitle;
   final String route;
 
   BottomNavigationItem({
