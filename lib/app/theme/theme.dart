@@ -27,6 +27,7 @@ class ThemeTextStyles {
 
 final ThemeData appTheme = ThemeData(
   primaryColor: ThemeColors.primary,
+  disabledColor: ThemeColors.disabled,
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: ThemeColors.background,
     selectedItemColor: ThemeColors.primary,
