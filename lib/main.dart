@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gruene_app/app/router.dart';
-import 'package:gruene_app/app/theme.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() {
