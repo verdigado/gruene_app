@@ -55,7 +55,7 @@ class BottomNavigationState extends State<BottomNavigation> {
                 ),
               ),
             ),
-            label: item.getTitle(context),
+            label: item.getLabel(context),
           );
         }).toList(),
         currentIndex: _currentIndex,

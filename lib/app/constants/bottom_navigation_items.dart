@@ -4,12 +4,12 @@ import 'package:gruene_app/i18n/translations.g.dart';
 
 class BottomNavigationItem {
   final String iconPath;
-  final String Function(BuildContext) getTitle;
+  final String Function(BuildContext) getLabel;
   final String route;
 
   BottomNavigationItem({
     required this.iconPath,
-    required this.getTitle,
+    required this.getLabel,
     required this.route,
   });
 }
@@ -17,27 +17,27 @@ class BottomNavigationItem {
 final List<BottomNavigationItem> bottomNavigationItems = [
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/news.svg',
-    getTitle: (BuildContext context) => t.bottomNavigation.news,
+    getLabel: (BuildContext context) => t.news.label,
     route: Routes.news,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/campaigns.svg',
-    getTitle: (BuildContext context) => t.bottomNavigation.campaigns,
+    getLabel: (BuildContext context) => t.campaigns.label,
     route: Routes.campaigns,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/profiles.svg',
-    getTitle: (BuildContext context) => t.bottomNavigation.profiles,
+    getLabel: (BuildContext context) => t.profiles.label,
     route: Routes.profiles,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/mfa.svg',
-    getTitle: (BuildContext context) => t.bottomNavigation.mfa,
+    getLabel: (BuildContext context) => t.mfa.label,
     route: Routes.mfa,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/apps.svg',
-    getTitle: (BuildContext context) => t.bottomNavigation.apps,
+    getLabel: (BuildContext context) => t.tools.label,
     route: Routes.apps,
   ),
 ];

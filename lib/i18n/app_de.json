@@ -2,26 +2,24 @@
   "common": {
     "appName": "Grüne App"
   },
-  "bottomNavigation": {
-    "news": "Artikel",
-    "campaigns": "Wahlkampf",
-    "profiles": "Mitglieder",
-    "mfa": "2FA",
-    "apps": "Tools"
-  },
   "news": {
-    "news": "Artikel"
+    "news": "Artikel",
+    "label": "Artikel"
   },
-  "campaign": {
-    "campaign": "Wahlkampf"
+  "campaigns": {
+    "campaign": "Wahlkampf",
+    "label": "Wahlkampf"
   },
-  "profile": {
-    "profiles": "Mitglieder"
+  "profiles": {
+    "profiles": "Mitglieder",
+    "label": "Mitglieder"
   },
-  "twoFactorAuthentication": {
-    "twoFactorAuthentication": "2FA"
+  "mfa": {
+    "mfa": "Zwei-Faktor-Authentifizierung",
+    "label": "2FA"
   },
   "tools": {
-    "tools": "Tools"
+    "tools": "Tools",
+    "label": "Tools"
   }
 }
