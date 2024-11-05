@@ -38,6 +38,8 @@ dependencies:
   slang: ^4.1.0
   slang_flutter: ^4.1.0
   go_router: ^14.3.0
+  google_fonts: ^6.2.1
+  flutter_svg: ^2.0.10+1
 
 dev_dependencies:
 
@@ -53,6 +55,8 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  assets:
+    - assets/bottom_navigation/
 
 
   # To add assets to your application, add an assets section, like this:

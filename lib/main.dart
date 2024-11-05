@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'i18n/translations.g.dart';
+import 'package:gruene_app/app/router.dart';
+import 'package:gruene_app/app/theme.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -15,16 +15,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    final router = createAppRouter();
+
+    return MaterialApp.router(
       locale: TranslationProvider.of(context).flutterLocale,
       supportedLocales: AppLocaleUtils.supportedLocales,
       localizationsDelegates: GlobalMaterialLocalizations.delegates,
-      builder: (context, _) => Center(
-        child: Text(
-          t.common.appName,
-          textDirection: TextDirection.ltr,
-        ),
-      ),
+      routerConfig: router,
+      theme: appTheme,
     );
   }
 }
