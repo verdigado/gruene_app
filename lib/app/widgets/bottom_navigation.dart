@@ -3,7 +3,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/bottom_navigation_items.dart';
 import 'package:gruene_app/app/theme.dart';
-import 'package:gruene_app/i18n/translations.g.dart';
 
 class BottomNavigation extends StatefulWidget {
   const BottomNavigation({super.key});
@@ -27,12 +26,11 @@ class BottomNavigationState extends State<BottomNavigation> {
 
   @override
   Widget build(BuildContext context) {
-    final t = Translations.of(context);
     return SizedBox(
       height: 64.0,
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: ThemeColors.white,
+        backgroundColor: ThemeColors.background,
         items: bottomNavigationItems.map((item) {
           return BottomNavigationBarItem(
             icon: Padding(
@@ -46,8 +44,8 @@ class BottomNavigationState extends State<BottomNavigation> {
                       item.iconPath,
                       colorFilter: ColorFilter.mode(
                         _currentIndex == bottomNavigationItems.indexOf(item)
-                            ? ThemeColors.stateHoverGreen
-                            : ThemeColors.middleGrey,
+                            ? ThemeColors.primary
+                            : ThemeColors.disabled,
                         BlendMode.srcIn,
                       ),
                     ),
