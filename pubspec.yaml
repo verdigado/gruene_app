@@ -55,6 +55,9 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  # Required to directly use material icons
+  # https://api.flutter.dev/flutter/material/Icons-class.html
+  # TODO Remove once custom icons are used
   uses-material-design: true
   assets:
     - assets/bottom_navigation/
