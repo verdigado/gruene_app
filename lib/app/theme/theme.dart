@@ -12,9 +12,29 @@ class ThemeColors {
   static const Color background = Color(0xFFFFFFFF);
   // Softer Grey (#F9FAFB)
   static const Color backgroundSecondary = Color(0xFFF9FAFB);
+  // Black (#000000)
+  static const Color text = Color(0xFF000000);
 }
 
 class ThemeTextStyles {
+  // TOOD use GrueneType font
+  static TextStyle appBarText = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w900,
+      fontStyle: FontStyle.italic,
+      height: 1.6,
+      letterSpacing: 0.02,
+    ),
+  );
+  static TextStyle body = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 14,
+      fontWeight: FontWeight.w400,
+      height: 1.6,
+      letterSpacing: 0.02,
+    ),
+  );
   static TextStyle smallText = GoogleFonts.ptSans(
     textStyle: TextStyle(
       fontSize: 10,
@@ -23,11 +43,34 @@ class ThemeTextStyles {
       letterSpacing: 0.01,
     ),
   );
+  static TextStyle h4 = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w400,
+      height: 1,
+      letterSpacing: 0.02,
+    ),
+  );
+  static TextStyle h4Title = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 18,
+      fontWeight: FontWeight.w700,
+      height: 1.3,
+      letterSpacing: 0.02,
+    ),
+  );
 }
 
 final ThemeData appTheme = ThemeData(
   primaryColor: ThemeColors.primary,
   disabledColor: ThemeColors.disabled,
+  textTheme: TextTheme(
+    displayMedium: ThemeTextStyles.appBarText,
+    bodyLarge: ThemeTextStyles.h4,
+    bodyMedium: ThemeTextStyles.body,
+    titleMedium: ThemeTextStyles.h4Title,
+    labelSmall: ThemeTextStyles.smallText,
+  ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: ThemeColors.background,
     selectedItemColor: ThemeColors.primary,

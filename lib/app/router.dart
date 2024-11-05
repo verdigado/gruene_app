@@ -7,6 +7,7 @@ import 'package:gruene_app/features/campaigns/screens/campaigns_screen.dart';
 import 'package:gruene_app/features/mfa/screens/mfa_screen.dart';
 import 'package:gruene_app/features/news/screens/news_screen.dart';
 import 'package:gruene_app/features/profiles/screens/profiles_screen.dart';
+import 'package:gruene_app/features/settings/screens/settings_screen.dart';
 import 'package:gruene_app/features/tools/screens/tools_screen.dart';
 
 GoRoute buildRoute(String path, Widget child) {
@@ -29,6 +30,7 @@ GoRouter createAppRouter() {
       buildRoute(Routes.profiles, ProfilesScreen()),
       buildRoute(Routes.mfa, MfaScreen()),
       buildRoute(Routes.tools, ToolsScreen()),
+      buildRoute(Routes.settings, SettingsScreen()),
     ],
   );
 }
