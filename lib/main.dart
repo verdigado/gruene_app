@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final router = createAppRouter();
+    final router = createAppRouter(context);
 
     return MaterialApp.router(
       locale: TranslationProvider.of(context).flutterLocale,

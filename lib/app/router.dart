@@ -9,9 +9,11 @@ import 'package:gruene_app/features/news/screens/news_screen.dart';
 import 'package:gruene_app/features/profiles/screens/profiles_screen.dart';
 import 'package:gruene_app/features/settings/screens/settings_screen.dart';
 import 'package:gruene_app/features/tools/screens/tools_screen.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 
-GoRoute buildRoute(String path, Widget child) {
+GoRoute buildRoute(String path, String name, Widget child) {
   return GoRoute(
+    name: name,
     path: path,
     pageBuilder: (BuildContext context, GoRouterState state) => buildPageWithoutAnimation<void>(
       context: context,
@@ -21,16 +23,16 @@ GoRoute buildRoute(String path, Widget child) {
   );
 }
 
-GoRouter createAppRouter() {
+GoRouter createAppRouter(BuildContext context) {
   return GoRouter(
     initialLocation: Routes.news,
     routes: [
-      buildRoute(Routes.news, NewsScreen()),
-      buildRoute(Routes.campaigns, CampaignsScreen()),
-      buildRoute(Routes.profiles, ProfilesScreen()),
-      buildRoute(Routes.mfa, MfaScreen()),
-      buildRoute(Routes.tools, ToolsScreen()),
-      buildRoute(Routes.settings, SettingsScreen()),
+      buildRoute(Routes.news, t.news.news, NewsScreen()),
+      buildRoute(Routes.campaigns, t.campaigns.campaigns, CampaignsScreen()),
+      buildRoute(Routes.profiles, t.profiles.profiles, ProfilesScreen()),
+      buildRoute(Routes.mfa, t.mfa.mfa, MfaScreen()),
+      buildRoute(Routes.tools, t.tools.tools, ToolsScreen()),
+      buildRoute(Routes.settings, t.settings.settings, SettingsScreen()),
     ],
   );
 }
