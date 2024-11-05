@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
-class AppsScreen extends StatelessWidget {
-  const AppsScreen({super.key});
+class ToolsScreen extends StatelessWidget {
+  const ToolsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
     return const Center(
-      child: Text('Apps Screen'),
+      child: Text('Tools Screen'),
     );
   }
 }

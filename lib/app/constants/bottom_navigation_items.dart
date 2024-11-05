@@ -36,8 +36,8 @@ final List<BottomNavigationItem> bottomNavigationItems = [
     route: Routes.mfa,
   ),
   BottomNavigationItem(
-    iconPath: 'assets/bottom_navigation/apps.svg',
+    iconPath: 'assets/bottom_navigation/tools.svg',
     getLabel: (BuildContext context) => t.tools.label,
-    route: Routes.apps,
+    route: Routes.tools,
   ),
 ];
