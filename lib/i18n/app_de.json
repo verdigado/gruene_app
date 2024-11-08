@@ -41,5 +41,15 @@
   },
   "login": {
     "login": "Anmeldung"
+  },
+  "intro": {
+    "support": "Unterstützen",
+    "welcome": "Willkommen!",
+    "loginMembers": "Jetzt einloggen",
+    "loginNonMembers": "Login für Nicht-Parteimitglieder",
+    "dataProtection": "Datenschutz",
+    "legalNotice": "Impressum",
+    "discover": "App erkunden",
+    "discoverDescription": "Erfahre hier, was Dich erwartet."
   }
 }
