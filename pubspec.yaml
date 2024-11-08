@@ -45,6 +45,7 @@ dependencies:
   flutter_dotenv: ^5.2.1
   equatable: ^2.0.5
   logger: ^2.4.0
+  jwt_decoder: ^2.0.1
 
 dev_dependencies:
 

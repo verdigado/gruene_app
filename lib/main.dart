@@ -24,7 +24,7 @@ class MyApp extends StatelessWidget {
     final authRepository = AuthRepository();
 
     return BlocProvider(
-      create: (context) => AuthBloc(authRepository),
+      create: (context) => AuthBloc(authRepository)..add(CheckTokenRequested()),
       child: Builder(
         builder: (context) {
           final authBloc = context.read<AuthBloc>();

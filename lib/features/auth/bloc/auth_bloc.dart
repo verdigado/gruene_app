@@ -8,6 +8,8 @@ class SignInRequested extends AuthEvent {}
 
 class SignOutRequested extends AuthEvent {}
 
+class CheckTokenRequested extends AuthEvent {}
+
 class AuthState {}
 
 class AuthInitial extends AuthState {}
@@ -37,6 +39,21 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
     on<SignOutRequested>((event, emit) async {
       await authRepository.signOut();
       emit(Unauthenticated());
+    });
+
+    on<CheckTokenRequested>((event, emit) async {
+      emit(AuthLoading());
+      final isValid = await authRepository.isTokenValid();
+      if (isValid) {
+        emit(Authenticated());
+      } else {
+        final refreshed = await authRepository.refreshToken();
+        if (refreshed) {
+          emit(Authenticated());
+        } else {
+          emit(Unauthenticated());
+        }
+      }
     });
   }
 }
