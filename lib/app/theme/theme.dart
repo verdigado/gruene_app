@@ -26,9 +26,11 @@ class ThemeColors {
   // Middle Grey (#9CABAF)
   static const Color textDisabled = Color(0xFF9CABAF);
 
+  // Light Grey (#CCE7D7)
+  static const Color textLight = Color(0xFFCCE7D7);
 }
 
-class ThemeTextStyles {
+class _ThemeTextStyles {
   // TOOD use GrueneType font
   static TextStyle displayMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
@@ -49,6 +51,7 @@ class ThemeTextStyles {
       letterSpacing: 0.02,
     ),
   );
+  static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21, letterSpacing: 0.02);
 
   static TextStyle bodyMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
@@ -82,19 +85,20 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     surfaceDim: ThemeColors.backgroundSecondary,
   ),
   textTheme: TextTheme(
-    displayLarge: ThemeTextStyles.displayLarge,
-    displayMedium: ThemeTextStyles.displayMedium,
-    titleMedium: ThemeTextStyles.titleMedium,
-    bodyLarge: ThemeTextStyles.bodyLarge,
-    bodyMedium: ThemeTextStyles.bodyMedium,
-    labelSmall: ThemeTextStyles.labelSmall,
+    displayLarge: _ThemeTextStyles.displayLarge,
+    displayMedium: _ThemeTextStyles.displayMedium,
+    titleLarge: _ThemeTextStyles.titleLarge,
+    titleMedium: _ThemeTextStyles.titleMedium,
+    bodyLarge: _ThemeTextStyles.bodyLarge,
+    bodyMedium: _ThemeTextStyles.bodyMedium,
+    labelSmall: _ThemeTextStyles.labelSmall,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(
     backgroundColor: ThemeColors.background,
     selectedItemColor: ThemeColors.primary,
     unselectedItemColor: ThemeColors.textDisabled,
-    selectedLabelStyle: ThemeTextStyles.labelSmall,
-    unselectedLabelStyle: ThemeTextStyles.labelSmall,
+    selectedLabelStyle: _ThemeTextStyles.labelSmall,
+    unselectedLabelStyle: _ThemeTextStyles.labelSmall,
   ),
   scaffoldBackgroundColor: ThemeColors.backgroundSecondary,
 );

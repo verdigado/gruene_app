@@ -200,6 +200,8 @@ fabric.properties
 
 # End of https://www.toptal.com/developers/gitignore/api/flutter,intellij,visualstudiocode
 
+# Custom
 .DS_Store
+devtools_options.yaml
 
 .env
