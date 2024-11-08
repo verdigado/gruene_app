@@ -34,7 +34,15 @@ class _BottomSheetHandleState extends State<BottomSheetHandle> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Center(
-            child: Icon(Icons.drag_handle, color: ThemeColors.textLight),
+            child: Container(
+              margin: const EdgeInsets.only(top: 12),
+              width: 48,
+              height: 6,
+              decoration: BoxDecoration(
+                color: ThemeColors.textLight,
+                borderRadius: BorderRadius.all(Radius.circular(18)),
+              ),
+            ),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 24, horizontal: 16),
