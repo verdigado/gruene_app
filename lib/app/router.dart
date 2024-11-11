@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/util/build_page_without_animation.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
@@ -36,7 +37,7 @@ GoRouter createAppRouter() {
     ],
     redirect: (context, state) {
       final authBloc = context.read<AuthBloc>();
-      final isLoggedIn = authBloc.state is Authenticated;
+      final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
       final isLoggingIn = state.uri.toString() == Routes.login;
 
       if (!isLoggedIn && !isLoggingIn) return Routes.login;
