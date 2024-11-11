@@ -65,7 +65,7 @@ class AuthRepository {
       await _secureStorage.write(key: 'id_token', value: result.idToken);
       await _secureStorage.write(key: 'refresh_token', value: result.refreshToken);
       return true;
-        } catch (e) {
+    } catch (e) {
       _logger.w('Token refresh was not successful: $e');
     }
     return false;

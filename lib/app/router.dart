@@ -5,7 +5,6 @@ import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/util/build_page_without_animation.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
-import 'package:gruene_app/features/auth/bloc/auth_stream.dart';
 import 'package:gruene_app/features/auth/screens/login_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/campaigns_screen.dart';
 import 'package:gruene_app/features/mfa/screens/mfa_screen.dart';
@@ -24,10 +23,9 @@ GoRoute buildRoute(String path, Widget child, {bool withMainLayout = true}) {
   );
 }
 
-GoRouter createAppRouter(AuthStream authStream) {
+GoRouter createAppRouter() {
   return GoRouter(
     initialLocation: Routes.news,
-    refreshListenable: authStream,
     routes: [
       buildRoute(Routes.news, NewsScreen()),
       buildRoute(Routes.campaigns, CampaignsScreen()),
