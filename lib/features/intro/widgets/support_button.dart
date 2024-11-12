@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/widgets/icon.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class SupportButton extends StatelessWidget {
@@ -15,9 +16,11 @@ class SupportButton extends StatelessWidget {
           quarterTurns: 3,
           child: OutlinedButton.icon(
             onPressed: () => {},
-            icon: Icon(
-              Icons.favorite,
+            icon: CustomIcon(
+              path: 'assets/icons/heart.svg',
               color: theme.colorScheme.tertiary,
+              width: 16,
+              height: 16,
             ),
             label: Text(
               t.intro.support,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/theme.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class BottomSheetHandle extends StatefulWidget {

@@ -76,7 +76,7 @@ class _ThemeTextStyles {
 
 final ThemeData appTheme = ThemeData.light().copyWith(
   primaryColor: ThemeColors.primary,
-  disabledColor: ThemeColors.disabled,
+  disabledColor: ThemeColors.textDisabled,
   colorScheme: ThemeData.light().colorScheme.copyWith(
     primary: ThemeColors.primary,
     secondary: ThemeColors.secondary,

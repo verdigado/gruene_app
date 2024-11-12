@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/theme.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/bottom_sheet_handle.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
@@ -15,7 +16,7 @@ class WelcomeView extends StatelessWidget {
         Spacer(),
         SizedBox(
           height: 256,
-          child: Image(image: AssetImage('assets/graphics/intro.png')),
+          child: SvgPicture.asset('assets/graphics/intro.svg'),
         ),
         Center(
           child: Text(t.intro.welcome, style: theme.textTheme.displayLarge?.apply(color: ThemeColors.text)),
