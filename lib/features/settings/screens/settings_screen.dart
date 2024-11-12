@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/section_title.dart';
+import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/features/settings/widgets/settings_item.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
@@ -10,6 +13,8 @@ class SettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final authBloc = context.read<AuthBloc>();
+    final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
     return ListView(
       padding: const EdgeInsets.only(top: 32),
       children: [
@@ -30,16 +35,16 @@ class SettingsScreen extends StatelessWidget {
         SettingsItem(title: t.settings.legalNotice, onPress: () => {}),
         SettingsItem(title: t.settings.dataProtectionStatement, onPress: () => {}),
         SettingsItem(title: t.settings.termsOfUse, onPress: () => {}),
-        Container(
+        isLoggedIn ? Container(
           padding: const EdgeInsets.only(top: 48),
           child: TextButton(
-            onPressed: () => {},
+            onPressed: () => context.read<AuthBloc>().add(SignOutRequested()),
             child: Text(
               t.settings.logout,
               style: theme.textTheme.bodyMedium!.apply(color: ThemeColors.text, decoration: TextDecoration.underline),
             ),
           ),
-        ),
+        ) : Container(),
       ],
     );
   }
