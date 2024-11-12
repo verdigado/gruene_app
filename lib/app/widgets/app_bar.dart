@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/widgets/icon.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   const MainAppBar({super.key});
@@ -18,7 +19,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         if (currentRoute.path != Routes.settings)
           IconButton(
-            icon: const Icon(Icons.settings),
+            icon: CustomIcon(path: 'assets/icons/settings.svg', color: ThemeColors.background),
             onPressed: () => context.push(Routes.settings),
           ),
       ],
