@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/routes.dart';
-import 'package:gruene_app/app/util/build_page_without_animation.dart';
+import 'package:gruene_app/app/utils/build_page_without_animation.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/features/auth/screens/login_screen.dart';
