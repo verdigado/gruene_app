@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/widgets/persistent_bottom_sheet.dart';
+import 'package:gruene_app/features/login/widgets/intro_slides.dart';
 import 'package:gruene_app/features/login/widgets/support_button.dart';
 import 'package:gruene_app/features/login/widgets/welcome_view.dart';
 
@@ -14,8 +16,18 @@ class LoginScreen extends StatelessWidget {
         color: theme.colorScheme.surface,
         child: Stack(
           children: [
-            WelcomeView(),
+            LayoutBuilder(
+              builder: (context, constraints) {
+                return Container(
+                  padding: EdgeInsets.only(bottom: defaultBottomSheetSize * constraints.maxHeight),
+                  child: WelcomeView(),
+                );
+              },
+            ),
             SupportButton(),
+            PersistentBottomSheet(
+              child: IntroSlides(),
+            ),
           ],
         ),
       ),
