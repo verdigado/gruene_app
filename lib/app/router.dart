@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/routes.dart';
-import 'package:gruene_app/app/util/build_page_without_animation.dart';
+import 'package:gruene_app/app/utils/build_page_without_animation.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/features/campaigns/screens/campaigns_screen.dart';
 import 'package:gruene_app/features/mfa/screens/mfa_screen.dart';
