@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
+import 'package:gruene_app/features/login/bloc/auth_bloc.dart';
 
 class AuthStream extends ChangeNotifier {
   final AuthBloc authBloc;

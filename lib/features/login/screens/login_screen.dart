@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/features/intro/widgets/support_button.dart';
-import 'package:gruene_app/features/intro/widgets/welcome_view.dart';
+import 'package:gruene_app/features/login/widgets/support_button.dart';
+import 'package:gruene_app/features/login/widgets/welcome_view.dart';
 
-class IntroScreen extends StatelessWidget {
-  const IntroScreen({super.key});
+class LoginScreen extends StatelessWidget {
+  const LoginScreen({super.key});
 
   @override
   Widget build(BuildContext context) {

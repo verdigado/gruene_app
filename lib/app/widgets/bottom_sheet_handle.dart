@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/login/widgets/discover_app_bottom_sheet.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class BottomSheetHandle extends StatefulWidget {
@@ -19,7 +20,9 @@ class _BottomSheetHandleState extends State<BottomSheetHandle> {
   }
 
   void openBottomSheet(BuildContext context) {
-    // Scaffold.of(context).showBottomSheet(builder)
+    Scaffold.of(context).showBottomSheet((BuildContext context) => DiscoverAppBottomSheet(),
+      constraints: BoxConstraints(minHeight: 0.25),
+    );
   }
 
   @override
@@ -49,11 +52,14 @@ class _BottomSheetHandleState extends State<BottomSheetHandle> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  t.intro.discover,
-                  style: theme.textTheme.titleLarge,
+                TextButton(
+                  onPressed: () => openBottomSheet(context),
+                  child: Text(
+                    t.login.discover,
+                    style: theme.textTheme.titleLarge,
+                  ),
                 ),
-                Text(t.intro.discoverDescription, style: theme.textTheme.bodyMedium),
+                Text(t.login.discoverDescription, style: theme.textTheme.bodyMedium),
               ],
             ),
           ),

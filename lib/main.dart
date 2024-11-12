@@ -4,8 +4,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/theme/theme.dart';
-import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
-import 'package:gruene_app/features/auth/repository/auth_repository.dart';
+import 'package:gruene_app/features/login/bloc/auth_bloc.dart';
+import 'package:gruene_app/features/login/repository/auth_repository.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() async {

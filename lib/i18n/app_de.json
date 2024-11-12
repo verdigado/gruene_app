@@ -40,9 +40,7 @@
     "label": "Tools"
   },
   "login": {
-    "login": "Anmeldung"
-  },
-  "intro": {
+    "login": "Anmeldung",
     "support": "Unterstützen",
     "welcome": "Willkommen!",
     "loginMembers": "Jetzt einloggen",

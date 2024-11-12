@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/bottom_sheet_handle.dart';
+import 'package:gruene_app/features/login/bloc/auth_bloc.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -16,18 +18,18 @@ class WelcomeView extends StatelessWidget {
         Spacer(),
         SizedBox(
           height: 256,
-          child: SvgPicture.asset('assets/graphics/intro.svg'),
+          child: SvgPicture.asset('assets/graphics/login.svg'),
         ),
         Center(
-          child: Text(t.intro.welcome, style: theme.textTheme.displayLarge?.apply(color: ThemeColors.text)),
+          child: Text(t.login.welcome, style: theme.textTheme.displayLarge?.apply(color: ThemeColors.text)),
         ),
         Spacer(),
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 24),
           height: 64,
           child: FilledButton(
-            onPressed: () => {},
-            child: Text(t.intro.loginMembers, style: theme.textTheme.titleMedium),
+            onPressed: () => context.read<AuthBloc>().add(SignInRequested()),
+            child: Text(t.login.loginMembers, style: theme.textTheme.titleMedium),
           ),
         ),
         Container(
@@ -35,7 +37,7 @@ class WelcomeView extends StatelessWidget {
           child: OutlinedButton(
             onPressed: () => {},
             child: Text(
-              t.intro.loginNonMembers,
+              t.login.loginNonMembers,
               style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
             ),
           ),
@@ -46,7 +48,7 @@ class WelcomeView extends StatelessWidget {
             TextButton(
               onPressed: () => {},
               child: Text(
-                t.intro.dataProtection,
+                t.login.dataProtection,
                 style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
               ),
             ),
@@ -54,7 +56,7 @@ class WelcomeView extends StatelessWidget {
             TextButton(
               onPressed: () => {},
               child: Text(
-                t.intro.legalNotice,
+                t.login.legalNotice,
                 style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
               ),
             ),

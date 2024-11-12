@@ -23,7 +23,7 @@ class SupportButton extends StatelessWidget {
               height: 16,
             ),
             label: Text(
-              t.intro.support,
+              t.login.support,
               style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
             ),
           ),
