@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/widgets/app_bar.dart';
 import 'package:gruene_app/app/widgets/bottom_navigation.dart';
 
 class MainLayout extends StatelessWidget {
@@ -11,6 +12,7 @@ class MainLayout extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: const BottomNavigation(),
+      appBar: const MainAppBar(),
     );
   }
 }

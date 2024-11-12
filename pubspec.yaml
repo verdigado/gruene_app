@@ -63,6 +63,7 @@ dev_dependencies:
 flutter:
   assets:
     - assets/bottom_navigation/
+    - assets/icons/
     - .env
 
 

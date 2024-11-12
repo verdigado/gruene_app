@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = AuthRepository();
-    final router = createAppRouter();
+    final router = createAppRouter(context);
 
     return BlocProvider(
       create: (context) => AuthBloc(authRepository)..add(CheckTokenRequested()),
