@@ -28,3 +28,13 @@ Commit messages and PR names should have the following schema:
 See [this guide](https://github.com/erlang/otp/wiki/Writing-good-commit-messages) for a general reference on how to
 write good commit messages.
 
+## Environment variables
+The application uses the following environment variables:
+
+- `USE_LOGIN`: If set to `true`, the application will use the OIDC login. This variable is only a temporary solution to allow starting the app without IDP with secure connection. It will be removed later.
+- `CLIENT_ID`: The client ID of the OIDC client.
+- `ISSUER`: The issuer url of the identity provider.
+
+You can copy the `.env.example` file to `.env` and fill in the values.   
+Please note that it's not possible to use the OIDC login if issuer url does not have a secure connection.
+
