@@ -12,12 +12,13 @@ class BottomNavigation extends StatelessWidget {
     final route = GoRouter.of(context).routerDelegate.currentConfiguration.matches[0].route as GoRoute;
     final currentRoute = route.path;
     final currentRouteIndex = bottomNavigationItems.indexWhere((item) => item.route == currentRoute);
+    final theme = Theme.of(context);
 
     return SizedBox(
       height: 64.0,
       child: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
-        backgroundColor: ThemeColors.background,
+        backgroundColor: theme.colorScheme.surface,
         items: bottomNavigationItems.map((item) {
           final isSelected = currentRoute == item.route;
           return BottomNavigationBarItem(
@@ -31,7 +32,7 @@ class BottomNavigation extends StatelessWidget {
                     SvgPicture.asset(
                       item.iconPath,
                       colorFilter: ColorFilter.mode(
-                        isSelected ? ThemeColors.primary : ThemeColors.disabled,
+                        isSelected ? theme.colorScheme.primary : ThemeColors.textDisabled,
                         BlendMode.srcIn,
                       ),
                     ),
