@@ -1,12 +1,51 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/app/constants/config.dart';
+import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/widgets/section_title.dart';
+import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
+import 'package:gruene_app/features/settings/widgets/settings_item.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Settings Screen'),
+    final theme = Theme.of(context);
+    final authBloc = context.read<AuthBloc>();
+    final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
+    return ListView(
+      padding: const EdgeInsets.only(top: 32),
+      children: [
+        SectionTitle(title: t.settings.campaignsSettings),
+        SettingsItem(title: t.settings.inviteNonMember, onPress: () => {}),
+        SettingsItem(title: t.settings.offlineMaps, onPress: () => {}),
+        SectionTitle(title: t.settings.generalSettings),
+        SettingsItem(title: t.settings.pushNotifications, onPress: () => {}),
+        SettingsItem(title: t.settings.accessibility, onPress: () => {}),
+        SettingsItem(title: t.settings.supportAndFeedback, onPress: () => {}),
+        SettingsItem(
+          title: t.settings.actionNetwork,
+          onPress: () => {},
+          isExternal: true,
+        ),
+        SettingsItem(title: t.settings.newsletter, onPress: () => {}, isExternal: true),
+        SectionTitle(title: t.settings.legalSettings),
+        SettingsItem(title: t.settings.legalNotice, onPress: () => {}),
+        SettingsItem(title: t.settings.dataProtectionStatement, onPress: () => {}),
+        SettingsItem(title: t.settings.termsOfUse, onPress: () => {}),
+        isLoggedIn ? Container(
+          padding: const EdgeInsets.only(top: 48),
+          child: TextButton(
+            onPressed: () => context.read<AuthBloc>().add(SignOutRequested()),
+            child: Text(
+              t.settings.logout,
+              style: theme.textTheme.bodyMedium!.apply(color: ThemeColors.text, decoration: TextDecoration.underline),
+            ),
+          ),
+        ) : Container(),
+      ],
     );
   }
 }
