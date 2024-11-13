@@ -8,7 +8,29 @@
   },
   "campaigns": {
     "campaigns": "Wahlkampf",
-    "label": "Wahlkampf"
+    "label": "Wahlkampf",
+    "filters": {
+      "focusAreas": "Fokusgebiete",
+      "routes": "Routen",
+      "visited_areas": "Besuchte Gebiete",
+      "polling_stations": "Wahllokale",
+      "experience_areas": "Erfahrungsgebiete"
+    },
+    "posters": {
+      "label": "Plakate"
+    },
+    "door": {
+      "label": "Haustür"
+    },
+    "flyer": {
+      "label": "Flyer"
+    },
+    "team": {
+      "label": "Team"
+    },
+    "statistic": {
+      "label": "Statistik"
+    }
   },
   "profiles": {
     "profiles": "Mitglieder",
