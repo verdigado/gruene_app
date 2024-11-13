@@ -34,6 +34,13 @@ class AuthRepository {
   }
 
   Future<void> signOut() async {
+    await _appAuth.endSession(
+      EndSessionRequest(
+        idTokenHint: await _secureStorage.read(key: SecureStorageKeys.idToken),
+        postLogoutRedirectUrl: 'com.example.grueneapp://oauthredirect',
+        issuer: Config.issuer,
+      ),
+    );
     await _secureStorage.deleteAll();
   }
 
