@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeColors {
@@ -72,11 +71,11 @@ final ThemeData appTheme = ThemeData(
   primaryColor: ThemeColors.primary,
   disabledColor: ThemeColors.textDisabled,
   colorScheme: ThemeData.light().colorScheme.copyWith(
-    primary: ThemeColors.primary,
-    secondary: ThemeColors.secondary,
-    surface: ThemeColors.background,
-    surfaceDim: ThemeColors.backgroundSecondary,
-  ),
+        primary: ThemeColors.primary,
+        secondary: ThemeColors.secondary,
+        surface: ThemeColors.background,
+        surfaceDim: ThemeColors.backgroundSecondary,
+      ),
   textTheme: TextTheme(
     displayMedium: ThemeTextStyles.appBarText,
     bodyLarge: ThemeTextStyles.h4,
