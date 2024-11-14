@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/constants/urls.dart';
+import 'package:gruene_app/app/utils/open_inappbrowser.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
@@ -15,7 +17,7 @@ class SupportButton extends StatelessWidget {
       child: RotatedBox(
         quarterTurns: 3,
         child: OutlinedButton.icon(
-          onPressed: () => {},
+          onPressed: () => openInAppBrowser(supportUrl, context),
           icon: CustomIcon(
             path: 'assets/icons/heart.svg',
             color: theme.colorScheme.tertiary,
