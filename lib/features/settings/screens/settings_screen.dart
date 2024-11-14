@@ -34,12 +34,21 @@ class SettingsScreen extends StatelessWidget {
         ),
         SettingsItem(title: t.settings.newsletter, onPress: () => {}, isExternal: true),
         SectionTitle(title: t.settings.legalSettings),
-        SettingsItem(title: t.settings.legalNotice, onPress: () => openInAppBrowser(legalNoticeUrl, context)),
+        SettingsItem(
+          title: t.settings.legalNotice,
+          onPress: () => openInAppBrowser(legalNoticeUrl, context),
+          isExternal: true,
+        ),
         SettingsItem(
           title: t.settings.dataProtectionStatement,
           onPress: () => openInAppBrowser(dataProtectionStatementUrl, context),
+          isExternal: true,
         ),
-        SettingsItem(title: t.settings.termsOfUse, onPress: () => openInAppBrowser(termsOfUseUrl, context)),
+        SettingsItem(
+          title: t.settings.termsOfUse,
+          onPress: () => openInAppBrowser(termsOfUseUrl, context),
+          isExternal: true,
+        ),
         isLoggedIn
             ? Container(
                 padding: const EdgeInsets.only(top: 48),
