@@ -113,9 +113,6 @@ jobs:
                 command: fvm dart format -l 120 -o none --set-exit-if-changed .
                 name: Check Formatting
             - run:
-                command: fvm flutter pub run build_runner build
-                name: Build Runner
-            - run:
                 command: fvm flutter analyze --fatal-infos --fatal-warnings
                 name: Check Analyzer and Linting
 parameters:

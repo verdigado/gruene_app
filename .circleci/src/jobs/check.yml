@@ -14,9 +14,6 @@ steps:
       name: Check Formatting
       command: fvm dart format -l 120 -o none --set-exit-if-changed .
   - run:
-      name: Build Runner
-      command: fvm flutter pub run build_runner build
-  - run:
       name: Check Analyzer and Linting
       command: fvm flutter analyze --fatal-infos --fatal-warnings
 #  - run:
