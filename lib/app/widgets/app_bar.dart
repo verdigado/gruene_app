@@ -12,8 +12,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     final currentRoute = GoRouterState.of(context);
     final theme = Theme.of(context);
     return AppBar(
-      title: Text(currentRoute.name ?? '', style: theme.textTheme.displayMedium?.apply(color: ThemeColors.background)),
-      foregroundColor: ThemeColors.background,
+      title: Text(currentRoute.name ?? '', style: theme.textTheme.displayMedium?.apply(color: theme.colorScheme.surface)),
+      foregroundColor: theme.colorScheme.surface,
       backgroundColor: theme.primaryColor,
       centerTitle: true,
       actions: [

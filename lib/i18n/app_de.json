@@ -40,6 +40,14 @@
     "label": "Tools"
   },
   "login": {
-    "login": "Anmeldung"
+    "login": "Anmeldung",
+    "support": "Unterstützen",
+    "welcome": "Willkommen!",
+    "loginMembers": "Jetzt einloggen",
+    "loginNonMembers": "Login für Nicht-Parteimitglieder",
+    "dataProtection": "Datenschutz",
+    "legalNotice": "Impressum",
+    "discover": "App erkunden",
+    "discoverDescription": "Erfahre hier, was Dich erwartet."
   }
 }
