@@ -14,6 +14,12 @@ steps:
       name: Check Formatting
       command: fvm dart format -l 120 -o none --set-exit-if-changed .
   - run:
+      name: Generate Translations
+      command: fvm dart run slang
+  - run:
+      name: Apply Example Environment
+      command: cp .env.example .env
+  - run:
       name: Check Analyzer and Linting
       command: fvm flutter analyze --fatal-infos --fatal-warnings
 #  - run:
