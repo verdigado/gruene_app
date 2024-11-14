@@ -203,5 +203,6 @@ fabric.properties
 # Custom
 .DS_Store
 devtools_options.yaml
-
 .env
+report.xml
+node_modules

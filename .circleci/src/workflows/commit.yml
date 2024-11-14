@@ -1,7 +1,10 @@
-when:
-  and:
-    - << pipeline.parameters.run_commit >>
-    - not:
-        equal: [ main, << pipeline.git.branch >> ]
+unless:
+  or:
+    - equal: [main, << pipeline.git.branch >>]
+    - << pipeline.parameters.api_triggered >>
 jobs:
   - check
+  - bump_version
+  - build_android:
+      requires:
+        - bump_version

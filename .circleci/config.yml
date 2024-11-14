@@ -95,7 +95,121 @@ commands:
             - run:
                 command: cat ~/attached_workspace/environment_variables >> ${BASH_ENV}
                 name: Restore environment variables
+    restore_gradle_cache:
+        description: Restores and saves the gradle cache.
+        steps:
+            - restore_cache:
+                keys:
+                    - v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
+                    - v1-gradle-
+            - run:
+                command: bundle exec fastlane dependencies
+                name: '[FL] Download Dependencies'
+            - save_cache:
+                key: v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
+                paths:
+                    - ~/.gradle
+    restore_npm_cache:
+        description: Restores and saves the node_modules directories of the tools directory.
+        steps:
+            - restore_cache:
+                keys:
+                    - v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+                    - v1-node-modules-
+            - run:
+                command: '[ ! -d node_modules ] && npm ci --ignore-scripts --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache.'
+                name: Install node dependencies for npm workspaces
+            - save_cache:
+                key: v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+                paths:
+                    - ~/tools/node_modules
+    restore_ruby_cache:
+        description: Restores and saves fastlane cache of the passed directory.
+        parameters:
+            directory:
+                type: string
+        steps:
+            - restore_cache:
+                keys:
+                    - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                    - v1-gems-{{ arch }}-
+                name: Restore Ruby Cache
+            - run:
+                command: bundle config set path 'vendor/bundle'
+                name: Configure Installation Directory
+                working_directory: << parameters.directory >>
+            - run:
+                command: bundle check || bundle install
+                name: '[FL] Install'
+                working_directory: << parameters.directory >>
+            - save_cache:
+                key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                name: Save Ruby Cache
+                paths:
+                    - << parameters.directory >>/vendor/bundle
 jobs:
+    build_android:
+        docker:
+            - image: cimg/android:2024.01.1-node
+        environment:
+            GRADLE_OPTS: -Dorg.gradle.jvmargs="-Xmx2048m" -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2
+        resource_class: large
+        steps:
+            - checkout:
+                path: ~/project
+            - prepare_workspace
+            - install_dart_linux
+            - install_fvm
+            - restore_environment_variables
+            - restore_ruby_cache:
+                directory: android
+            - run:
+                command: |
+                    fvm flutter pub get --enforce-lockfile
+                    fvm flutter precache --android
+                name: Install Flutter Packages
+                working_directory: android
+            - run:
+                command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+                name: '[FL] Build'
+                working_directory: android
+            - run:
+                command: mkdir -p attached_workspace
+                name: Make attached_workspace dir
+            - run:
+                command: mv ~/project/build/app/outputs/bundle/release/app-release.aab ~/attached_workspace/app-release.aab
+                name: Move aab
+            - run:
+                command: mv ~/project/build/app/outputs/apk/release/app-release.apk ~/attached_workspace/app-release.apk
+                name: Move apk
+            - persist_to_workspace:
+                paths:
+                    - app-release.aab
+                    - app-release.apk
+                root: ~/attached_workspace
+            - store_artifacts:
+                path: ~/attached_workspace/
+    bump_version:
+        docker:
+            - image: cimg/node:20.13.1
+        parameters:
+            prepare_delivery:
+                default: false
+                description: Whether to prepare for a delivery. If true, the version bump is committed.
+                type: boolean
+        resource_class: small
+        steps:
+            - checkout:
+                path: ~/project
+            - run:
+                command: echo "export NEW_VERSION_NAME=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}
+                name: Calculate next version name
+                working_directory: tools
+            - run:
+                command: echo "export NEW_VERSION_CODE=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}
+                name: Calculate next version code
+                working_directory: tools
+            - persist_environment_variables
     check:
         docker:
             - image: cimg/node:20.13.1
@@ -122,19 +236,31 @@ jobs:
                 command: fvm flutter analyze --fatal-infos --fatal-warnings
                 name: Check Analyzer and Linting
 parameters:
-    run_commit:
-        default: true
+    api_triggered:
+        default: false
+        description: Whether the pipeline was triggered through the CircleCi API (https://circleci.com/docs/api/v2/?shell#trigger-a-new-pipeline).
         type: boolean
+    workflow_type:
+        default: none
+        enum:
+            - beta_delivery
+            - production_delivery
+            - promotion
+            - none
+        type: enum
 version: 2.1
 workflows:
     commit:
         jobs:
             - check
-        when:
-            and:
-                - << pipeline.parameters.run_commit >>
-                - not:
-                    equal:
-                        - main
-                        - << pipeline.git.branch >>
+            - bump_version
+            - build_android:
+                requires:
+                    - bump_version
+        unless:
+            or:
+                - equal:
+                    - main
+                    - << pipeline.git.branch >>
+                - << pipeline.parameters.api_triggered >>
 
