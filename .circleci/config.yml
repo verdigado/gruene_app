@@ -113,6 +113,12 @@ jobs:
                 command: fvm dart format -l 120 -o none --set-exit-if-changed .
                 name: Check Formatting
             - run:
+                command: fvm dart run slang
+                name: Generate Translations
+            - run:
+                command: cp .env.example .env
+                name: Apply Example Environment
+            - run:
                 command: fvm flutter analyze --fatal-infos --fatal-warnings
                 name: Check Analyzer and Linting
 parameters:
