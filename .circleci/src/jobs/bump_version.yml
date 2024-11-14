@@ -10,6 +10,7 @@ resource_class: small
 steps:
   - checkout:
       path: ~/project
+  - restore_npm_cache
   - run:
       name: Calculate next version name
       command: echo "export NEW_VERSION_NAME=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}
