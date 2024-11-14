@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/widgets/bottom_sheet_handle.dart';
 
-const double defaultBottomSheetSize = 0.15;
+const double defaultBottomSheetSize = 0.2;
 
 class PersistentBottomSheet extends StatefulWidget {
   final Widget child;

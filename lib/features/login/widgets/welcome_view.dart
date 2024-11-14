@@ -31,16 +31,18 @@ class WelcomeView extends StatelessWidget {
             child: Text(t.login.loginMembers, style: theme.textTheme.titleMedium),
           ),
         ),
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: OutlinedButton(
-            onPressed: () => {},
-            child: Text(
-              t.login.loginNonMembers,
-              style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
-            ),
-          ),
-        ),
+        // TODO #203: Uncomment for guest login
+        // https://github.com/verdigado/gruene_app/issues/203
+        // Container(
+        //   padding: const EdgeInsets.symmetric(horizontal: 24),
+        //   child: OutlinedButton(
+        //     onPressed: () => {},
+        //     child: Text(
+        //       t.login.loginNonMembers,
+        //       style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
+        //     ),
+        //   ),
+        // ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -51,7 +53,11 @@ class WelcomeView extends StatelessWidget {
                 style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
               ),
             ),
-            Icon(Icons.circle, size: 4),
+            Container(
+              width: 4,
+              height: 4,
+              decoration: BoxDecoration(color: theme.primaryColor, shape: BoxShape.circle),
+            ),
             TextButton(
               onPressed: () => {},
               child: Text(
