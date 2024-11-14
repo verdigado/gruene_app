@@ -1,0 +1,24 @@
+steps:
+  - run:
+      name: Install FVM
+      command: |
+        dart pub global activate fvm
+        echo 'export PATH=$HOME/.pub-cache/bin:$PATH' >> $BASH_ENV
+        export PATH="$PATH":"$HOME/.pub-cache/bin"
+  - restore_cache:
+      keys:
+        - v1-fvm-{{ checksum ".fvmrc" }}-{{ arch }}
+  - run:
+      name: Install Flutter
+      command: fvm install
+  - save_cache:
+      key: v1-fvm-{{ checksum ".fvmrc" }}-{{ arch }}
+      paths:
+        - .fvm
+        - ~/fvm/
+  - run:
+      name: Show Flutter version
+      command: fvm flutter --version
+  - run:
+      name: Configure Flutter
+      command: fvm flutter config --no-analytics
