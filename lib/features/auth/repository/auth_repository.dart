@@ -14,9 +14,9 @@ class AuthRepository {
     try {
       final AuthorizationTokenResponse result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
-          Config.clientId,
-          'com.example.grueneapp://oauthredirect',
-          issuer: Config.issuer,
+          Config.oidcClientId,
+          '${Config.appId}://${Config.oidcCallbackPath}',
+          issuer: Config.oidcIssuer,
           scopes: ['openid', 'profile', 'email'],
         ),
       );
@@ -37,8 +37,8 @@ class AuthRepository {
     await _appAuth.endSession(
       EndSessionRequest(
         idTokenHint: await _secureStorage.read(key: SecureStorageKeys.idToken),
-        postLogoutRedirectUrl: 'com.example.grueneapp://oauthredirect',
-        issuer: Config.issuer,
+        postLogoutRedirectUrl: '${Config.appId}://${Config.oidcCallbackPath}',
+        issuer: Config.oidcIssuer,
       ),
     );
     await _secureStorage.deleteAll();
@@ -62,10 +62,10 @@ class AuthRepository {
     try {
       final TokenResponse result = await _appAuth.token(
         TokenRequest(
-          Config.clientId,
-          'com.example.grueneapp://oauthredirect',
+          Config.oidcClientId,
+          '${Config.appId}://${Config.oidcCallbackPath}',
           refreshToken: refreshToken,
-          issuer: Config.issuer,
+          issuer: Config.oidcIssuer,
         ),
       );
 
