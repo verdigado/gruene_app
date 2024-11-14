@@ -1,6 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import 'package:gruene_app/features/login/repository/auth_repository.dart';
+import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 
 class AuthEvent {}
 

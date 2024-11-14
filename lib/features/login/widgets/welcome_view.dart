@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/theme/theme.dart';
-import 'package:gruene_app/features/login/bloc/auth_bloc.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class WelcomeView extends StatelessWidget {
