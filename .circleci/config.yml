@@ -208,7 +208,7 @@ jobs:
                 name: Calculate next version name
                 working_directory: tools
             - run:
-                command: echo "export NEW_VERSION_CODE=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}
+                command: echo "export NEW_VERSION_CODE=$(yarn --silent next-version calc | jq .versionCode)" >> ${BASH_ENV}
                 name: Calculate next version code
                 working_directory: tools
             - persist_environment_variables
