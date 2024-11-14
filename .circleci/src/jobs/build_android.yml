@@ -18,6 +18,7 @@ steps:
         fvm flutter pub get --enforce-lockfile
         fvm flutter precache --android
       working_directory: android
+  - prepare_project
 #  - run:
 #      name: '[FL] Prepare Android Keystore'
 #      command: bundle exec fastlane keystore

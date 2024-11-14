@@ -75,6 +75,14 @@ commands:
                 paths:
                     - environment_variables
                 root: ./
+    prepare_project:
+        steps:
+            - run:
+                command: fvm dart run slang
+                name: Generate Translations
+            - run:
+                command: cp .env.example .env
+                name: Apply Example Environment
     prepare_workspace:
         description: Attach the workspace at ~/attached_workspace and list its contents
         steps:
@@ -170,6 +178,7 @@ jobs:
                     fvm flutter precache --android
                 name: Install Flutter Packages
                 working_directory: android
+            - prepare_project
             - run:
                 command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: '[FL] Build'
@@ -228,12 +237,7 @@ jobs:
             - run:
                 command: fvm dart format -l 120 -o none --set-exit-if-changed .
                 name: Check Formatting
-            - run:
-                command: fvm dart run slang
-                name: Generate Translations
-            - run:
-                command: cp .env.example .env
-                name: Apply Example Environment
+            - prepare_project
             - run:
                 command: fvm flutter analyze --fatal-infos --fatal-warnings
                 name: Check Analyzer and Linting
