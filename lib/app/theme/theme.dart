@@ -78,12 +78,12 @@ final ThemeData appTheme = ThemeData.light().copyWith(
   primaryColor: ThemeColors.primary,
   disabledColor: ThemeColors.textDisabled,
   colorScheme: ThemeData.light().colorScheme.copyWith(
-    primary: ThemeColors.primary,
-    secondary: ThemeColors.secondary,
-    tertiary: ThemeColors.tertiary,
-    surface: ThemeColors.background,
-    surfaceDim: ThemeColors.backgroundSecondary,
-  ),
+        primary: ThemeColors.primary,
+        secondary: ThemeColors.secondary,
+        tertiary: ThemeColors.tertiary,
+        surface: ThemeColors.background,
+        surfaceDim: ThemeColors.backgroundSecondary,
+      ),
   textTheme: TextTheme(
     displayLarge: _ThemeTextStyles.displayLarge,
     displayMedium: _ThemeTextStyles.displayMedium,

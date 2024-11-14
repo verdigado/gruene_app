@@ -35,16 +35,19 @@ class SettingsScreen extends StatelessWidget {
         SettingsItem(title: t.settings.legalNotice, onPress: () => {}),
         SettingsItem(title: t.settings.dataProtectionStatement, onPress: () => {}),
         SettingsItem(title: t.settings.termsOfUse, onPress: () => {}),
-        isLoggedIn ? Container(
-          padding: const EdgeInsets.only(top: 48),
-          child: TextButton(
-            onPressed: () => context.read<AuthBloc>().add(SignOutRequested()),
-            child: Text(
-              t.settings.logout,
-              style: theme.textTheme.bodyMedium!.apply(color: ThemeColors.text, decoration: TextDecoration.underline),
-            ),
-          ),
-        ) : Container(),
+        isLoggedIn
+            ? Container(
+                padding: const EdgeInsets.only(top: 48),
+                child: TextButton(
+                  onPressed: () => context.read<AuthBloc>().add(SignOutRequested()),
+                  child: Text(
+                    t.settings.logout,
+                    style: theme.textTheme.bodyMedium!
+                        .apply(color: ThemeColors.text, decoration: TextDecoration.underline),
+                  ),
+                ),
+              )
+            : Container(),
       ],
     );
   }
