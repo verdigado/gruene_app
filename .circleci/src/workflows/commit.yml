@@ -1,6 +1,13 @@
-when:
-  and:
+unless:
+  or:
     - equal: [main, << pipeline.git.branch >>]
-    - not: << pipeline.parameters.api_triggered >>
+    - << pipeline.parameters.api_triggered >>
 jobs:
-  - check
+#  - check
+  - bump_version:
+      context:
+        - github
+      prepare_delivery: true
+#  - build_android:
+#      requires:
+#        - bump_version
