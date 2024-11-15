@@ -3,8 +3,11 @@ unless:
     - equal: [main, << pipeline.git.branch >>]
     - << pipeline.parameters.api_triggered >>
 jobs:
-  - check
-  - bump_version
-  - build_android:
-      requires:
-        - bump_version
+#  - check
+  - bump_version:
+      context:
+        - github
+      prepare_delivery: true
+#  - build_android:
+#      requires:
+#        - bump_version
