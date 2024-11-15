@@ -1,4 +1,5 @@
 base_locale: de
 fallback_strategy: base_locale
 input_file_pattern: .json
+input_directory: lib/i18n
 output_file_name: translations.g.dart
