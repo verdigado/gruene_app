@@ -1,15 +1,16 @@
 docker:
   - image: cimg/android:2024.01.1-node
+resource_class: large
+shell: /bin/bash -eo pipefail
 environment:
   GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m" -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2'
-resource_class: large
+  FASTLANE_SKIP_UPDATE_CHECK: true
 steps:
-  - checkout:
-      path: ~/project
+  - checkout
   - prepare_workspace
+  - restore_environment_variables
   - install_dart_linux
   - install_fvm
-  - restore_environment_variables
   - restore_ruby_cache:
       directory: android
   - run:
@@ -28,18 +29,18 @@ steps:
       command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: android
   - run:
-      name: Make attached_workspace dir
-      command: mkdir -p attached_workspace
-  - run:
       name: Move aab
-      command: mv ~/project/build/app/outputs/bundle/release/app-release.aab ~/attached_workspace/app-release.aab
+      command: mv ~/project/build/app/outputs/bundle/release/app-release.aab app-release.aab
+  - store_artifacts:
+      path: app-release.aab
   - run:
       name: Move apk
-      command: mv ~/project/build/app/outputs/apk/release/app-release.apk ~/attached_workspace/app-release.apk
+      command: mv ~/project/build/app/outputs/apk/release/app-release.apk app-release.apk
+  - store_artifacts:
+      path: app-release.apk
   - persist_to_workspace:
-      root: ~/attached_workspace
+      root: .
       paths:
         - app-release.aab
         - app-release.apk
-  - store_artifacts:
-      path: ~/attached_workspace/
+  - persist_environment_variables
