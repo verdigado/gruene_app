@@ -12,14 +12,28 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     final currentRoute = GoRouterState.of(context);
     final theme = Theme.of(context);
     return AppBar(
-      title: Text(currentRoute.name ?? '', style: theme.textTheme.displayMedium?.apply(color: theme.colorScheme.surface)),
+      title: Text(
+        currentRoute.name ?? '',
+        style: theme.textTheme.displayMedium?.apply(color: theme.colorScheme.surface),
+      ),
       foregroundColor: theme.colorScheme.surface,
       backgroundColor: theme.primaryColor,
       centerTitle: true,
       actions: [
+        if (currentRoute.path == Routes.campaigns)
+          IconButton(
+            icon: CustomIcon(
+              path: 'assets/icons/refresh.svg',
+              color: ThemeColors.background,
+            ),
+            onPressed: null,
+          ),
         if (currentRoute.path != Routes.settings)
           IconButton(
-            icon: CustomIcon(path: 'assets/icons/settings.svg', color: ThemeColors.background),
+            icon: CustomIcon(
+              path: 'assets/icons/settings.svg',
+              color: ThemeColors.background,
+            ),
             onPressed: () => context.push(Routes.settings),
           ),
       ],

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeColors {
@@ -31,7 +32,7 @@ class ThemeColors {
 }
 
 class _ThemeTextStyles {
-  // TOOD use GrueneType font
+  // TODO use GrueneType font
   static TextStyle displayMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
       fontSize: 18,
@@ -78,12 +79,12 @@ final ThemeData appTheme = ThemeData.light().copyWith(
   primaryColor: ThemeColors.primary,
   disabledColor: ThemeColors.textDisabled,
   colorScheme: ThemeData.light().colorScheme.copyWith(
-    primary: ThemeColors.primary,
-    secondary: ThemeColors.secondary,
-    tertiary: ThemeColors.tertiary,
-    surface: ThemeColors.background,
-    surfaceDim: ThemeColors.backgroundSecondary,
-  ),
+        primary: ThemeColors.primary,
+        secondary: ThemeColors.secondary,
+        tertiary: ThemeColors.tertiary,
+        surface: ThemeColors.background,
+        surfaceDim: ThemeColors.backgroundSecondary,
+      ),
   textTheme: TextTheme(
     displayLarge: _ThemeTextStyles.displayLarge,
     displayMedium: _ThemeTextStyles.displayMedium,
@@ -101,4 +102,14 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     unselectedLabelStyle: _ThemeTextStyles.labelSmall,
   ),
   scaffoldBackgroundColor: ThemeColors.backgroundSecondary,
+  actionIconTheme: ActionIconThemeData(
+    backButtonIconBuilder: (BuildContext context) => SvgPicture.asset('assets/icons/back.svg'),
+  ),
+  tabBarTheme: TabBarTheme(
+    indicatorColor: ThemeColors.primary,
+    indicatorSize: TabBarIndicatorSize.tab,
+    labelStyle: _ThemeTextStyles.titleMedium,
+    unselectedLabelStyle: _ThemeTextStyles.titleMedium,
+    labelColor: ThemeColors.primary,
+  ),
 );
