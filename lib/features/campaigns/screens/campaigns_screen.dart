@@ -8,7 +8,7 @@ import 'package:gruene_app/features/campaigns/screens/teams_screen.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class CampaignsScreen extends StatefulWidget {
-  CampaignsScreen({super.key});
+  const CampaignsScreen({super.key});
   @override
   State<CampaignsScreen> createState() => _CampaignsScreen();
 }
