@@ -259,22 +259,22 @@ workflows:
     commit:
         jobs:
             - check
-        when:
-            and:
-                - equal:
-                    - main
-                    - << pipeline.git.branch >>
-                - not: << pipeline.parameters.api_triggered >>
-    commit_main:
-        jobs:
-            - bump_version
-            - build_android:
-                requires:
-                    - bump_version
         unless:
             or:
                 - equal:
                     - main
                     - << pipeline.git.branch >>
                 - << pipeline.parameters.api_triggered >>
+    commit_main:
+        jobs:
+            - bump_version
+            - build_android:
+                requires:
+                    - bump_version
+        when:
+            and:
+                - equal:
+                    - main
+                    - << pipeline.git.branch >>
+                - not: << pipeline.parameters.api_triggered >>
 
