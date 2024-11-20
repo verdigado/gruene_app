@@ -40,6 +40,7 @@ class _ThemeTextStyles {
       fontStyle: FontStyle.italic,
       height: 1.6,
       letterSpacing: 0.02,
+      color: ThemeColors.text,
     ),
   );
   static TextStyle displayLarge = displayMedium.copyWith(fontSize: 34, letterSpacing: 0.03);
@@ -50,6 +51,7 @@ class _ThemeTextStyles {
       fontWeight: FontWeight.w700,
       height: 1.3,
       letterSpacing: 0.02,
+      color: ThemeColors.text,
     ),
   );
   static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21, letterSpacing: 0.02);
@@ -60,6 +62,7 @@ class _ThemeTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.6,
       letterSpacing: 0.02,
+      color: ThemeColors.text,
     ),
   );
 
@@ -71,6 +74,7 @@ class _ThemeTextStyles {
       fontWeight: FontWeight.w400,
       height: 1.3,
       letterSpacing: 0.01,
+      color: ThemeColors.text,
     ),
   );
 }

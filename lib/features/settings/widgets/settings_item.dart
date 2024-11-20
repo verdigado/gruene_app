@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
 
 class SettingsItem extends StatelessWidget {
@@ -13,8 +12,8 @@ class SettingsItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListTile(
-      onTap: onPress,
-      title: Text(title, style: theme.textTheme.bodyLarge?.apply(color: ThemeColors.text)),
+      onTap: () => {},
+      title: Text(title, style: theme.textTheme.bodyLarge),
       trailing: CustomIcon(
         path: isExternal ? 'assets/icons/external.svg' : 'assets/icons/chevron.svg',
         color: theme.disabledColor,

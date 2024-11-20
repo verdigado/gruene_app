@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/theme/theme.dart';
 
 class SectionTitle extends StatelessWidget {
   final String title;
@@ -12,7 +11,7 @@ class SectionTitle extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.only(bottom: 6, left: 24, right: 24, top: 24),
       color: theme.colorScheme.surfaceDim,
-      child: Text(title, style: theme.textTheme.titleMedium?.apply(color: ThemeColors.text)),
+      child: Text(title, style: theme.textTheme.titleMedium),
     );
   }
 }
