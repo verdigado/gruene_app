@@ -1,0 +1,9 @@
+unless:
+  or:
+    - equal: [main, << pipeline.git.branch >>]
+    - << pipeline.parameters.api_triggered >>
+jobs:
+  - bump_version
+  - build_android:
+      requires:
+        - bump_version
