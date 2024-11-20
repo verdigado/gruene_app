@@ -1,0 +1,26 @@
+{
+  "version": "0.0.1",
+  "name": "tools",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "manage-metadata": "tsx manage-metadata.ts",
+    "git-version": "tsx git-version.ts",
+    "github-release": "tsx github-release.ts",
+    "github-promote-release": "tsx github-promote-release.ts",
+    "github-release-asset": "tsx github-release-asset.ts",
+    "move-release-notes": "tsx move-release-notes.ts",
+    "next-version": "tsx next-version.ts",
+    "trigger-pipeline": "tsx trigger-pipeline.ts"
+  },
+  "devDependencies": {
+    "@types/js-yaml": "^4.0.9",
+    "@types/node": "^22.9.0",
+    "@types/node-fetch": "^3.0.3",
+    "commander": "^12.1.0",
+    "js-yaml": "^4.1.0",
+    "node-fetch": "^3.3.2",
+    "tsx": "^4.19.2",
+    "typescript": "^5.6.3"
+  }
+}

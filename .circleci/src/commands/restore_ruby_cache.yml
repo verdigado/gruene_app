@@ -1,0 +1,23 @@
+description: Restores and saves fastlane cache of the passed directory.
+parameters:
+  directory:
+    type: string
+steps:
+  - restore_cache:
+      name: Restore Ruby Cache
+      keys:
+        - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+        - v1-gems-{{ arch }}-
+  - run:
+      name: Configure Installation Directory
+      command: bundle config set path 'vendor/bundle'
+      working_directory: << parameters.directory >>
+  - run:
+      name: '[FL] Install'
+      command: bundle check || bundle install
+      working_directory: << parameters.directory >>
+  - save_cache:
+      name: Save Ruby Cache
+      key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+      paths:
+        - << parameters.directory >>/vendor/bundle

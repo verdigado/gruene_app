@@ -20,7 +20,7 @@ steps:
           echo "The CircleCI config is up to date."
           exit 0;
         else
-          echo "The CircleCI config is not up to date. You can update it by running the `./scripts/circleci-update-config` script."
+          echo "The CircleCI config is not up to date. You can update it by running the `./tools/circleci-update-config` script."
           exit 1;
         fi
   - run:

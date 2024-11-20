@@ -1,0 +1,8 @@
+steps:
+  - run:
+      name: Generate Translations
+      command: fvm dart run slang
+  - run:
+      name: Apply Example Environment
+      # TODO Supply correct env
+      command: cp .env.example .env

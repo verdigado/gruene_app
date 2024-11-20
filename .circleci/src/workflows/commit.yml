@@ -1,7 +1,6 @@
 when:
   and:
-    - << pipeline.parameters.run_commit >>
-    - not:
-        equal: [ main, << pipeline.git.branch >> ]
+    - equal: [main, << pipeline.git.branch >>]
+    - not: << pipeline.parameters.api_triggered >>
 jobs:
   - check
