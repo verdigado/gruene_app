@@ -293,20 +293,6 @@ workflows:
     commit:
         jobs:
             - check
-            - bump_version:
-                context:
-                    - github
-                prepare_delivery: true
-            - build_android:
-                requires:
-                    - bump_version
-                    - check
-            - deliver_android:
-                context:
-                    - github
-                production_delivery: false
-                requires:
-                    - build_android
         unless:
             or:
                 - equal:
@@ -319,10 +305,10 @@ workflows:
             - build_android:
                 requires:
                     - bump_version
-        unless:
-            or:
+        when:
+            and:
                 - equal:
                     - main
                     - << pipeline.git.branch >>
-                - << pipeline.parameters.api_triggered >>
+                - not: << pipeline.parameters.api_triggered >>
 
