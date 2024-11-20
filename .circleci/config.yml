@@ -293,6 +293,11 @@ workflows:
     commit:
         jobs:
             - check
+            - bump_version
+            - build_android:
+                requires:
+                    - check
+                    - bump_version
         unless:
             or:
                 - equal:
