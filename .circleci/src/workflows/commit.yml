@@ -1,0 +1,7 @@
+when:
+  and:
+    - << pipeline.parameters.run_commit >>
+    - not:
+        equal: [ main, << pipeline.git.branch >> ]
+jobs:
+  - check

@@ -1,0 +1,27 @@
+docker:
+  - image: cimg/node:20.13.1
+resource_class: small
+steps:
+  - checkout:
+      path: ~/project
+  - check_circleci_config
+  - install_dart_linux
+  - install_fvm
+  - run:
+      name: Install Flutter Packages
+      command: fvm flutter pub get --enforce-lockfile
+  - run:
+      name: Check Formatting
+      command: fvm dart format -l 120 -o none --set-exit-if-changed .
+  - run:
+      name: Generate Translations
+      command: fvm dart run slang
+  - run:
+      name: Apply Example Environment
+      command: cp .env.example .env
+  - run:
+      name: Check Analyzer and Linting
+      command: fvm flutter analyze --fatal-infos --fatal-warnings
+#  - run:
+#      name: Tests
+#      command: fvm flutter test
