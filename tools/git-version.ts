@@ -1,7 +1,7 @@
 import { Octokit } from '@octokit/rest'
 import { program } from 'commander'
 
-import { VERSION_FILE, PLATFORMS, tagId } from './constants.js'
+import { VERSION_FILE, PLATFORMS, tagId, Platform } from './constants.js'
 import authenticate from './github-authentication.js'
 import jsYaml from 'js-yaml'
 
@@ -12,7 +12,7 @@ type TagOptions = {
   repo: string
   commitSha: string
   appOctokit: Octokit
-  platform: string
+  platform: Platform
 }
 
 const createTag = async ({ versionName, versionCode, owner, repo, commitSha, appOctokit, platform }: TagOptions) => {
@@ -25,7 +25,7 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
     tag: id,
     message: tagMessage,
     object: commitSha,
-    type: 'commit',
+    type: 'commit'
   })
   const tagSha = tag.data.sha
   console.warn(`New tag with id ${id} successfully created.`)
@@ -34,7 +34,7 @@ const createTag = async ({ versionName, versionCode, owner, repo, commitSha, app
     owner,
     repo,
     ref: `refs/tags/${id}`,
-    sha: tagSha,
+    sha: tagSha
   })
   console.warn(`New ref with id ${id} successfully created.`)
 }
@@ -48,7 +48,7 @@ type Options = {
 const commitAndTag = async (
   versionName: string,
   versionCodeString: string,
-  { githubPrivateKey, owner, repo, branch }: Options,
+  { githubPrivateKey, owner, repo, branch }: Options
 ) => {
   const appOctokit = await authenticate({ githubPrivateKey, owner, repo })
   const versionFileContent = await appOctokit.repos.getContent({ owner, repo, path: VERSION_FILE, ref: branch })
@@ -70,7 +70,7 @@ const commitAndTag = async (
     branch,
     message: commitMessage,
     // @ts-expect-error Random typescript error: property sha is not available on type { ..., sha: string, ... }
-    sha: versionFileContent.data.sha,
+    sha: versionFileContent.data.sha
   })
   console.warn(`New version successfully commited with message "${commitMessage}".`)
 
@@ -86,9 +86,9 @@ const commitAndTag = async (
         appOctokit,
         owner,
         repo,
-        platform,
-      }),
-    ),
+        platform
+      })
+    )
   )
 }
 
@@ -97,7 +97,7 @@ program
   .description('commits the supplied version name and code to github and tags the commit')
   .requiredOption(
     '--github-private-key <github-private-key>',
-    'private key of the github release bot in pem format with base64 encoding',
+    'private key of the github release bot in pem format with base64 encoding'
   )
   .requiredOption('--owner <owner>', 'owner of the current repository, usually verdigado')
   .requiredOption('--repo <repo>', 'the current repository, should be gruene_app')
