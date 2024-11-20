@@ -1,9 +1,9 @@
 docker:
   - image: cimg/node:20.13.1
 resource_class: small
+shell: /bin/bash -eo pipefail
 steps:
-  - checkout:
-      path: ~/project
+  - checkout
   - check_circleci_config
   - install_dart_linux
   - install_fvm
