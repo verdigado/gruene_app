@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/flyer_screen.dart';
+import 'package:gruene_app/features/campaigns/screens/google_map_demo.dart';
 import 'package:gruene_app/features/campaigns/screens/posters_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/statistics_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/teams_screen.dart';
@@ -18,6 +19,7 @@ class _CampaignsScreen extends State<CampaignsScreen> with SingleTickerProviderS
     CampaignMenuModel(t.campaigns.door.label, true, DoorsScreen()),
     CampaignMenuModel(t.campaigns.posters.label, true, PostersScreen()),
     CampaignMenuModel(t.campaigns.flyer.label, true, FlyerScreen()),
+    CampaignMenuModel('GoogleMap', true, GoogleMapDemo()),
     CampaignMenuModel(t.campaigns.team.label, false, TeamsScreen()),
     CampaignMenuModel(t.campaigns.statistic.label, false, StatisticsScreen()),
   ];

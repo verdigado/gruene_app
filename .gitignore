@@ -205,3 +205,5 @@ fabric.properties
 devtools_options.yaml
 
 .env
+
+/android/app/src/main/res/values/keys.xml

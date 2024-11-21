@@ -46,6 +46,16 @@ dependencies:
   equatable: ^2.0.5
   logger: ^2.4.0
   jwt_decoder: ^2.0.1
+  maplibre_gl: ^0.20.0
+  flutter_map: ^7.0.2
+  latlong2: ^0.9.1
+  flutter_map_cancellable_tile_provider: ^3.0.2
+  shared_preferences: ^2.3.3
+  url_launcher: ^6.3.1
+  vector_map_tiles: ^8.0.0
+  google_maps_flutter: ^2.10.0
+  turf: ^0.0.10
+  popover: ^0.3.1
 
 dev_dependencies:
 
@@ -61,10 +71,16 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
+  uses-material-design: true
   assets:
     - assets/bottom_navigation/
     - assets/icons/
     - assets/graphics/
+    - assets/symbols/
+    - assets/symbols/doors/
+    - assets/symbols/posters/
+    - assets/symbols/flyer/
+    - assets/styles/
     - .env
 
 
