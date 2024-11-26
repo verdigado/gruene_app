@@ -120,6 +120,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
+.idea/runConfigurations/main_dart.xml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
@@ -203,3 +204,5 @@ fabric.properties
 .DS_Store
 
 .env
+
+devtools_options.yaml
