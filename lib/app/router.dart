@@ -12,10 +12,11 @@ import 'package:gruene_app/features/mfa/screens/mfa_screen.dart';
 import 'package:gruene_app/features/news/screens/news_screen.dart';
 import 'package:gruene_app/features/profiles/screens/profiles_screen.dart';
 import 'package:gruene_app/features/settings/screens/settings_screen.dart';
+import 'package:gruene_app/features/settings/screens/support_screen.dart';
 import 'package:gruene_app/features/tools/screens/tools_screen.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-GoRoute buildRoute(String path, String name, Widget child, {bool withMainLayout = true}) {
+GoRoute buildRoute(String path, String name, Widget child, {List<RouteBase>? routes, bool withMainLayout = true}) {
   return GoRoute(
     name: name,
     path: path,
@@ -24,6 +25,7 @@ GoRoute buildRoute(String path, String name, Widget child, {bool withMainLayout 
       state: state,
       child: withMainLayout ? MainLayout(child: child) : child,
     ),
+    routes: routes ?? [],
   );
 }
 
@@ -36,7 +38,14 @@ GoRouter createAppRouter(BuildContext context) {
       buildRoute(Routes.profiles, t.profiles.profiles, ProfilesScreen()),
       buildRoute(Routes.mfa, t.mfa.mfa, MfaScreen()),
       buildRoute(Routes.tools, t.tools.tools, ToolsScreen()),
-      buildRoute(Routes.settings, t.settings.settings, SettingsScreen()),
+      buildRoute(
+        Routes.settings,
+        t.settings.settings,
+        SettingsScreen(),
+        routes: [
+          buildRoute(Routes.support, t.settings.supportAndFeedback, SupportScreen()),
+        ],
+      ),
       buildRoute(Routes.login, t.login.login, LoginScreen(), withMainLayout: false),
     ],
     redirect: (context, state) {
