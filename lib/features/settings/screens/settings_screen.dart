@@ -29,7 +29,7 @@ class SettingsScreen extends StatelessWidget {
         SettingsItem(title: t.settings.pushNotifications, onPress: () => {}),
         SettingsItem(title: t.settings.accessibility, onPress: () => {}),
         SettingsItem(
-          title: t.settings.supportAndFeedback,
+          title: t.settings.support.support,
           onPress: () => context.pushNamed(Routes.support.name!),
         ),
         SettingsItem(

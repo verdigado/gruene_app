@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
-import 'package:gruene_app/app/constants/config.dart';
-import 'package:gruene_app/app/widgets/section_title.dart';
-import 'package:gruene_app/features/settings/widgets/settings_item.dart';
+import 'package:gruene_app/app/constants/urls.dart';
+import 'package:gruene_app/features/settings/widgets/settings_card.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class SupportScreen extends StatelessWidget {
@@ -12,13 +9,34 @@ class SupportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final authBloc = context.read<AuthBloc>();
-    final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
     return ListView(
-      padding: const EdgeInsets.only(top: 32),
+      padding: const EdgeInsets.all(16),
       children: [
-        SectionTitle(title: t.settings.campaignsSettings),
-        SettingsItem(title: t.settings.inviteNonMember, onPress: () => {}),
+        Container(
+          padding: const EdgeInsets.only(bottom: 24),
+          child: Text(t.settings.support.contacts, style: theme.textTheme.titleLarge),
+        ),
+        SettingsCard(
+          title: t.settings.support.generalFeedback,
+          subtitle: grueneSupportMail,
+          icon: 'assets/icons/gruene.png',
+          onPress: () => {},
+          isExternal: true,
+        ),
+        SettingsCard(
+          title: t.settings.support.campaignSupport,
+          subtitle: pollionSupportMail,
+          icon: 'assets/icons/pollion.png',
+          onPress: () => {},
+          isExternal: true,
+        ),
+        SettingsCard(
+          title: t.settings.support.otherSupport,
+          subtitle: verdigadoSupportMail,
+          icon: 'assets/icons/verdigado.png',
+          onPress: () => {},
+          isExternal: true,
+        ),
       ],
     );
   }

@@ -61,6 +61,7 @@ class _ThemeTextStyles {
     ),
   );
   static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21, letterSpacing: 0.02);
+  static TextStyle titleSmall = titleMedium.copyWith(fontSize: 16, letterSpacing: 0.01);
 
   static TextStyle bodyMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
@@ -145,6 +146,7 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     displayMedium: _ThemeTextStyles.displayMedium,
     titleLarge: _ThemeTextStyles.titleLarge,
     titleMedium: _ThemeTextStyles.titleMedium,
+    titleSmall: _ThemeTextStyles.titleSmall,
     bodyLarge: _ThemeTextStyles.bodyLarge,
     bodyMedium: _ThemeTextStyles.bodyMedium,
     labelLarge: _ThemeTextStyles.labelLarge,

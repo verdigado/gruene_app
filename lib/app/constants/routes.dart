@@ -32,7 +32,7 @@ class Routes {
   static GoRoute mfa = buildRoute('/mfa', t.mfa.mfa, MfaScreen());
   static GoRoute tools = buildRoute('/tools', t.tools.tools, ToolsScreen());
   static GoRoute login = buildRoute('/login', t.login.login, LoginScreen(), withMainLayout: false);
-  static GoRoute support = buildRoute('support', t.settings.supportAndFeedback, SupportScreen());
+  static GoRoute support = buildRoute('support', t.settings.support.support, SupportScreen());
   static GoRoute settings = buildRoute(
     '/settings',
     t.settings.settings,
