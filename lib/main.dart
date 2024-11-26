@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
@@ -10,7 +11,8 @@ import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   LocaleSettings.useDeviceLocale();
   runApp(TranslationProvider(child: const MyApp()));
 }
@@ -28,6 +30,11 @@ class MyApp extends StatelessWidget {
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           router.refresh();
+          if (state is! AuthLoading && state is! AuthInitial) {
+            Future.delayed(Duration(seconds: 1), () {
+              FlutterNativeSplash.remove();
+            });
+          }
         },
         child: Builder(
           builder: (context) {
