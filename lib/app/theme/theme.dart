@@ -77,6 +77,24 @@ class _ThemeTextStyles {
       color: ThemeColors.text,
     ),
   );
+
+  static TextStyle labelMedium = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 13,
+      fontWeight: FontWeight.w400,
+      height: 1.3,
+      letterSpacing: 0.01,
+    ),
+  );
+
+  static TextStyle labelLarge = GoogleFonts.ptSans(
+    textStyle: TextStyle(
+      fontSize: 16,
+      fontWeight: FontWeight.w400,
+      height: 1.3,
+      letterSpacing: 0.01,
+    ),
+  );
 }
 
 final ThemeData appTheme = ThemeData.light().copyWith(
@@ -96,6 +114,8 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     titleMedium: _ThemeTextStyles.titleMedium,
     bodyLarge: _ThemeTextStyles.bodyLarge,
     bodyMedium: _ThemeTextStyles.bodyMedium,
+    labelLarge: _ThemeTextStyles.labelLarge,
+    labelMedium: _ThemeTextStyles.labelMedium,
     labelSmall: _ThemeTextStyles.labelSmall,
   ),
   bottomNavigationBarTheme: BottomNavigationBarThemeData(

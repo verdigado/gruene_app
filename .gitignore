@@ -204,3 +204,5 @@ devtools_options.yaml
 .env
 report.xml
 node_modules
+
+/lib/swagger_generated_code/

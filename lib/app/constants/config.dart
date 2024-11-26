@@ -6,4 +6,8 @@ class Config {
   static String get oidcClientId => dotenv.env['OIDC_CLIENT_ID'] ?? '';
   static String get oidcIssuer => dotenv.env['OIDC_ISSUER'] ?? '';
   static bool get useLogin => dotenv.env['USE_LOGIN'] == 'true';
+  static String get maplibreUrl => dotenv.env['MAP_MAPLIBRE_URL'] ?? '';
+  static String get addressSearchUrl => dotenv.env['MAP_ADDRESSSEARCH_URL'] ?? '';
+  static String get gruenesNetzApiUrl => dotenv.env['GRUENES_NETZ_API_URL'] ?? 'http://localhost:5000';
+  static String get gruenesNetzApiKey => dotenv.env['GRUENES_NETZ_API_KEY'] ?? '';
 }

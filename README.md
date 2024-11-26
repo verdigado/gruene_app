@@ -38,3 +38,20 @@ The application uses the following environment variables:
 You can copy the `.env.dev` file to `.env` and fill in the values.   
 Please note that it's not possible to use the OIDC login if issuer url does not have a secure connection.
 
+### Compiling the app
+
+installing flutter via fvm
+`fvm install`
+
+downloading flutter/dart packages
+`fvm flutter pub get`
+
+#### Creating translation files
+
+Before building the app, it's needed to generate the translation files
+
+`fvm flutter dart run slang`
+
+#### Generate SwaggerAPI Files
+
+`fvm dart run build_runner build`
