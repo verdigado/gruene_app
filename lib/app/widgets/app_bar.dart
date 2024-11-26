@@ -20,7 +20,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: theme.primaryColor,
       centerTitle: true,
       actions: [
-        if (currentRoute.path == Routes.campaigns)
+        if (currentRoute.path == Routes.campaigns.path)
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/refresh.svg',
@@ -28,13 +28,13 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             onPressed: null,
           ),
-        if (currentRoute.path != Routes.settings)
+        if (currentRoute.path != Routes.settings.path)
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/settings.svg',
               color: ThemeColors.background,
             ),
-            onPressed: () => context.push(Routes.settings),
+            onPressed: () => context.push(Routes.settings.path),
           ),
       ],
     );
