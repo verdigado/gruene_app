@@ -117,6 +117,7 @@ cmake-build-*/
 
 # IntelliJ
 out/
+.idea/runConfigurations/main_dart.xml
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
