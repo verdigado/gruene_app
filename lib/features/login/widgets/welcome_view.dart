@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
+import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/utils/open_inappbrowser.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class WelcomeView extends StatelessWidget {
@@ -47,7 +49,7 @@ class WelcomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             TextButton(
-              onPressed: () => {},
+              onPressed: () => openInAppBrowser(dataProtectionStatementUrl, context),
               child: Text(
                 t.login.dataProtection,
                 style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
@@ -59,7 +61,7 @@ class WelcomeView extends StatelessWidget {
               decoration: BoxDecoration(color: theme.primaryColor, shape: BoxShape.circle),
             ),
             TextButton(
-              onPressed: () => {},
+              onPressed: () => openInAppBrowser(legalNoticeUrl, context),
               child: Text(
                 t.login.legalNotice,
                 style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
