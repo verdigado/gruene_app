@@ -1,10 +1,17 @@
 #!/bin/sh
 
 #
-# Install this using:
+# Install this pre-commit hook by running the following command in the project root:
 # ln -s ../../.github/hooks/pre-commit .git/hooks/pre-commit
 #
 
+# Regenerate circle-ci config.yml
+CONFIG=$(git diff --cached --name-only .circleci/src)
+
+echo "$CONFIG" | ./tools/circleci-update-config
+echo "$CONFIG" | xargs git add .circleci/config.yml
+
+# Check dart files
 DART_FILES=$(git diff --cached --name-only --diff-filter=ACMR "*.dart" | sed 's| |\\ |g')
 
 if [ ! -z "$DART_FILES" ]; then

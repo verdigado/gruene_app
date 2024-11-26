@@ -8,7 +8,29 @@
   },
   "campaigns": {
     "campaigns": "Wahlkampf",
-    "label": "Wahlkampf"
+    "label": "Wahlkampf",
+    "filters": {
+      "focusAreas": "Fokusgebiete",
+      "routes": "Routen",
+      "visited_areas": "Besuchte Gebiete",
+      "polling_stations": "Wahllokale",
+      "experience_areas": "Erfahrungsgebiete"
+    },
+    "posters": {
+      "label": "Plakate"
+    },
+    "door": {
+      "label": "Haustür"
+    },
+    "flyer": {
+      "label": "Flyer"
+    },
+    "team": {
+      "label": "Team"
+    },
+    "statistic": {
+      "label": "Statistik"
+    }
   },
   "profiles": {
     "profiles": "Mitglieder",
@@ -40,6 +62,14 @@
     "label": "Tools"
   },
   "login": {
-    "login": "Anmeldung"
+    "login": "Anmeldung",
+    "support": "Unterstützen",
+    "welcome": "Willkommen!",
+    "loginMembers": "Jetzt einloggen",
+    "loginNonMembers": "Login für Nicht-Parteimitglieder",
+    "dataProtection": "Datenschutz",
+    "legalNotice": "Impressum",
+    "discover": "App erkunden",
+    "discoverDescription": "Erfahre hier, was Dich erwartet."
   }
 }

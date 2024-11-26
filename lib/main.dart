@@ -3,10 +3,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
+import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/theme/theme.dart';
-import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
-import 'package:gruene_app/features/auth/repository/auth_repository.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 void main() async {

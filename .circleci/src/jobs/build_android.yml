@@ -1,0 +1,46 @@
+docker:
+  - image: cimg/android:2024.01.1-node
+resource_class: large
+shell: /bin/bash -eo pipefail
+environment:
+  GRADLE_OPTS: '-Dorg.gradle.jvmargs="-Xmx2048m" -Dorg.gradle.daemon=false -Dorg.gradle.workers.max=2'
+  FASTLANE_SKIP_UPDATE_CHECK: true
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - install_dart_linux
+  - install_fvm
+  - restore_ruby_cache:
+      directory: android
+  - run:
+      name: Install Flutter Packages
+      command: |
+        fvm flutter pub get --enforce-lockfile
+        fvm flutter precache --android
+      working_directory: android
+  - prepare_project
+#  - run:
+#      name: '[FL] Prepare Android Keystore'
+#      command: bundle exec fastlane keystore
+#      working_directory: android
+  - run:
+      name: '[FL] Build'
+      command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+      working_directory: android
+  - run:
+      name: Move aab
+      command: mv ~/project/build/app/outputs/bundle/release/app-release.aab app-release.aab
+  - store_artifacts:
+      path: app-release.aab
+  - run:
+      name: Move apk
+      command: mv ~/project/build/app/outputs/apk/release/app-release.apk app-release.apk
+  - store_artifacts:
+      path: app-release.apk
+  - persist_to_workspace:
+      root: .
+      paths:
+        - app-release.aab
+        - app-release.apk
+  - persist_environment_variables
