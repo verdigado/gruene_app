@@ -1,0 +1,9 @@
+when:
+  and:
+    - equal: [main, << pipeline.git.branch >>]
+    - not: << pipeline.parameters.api_triggered >>
+jobs:
+  - bump_version
+  - build_android:
+      requires:
+        - bump_version

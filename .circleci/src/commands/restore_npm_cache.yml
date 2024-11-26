@@ -1,0 +1,14 @@
+description: Restores and saves the node_modules directories of the tools directory.
+steps:
+  - restore_cache:
+      keys:
+      - v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+      - v1-node-modules-
+  - run:
+      name: Install node dependencies for npm workspaces
+      command: "[ ! -d node_modules ] && npm ci --ignore-scripts --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache."
+      working_directory: tools
+  - save_cache:
+      key: v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+      paths:
+        - ~/tools/node_modules

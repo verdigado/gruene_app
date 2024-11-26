@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/section_title.dart';
-import 'package:gruene_app/features/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/features/settings/widgets/settings_item.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
