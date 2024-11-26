@@ -46,6 +46,8 @@ dependencies:
   equatable: ^2.0.5
   logger: ^2.4.0
   jwt_decoder: ^2.0.1
+  flutter_native_splash: ^2.4.2
+  webview_flutter: ^4.10.0
 
 dev_dependencies:
 
