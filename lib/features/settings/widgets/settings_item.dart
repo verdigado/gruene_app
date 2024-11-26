@@ -12,7 +12,7 @@ class SettingsItem extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return ListTile(
-      onTap: () => {},
+      onTap: onPress,
       title: Text(title, style: theme.textTheme.bodyLarge),
       trailing: CustomIcon(
         path: isExternal ? 'assets/icons/external.svg' : 'assets/icons/chevron.svg',
