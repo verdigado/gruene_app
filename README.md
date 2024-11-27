@@ -35,6 +35,6 @@ The application uses the following environment variables:
 - `OIDC_CLIENT_ID`: The client ID of the OIDC client.
 - `OIDC_ISSUER`: The issuer url of the identity provider.
 
-You can copy the `.env.example` file to `.env` and fill in the values.   
+You can copy the `.env.dev` file to `.env` and fill in the values.   
 Please note that it's not possible to use the OIDC login if issuer url does not have a secure connection.
 
