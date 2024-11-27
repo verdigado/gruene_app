@@ -1,0 +1,31 @@
+# Deliver the app to the Apple App Store or Testflight.
+parameters:
+  production_delivery:
+    description: Whether to deliver the build to production.
+    type: boolean
+macos:
+  xcode: 16.1.0
+shell: /bin/bash --login -o pipefail
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - install_node_modules
+  - install_fastlane:
+      directory: ios
+  - when:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: '[FL] App Store Connect Upload'
+            command: bundle exec fastlane ios appstoreconnect_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+            working_directory: ios
+  - unless:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: '[FL] TestFlight Upload'
+            command: bundle exec fastlane ios upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
+            working_directory: ios

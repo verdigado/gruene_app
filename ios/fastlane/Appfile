@@ -1,0 +1,6 @@
+# More information: https://docs.fastlane.tools/advanced/#appfile
+
+# TODO
+apple_id ""
+team_id ""
+app_identifier "de.gruene.app"
