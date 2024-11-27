@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/features/campaigns/widgets/custom_sliver_app_bar.dart';
-import 'package:gruene_app/features/campaigns/widgets/map.dart';
 
 class SliverContentPage extends StatelessWidget {
   final String title;

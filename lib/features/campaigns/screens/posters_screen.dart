@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/models/campaigns/posters/poster_create_model.dart';
@@ -35,7 +33,7 @@ class _PostersScreenState extends State<PostersScreen> {
   final NominatimService _nominatimService = NominatimService();
 
   @override
-  Widget build(BuildContext) {
+  Widget build(localContext) {
     MapContainer mapContainer = MapContainer(
       onMapCreated: onMapCreated,
       addPOIClicked: addPOIClicked,
@@ -64,8 +62,9 @@ class _PostersScreenState extends State<PostersScreen> {
 
     final photo = await MediaHelper.acquirePhoto(context);
 
-    final result = await Navigator.of(context, rootNavigator: true).push(
-      AppRoute(
+    var navState = getNavState();
+    final result = await navState.push(
+      AppRoute<PosterCreateModel?>(
         builder: (context) {
           return FutureBuilder(
             future: locationAddress.timeout(const Duration(milliseconds: 800), onTimeout: () => AddressModel()),
@@ -89,7 +88,7 @@ class _PostersScreenState extends State<PostersScreen> {
           );
         },
       ),
-    ) as PosterCreateModel?;
+    );
 
     if (result != null) {
       final newPoster = result;
@@ -98,6 +97,8 @@ class _PostersScreenState extends State<PostersScreen> {
       _mapController.addMarkerItem(markerItem);
     }
   }
+
+  NavigatorState getNavState() => Navigator.of(context, rootNavigator: true);
 
   void loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
     // final resultHealth = await _grueneApiService.getHealth();

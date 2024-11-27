@@ -4,14 +4,14 @@ import 'dart:typed_data';
 import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
-import 'package:image/image.dart' as IMG;
+import 'package:image/image.dart' as image_lib;
 
 class MediaHelper {
   static const int maxUploadDimension = 1200;
 
   static Future<File?> acquirePhoto(BuildContext context) async {
     var image = await Navigator.of(context, rootNavigator: true).push(
-      AppRoute(
+      AppRoute<File?>(
         builder: (context) {
           return CameraAwesomeBuilder.awesome(
             saveConfig: SaveConfig.photo(),
@@ -24,7 +24,7 @@ class MediaHelper {
           );
         },
       ),
-    ) as File?;
+    );
     return image;
   }
 
@@ -37,8 +37,8 @@ class MediaHelper {
       // bytes = (await NetworkAssetBundle(Uri.parse(imgurl)).load(imgurl)).buffer.asUint8List();
 
       // originalImage = await newPoster.photo!.readAsBytes();
-      IMG.Image? img = IMG.decodeImage(originalImage);
-      IMG.Image resized;
+      image_lib.Image? img = image_lib.decodeImage(originalImage);
+      image_lib.Image resized;
       if (img!.height > maxUploadDimension || img.width > maxUploadDimension) {
         int desiredWidth, desiredHeight;
         if (img.width > img.height) {
@@ -49,7 +49,7 @@ class MediaHelper {
           desiredWidth = (img.width / img.height * maxUploadDimension).round();
         }
 
-        resized = IMG.copyResize(
+        resized = image_lib.copyResize(
           img,
           width: desiredWidth,
           height: desiredHeight,
@@ -59,7 +59,7 @@ class MediaHelper {
         resized = img;
       }
       // resizedImg = Uint8List.fromList(IMG.encodePng(resized));
-      resizedImg = Uint8List.fromList(IMG.encodeJpg(resized, quality: 60));
+      resizedImg = Uint8List.fromList(image_lib.encodeJpg(resized, quality: 60));
     });
 
     await compressAction;
