@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "com.example.gruene_app"
+    namespace = "de.gruene.wkapp"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
 
@@ -20,8 +20,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
-        applicationId = "com.example.gruene_app"
+        applicationId = "de.gruene.wkapp"
         minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
 

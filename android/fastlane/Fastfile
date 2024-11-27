@@ -13,8 +13,7 @@
 # Uncomment the line if you want fastlane to automatically update itself
 # update_fastlane
 
-# TODO Fix application id
-APPLICATION_ID = 'com.example.gruene_app'
+APPLICATION_ID = 'de.gruene.wkapp'
 
 CREDENTIALS_GIT_REPOSITORY_URL = ENV['CREDENTIALS_GIT_REPOSITORY_URL']
 CREDENTIALS_DIRECTORY_PATH = ENV['CREDENTIALS_DIRECTORY_PATH']

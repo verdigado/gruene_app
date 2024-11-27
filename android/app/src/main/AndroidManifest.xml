@@ -29,7 +29,7 @@
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="com.example.grueneapp" android:host="oauthredirect" />
+                <data android:scheme="de.gruene.wkapp" android:host="oauthredirect" />
             </intent-filter>
         </activity>
         <!-- Don't delete the meta-data below.
