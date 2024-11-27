@@ -9,17 +9,12 @@ steps:
   - checkout
   - prepare_workspace
   - restore_environment_variables
-  - install_dart_linux
-  - install_fvm
-  - restore_ruby_cache:
-      directory: android
-  - run:
-      name: Install Flutter Packages
-      command: |
-        fvm flutter pub get --enforce-lockfile
-        fvm flutter precache --android
-      working_directory: android
+  - install_flutter:
+      precache: android
   - prepare_project
+  - install_gradle_dependencies
+  - install_fastlane:
+      directory: android
 #  - run:
 #      name: '[FL] Prepare Android Keystore'
 #      command: bundle exec fastlane keystore

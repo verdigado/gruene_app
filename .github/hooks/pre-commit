@@ -1,17 +1,24 @@
 #!/bin/sh
 
-#
 # Install this pre-commit hook by running the following command in the project root:
 # ln -s ../../.github/hooks/pre-commit .git/hooks/pre-commit
-#
 
-# Regenerate circle-ci config.yml
-CONFIG=$(git diff --cached --name-only .circleci/src)
+# Regenerate circleci config.yml if necessary
+CIRCLECI_CONFIG_FILES=$(git diff --cached --name-only .circleci/src)
 
-echo "$CONFIG" | ./tools/circleci-update-config
-echo "$CONFIG" | xargs git add .circleci/config.yml
+if [ ! -z "$CIRCLECI_CONFIG_FILES" ]; then
+  # Abort if circleci command line tools are not installed
+  if ! command -v circleci; then
+    echo "You need to install circleci in order to commit and update the circleci config"
+    exit 1
+  fi
 
-# Check dart files
+  echo "$CIRCLECI_CONFIG_FILES" | ./tools/circleci-update-config
+  echo "$CIRCLECI_CONFIG_FILES" | xargs git add
+  xargs git add .circleci/config.yml
+fi
+
+# Format Dart Files
 DART_FILES=$(git diff --cached --name-only --diff-filter=ACMR "*.dart" | sed 's| |\\ |g')
 
 if [ ! -z "$DART_FILES" ]; then
@@ -20,9 +27,6 @@ if [ ! -z "$DART_FILES" ]; then
     exit 1
   fi
 
-  # Prettify all selected files
   echo "$DART_FILES" | xargs fvm dart format -l 120
-
-  # Add back the modified/prettified files to staging
   echo "$DART_FILES" | xargs git add
 fi

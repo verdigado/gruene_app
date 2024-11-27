@@ -4,7 +4,7 @@ parameters:
     type: string
 steps:
   - restore_cache:
-      name: Restore Ruby Cache
+      name: Restore Fastlane Cache
       keys:
         - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
         - v1-gems-{{ arch }}-
@@ -17,7 +17,7 @@ steps:
       command: bundle check || bundle install
       working_directory: << parameters.directory >>
   - save_cache:
-      name: Save Ruby Cache
+      name: Save Fastlane Cache
       key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
       paths:
         - << parameters.directory >>/vendor/bundle
