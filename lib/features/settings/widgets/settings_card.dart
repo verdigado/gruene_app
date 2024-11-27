@@ -25,7 +25,6 @@ class SettingsCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(vertical: 8),
       child: ListTile(
         onTap: onPress,
-        contentPadding: EdgeInsets.symmetric(horizontal: 8),
         title: Text(title, style: theme.textTheme.titleSmall),
         subtitle: Text(subtitle),
         leading: ClipRRect(

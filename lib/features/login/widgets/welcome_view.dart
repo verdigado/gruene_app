@@ -30,7 +30,8 @@ class WelcomeView extends StatelessWidget {
           height: 64,
           child: FilledButton(
             onPressed: () => context.read<AuthBloc>().add(SignInRequested()),
-            child: Text(t.login.loginMembers, style: theme.textTheme.titleMedium),
+            child:
+                Text(t.login.loginMembers, style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface)),
           ),
         ),
         // TODO #203: Uncomment for guest login
@@ -52,7 +53,7 @@ class WelcomeView extends StatelessWidget {
               onPressed: () => openInAppBrowser(dataProtectionStatementUrl, context),
               child: Text(
                 t.login.dataProtection,
-                style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
+                style: theme.textTheme.labelSmall,
               ),
             ),
             Container(
@@ -64,7 +65,7 @@ class WelcomeView extends StatelessWidget {
               onPressed: () => openInAppBrowser(legalNoticeUrl, context),
               child: Text(
                 t.login.legalNotice,
-                style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textAccent),
+                style: theme.textTheme.labelSmall,
               ),
             ),
           ],
