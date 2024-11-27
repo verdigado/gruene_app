@@ -157,18 +157,7 @@ class _PostersAddState extends State<PosterAddScreen> {
                           color: ThemeColors.background,
                         ),
                       ),
-                      onPressed: () => Navigator.maybePop(
-                        context,
-                        PosterCreateModel(
-                          location: widget.location,
-                          street: streetTextController.text,
-                          houseNumber: houseNumberTextController.text,
-                          zipCode: zipCodeTextController.text,
-                          city: cityTextController.text,
-                          photo: _currentPhoto,
-                          // photo: getCurrentPhotoBytes(),
-                        ),
-                      ),
+                      onPressed: () => onSavePressed(context),
                     ),
                   ),
                 ),
@@ -213,6 +202,8 @@ class _PostersAddState extends State<PosterAddScreen> {
 
   void acquireNewPhoto() async {
     final photo = await MediaHelper.acquirePhoto(context);
+    // final photoBytes = await reduceAndResize(photo);
+
     if (photo != null) {
       setState(() {
         _currentPhoto = photo;
@@ -220,8 +211,25 @@ class _PostersAddState extends State<PosterAddScreen> {
     }
   }
 
-  Uint8List? getCurrentPhotoBytes() {
-    if (_currentPhoto == null) return null;
-    return _currentPhoto!.readAsBytesSync();
+  Future<Uint8List?> reduceAndResize(File? photo) async {
+    if (photo == null) return null;
+    final fileContent = await photo.readAsBytes();
+    return await MediaHelper.resizeAndReduceImage(fileContent);
+  }
+
+  void onSavePressed(BuildContext localContext) async {
+    final reducedImage = await reduceAndResize(_currentPhoto);
+    if (!localContext.mounted) return;
+    Navigator.maybePop(
+      localContext,
+      PosterCreateModel(
+        location: widget.location,
+        street: streetTextController.text,
+        houseNumber: houseNumberTextController.text,
+        zipCode: zipCodeTextController.text,
+        city: cityTextController.text,
+        photo: reducedImage,
+      ),
+    );
   }
 }

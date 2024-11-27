@@ -7,6 +7,7 @@ import 'package:gruene_app/app/models/campaigns/posters/poster_create_model.dart
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
+import 'package:intl/intl.dart';
 import 'package:maplibre_gl_platform_interface/maplibre_gl_platform_interface.dart';
 
 class GrueneApiService {
@@ -93,15 +94,20 @@ class GrueneApiService {
       // saving Photo along with POI
       // uploadPhoto(newPoiResponse.body!.id, newPoster.photo!);
       // uploadPhotoWithDio(newPoiResponse.body!.id, newPoster.photo!);
-      final bytes = newPoster.photo!.readAsBytesSync();
-      final filename = newPoster.photo!.path.split('/').last;
+
+      // final bytes = newPoster.photo!.readAsBytesSync();
+      // await compressAction;
+      // final filename = newPoster.photo!.path.split('/').last;
+
+      var poiId = newPoiResponse.body!.id;
+      var timeStamp = DateFormat('yyMMdd_HHmmss').format(DateTime.now());
       // ignore: unused_local_variable
       final savePoiPhotoResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPost(
-        poiId: newPoiResponse.body!.id,
+        poiId: poiId,
         image: MultipartFile.fromBytes(
           'image',
-          bytes,
-          filename: filename,
+          newPoster.photo!,
+          filename: 'poi_${poiId}_$timeStamp.jpg',
           contentType: MediaType('image', 'jpeg'),
         ),
       );

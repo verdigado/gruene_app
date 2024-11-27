@@ -9,7 +9,7 @@ class PosterCreateModel {
   final String? zipCode;
   final String? city;
   final LatLng location;
-  final File? photo;
+  final Uint8List? photo;
 
   const PosterCreateModel({
     this.street,
