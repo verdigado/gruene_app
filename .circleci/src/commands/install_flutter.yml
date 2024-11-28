@@ -38,7 +38,7 @@ steps:
 # Workaround end
   - restore_cache:
       keys:
-        - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}-{{ arch }}
+        - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
         - v1-fvm-{{ arch }}-
   - run:
       name: Install Flutter

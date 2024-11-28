@@ -95,7 +95,7 @@ commands:
                 name: Install FVM
             - restore_cache:
                 keys:
-                    - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}-{{ arch }}
+                    - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
                     - v1-fvm-{{ arch }}-
             - run:
                 command: fvm install
@@ -132,8 +132,9 @@ commands:
                     - v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
                     - v1-gradle-
             - run:
-                command: bundle exec fastlane dependencies
-                name: '[FL] Download Dependencies'
+                command: ./gradlew androidDependencies
+                name: Download Gradle Dependencies
+                working_directory: android
             - save_cache:
                 key: v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
                 paths:
@@ -143,14 +144,14 @@ commands:
         steps:
             - restore_cache:
                 keys:
-                    - v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+                    - v1-node-modules-{{checksum "tools/package-lock.json" }}
                     - v1-node-modules-
             - run:
                 command: '[ ! -d node_modules ] && npm ci --ignore-scripts --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache.'
                 name: Install node dependencies for npm workspaces
                 working_directory: tools
             - save_cache:
-                key: v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
+                key: v1-node-modules-{{checksum "tools/package-lock.json" }}
                 paths:
                     - ~/tools/node_modules
     persist_environment_variables:
@@ -210,9 +211,9 @@ jobs:
             - install_flutter:
                 precache: android
             - prepare_project
-            - install_gradle_dependencies
             - install_fastlane:
                 directory: android
+            - install_gradle_dependencies
             - run:
                 command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: '[FL] Build'
