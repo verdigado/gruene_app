@@ -18,7 +18,7 @@ class AuthRepository {
       final AuthorizationTokenResponse result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           Config.oidcClientId,
-          '${Config.appId}://${Config.oidcCallbackPath}',
+          Config.oidcCallbackPath,
           issuer: Config.oidcIssuer,
           scopes: ['openid', 'profile', 'email'],
         ),
@@ -38,7 +38,7 @@ class AuthRepository {
 
   Future<void> signOut() async {
     final idToken = await _secureStorage.read(key: SecureStorageKeys.idToken);
-    final postLogoutRedirectUrl = '${Config.appId}://${Config.oidcCallbackPath}';
+    final postLogoutRedirectUrl = Config.oidcCallbackPath;
     final endSessionUrl =
         '${Config.oidcIssuer}/protocol/openid-connect/logout?id_token_hint=$idToken&post_logout_redirect_uri=$postLogoutRedirectUrl';
 
@@ -79,7 +79,7 @@ class AuthRepository {
       final TokenResponse result = await _appAuth.token(
         TokenRequest(
           Config.oidcClientId,
-          '${Config.appId}://${Config.oidcCallbackPath}',
+          Config.oidcCallbackPath,
           refreshToken: refreshToken,
           issuer: Config.oidcIssuer,
         ),

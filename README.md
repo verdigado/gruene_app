@@ -32,11 +32,9 @@ write good commit messages.
 The application uses the following environment variables:
 
 - `USE_LOGIN`: If set to `true`, the application will use the OIDC login. This variable is only a temporary solution to allow starting the app without IDP with secure connection. It will be removed later.
-- `APP_ID`: The ID of the app.
-- `OIDC_CALLBACK_PATH`: The path to the OIDC callback.
 - `OIDC_CLIENT_ID`: The client ID of the OIDC client.
 - `OIDC_ISSUER`: The issuer url of the identity provider.
 
-You can copy the `.env.example` file to `.env` and fill in the values.   
+You can copy the `.env.dev` file to `.env` and fill in the values.   
 Please note that it's not possible to use the OIDC login if issuer url does not have a secure connection.
 

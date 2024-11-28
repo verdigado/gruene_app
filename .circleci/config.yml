@@ -81,8 +81,8 @@ commands:
                 command: fvm dart run slang
                 name: Generate Translations
             - run:
-                command: cp .env.example .env
-                name: Apply Example Environment
+                command: cp .env.prod .env
+                name: Apply Production Environment
     prepare_workspace:
         description: Attach the workspace at ~/attached_workspace and list its contents
         steps:

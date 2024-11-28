@@ -57,7 +57,7 @@
 				<string>Editor</string>
 				<key>CFBundleURLSchemes</key>
 				<array>
-					<string>com.example.grueneapp://oauthredirect</string>
+					<string>de.gruene.wkapp://oauthredirect</string>
 				</array>
 			</dict>
 		</array>
