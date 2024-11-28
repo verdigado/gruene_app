@@ -1,7 +1,8 @@
 {
-    "FSharp.suggestGitignore": false,
-    "cSpell.words": [
-        "gruene"
-    ],
-    "files.eol": "\n"
+  "FSharp.suggestGitignore": false,
+  "cSpell.words": [
+    "gruene"
+  ],
+  "files.eol": "\n",
+  "dart.flutterSdkPath": ".fvm/versions/3.24.3"
 }

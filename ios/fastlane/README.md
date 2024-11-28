@@ -29,23 +29,7 @@ Create a release build
 [bundle exec] fastlane ios upload_to_test_flight
 ```
 
-Deliver iOS App to TestFlight for testers
-
-### ios snap_bayern
-
-```sh
-[bundle exec] fastlane ios snap_bayern
-```
-
-Generate new localized screenshots
-
-### ios snap_nuernberg
-
-```sh
-[bundle exec] fastlane ios snap_nuernberg
-```
-
-
+Deliver iOS App to TestFlight
 
 ----
 
