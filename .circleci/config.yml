@@ -30,6 +30,24 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
+    install_cocoapods:
+        description: Restores and saves the cocoa pods cache.
+        steps:
+            - restore_cache:
+                keys:
+                    - 1-cocoapods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
+                name: Restore CocoaPods Cache
+            - run:
+                command: |
+                    pod update
+                    pod install
+                name: Install CocoaPods
+                working_directory: ios
+            - save_cache:
+                key: 1-cocoapods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
+                name: Save CocoaPods Cache
+                paths:
+                    - ~/Library/Caches/CocoaPods/
     install_fastlane:
         description: Restores and saves fastlane cache of the passed directory.
         parameters:
@@ -40,18 +58,18 @@ commands:
                 keys:
                     - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
                     - v1-gems-{{ arch }}-
-                name: Restore Fastlane Cache
+                name: Restore Ruby Cache
             - run:
                 command: bundle config set path 'vendor/bundle'
                 name: Configure Installation Directory
                 working_directory: << parameters.directory >>
             - run:
                 command: bundle check || bundle install
-                name: '[FL] Install'
+                name: Bundle Install
                 working_directory: << parameters.directory >>
             - save_cache:
                 key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
-                name: Save Fastlane Cache
+                name: Save Ruby Cache
                 paths:
                     - << parameters.directory >>/vendor/bundle
     install_flutter:
@@ -234,6 +252,34 @@ jobs:
                     - app-release.apk
                 root: .
             - persist_environment_variables
+    build_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        macos:
+            xcode: 16.1.0
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - run:
+                command: softwareupdate --install-rosetta --agree-to-license
+                name: Install rosetta
+            - install_flutter:
+                precache: ios
+            - prepare_project
+            - install_fastlane:
+                directory: ios
+            - install_cocoapods
+            - run:
+                command: bundle exec fastlane ios build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
+                name: '[FL] Build'
+                working_directory: ios
+            - store_artifacts:
+                path: app-release.ipa
+            - persist_to_workspace:
+                paths:
+                    - app-release>.ipa
+                root: .
     bump_version:
         docker:
             - image: cimg/node:20.13.1
@@ -305,6 +351,36 @@ jobs:
                 command: yarn github-release-asset upload android --releaseId ${ANDROID_RELEASE_ID} --files "$(ls ~/attached_workspace/*.apk)" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
                 name: Upload Apks to Github Release
                 working_directory: tools
+    deliver_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        macos:
+            xcode: 16.1.0
+        parameters:
+            production_delivery:
+                description: Whether to deliver the build to production.
+                type: boolean
+        steps:
+            - checkout
+            - prepare_workspace
+            - restore_environment_variables
+            - install_node_modules
+            - install_fastlane:
+                directory: ios
+            - when:
+                condition: << parameters.production_delivery >>
+                steps:
+                    - run:
+                        command: bundle exec fastlane ios appstoreconnect_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+                        name: '[FL] App Store Connect Upload'
+                        working_directory: ios
+            - unless:
+                condition: << parameters.production_delivery >>
+                steps:
+                    - run:
+                        command: bundle exec fastlane ios upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
+                        name: '[FL] TestFlight Upload'
+                        working_directory: ios
 parameters:
     api_triggered:
         default: false
@@ -325,6 +401,12 @@ workflows:
             - check
             - bump_version
             - build_android:
+                requires:
+                    - check
+                    - bump_version
+            - build_ios:
+                context:
+                    - gruene_apple_appstore
                 requires:
                     - check
                     - bump_version

@@ -9,3 +9,9 @@ jobs:
       requires:
         - check
         - bump_version
+  - build_ios:
+      context:
+        - gruene_apple_appstore
+      requires:
+        - check
+        - bump_version

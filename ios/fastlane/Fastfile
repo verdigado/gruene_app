@@ -32,15 +32,6 @@ platform :ios do
     )
   end
 
-  desc "Download and setup certificates"
-  private_lane :certificates do |options|
-    apple_auth
-
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
-
-    match(type: "appstore", app_identifier: app_identifier, readonly: true)
-  end
-
   # The following parameters have to be passed:
   # version_name: The version name the build should use
   # version_code: The version code the build should use
@@ -96,63 +87,63 @@ platform :ios do
     )
   end
 
-  desc "Deliver iOS App to production"
-  lane :appstoreconnect_upload do |options|
-    apple_auth()
-
-    version_name = options[:version_name]
-    ipa_path = options[:ipa_path]
-
-    if [ipa_path, version_name].include?(nil)
-      raise "'nil' passed as parameter! Aborting..."
-    end
-
-    puts("delivering v#{version_name}")
-
-    # https://docs.fastlane.tools/actions/deliver/
-    deliver(
-      ipa: "#{ENV['HOME']}/#{ipa_path}",
-      app_version: version_name,
-      submit_for_review: true,
-      automatic_release: true,
-      force: true,
-      skip_screenshots: true,
-      skip_metadata: false,
-      overwrite_screenshots: true,
-      precheck_include_in_app_purchases: false,
-      submission_information: { add_id_info_uses_idfa: false }
-    )
-  end
-
-  desc "Promote the app from testflight to production in App Store Connect."
-  lane :appstoreconnect_promote do |options|
-    apple_auth()
-
-    app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
-
-    testflight_build_number = latest_testflight_build_number(app_identifier: app_identifier)
-    testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
-    app_store_build_number = app_store_build_number(app_identifier: app_identifier)
-
-    if testflight_build_number <= app_store_build_number
-      puts("Nothing to do, latest version already available in app store connect...")
-      next
-    end
-
-    puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
-
-    # https://docs.fastlane.tools/actions/deliver/#submit-build
-    deliver(
-      app_version: testflight_version,
-      build_number: testflight_build_number.to_s,
-      app_identifier: app_identifier,
-      submit_for_review: true,
-      automatic_release: true,
-      force: true,
-      skip_metadata: false,
-      skip_screenshots: true,
-      skip_binary_upload: true,
-      precheck_include_in_app_purchases: false,
-    )
-  end
+#   desc "Deliver iOS App to production"
+#   lane :appstoreconnect_upload do |options|
+#     apple_auth()
+#
+#     version_name = options[:version_name]
+#     ipa_path = options[:ipa_path]
+#
+#     if [ipa_path, version_name].include?(nil)
+#       raise "'nil' passed as parameter! Aborting..."
+#     end
+#
+#     puts("delivering v#{version_name}")
+#
+#     # https://docs.fastlane.tools/actions/deliver/
+#     deliver(
+#       ipa: "#{ENV['HOME']}/#{ipa_path}",
+#       app_version: version_name,
+#       submit_for_review: true,
+#       automatic_release: true,
+#       force: true,
+#       skip_screenshots: true,
+#       skip_metadata: false,
+#       overwrite_screenshots: true,
+#       precheck_include_in_app_purchases: false,
+#       submission_information: { add_id_info_uses_idfa: false }
+#     )
+#   end
+#
+#   desc "Promote the app from testflight to production in App Store Connect."
+#   lane :appstoreconnect_promote do |options|
+#     apple_auth()
+#
+#     app_identifier = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+#
+#     testflight_build_number = latest_testflight_build_number(app_identifier: app_identifier)
+#     testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+#     app_store_build_number = app_store_build_number(app_identifier: app_identifier)
+#
+#     if testflight_build_number <= app_store_build_number
+#       puts("Nothing to do, latest version already available in app store connect...")
+#       next
+#     end
+#
+#     puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
+#
+#     # https://docs.fastlane.tools/actions/deliver/#submit-build
+#     deliver(
+#       app_version: testflight_version,
+#       build_number: testflight_build_number.to_s,
+#       app_identifier: app_identifier,
+#       submit_for_review: true,
+#       automatic_release: true,
+#       force: true,
+#       skip_metadata: false,
+#       skip_screenshots: true,
+#       skip_binary_upload: true,
+#       precheck_include_in_app_purchases: false,
+#     )
+#   end
 end
