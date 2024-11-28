@@ -57,7 +57,6 @@ platform :ios do
       version_number: version_name
     )
 
-    sh("fvm flutter pub run build_runner build")
      # use base64 encoded variable "environment=production" directly, because shell result does not work for gym as it does for gradle (android/Fastfile)
     env_prod_base64 = "ZW52aXJvbm1lbnQ9cHJvZHVjdGlvbg=="
 
