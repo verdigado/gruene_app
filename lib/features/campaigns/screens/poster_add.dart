@@ -1,10 +1,11 @@
 import 'dart:io';
 import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/models/campaigns/posters/poster_create_model.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/textinputfield.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -133,7 +134,7 @@ class _PostersAddState extends State<PosterAddScreen> {
                         foregroundColor: ThemeColors.primary,
                       ),
                       child: Text(
-                        t.campaigns.actions.cancel,
+                        t.common.actions.cancel,
                         style: theme.textTheme.titleMedium?.apply(
                           color: ThemeColors.primary,
                         ),
@@ -152,7 +153,7 @@ class _PostersAddState extends State<PosterAddScreen> {
                         foregroundColor: ThemeColors.background,
                       ),
                       child: Text(
-                        t.campaigns.actions.save,
+                        t.common.actions.save,
                         style: theme.textTheme.titleMedium?.apply(
                           color: ThemeColors.background,
                         ),
@@ -202,7 +203,7 @@ class _PostersAddState extends State<PosterAddScreen> {
 
   void acquireNewPhoto() async {
     final photo = await MediaHelper.acquirePhoto(context);
-    // final photoBytes = await reduceAndResize(photo);
+    //  final photoBytes = await reduceAndResize(photo);
 
     if (photo != null) {
       setState(() {
@@ -214,7 +215,7 @@ class _PostersAddState extends State<PosterAddScreen> {
   Future<Uint8List?> reduceAndResize(File? photo) async {
     if (photo == null) return null;
     final fileContent = await photo.readAsBytes();
-    return await MediaHelper.resizeAndReduceImage(fileContent);
+    return await MediaHelper.resizeAndReduceImage(fileContent, ImageType.jpeg);
   }
 
   void onSavePressed(BuildContext localContext) async {

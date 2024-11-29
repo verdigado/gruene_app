@@ -1,4 +1,4 @@
-import 'package:gruene_app/app/models/campaigns/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:turf/bbox_polygon.dart';
 import 'package:turf/helpers.dart';
 import 'package:turf/transform.dart';

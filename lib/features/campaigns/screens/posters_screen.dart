@@ -1,10 +1,10 @@
 import 'package:flutter/widgets.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/app/models/campaigns/posters/poster_create_model.dart';
-import 'package:gruene_app/app/services/gruene_api_service.dart';
+import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_add.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
@@ -29,7 +29,7 @@ class PostersScreen extends StatefulWidget {
 
 class _PostersScreenState extends State<PostersScreen> {
   late MapController _mapController;
-  final GrueneApiService _grueneApiService = GrueneApiService(poiType: PoiServiceType.poster);
+  final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.poster);
   final NominatimService _nominatimService = NominatimService();
 
   @override

@@ -1,6 +1,10 @@
 {
   "common": {
-    "appName": "Grüne App"
+    "appName": "Grüne App",
+    "actions": {
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    }
   },
   "news": {
     "news": "Artikel",
@@ -37,10 +41,6 @@
       "housenumber": "Hausnr.",
       "zipcode": "PLZ",
       "city_or_place": "Stadt / Ort"
-    },
-    "actions": {
-      "save": "Speichern",
-      "cancel": "Abbrechen"
     }
   },
   "profiles": {

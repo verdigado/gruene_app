@@ -28,15 +28,10 @@ class MediaHelper {
     return image;
   }
 
-  static Future<Uint8List> resizeAndReduceImage(Uint8List originalImage) async {
+  static Future<Uint8List> resizeAndReduceImage(Uint8List originalImage, ImageType outputType) async {
     Uint8List? resizedImg;
-    // Uint8List? originalImage;
 
     final compressAction = Future.delayed(Duration.zero, () async {
-      // if (newPoster.photo == null) return;
-      // bytes = (await NetworkAssetBundle(Uri.parse(imgurl)).load(imgurl)).buffer.asUint8List();
-
-      // originalImage = await newPoster.photo!.readAsBytes();
       image_lib.Image? img = image_lib.decodeImage(originalImage);
       image_lib.Image resized;
       if (img!.height > maxUploadDimension || img.width > maxUploadDimension) {
@@ -58,11 +53,16 @@ class MediaHelper {
       } else {
         resized = img;
       }
-      // resizedImg = Uint8List.fromList(IMG.encodePng(resized));
-      resizedImg = Uint8List.fromList(image_lib.encodeJpg(resized, quality: 60));
+
+      resizedImg = switch (outputType) {
+        ImageType.jpeg => Uint8List.fromList(image_lib.encodeJpg(resized, quality: 60)),
+        ImageType.png => Uint8List.fromList(image_lib.encodePng(resized))
+      };
     });
 
     await compressAction;
     return resizedImg!;
   }
 }
+
+enum ImageType { jpeg, png }

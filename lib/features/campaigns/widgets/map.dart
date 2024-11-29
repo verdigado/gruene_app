@@ -3,9 +3,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gruene_app/app/constants/config.dart';
-import 'package:gruene_app/app/models/campaigns/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/util.dart';
+import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
