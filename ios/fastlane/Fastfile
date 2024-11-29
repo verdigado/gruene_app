@@ -48,6 +48,13 @@ platform :ios do
     end
 
     match(type: "appstore", readonly: true)
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      team_id: "BH3ML3K6G2",
+      bundle_identifier: "de.gruene.wkapp",
+      profile_name: "match AppStore de.gruene.wkapp",
+      build_configurations: "Release"
+    )
 
     increment_build_number(
       build_number: version_code
