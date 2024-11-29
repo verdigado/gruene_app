@@ -47,7 +47,6 @@ platform :ios do
       raise "'nil' passed as parameter! Aborting..."
     end
 
-    apple_auth
     match(type: "appstore", readonly: true)
 
     increment_build_number(
