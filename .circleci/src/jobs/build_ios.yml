@@ -6,10 +6,6 @@ steps:
   - checkout
   - prepare_workspace
   - restore_environment_variables
-  # Necessary for circle ci mac m1 images
-  - run:
-      name: Install rosetta
-      command: softwareupdate --install-rosetta --agree-to-license
   - install_flutter:
       precache: ios
   - prepare_project
