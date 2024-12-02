@@ -60,7 +60,7 @@ class _PostersAddState extends State<PosterAddScreen> {
               Expanded(
                 child: Text(
                   t.campaigns.posters.addPoster,
-                  style: theme.textTheme.displayMedium,
+                  style: theme.textTheme.displayMedium!.apply(color: theme.colorScheme.surface),
                 ),
               ),
               Container(
