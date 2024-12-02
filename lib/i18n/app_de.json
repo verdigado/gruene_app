@@ -1,6 +1,10 @@
 {
   "common": {
-    "appName": "Grüne App"
+    "appName": "Grüne App",
+    "actions": {
+      "save": "Speichern",
+      "cancel": "Abbrechen"
+    }
   },
   "news": {
     "news": "Artikel",
@@ -17,7 +21,8 @@
       "experience_areas": "Erfahrungsgebiete"
     },
     "posters": {
-      "label": "Plakate"
+      "label": "Plakate",
+      "addPoster": "Plakat eintragen"
     },
     "door": {
       "label": "Haustür"
@@ -30,6 +35,12 @@
     },
     "statistic": {
       "label": "Statistik"
+    },
+    "address": {
+      "street": "Straße",
+      "housenumber": "Hausnr.",
+      "zipcode": "PLZ",
+      "city_or_place": "Stadt / Ort"
     }
   },
   "profiles": {
