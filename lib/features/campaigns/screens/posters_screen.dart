@@ -1,11 +1,16 @@
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_add.dart';
+import 'package:gruene_app/features/campaigns/screens/poster_detail.dart';
+import 'package:gruene_app/features/campaigns/screens/poster_edit.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
@@ -35,10 +40,12 @@ class _PostersScreenState extends State<PostersScreen> {
   @override
   Widget build(localContext) {
     MapContainer mapContainer = MapContainer(
-      onMapCreated: onMapCreated,
-      addPOIClicked: addPOIClicked,
-      loadVisibleItems: loadVisibleItems,
-      getMarkerImages: getMarkerImages,
+      onMapCreated: _onMapCreated,
+      addPOIClicked: _addPOIClicked,
+      loadVisibleItems: _loadVisibleItems,
+      getMarkerImages: _getMarkerImages,
+      onFeatureClick: _onFeatureClick,
+      onNoFeatureClick: _onNoFeatureClick,
     );
 
     return Column(
@@ -51,11 +58,11 @@ class _PostersScreenState extends State<PostersScreen> {
     );
   }
 
-  void onMapCreated(MapController controller) {
+  void _onMapCreated(MapController controller) {
     _mapController = controller;
   }
 
-  void addPOIClicked(LatLng location) async {
+  void _addPOIClicked(LatLng location) async {
     final currentRoute = GoRouterState.of(context);
 
     var locationAddress = _nominatimService.getLocationAddress(location);
@@ -100,19 +107,66 @@ class _PostersScreenState extends State<PostersScreen> {
 
   NavigatorState getNavState() => Navigator.of(context, rootNavigator: true);
 
-  void loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
-    // final resultHealth = await _grueneApiService.getHealth();
-    // print(resultHealth.error);
-
+  void _loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
     final markerItems = await _grueneApiService.loadPoisInRegion(locationSW, locationNE);
     _mapController.setMarkerSource(markerItems);
   }
 
-  Map<String, String> getMarkerImages() {
+  Map<String, String> _getMarkerImages() {
     return {
-      'poster': 'assets/symbols/posters/poster.png',
+      'poster_ok': 'assets/symbols/posters/poster.png',
       'poster_damaged': 'assets/symbols/posters/poster_damaged.png',
-      'poster_taken_down': 'assets/symbols/posters/poster_taken_down.png',
+      'poster_missing': 'assets/symbols/posters/poster_damaged.png',
+      'poster_removed': 'assets/symbols/posters/poster_removed.png',
     };
+  }
+
+  void _onFeatureClick(dynamic rawFeature) async {
+    final feature = rawFeature as Map<String, dynamic>;
+    final poiId = MapHelper.extractPoiIdFromFeature(feature);
+    final poster = await _grueneApiService.getPoiAsPosterDetail(poiId);
+
+    final coord = MapHelper.extractLatLngFromFeature(feature);
+    var popupWidget = SizedBox(
+      height: 100,
+      width: 100,
+      child: PosterDetail(
+        poi: poster,
+      ),
+    );
+    _mapController.showMapPopover(
+      coord,
+      popupWidget,
+      () => _editPosterItem(poster),
+    );
+  }
+
+  void _onNoFeatureClick() {}
+
+  void _editPosterItem(PosterDetailModel poster) {
+    final theme = Theme.of(context);
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      isDismissible: true,
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: PosterEdit(poster: poster, onSave: _savePoster, onDelete: _deletePoster),
+        ),
+      ),
+    );
+  }
+
+  void _savePoster(PosterUpdateModel posterUpdate) async {
+    final updatedMarker = await _grueneApiService.updatePoi(posterUpdate);
+    _mapController.setMarkerSource([updatedMarker]);
+  }
+
+  void _deletePoster(String posterId) async {
+    final id = int.parse(posterId);
+    await _grueneApiService.deletePoi(posterId);
+    _mapController.removeMarkerItem(id);
   }
 }

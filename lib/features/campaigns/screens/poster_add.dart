@@ -1,6 +1,6 @@
 import 'dart:io';
-import 'dart:typed_data';
 
+import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
@@ -74,7 +74,7 @@ class _PostersAddState extends State<PosterAddScreen> {
                     colors: [Color(0xFF03BD4E), Color(0xFF875CFF)],
                   ),
                 ),
-                child: getPhotoPreviewOrIcon(),
+                child: _getPhotoPreviewOrIcon(),
               ),
             ],
           ),
@@ -158,7 +158,7 @@ class _PostersAddState extends State<PosterAddScreen> {
                           color: ThemeColors.background,
                         ),
                       ),
-                      onPressed: () => onSavePressed(context),
+                      onPressed: () => _onSavePressed(context),
                     ),
                   ),
                 ),
@@ -170,7 +170,7 @@ class _PostersAddState extends State<PosterAddScreen> {
     );
   }
 
-  Widget getPhotoPreviewOrIcon() {
+  Widget _getPhotoPreviewOrIcon() {
     if (_currentPhoto != null) {
       return Container(
         width: 150,
@@ -180,7 +180,7 @@ class _PostersAddState extends State<PosterAddScreen> {
           shape: BoxShape.circle,
         ),
         child: GestureDetector(
-          onTap: acquireNewPhoto,
+          onTap: _acquireNewPhoto,
           child: Image.file(
             _currentPhoto!,
             fit: BoxFit.cover,
@@ -190,7 +190,7 @@ class _PostersAddState extends State<PosterAddScreen> {
     } else {
       return Center(
         child: GestureDetector(
-          onTap: acquireNewPhoto,
+          onTap: _acquireNewPhoto,
           child: Icon(
             Icons.photo_camera,
             color: Colors.white,
@@ -201,9 +201,8 @@ class _PostersAddState extends State<PosterAddScreen> {
     }
   }
 
-  void acquireNewPhoto() async {
+  void _acquireNewPhoto() async {
     final photo = await MediaHelper.acquirePhoto(context);
-    //  final photoBytes = await reduceAndResize(photo);
 
     if (photo != null) {
       setState(() {
@@ -212,17 +211,16 @@ class _PostersAddState extends State<PosterAddScreen> {
     }
   }
 
-  Future<Uint8List?> reduceAndResize(File? photo) async {
-    if (photo == null) return null;
-    final fileContent = await photo.readAsBytes();
-    return await MediaHelper.resizeAndReduceImage(fileContent, ImageType.jpeg);
+  void _onSavePressed(BuildContext localContext) async {
+    if (!localContext.mounted) return;
+    final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
+
+    _saveAndReturn(reducedImage);
   }
 
-  void onSavePressed(BuildContext localContext) async {
-    final reducedImage = await reduceAndResize(_currentPhoto);
-    if (!localContext.mounted) return;
+  void _saveAndReturn(Uint8List? reducedImage) {
     Navigator.maybePop(
-      localContext,
+      context,
       PosterCreateModel(
         location: widget.location,
         street: streetTextController.text,

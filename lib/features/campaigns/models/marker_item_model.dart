@@ -6,8 +6,8 @@ class MarkerItemModel {
   final String? status;
 
   const MarkerItemModel({
-    this.id,
-    this.status,
+    required this.id,
+    required this.status,
     required this.location,
   });
 }

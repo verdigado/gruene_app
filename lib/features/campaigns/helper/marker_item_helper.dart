@@ -12,7 +12,7 @@ class MarkerItemHelper {
     return Feature<Point>(
       id: markerItem.id,
       properties: <String, dynamic>{
-        'type': markerItem.status ?? 'poster',
+        'status_type': markerItem.status,
       },
       geometry: Point(coordinates: Position(markerItem.location.longitude, markerItem.location.latitude)),
     );

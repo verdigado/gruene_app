@@ -28,6 +28,12 @@ class MediaHelper {
     return image;
   }
 
+  static Future<Uint8List?> resizeAndReduceImageFile(File? photo) async {
+    if (photo == null) return null;
+    final fileContent = await photo.readAsBytes();
+    return await resizeAndReduceImage(fileContent, ImageType.jpeg);
+  }
+
   static Future<Uint8List> resizeAndReduceImage(Uint8List originalImage, ImageType outputType) async {
     Uint8List? resizedImg;
 

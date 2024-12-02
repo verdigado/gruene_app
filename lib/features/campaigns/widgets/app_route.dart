@@ -4,7 +4,6 @@ class AppRoute<T> extends MaterialPageRoute<T> {
   AppRoute({required WidgetBuilder builder, super.settings})
       : super(
           builder: (BuildContext context) {
-            // final theme = Theme.of(context);
             return Material(child: builder(context));
           },
         );

@@ -1,7 +1,12 @@
-import 'package:chopper/chopper.dart';
+import 'dart:typed_data';
+
+import 'package:chopper/chopper.dart' as chopper;
+import 'package:flutter/material.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
@@ -51,11 +56,10 @@ class GrueneApiCampaignsService {
   }
 
   MarkerItemModel _transformToMarkerItem(Poi poi) {
-    final String statusSuffix = _getPosterStatusSuffix(poi.poster!.status);
     return MarkerItemModel(
       id: int.parse(poi.id),
       location: LatLng(poi.coords[0], poi.coords[1]),
-      status: '${poiType.name}$statusSuffix',
+      status: '${poiType.name}_${poi.poster!.status.name}',
     );
   }
 
@@ -76,32 +80,124 @@ class GrueneApiCampaignsService {
     if (newPoiResponse.error == null && newPoster.photo != null) {
       // saving Photo along with POI
       var poiId = newPoiResponse.body!.id;
-      var timeStamp = DateFormat('yyMMdd_HHmmss').format(DateTime.now());
-      // ignore: unused_local_variable
-      final savePoiPhotoResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPost(
-        poiId: poiId,
-        image: MultipartFile.fromBytes(
-          'image',
-          newPoster.photo!,
-          filename: 'poi_${poiId}_$timeStamp.jpg',
-          contentType: MediaType('image', 'jpeg'),
-        ),
-      );
+
+      _storePhoto(poiId, newPoster.photo!);
     }
 
     return _transformToMarkerItem(newPoiResponse.body!);
   }
 
-  String _getPosterStatusSuffix(PoiPosterStatus status) {
-    switch (status) {
-      case PoiPosterStatus.damaged:
-        return '_${status.name}';
-      case PoiPosterStatus.removed:
-      case PoiPosterStatus.missing:
-        return '_taken_down';
-      default:
-        return '';
+  Future<PosterDetailModel> getPoiAsPosterDetail(String poiId) async {
+    return _getPoi(poiId, transformPoiToPosterDetail);
+  }
+
+  PosterDetailModel transformPoiToPosterDetail(Poi? poi) {
+    if (poi!.type != PoiType.poster) {
+      throw Exception('Unexpected PoiType');
     }
+    return PosterDetailModel(
+      id: poi.id,
+      thumbnailUrl: _getThumbnailImageUrl(poi),
+      imageUrl: _getImageUrl(poi),
+      street: poi.address!.street,
+      houseNumber: poi.address!.houseNumber,
+      zipCode: poi.address!.zip,
+      city: poi.address!.city,
+      status: transformToModelPosterStatus(poi.poster!.status),
+      comment: poi.poster!.comment ?? '',
+    );
+  }
+
+  static String? _getThumbnailImageUrl(Poi poi) {
+    if (poi.photos.isEmpty) {
+      return null;
+    }
+
+    final thumbnail = poi.photos.expand((x) => x.srcset).where((x) => x.type == 'thumbnail').first;
+    return thumbnail.url;
+  }
+
+  static String? _getImageUrl(Poi poi) {
+    if (poi.photos.isEmpty) {
+      return null;
+    }
+
+    final image = poi.photos.map((x) => x.original).first;
+    return image.url;
+  }
+
+  Future<T> _getPoi<T>(String poiId, T Function(Poi?) transform) async {
+    final poiResponse = await grueneApi.v1CampaignsPoisPoiIdGet(poiId: poiId);
+    return transform(poiResponse.body);
+  }
+
+  Future<void> deletePoi(String poiId) async {
+    // ignore: unused_local_variable
+    final deletePoiResponse = await grueneApi.v1CampaignsPoisPoiIdDelete(poiId: poiId);
+  }
+
+  Future<MarkerItemModel> updatePoi(PosterUpdateModel posterUpdate) async {
+    var dtoUpdate = UpdatePoi(
+      address: PoiAddress(
+        street: posterUpdate.street,
+        houseNumber: posterUpdate.housenumber,
+        zip: posterUpdate.zipCode,
+        city: posterUpdate.city,
+      ),
+      poster: PoiPoster(status: transformToPoiPosterStatus(posterUpdate.status), comment: posterUpdate.comment),
+    );
+    // ignore: unused_local_variable
+    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: posterUpdate.id, body: dtoUpdate);
+
+    if (posterUpdate.newPhoto != null || posterUpdate.removePreviousPhotos) {
+      debugPrint(updatePoiResponse.body!.photos.length.toString());
+      for (var photo in updatePoiResponse.body!.photos) {
+        updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPhotoIdDelete(
+          poiId: posterUpdate.id,
+          photoId: photo.id,
+        );
+      }
+    }
+    if (posterUpdate.newPhoto != null) {
+      updatePoiResponse = await _storePhoto(posterUpdate.id, posterUpdate.newPhoto!);
+    }
+
+    return _transformToMarkerItem(updatePoiResponse.body!);
+  }
+
+  PosterStatus transformToModelPosterStatus(PoiPosterStatus status) {
+    return switch (status) {
+      PoiPosterStatus.ok => PosterStatus.ok,
+      PoiPosterStatus.damaged => PosterStatus.damaged,
+      PoiPosterStatus.missing => PosterStatus.missing,
+      PoiPosterStatus.removed => PosterStatus.removed,
+      // TODO: Handle this case.
+      PoiPosterStatus.swaggerGeneratedUnknown => throw UnimplementedError(),
+    };
+  }
+
+  PoiPosterStatus transformToPoiPosterStatus(PosterStatus status) {
+    return switch (status) {
+      PosterStatus.ok => PoiPosterStatus.ok,
+      PosterStatus.damaged => PoiPosterStatus.damaged,
+      PosterStatus.missing => PoiPosterStatus.missing,
+      PosterStatus.removed => PoiPosterStatus.removed,
+    };
+  }
+
+  Future<chopper.Response<Poi>> _storePhoto(String poiId, Uint8List photo) async {
+    var timeStamp = DateFormat('yyMMdd_HHmmss').format(DateTime.now());
+    // ignore: unused_local_variable
+    final savePoiPhotoResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPost(
+      poiId: poiId,
+      image: MultipartFile.fromBytes(
+        'image',
+        photo,
+        filename: 'poi_${poiId}_$timeStamp.jpg',
+        contentType: MediaType('image', 'jpeg'),
+      ),
+    );
+    return savePoiPhotoResponse;
   }
 }
 
