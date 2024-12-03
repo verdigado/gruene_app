@@ -12,7 +12,7 @@ class SliverContentPage extends StatelessWidget {
     final theme = Theme.of(context);
 
     return DecoratedBox(
-      decoration: BoxDecoration(color: theme.colorScheme.primary),
+      decoration: BoxDecoration(color: theme.colorScheme.secondary),
       child: CustomScrollView(
         slivers: <Widget>[
           CustomSliverAppBar(title: title),

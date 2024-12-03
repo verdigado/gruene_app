@@ -7,7 +7,7 @@ import 'package:gruene_app/features/campaigns/helper/poster_status.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/multiline_text_input_field.dart';
-import 'package:gruene_app/features/campaigns/widgets/textinputfield.dart';
+import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 typedef OnSavePosterCallback = void Function(PosterUpdateModel posterUpdate);
@@ -41,6 +41,16 @@ class _PosterEditState extends State<PosterEdit> {
 
   File? _currentPhoto;
   bool _isPhotoDeleted = false;
+
+  @override
+  void dispose() {
+    streetTextController.dispose();
+    houseNumberTextController.dispose();
+    zipCodeTextController.dispose();
+    cityTextController.dispose();
+    commentTextController.dispose();
+    super.dispose();
+  }
 
   @override
   void initState() {
