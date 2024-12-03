@@ -7,7 +7,7 @@ class _GrueneApiCore {
     _grueneApiService = GrueneApi.create(
       baseUrl: Uri.parse(Config.gruenesNetzApiUrl),
       interceptors: [
-        HeadersInterceptor(
+        chopper.HeadersInterceptor(
           {
             'x-api-key': Config.gruenesNetzApiKey,
           },

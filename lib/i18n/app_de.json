@@ -3,7 +3,8 @@
     "appName": "Grüne App",
     "actions": {
       "save": "Speichern",
-      "cancel": "Abbrechen"
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
     }
   },
   "news": {
@@ -22,7 +23,36 @@
     },
     "posters": {
       "label": "Plakate",
-      "addPoster": "Plakat eintragen"
+      "addPoster": "Plakat eintragen",
+      "editPoster": "Plakat bearbeiten",
+      "info_details": "Infos & Bearbeiten",
+      "delete_photo": "Foto löschen",
+      "replace_photo": "Foto ersetzen",
+      "status":{
+        "damaged":{
+          "label": "Beschädigt",
+          "hint": "Als zu ersetzen melden"
+        },
+        "missing":{
+          "label": "Verschollen",
+          "hint": "Durch Fremdeinwirkung entfernt"
+        },
+        "removed":{
+          "label": "Abgehangen",
+          "hint": "Dauerhaft entfernt"
+        }
+      },
+      "status_damaged": "Beschädigt (Als zu ersetzen melden)",
+      "status_taken_down": "Als abgehängt markieren",
+      "comment": {
+        "label": "Beschreibung",
+        "hint": "Bitte gib hierzu weitere Informationen an"
+      },
+      "deletePoster": {
+        "label": "Eintrag löschen",
+        "hint": "Bitte lösche Einträge ausschließlich, wenn es nicht anders geht. Markiere abgehängte Plakate als \"Abgehängt\".",
+        "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+      }
     },
     "door": {
       "label": "Haustür"

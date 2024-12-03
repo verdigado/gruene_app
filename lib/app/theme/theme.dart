@@ -29,6 +29,12 @@ class ThemeColors {
 
   // Light Grey (#CCE7D7)
   static const Color textLight = Color(0xFFCCE7D7);
+
+  static const Color textWarning = Color(0xFFCB4040);
+
+  static const Color textCancel = Color(0xFF0A84FF);
+
+  static const Color alertBackground = Color(0xFF252525);
 }
 
 class _ThemeTextStyles {
@@ -97,6 +103,33 @@ class _ThemeTextStyles {
   );
 }
 
+final WidgetStateProperty<Icon?> thumbIcon = WidgetStateProperty.resolveWith<Icon?>(
+  (Set<WidgetState> states) {
+    if (states.contains(WidgetState.selected)) {
+      return const Icon(Icons.check);
+    }
+    return null;
+  },
+);
+
+final WidgetStateProperty<Color?> trackColor = WidgetStateProperty.resolveWith<Color?>(
+  (Set<WidgetState> states) {
+    if (states.contains(WidgetState.selected)) {
+      return ThemeColors.primary;
+    }
+    return ThemeColors.textDisabled;
+  },
+);
+
+final WidgetStateProperty<Color?> thumbColor = WidgetStateProperty.resolveWith<Color?>(
+  (Set<WidgetState> states) {
+    if (states.contains(WidgetState.selected)) {
+      return null;
+    }
+    return ThemeColors.background;
+  },
+);
+
 final ThemeData appTheme = ThemeData.light().copyWith(
   primaryColor: ThemeColors.primary,
   disabledColor: ThemeColors.textDisabled,
@@ -135,5 +168,11 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     labelStyle: _ThemeTextStyles.titleMedium,
     unselectedLabelStyle: _ThemeTextStyles.titleMedium,
     labelColor: ThemeColors.primary,
+  ),
+  switchTheme: SwitchThemeData(
+    thumbIcon: thumbIcon,
+    trackColor: trackColor,
+    thumbColor: thumbColor,
+    trackOutlineWidth: WidgetStatePropertyAll(0),
   ),
 );
