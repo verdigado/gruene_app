@@ -5,9 +5,6 @@ environment:
 steps:
   - checkout
   - prepare_workspace
-  - run:
-      name: Install rosetta
-      command: softwareupdate --install-rosetta --agree-to-license
   - restore_environment_variables
   - install_flutter:
       precache: ios
@@ -21,9 +18,7 @@ steps:
       working_directory: ios
   - store_artifacts:
       path: app-release.ipa
-  - store_artifacts:
-      path: /Users/distiller/Library/Logs/gym/Runner-Runner.log
   - persist_to_workspace:
       root: .
       paths:
-        - app-release>.ipa
+        - app-release.ipa
