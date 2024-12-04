@@ -11,7 +11,6 @@ jobs:
         - bump_version
   - build_ios:
       context:
-        - gruene_apple_appstore
         - app_signing_ios
       requires:
         - check

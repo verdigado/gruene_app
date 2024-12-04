@@ -361,24 +361,19 @@ jobs:
         steps:
             - checkout
             - prepare_workspace
-            - restore_environment_variables
-            - install_node_modules
             - install_fastlane:
                 directory: ios
-            - when:
-                condition: << parameters.production_delivery >>
-                steps:
-                    - run:
-                        command: bundle exec fastlane ios appstoreconnect_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-                        name: '[FL] App Store Connect Upload'
-                        working_directory: ios
             - unless:
                 condition: << parameters.production_delivery >>
                 steps:
                     - run:
-                        command: bundle exec fastlane ios upload_to_test_flight ipa_path:attached_workspace/app-release.ipa
-                        name: '[FL] TestFlight Upload'
+                        command: bundle exec fastlane ios beta_upload ipa_path:attached_workspace/app-release.ipa
+                        name: '[FL] Beta Upload (TestFlight)'
                         working_directory: ios
+            - run:
+                command: yarn --silent github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}"
+                name: Create Github Release
+                working_directory: tools
 parameters:
     api_triggered:
         default: false
@@ -394,6 +389,26 @@ parameters:
         type: enum
 version: 2.1
 workflows:
+    beta_delivery:
+        jobs:
+            - bump_version
+            - build_ios:
+                context:
+                    - app_signing_ios
+                requires:
+                    - bump_version
+            - deliver_ios:
+                context:
+                    - gruene_apple_appstore
+                production_delivery: false
+                requires:
+                    - build_ios
+        when:
+            and:
+                - << pipeline.parameters.api_triggered >>
+                - equal:
+                    - << pipeline.parameters.workflow_type >>
+                    - beta_delivery
     commit:
         jobs:
             - check
@@ -404,7 +419,6 @@ workflows:
                     - bump_version
             - build_ios:
                 context:
-                    - gruene_apple_appstore
                     - app_signing_ios
                 requires:
                     - check
