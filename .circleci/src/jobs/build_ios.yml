@@ -5,6 +5,9 @@ environment:
 steps:
   - checkout
   - prepare_workspace
+  - run:
+      name: Install rosetta
+      command: softwareupdate --install-rosetta --agree-to-license
   - restore_environment_variables
   - install_flutter:
       precache: ios

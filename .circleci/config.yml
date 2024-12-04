@@ -260,6 +260,9 @@ jobs:
         steps:
             - checkout
             - prepare_workspace
+            - run:
+                command: softwareupdate --install-rosetta --agree-to-license
+                name: Install rosetta
             - restore_environment_variables
             - install_flutter:
                 precache: ios
