@@ -22,6 +22,6 @@ steps:
   - store_artifacts:
       path: app-release.ipa
   - persist_to_workspace:
-      root: .
+      root: ~/
       paths:
         - app-release.ipa

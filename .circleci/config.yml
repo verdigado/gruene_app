@@ -277,7 +277,7 @@ jobs:
             - persist_to_workspace:
                 paths:
                     - app-release.ipa
-                root: .
+                root: ~/
     bump_version:
         docker:
             - image: cimg/node:20.13.1
