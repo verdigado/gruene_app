@@ -6,9 +6,7 @@ steps:
         - 1-cocoapods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
   - run:
       name: Install CocoaPods
-      command: |
-        pod update
-        pod install
+      command: bundle exec pod install
       working_directory: ios
   - save_cache:
       name: Save CocoaPods Cache

@@ -38,9 +38,7 @@ commands:
                     - 1-cocoapods-{{ arch }}-{{ checksum "ios/Podfile.lock" }}
                 name: Restore CocoaPods Cache
             - run:
-                command: |
-                    pod update
-                    pod install
+                command: bundle exec pod install
                 name: Install CocoaPods
                 working_directory: ios
             - save_cache:
