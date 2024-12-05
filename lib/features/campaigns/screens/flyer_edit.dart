@@ -112,7 +112,10 @@ class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator
     Navigator.maybePop(context);
   }
 
-  void _onDeletePressed() {}
+  void _onDeletePressed() {
+    widget.onDelete(widget.flyer.id);
+    _closeDialog();
+  }
 
   void _saveFlyer() {
     if (!context.mounted) return;
