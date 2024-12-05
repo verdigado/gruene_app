@@ -32,7 +32,7 @@ class DeleteAndSaveWidget extends StatelessWidget {
               ),
             ),
             child: Text(
-              t.campaigns.posters.deletePoster.label,
+              t.campaigns.deleteEntry.label,
               style: theme.textTheme.titleSmall?.apply(color: ThemeColors.textWarning),
             ),
           ),
