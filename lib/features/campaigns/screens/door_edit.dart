@@ -128,7 +128,10 @@ class _DoorEditState extends State<DoorEdit> with AddressMixin, DoorValidator {
     Navigator.maybePop(context);
   }
 
-  void _onDeletePressed() {}
+  void _onDeletePressed() {
+    widget.onDelete(widget.door.id);
+    _closeDialog();
+  }
 
   void _saveDoor() {
     if (!context.mounted) return;
