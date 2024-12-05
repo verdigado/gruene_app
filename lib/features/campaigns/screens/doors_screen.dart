@@ -67,7 +67,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       location,
       null,
       _getAddScreen,
-      saveNewAndGetMarkerItem,
+      _saveNewAndGetMarkerItem,
     );
   }
 
@@ -83,14 +83,14 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       return door;
     }
 
-    getPoiDetail(DoorDetailModel poster) {
+    getPoiDetail(DoorDetailModel door) {
       return DoorsDetail(
-        poi: poster,
+        poi: door,
       );
     }
 
     getEditPoiWidget(DoorDetailModel door) {
-      return DoorEdit(door: door, onSave: _savePoster, onDelete: deletePoi);
+      return DoorEdit(door: door, onSave: _saveDoor, onDelete: deletePoi);
     }
 
     super.onFeatureClick<DoorDetailModel>(
@@ -104,7 +104,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   void _onNoFeatureClick() {}
 
-  void _savePoster(DoorUpdateModel doorUpdate) async {
+  void _saveDoor(DoorUpdateModel doorUpdate) async {
     final updatedMarker = await campaignService.updateDoor(doorUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }
@@ -116,6 +116,6 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     );
   }
 
-  Future<MarkerItemModel> saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
+  Future<MarkerItemModel> _saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
       await _grueneApiService.createNewDoor(newDoor);
 }

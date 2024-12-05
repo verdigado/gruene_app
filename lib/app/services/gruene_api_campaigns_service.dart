@@ -6,6 +6,7 @@ import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
@@ -255,6 +256,26 @@ class GrueneApiCampaignsService {
       house: PoiHouse(
         countOpenedDoors: newDoor.openedDoors.toDouble(),
         countClosedDoors: newDoor.closedDoors.toDouble(),
+      ),
+    );
+    // saving POI
+    final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
+
+    return _transformToMarkerItem(newPoiResponse.body!);
+  }
+
+  Future<MarkerItemModel> createNewFlyer(FlyerCreateModel newFlyer) async {
+    final requestParam = CreatePoi(
+      coords: [newFlyer.location.latitude, newFlyer.location.longitude],
+      type: _getPoiCreateType(),
+      address: PoiAddress(
+        city: newFlyer.address.city,
+        zip: newFlyer.address.zipCode,
+        street: newFlyer.address.street,
+        houseNumber: newFlyer.address.houseNumber,
+      ),
+      flyerSpot: PoiFlyerSpot(
+        flyerCount: newFlyer.flyerCount.toDouble(),
       ),
     );
     // saving POI
