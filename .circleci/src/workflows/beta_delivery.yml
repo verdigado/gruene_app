@@ -3,7 +3,10 @@ when:
     - << pipeline.parameters.api_triggered >>
     - equal: [<< pipeline.parameters.workflow_type >>, beta_delivery]
 jobs:
-  - bump_version
+  - bump_version:
+      context:
+        - github
+      prepare_delivery: true
 
   - build_android:
 #      context:
@@ -12,7 +15,8 @@ jobs:
         - bump_version
   - deliver_android:
       production_delivery: false
-#      context:
+      context:
+        - github
 #        - gruene_google_playstore
       requires:
         - build_android
@@ -25,6 +29,7 @@ jobs:
   - deliver_ios:
       production_delivery: false
       context:
+        - github
         - gruene_apple_appstore
       requires:
         - build_ios

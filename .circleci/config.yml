@@ -391,11 +391,16 @@ version: 2.1
 workflows:
     beta_delivery:
         jobs:
-            - bump_version
+            - bump_version:
+                context:
+                    - github
+                prepare_delivery: true
             - build_android:
                 requires:
                     - bump_version
             - deliver_android:
+                context:
+                    - github
                 production_delivery: false
                 requires:
                     - build_android
@@ -406,6 +411,7 @@ workflows:
                     - bump_version
             - deliver_ios:
                 context:
+                    - github
                     - gruene_apple_appstore
                 production_delivery: false
                 requires:
