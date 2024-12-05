@@ -68,6 +68,7 @@
     "flyer": {
       "label": "Flyer",
       "addFlyer": "Wahlkampfstand eintragen",
+      "editFlyer": "Wahlkampfstand bearbeiten",
       "countFlyer": "Anzahl der Flyer",
       "noFlyerWarning": "Bitte geben Sie mindestens einen Flyer ein!"
     },

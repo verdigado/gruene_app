@@ -78,7 +78,7 @@ class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressMixin, Flye
                   child: TextInputField(
                     labelText: t.campaigns.flyer.countFlyer,
                     textController: flyerCountTextController,
-                    inputType: InputFieldType.numbers0To999,
+                    inputType: InputFieldType.numbers1To999,
                     selectAllTextOnFocus: true,
                   ),
                 ),
@@ -112,7 +112,7 @@ mixin FlyerValidator {
     BuildContext context,
   ) {
     final flyerCount = int.tryParse(flyerCountRawValue) ?? 0;
-    if (flyerCount == 0) {
+    if (flyerCount < 1) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(t.campaigns.flyer.noFlyerWarning),
