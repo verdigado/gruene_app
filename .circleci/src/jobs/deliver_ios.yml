@@ -9,6 +9,8 @@ environment:
 steps:
   - checkout
   - prepare_workspace
+  - restore_environment_variables
+  - install_node_modules
   - install_fastlane:
       directory: ios
 #  - when:
