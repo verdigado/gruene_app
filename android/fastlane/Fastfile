@@ -1,18 +1,3 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
 APPLICATION_ID = 'de.gruene.wkapp'
 
 CREDENTIALS_GIT_REPOSITORY_URL = ENV['CREDENTIALS_GIT_REPOSITORY_URL']
@@ -42,18 +27,10 @@ platform :android do
 
     puts("Decrypting keystore")
 
-    sh("gpg --verbose --passphrase #{CREDENTIALS_KEYSTORE_PASSWORD} --pinentry-mode loopback \\
-                -o ~/#{KEYSTORE_PATH} -d #{CREDENTIALS_KEYSTORE_PATH}")
+    sh("gpg --verbose --passphrase #{CREDENTIALS_KEYSTORE_PASSWORD} --pinentry-mode loopback -o ~/#{KEYSTORE_PATH} -d #{CREDENTIALS_KEYSTORE_PATH}")
   end
 
-  desc "Validate Play Store Key"
-  lane :validate_play_store_key do
-    validate_play_store_json_key(
-      json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
-    )
-  end
-
-  desc "Build Android App"
+  desc "Create an android release build"
   lane :build do |options|
     version_code = options[:version_code]
     version_name = options[:version_name]
@@ -95,8 +72,13 @@ platform :android do
     end
   end
 
-  desc "Upload Android App to Google Play"
-  lane :upload_to_playstore do |options|
+  # The following parameters have to be passed:
+  # version_name: The version name the build should use
+  # version_code: The version code the build should use
+  # production_delivery: Whether to deliver to beta or production
+  # aab_path: The path to the .aab to upload
+  desc "Deliver android app to beta or production"
+  lane :upload do |options|
     ensure_env_vars(
       env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )
@@ -104,8 +86,9 @@ platform :android do
     version_code = options[:version_code]
     version_name = options[:version_name]
     production_delivery = options[:production_delivery]
+    aab_path = options[:aab_path]
 
-    if [version_name, version_code, production_delivery].include?(nil)
+    if [version_name, version_code, production_delivery, aab_path].include?(nil)
       raise "'nil' passed as parameter! Aborting..."
     end
 
@@ -113,7 +96,6 @@ platform :android do
       version_code: version_code,
       version_name: version_name,
       package_name: APPLICATION_ID,
-      metadata_path: ".android/fastlane/metadata",
       track: production_delivery === true ? "production" : "beta",
       skip_upload_changelogs: true,
       skip_upload_images: true,
@@ -121,13 +103,13 @@ platform :android do
       skip_upload_metadata: true,
       release_status: "completed",
       skip_upload_apk: true,
-      aab: "#{ENV['HOME']}/attached_workspace/release.aab",
+      aab: "#{ENV['HOME']}/#{aab_path}",
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )
   end
 
-  desc "Promote the most recent version in the beta track to the production track in the Play Store."
-  lane :playstore_promote do |options|
+  desc "Promote the android app from beta to production"
+  lane :promote do |options|
     ensure_env_vars(
       env_vars: ["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )

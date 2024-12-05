@@ -15,10 +15,10 @@ steps:
   - install_fastlane:
       directory: android
   - install_gradle_dependencies
-#  - run:
-#      name: '[FL] Prepare Android Keystore'
-#      command: bundle exec fastlane keystore
-#      working_directory: android
+  - run:
+      name: '[FL] Prepare Android Keystore'
+      command: bundle exec fastlane keystore
+      working_directory: android
   - run:
       name: '[FL] Build'
       command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
