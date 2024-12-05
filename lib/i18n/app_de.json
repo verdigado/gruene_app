@@ -66,7 +66,10 @@
       }
     },
     "flyer": {
-      "label": "Flyer"
+      "label": "Flyer",
+      "addFlyer": "Wahlkampfstand eintragen",
+      "countFlyer": "Anzahl der Flyer",
+      "noFlyerWarning": "Bitte geben Sie mindestens einen Flyer ein!"
     },
     "team": {
       "label": "Team"
