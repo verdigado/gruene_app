@@ -1,21 +1,20 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
-import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
+import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
-import 'package:gruene_app/features/campaigns/screens/poster_add.dart';
+import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/screens/poster_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_detail.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_edit.dart';
-import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
-import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/map.dart';
-import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -32,17 +31,20 @@ class PostersScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersScreenState();
 }
 
-class _PostersScreenState extends State<PostersScreen> {
-  late MapController _mapController;
+class _PostersScreenState extends MapConsumer<PostersScreen> {
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.poster);
-  final NominatimService _nominatimService = NominatimService();
+
+  _PostersScreenState() : super(NominatimService());
+
+  @override
+  GrueneApiCampaignsService get campaignService => _grueneApiService;
 
   @override
   Widget build(localContext) {
     MapContainer mapContainer = MapContainer(
-      onMapCreated: _onMapCreated,
+      onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
-      loadVisibleItems: _loadVisibleItems,
+      loadVisibleItems: loadVisibleItems,
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
@@ -58,58 +60,28 @@ class _PostersScreenState extends State<PostersScreen> {
     );
   }
 
-  void _onMapCreated(MapController controller) {
-    _mapController = controller;
+  Future<File?> _acquireAdditionalDataBeforeShowingAddScreen(BuildContext context) async {
+    return await MediaHelper.acquirePhoto(context);
   }
+
+  PosterAddScreen _getAddScreen(LatLng location, AddressModel? address, File? photo) {
+    return PosterAddScreen(
+      location: location,
+      address: address!,
+      photo: photo,
+    );
+  }
+
+  Future<MarkerItemModel> saveNewAndGetMarkerItem(PosterCreateModel newPoster) async =>
+      await campaignService.createNewPoster(newPoster);
 
   void _addPOIClicked(LatLng location) async {
-    final currentRoute = GoRouterState.of(context);
-
-    var locationAddress = _nominatimService.getLocationAddress(location);
-
-    final photo = await MediaHelper.acquirePhoto(context);
-
-    var navState = getNavState();
-    final result = await navState.push(
-      AppRoute<PosterCreateModel?>(
-        builder: (context) {
-          return FutureBuilder(
-            future: locationAddress.timeout(const Duration(milliseconds: 800), onTimeout: () => AddressModel()),
-            builder: (context, AsyncSnapshot<AddressModel> snapshot) {
-              if (!snapshot.hasData && !snapshot.hasError) {
-                return Container(
-                  color: ThemeColors.secondary,
-                );
-              }
-
-              final address = snapshot.data;
-              return ContentPage(
-                title: currentRoute.name ?? '',
-                child: PosterAddScreen(
-                  location: location,
-                  address: address!,
-                  photo: photo,
-                ),
-              );
-            },
-          );
-        },
-      ),
+    super.addPOIClicked<File, PosterAddScreen, PosterCreateModel>(
+      location,
+      _acquireAdditionalDataBeforeShowingAddScreen,
+      _getAddScreen,
+      saveNewAndGetMarkerItem,
     );
-
-    if (result != null) {
-      final newPoster = result;
-
-      final markerItem = await _grueneApiService.createNewPoster(newPoster);
-      _mapController.addMarkerItem(markerItem);
-    }
-  }
-
-  NavigatorState getNavState() => Navigator.of(context, rootNavigator: true);
-
-  void _loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
-    final markerItems = await _grueneApiService.loadPoisInRegion(locationSW, locationNE);
-    _mapController.setMarkerSource(markerItems);
   }
 
   Map<String, String> _getMarkerImages() {
@@ -124,7 +96,7 @@ class _PostersScreenState extends State<PostersScreen> {
   void _onFeatureClick(dynamic rawFeature) async {
     final feature = rawFeature as Map<String, dynamic>;
     final poiId = MapHelper.extractPoiIdFromFeature(feature);
-    final poster = await _grueneApiService.getPoiAsPosterDetail(poiId);
+    final poster = await campaignService.getPoiAsPosterDetail(poiId);
 
     final coord = MapHelper.extractLatLngFromFeature(feature);
     var popupWidget = SizedBox(
@@ -134,7 +106,7 @@ class _PostersScreenState extends State<PostersScreen> {
         poi: poster,
       ),
     );
-    _mapController.showMapPopover(
+    mapController.showMapPopover(
       coord,
       popupWidget,
       () => _editPosterItem(poster),
@@ -160,13 +132,13 @@ class _PostersScreenState extends State<PostersScreen> {
   }
 
   void _savePoster(PosterUpdateModel posterUpdate) async {
-    final updatedMarker = await _grueneApiService.updatePoi(posterUpdate);
-    _mapController.setMarkerSource([updatedMarker]);
+    final updatedMarker = await campaignService.updatePoi(posterUpdate);
+    mapController.setMarkerSource([updatedMarker]);
   }
 
   void _deletePoster(String posterId) async {
     final id = int.parse(posterId);
-    await _grueneApiService.deletePoi(posterId);
-    _mapController.removeMarkerItem(id);
+    await campaignService.deletePoi(posterId);
+    mapController.removeMarkerItem(id);
   }
 }

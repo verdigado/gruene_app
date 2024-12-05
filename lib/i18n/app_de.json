@@ -28,16 +28,16 @@
       "info_details": "Infos & Bearbeiten",
       "delete_photo": "Foto löschen",
       "replace_photo": "Foto ersetzen",
-      "status":{
-        "damaged":{
+      "status": {
+        "damaged": {
           "label": "Beschädigt",
           "hint": "Als zu ersetzen melden"
         },
-        "missing":{
+        "missing": {
           "label": "Verschollen",
           "hint": "Durch Fremdeinwirkung entfernt"
         },
-        "removed":{
+        "removed": {
           "label": "Abgehangen",
           "hint": "Dauerhaft entfernt"
         }
@@ -55,7 +55,12 @@
       }
     },
     "door": {
-      "label": "Haustür"
+      "label": "Haustür",
+      "closedDoors": "Geöffnete Türen",
+      "openedDoors": "Ungeöffnete Türen",
+      "createDoor": {
+        "hint": "Bitte trage sowohl geöffnete, als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
+      }
     },
     "flyer": {
       "label": "Flyer"

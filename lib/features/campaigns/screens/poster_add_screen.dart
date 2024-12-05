@@ -6,7 +6,9 @@ import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
-import 'package:gruene_app/features/campaigns/widgets/textinputfield.dart';
+import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
+import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
+import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -21,29 +23,27 @@ class PosterAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersAddState();
 }
 
-class _PostersAddState extends State<PosterAddScreen> {
+class _PostersAddState extends State<PosterAddScreen> with AddressMixin {
+  @override
   TextEditingController streetTextController = TextEditingController();
+  @override
   TextEditingController houseNumberTextController = TextEditingController();
+  @override
   TextEditingController zipCodeTextController = TextEditingController();
+  @override
   TextEditingController cityTextController = TextEditingController();
   File? _currentPhoto;
 
   @override
   void initState() {
-    streetTextController.text = widget.address.street ?? '';
-    houseNumberTextController.text = widget.address.houseNumber ?? '';
-    zipCodeTextController.text = widget.address.zipCode ?? '';
-    cityTextController.text = widget.address.city ?? '';
+    setAddress(widget.address);
     _currentPhoto = widget.photo;
     super.initState();
   }
 
   @override
   void dispose() {
-    streetTextController.dispose();
-    houseNumberTextController.dispose();
-    zipCodeTextController.dispose();
-    cityTextController.dispose();
+    disposeAddressTextControllers();
     super.dispose();
   }
 
@@ -78,93 +78,13 @@ class _PostersAddState extends State<PosterAddScreen> {
               ),
             ],
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextInputField(
-                    textController: streetTextController,
-                    labelText: t.campaigns.address.street,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 6),
-                  child: TextInputField(
-                    width: 75,
-                    labelText: t.campaigns.address.housenumber,
-                    textController: houseNumberTextController,
-                  ),
-                ),
-              ],
-            ),
+          CreateAddressWidget(
+            streetTextController: streetTextController,
+            houseNumberTextController: houseNumberTextController,
+            zipCodeTextController: zipCodeTextController,
+            cityTextController: cityTextController,
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(right: 6),
-                  child: TextInputField(
-                    width: 75,
-                    labelText: t.campaigns.address.zipcode,
-                    textController: zipCodeTextController,
-                  ),
-                ),
-                Expanded(
-                  child: TextInputField(
-                    labelText: t.campaigns.address.city_or_place,
-                    textController: cityTextController,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 24),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: 48,
-                    padding: EdgeInsets.only(right: 6),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ThemeColors.background,
-                        foregroundColor: ThemeColors.primary,
-                      ),
-                      child: Text(
-                        t.common.actions.cancel,
-                        style: theme.textTheme.titleMedium?.apply(
-                          color: ThemeColors.primary,
-                        ),
-                      ),
-                      onPressed: () => Navigator.maybePop(context),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  child: Container(
-                    height: 48,
-                    padding: EdgeInsets.only(left: 6),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: ThemeColors.primary,
-                        foregroundColor: ThemeColors.background,
-                      ),
-                      child: Text(
-                        t.common.actions.save,
-                        style: theme.textTheme.titleMedium?.apply(
-                          color: ThemeColors.background,
-                        ),
-                      ),
-                      onPressed: () => _onSavePressed(context),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          SaveCancelOnCreateWidget(onSave: _onSavePressed),
         ],
       ),
     );

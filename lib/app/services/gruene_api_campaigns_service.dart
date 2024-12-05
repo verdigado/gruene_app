@@ -7,6 +7,7 @@ import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
+import 'package:gruene_app/features/campaigns/screens/doors_screen.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
@@ -56,10 +57,12 @@ class GrueneApiCampaignsService {
   }
 
   MarkerItemModel _transformToMarkerItem(Poi poi) {
+    String statusSuffix = '';
+    if (poi.poster != null) statusSuffix = '_${poi.poster!.status.name}';
     return MarkerItemModel(
       id: int.parse(poi.id),
       location: LatLng(poi.coords[0], poi.coords[1]),
-      status: '${poiType.name}_${poi.poster!.status.name}',
+      status: '${poiType.name}$statusSuffix',
     );
   }
 
@@ -68,10 +71,10 @@ class GrueneApiCampaignsService {
       coords: [newPoster.location.latitude, newPoster.location.longitude],
       type: _getPoiCreateType(),
       address: PoiAddress(
-        city: newPoster.city!,
-        zip: newPoster.zipCode!,
-        street: newPoster.street!,
-        houseNumber: newPoster.houseNumber!,
+        city: newPoster.city,
+        zip: newPoster.zipCode,
+        street: newPoster.street,
+        houseNumber: newPoster.houseNumber,
       ),
     );
     // saving POI
@@ -198,6 +201,27 @@ class GrueneApiCampaignsService {
       ),
     );
     return savePoiPhotoResponse;
+  }
+
+  Future<MarkerItemModel> createNewDoor(DoorsCreateModel newDoor) async {
+    final requestParam = CreatePoi(
+      coords: [newDoor.location.latitude, newDoor.location.longitude],
+      type: _getPoiCreateType(),
+      address: PoiAddress(
+        city: newDoor.address.city,
+        zip: newDoor.address.zipCode,
+        street: newDoor.address.street,
+        houseNumber: newDoor.address.houseNumber,
+      ),
+      house: PoiHouse(
+        countOpenedDoors: newDoor.openedDoors.toDouble(),
+        countClosedDoors: newDoor.closedDoors.toDouble(),
+      ),
+    );
+    // saving POI
+    final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
+
+    return _transformToMarkerItem(newPoiResponse.body!);
   }
 }
 

@@ -12,7 +12,10 @@ class ContentPage extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       backgroundColor: theme.colorScheme.secondary,
-      body: child,
+      body: Align(
+        alignment: Alignment.center,
+        child: SingleChildScrollView(child: child),
+      ),
       appBar: CustomAppBar(
         title: title,
       ),
