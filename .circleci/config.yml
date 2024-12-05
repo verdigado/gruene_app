@@ -392,6 +392,13 @@ workflows:
     beta_delivery:
         jobs:
             - bump_version
+            - build_android:
+                requires:
+                    - bump_version
+            - deliver_android:
+                production_delivery: false
+                requires:
+                    - build_android
             - build_ios:
                 context:
                     - app_signing_ios
@@ -414,12 +421,6 @@ workflows:
             - check
             - bump_version
             - build_android:
-                requires:
-                    - check
-                    - bump_version
-            - build_ios:
-                context:
-                    - app_signing_ios
                 requires:
                     - check
                     - bump_version

@@ -82,63 +82,63 @@ platform :ios do
     )
   end
 
-#   # The following parameters have to be passed:
-#   # ipa_path: The path to the .ipa to upload
-#   desc "Deliver ios app to production"
-#   lane :production_upload do |options|
-#     apple_auth()
-#
-#     version_name = options[:version_name]
-#     ipa_path = options[:ipa_path]
-#
-#     if [ipa_path, version_name].include?(nil)
-#       raise "'nil' passed as parameter! Aborting..."
-#     end
-#
-#     puts("delivering v#{version_name}")
-#
-#     # https://docs.fastlane.tools/actions/deliver/
-#     deliver(
-#       ipa: "#{ENV['HOME']}/#{ipa_path}",
-#       app_version: version_name,
-#       submit_for_review: true,
-#       automatic_release: true,
-#       force: true,
-#       skip_screenshots: true,
-#       skip_metadata: false,
-#       overwrite_screenshots: true,
-#       precheck_include_in_app_purchases: false,
-#       submission_information: { add_id_info_uses_idfa: false }
-#     )
-#   end
-#
-#   desc "Promote the app from beta (testflight) to production"
-#   lane :promote do |options|
-#     apple_auth()
-#
-#     testflight_build_number = latest_testflight_build_number(app_identifier: bundle_identifier)
-#     testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
-#     app_store_build_number = app_store_build_number(app_identifier: bundle_identifier)
-#
-#     if testflight_build_number <= app_store_build_number
-#       puts("Nothing to do, latest version already available in app store connect...")
-#       next
-#     end
-#
-#     puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
-#
-#     # https://docs.fastlane.tools/actions/deliver/#submit-build
-#     deliver(
-#       app_version: testflight_version,
-#       build_number: testflight_build_number.to_s,
-#       app_identifier: bundle_identifier,
-#       submit_for_review: true,
-#       automatic_release: true,
-#       force: true,
-#       skip_metadata: false,
-#       skip_screenshots: true,
-#       skip_binary_upload: true,
-#       precheck_include_in_app_purchases: false,
-#     )
-#   end
+  # The following parameters have to be passed:
+  # ipa_path: The path to the .ipa to upload
+  desc "Deliver ios app to production"
+  lane :production_upload do |options|
+    apple_auth()
+
+    version_name = options[:version_name]
+    ipa_path = options[:ipa_path]
+
+    if [ipa_path, version_name].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    puts("delivering v#{version_name}")
+
+    # https://docs.fastlane.tools/actions/deliver/
+    deliver(
+      ipa: "#{ENV['HOME']}/#{ipa_path}",
+      app_version: version_name,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      skip_screenshots: true,
+      skip_metadata: false,
+      overwrite_screenshots: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: { add_id_info_uses_idfa: false }
+    )
+  end
+
+  desc "Promote the app from beta (testflight) to production"
+  lane :promote do |options|
+    apple_auth()
+
+    testflight_build_number = latest_testflight_build_number(app_identifier: bundle_identifier)
+    testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    app_store_build_number = app_store_build_number(app_identifier: bundle_identifier)
+
+    if testflight_build_number <= app_store_build_number
+      puts("Nothing to do, latest version already available in app store connect...")
+      next
+    end
+
+    puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
+
+    # https://docs.fastlane.tools/actions/deliver/#submit-build
+    deliver(
+      app_version: testflight_version,
+      build_number: testflight_build_number.to_s,
+      app_identifier: bundle_identifier,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: true,
+      skip_binary_upload: true,
+      precheck_include_in_app_purchases: false,
+    )
+  end
 end

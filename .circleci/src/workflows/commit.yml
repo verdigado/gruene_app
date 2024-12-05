@@ -9,9 +9,3 @@ jobs:
       requires:
         - check
         - bump_version
-  - build_ios:
-      context:
-        - app_signing_ios
-      requires:
-        - check
-        - bump_version
