@@ -2,8 +2,12 @@ import 'package:flutter/widgets.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/screens/flyer_add_screen.dart';
+import 'package:gruene_app/features/campaigns/screens/flyer_detail.dart';
+import 'package:gruene_app/features/campaigns/screens/flyer_edit.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/map.dart';
@@ -64,7 +68,30 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
     };
   }
 
-  void _onFeatureClick(feature) {}
+  void _onFeatureClick(dynamic rawFeature) async {
+    getPoi(String poiId) async {
+      final flyer = await campaignService.getPoiAsFlyerDetail(poiId);
+      return flyer;
+    }
+
+    getPoiDetail(FlyerDetailModel flyer) {
+      return FlyerDetail(
+        poi: flyer,
+      );
+    }
+
+    getEditPoiWidget(FlyerDetailModel flyer) {
+      return FlyerEdit(flyer: flyer, onSave: _saveFlyer, onDelete: deletePoi);
+    }
+
+    super.onFeatureClick<FlyerDetailModel>(
+      rawFeature,
+      getPoi,
+      getPoiDetail,
+      getEditPoiWidget,
+      desiredSize: Size(145, 70),
+    );
+  }
 
   void _onNoFeatureClick() {}
 
@@ -80,5 +107,10 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
 
   Future<MarkerItemModel> _saveNewAndGetMarkerItem(FlyerCreateModel newFlyer) async {
     return await campaignService.createNewFlyer(newFlyer);
+  }
+
+  void _saveFlyer(FlyerUpdateModel flyerUpdate) async {
+    final updatedMarker = await campaignService.updateFlyer(flyerUpdate);
+    mapController.setMarkerSource([updatedMarker]);
   }
 }

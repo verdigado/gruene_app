@@ -7,6 +7,8 @@ import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dar
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
@@ -101,6 +103,10 @@ class GrueneApiCampaignsService {
     return _getPoi(poiId, transformPoiToDoorDetail);
   }
 
+  Future<FlyerDetailModel> getPoiAsFlyerDetail(String poiId) {
+    return _getPoi(poiId, transformPoiToFlyerDetail);
+  }
+
   DoorDetailModel transformPoiToDoorDetail(Poi? poi) {
     if (poi!.type != PoiType.house) {
       throw Exception('Unexpected PoiType');
@@ -190,20 +196,37 @@ class GrueneApiCampaignsService {
     return _transformToMarkerItem(updatePoiResponse.body!);
   }
 
-  Future<MarkerItemModel> updateDoor(DoorUpdateModel posterUpdate) async {
+  Future<MarkerItemModel> updateDoor(DoorUpdateModel doorUpdate) async {
     var dtoUpdate = UpdatePoi(
       address: PoiAddress(
-        street: posterUpdate.address.street,
-        houseNumber: posterUpdate.address.houseNumber,
-        zip: posterUpdate.address.zipCode,
-        city: posterUpdate.address.city,
+        street: doorUpdate.address.street,
+        houseNumber: doorUpdate.address.houseNumber,
+        zip: doorUpdate.address.zipCode,
+        city: doorUpdate.address.city,
       ),
       house: PoiHouse(
-        countOpenedDoors: posterUpdate.openedDoors.toDouble(),
-        countClosedDoors: posterUpdate.closedDoors.toDouble(),
+        countOpenedDoors: doorUpdate.openedDoors.toDouble(),
+        countClosedDoors: doorUpdate.closedDoors.toDouble(),
       ),
     );
-    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: posterUpdate.id, body: dtoUpdate);
+    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: doorUpdate.id, body: dtoUpdate);
+
+    return _transformToMarkerItem(updatePoiResponse.body!);
+  }
+
+  Future<MarkerItemModel> updateFlyer(FlyerUpdateModel flyerUpdate) async {
+    var dtoUpdate = UpdatePoi(
+      address: PoiAddress(
+        street: flyerUpdate.address.street,
+        houseNumber: flyerUpdate.address.houseNumber,
+        zip: flyerUpdate.address.zipCode,
+        city: flyerUpdate.address.city,
+      ),
+      flyerSpot: PoiFlyerSpot(
+        flyerCount: flyerUpdate.flyerCount.toDouble(),
+      ),
+    );
+    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: flyerUpdate.id, body: dtoUpdate);
 
     return _transformToMarkerItem(updatePoiResponse.body!);
   }
@@ -214,7 +237,6 @@ class GrueneApiCampaignsService {
       PoiPosterStatus.damaged => PosterStatus.damaged,
       PoiPosterStatus.missing => PosterStatus.missing,
       PoiPosterStatus.removed => PosterStatus.removed,
-      // TODO: Handle this case.
       PoiPosterStatus.swaggerGeneratedUnknown => throw UnimplementedError(),
     };
   }
@@ -282,6 +304,20 @@ class GrueneApiCampaignsService {
     final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
 
     return _transformToMarkerItem(newPoiResponse.body!);
+  }
+
+  FlyerDetailModel transformPoiToFlyerDetail(Poi? poi) {
+    if (poi!.type != PoiType.flyerSpot) {
+      throw Exception('Unexpected PoiType');
+    }
+    return FlyerDetailModel(
+      id: poi.id,
+      street: poi.address!.street,
+      houseNumber: poi.address!.houseNumber,
+      zipCode: poi.address!.zip,
+      city: poi.address!.city,
+      flyerCount: poi.flyerSpot!.flyerCount.toInt(),
+    );
   }
 }
 

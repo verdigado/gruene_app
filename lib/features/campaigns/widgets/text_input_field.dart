@@ -53,6 +53,11 @@ class _TextInputFieldState extends State<TextInputField> {
         formatters = <TextInputFormatter>[
           NumericRangeFormatter(min: 0, max: 999),
         ];
+      case InputFieldType.numbers1To999:
+        inputType = TextInputType.number;
+        formatters = <TextInputFormatter>[
+          NumericRangeFormatter(min: 1, max: 999),
+        ];
     }
     final theme = Theme.of(context);
     final inputBorder = switch (widget.borderColor) {
@@ -91,7 +96,7 @@ class _TextInputFieldState extends State<TextInputField> {
   }
 }
 
-enum InputFieldType { string, numbers, numbers0To99, numbers0To999 }
+enum InputFieldType { string, numbers, numbers0To99, numbers0To999, numbers1To999 }
 
 class NumericRangeFormatter extends TextInputFormatter {
   final int min;
