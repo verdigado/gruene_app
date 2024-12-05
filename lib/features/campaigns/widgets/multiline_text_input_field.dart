@@ -23,12 +23,12 @@ class MultiLineTextInputField extends StatefulWidget {
 }
 
 class _MultiLineTextInputFieldState extends State<MultiLineTextInputField> {
-  TextEditingController _textEditingController = TextEditingController();
+  late TextEditingController _textEditingController;
   final maxLength = 200;
 
   @override
   void dispose() {
-    _textEditingController.dispose();
+    if (widget.textController == null) _textEditingController.dispose();
     super.dispose();
   }
 
@@ -36,7 +36,10 @@ class _MultiLineTextInputFieldState extends State<MultiLineTextInputField> {
   void initState() {
     if (widget.textController != null) {
       _textEditingController = widget.textController!;
+    } else {
+      _textEditingController = TextEditingController();
     }
+
     _textEditingController.addListener(() {
       setState(() {});
     });

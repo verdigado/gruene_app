@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
-import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
@@ -94,51 +93,28 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
   }
 
   void _onFeatureClick(dynamic rawFeature) async {
-    final feature = rawFeature as Map<String, dynamic>;
-    final poiId = MapHelper.extractPoiIdFromFeature(feature);
-    final poster = await campaignService.getPoiAsPosterDetail(poiId);
+    getPoi(String poiId) async {
+      final poster = await campaignService.getPoiAsPosterDetail(poiId);
+      return poster;
+    }
 
-    final coord = MapHelper.extractLatLngFromFeature(feature);
-    var popupWidget = SizedBox(
-      height: 100,
-      width: 100,
-      child: PosterDetail(
+    getPoiDetail(PosterDetailModel poster) {
+      return PosterDetail(
         poi: poster,
-      ),
-    );
-    mapController.showMapPopover(
-      coord,
-      popupWidget,
-      () => _editPosterItem(poster),
-    );
+      );
+    }
+
+    getEditPosterWidget(PosterDetailModel poster) {
+      return PosterEdit(poster: poster, onSave: _savePoster, onDelete: deletePoi);
+    }
+
+    super.onFeatureClick<PosterDetailModel>(rawFeature, getPoi, getPoiDetail, getEditPosterWidget);
   }
 
   void _onNoFeatureClick() {}
 
-  void _editPosterItem(PosterDetailModel poster) {
-    final theme = Theme.of(context);
-    showModalBottomSheet<void>(
-      isScrollControlled: true,
-      isDismissible: true,
-      context: context,
-      backgroundColor: theme.colorScheme.surface,
-      builder: (context) => SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-          child: PosterEdit(poster: poster, onSave: _savePoster, onDelete: _deletePoster),
-        ),
-      ),
-    );
-  }
-
   void _savePoster(PosterUpdateModel posterUpdate) async {
-    final updatedMarker = await campaignService.updatePoi(posterUpdate);
+    final updatedMarker = await campaignService.updatePoster(posterUpdate);
     mapController.setMarkerSource([updatedMarker]);
-  }
-
-  void _deletePoster(String posterId) async {
-    final id = int.parse(posterId);
-    await campaignService.deletePoi(posterId);
-    mapController.removeMarkerItem(id);
   }
 }

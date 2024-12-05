@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
@@ -12,6 +13,10 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 typedef GetAdditionalDataBeforeCallback<T> = Future<T?> Function(BuildContext);
 typedef GetAddScreenCallback<T, U> = T Function(LatLng, AddressModel?, U?);
 typedef SaveNewAndGetMarkerCallback<T> = Future<MarkerItemModel> Function(T);
+typedef GetPoiCallback<T> = Future<T> Function(String);
+typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
+typedef EditPoiCallback<T> = Widget Function(T);
+typedef OnDeletePoiCallback = void Function(String posterId);
 
 abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
   late MapController mapController;
@@ -73,5 +78,52 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
   void loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
     final markerItems = await campaignService.loadPoisInRegion(locationSW, locationNE);
     mapController.setMarkerSource(markerItems);
+  }
+
+  void onFeatureClick<U>(
+    dynamic rawFeature,
+    GetPoiCallback<U> getPoi,
+    GetPoiDetailWidgetCallback<U> getPoiDetail,
+    EditPoiCallback<U> getPoiEdit, {
+    Size desiredSize = const Size(100, 100),
+  }) async {
+    final feature = rawFeature as Map<String, dynamic>;
+    final poiId = MapHelper.extractPoiIdFromFeature(feature);
+    U poi = await getPoi(poiId);
+    final poiDetailWidget = getPoiDetail(poi);
+    var popupWidget = SizedBox(
+      height: desiredSize.height,
+      width: desiredSize.width,
+      child: poiDetailWidget,
+    );
+    final coord = MapHelper.extractLatLngFromFeature(feature);
+    mapController.showMapPopover(
+      coord,
+      popupWidget,
+      () => _editPoi(() => getPoiEdit(poi)),
+      desiredSize: desiredSize,
+    );
+  }
+
+  void _editPoi(Widget Function() getEditWidget) {
+    final theme = Theme.of(context);
+    showModalBottomSheet<void>(
+      isScrollControlled: true,
+      isDismissible: true,
+      context: context,
+      backgroundColor: theme.colorScheme.surface,
+      builder: (context) => SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+          child: getEditWidget(),
+        ),
+      ),
+    );
+  }
+
+  void deletePoi(String poiId) async {
+    final id = int.parse(poiId);
+    await campaignService.deletePoi(poiId);
+    mapController.removeMarkerItem(id);
   }
 }

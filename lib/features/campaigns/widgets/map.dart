@@ -212,13 +212,23 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   }
 
   @override
-  void showMapPopover(LatLng coord, Widget widget, OnEditItemClickedCallback? onEditItemClicked) async {
+  void showMapPopover(
+    LatLng coord,
+    Widget widget,
+    OnEditItemClickedCallback? onEditItemClicked, {
+    Size? desiredSize,
+  }) async {
     if (!mounted) return;
 
     await moveMapIfItemIsOnBorder(coord);
     final point = await getScreenPointFromLatLng(coord);
 
-    _showPopOver(point, widget, onEditItemClicked);
+    _showPopOver(
+      point,
+      widget,
+      onEditItemClicked,
+      desiredSize: desiredSize!,
+    );
   }
 
   Future<void> moveMapIfItemIsOnBorder(LatLng itemCoordinate) async {
@@ -262,14 +272,19 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     }
   }
 
-  void _showPopOver(Point<num> pointOnScreen, Widget widget, OnEditItemClickedCallback? onEditItemClicked) {
+  void _showPopOver(
+    Point<num> pointOnScreen,
+    Widget widget,
+    OnEditItemClickedCallback? onEditItemClicked, {
+    Size desiredSize = const Size(100, 100),
+  }) {
     final mediaQuery = MediaQuery.of(context);
     final pixelRatio = mediaQuery.devicePixelRatio;
 
     setState(() {
       popups.clear();
-      num popupHeight = 100;
-      num popupWidth = 100;
+      num popupHeight = desiredSize.height;
+      num popupWidth = desiredSize.width;
       popups.add(
         GestureDetector(
           behavior: HitTestBehavior.translucent,
