@@ -6,18 +6,21 @@ import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/poster_status.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
+import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
+import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
+import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
+import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/multiline_text_input_field.dart';
-import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 typedef OnSavePosterCallback = void Function(PosterUpdateModel posterUpdate);
-typedef OnDeletePosterCallback = void Function(String posterId);
 
 class PosterEdit extends StatefulWidget {
   static const dummyAsset = 'assets/splash/logo_android12.png';
   final PosterDetailModel poster;
   final OnSavePosterCallback onSave;
-  final OnDeletePosterCallback onDelete;
+  final OnDeletePoiCallback onDelete;
 
   const PosterEdit({
     super.key,
@@ -30,12 +33,16 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> {
+class _PosterEditState extends State<PosterEdit> with AddressMixin {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
+  @override
   TextEditingController streetTextController = TextEditingController();
+  @override
   TextEditingController houseNumberTextController = TextEditingController();
+  @override
   TextEditingController zipCodeTextController = TextEditingController();
+  @override
   TextEditingController cityTextController = TextEditingController();
   TextEditingController commentTextController = TextEditingController();
 
@@ -44,10 +51,7 @@ class _PosterEditState extends State<PosterEdit> {
 
   @override
   void dispose() {
-    streetTextController.dispose();
-    houseNumberTextController.dispose();
-    zipCodeTextController.dispose();
-    cityTextController.dispose();
+    disposeAddressTextControllers();
     commentTextController.dispose();
     super.dispose();
   }
@@ -69,6 +73,7 @@ class _PosterEditState extends State<PosterEdit> {
     final theme = Theme.of(context);
     final buttonStyle = _getSegmentedButtonStyle(theme);
     final currentSize = MediaQuery.of(context).size;
+    final lightBorderColor = ThemeColors.textLight;
     var imageRowHeight = 130.0;
     return Container(
       padding: EdgeInsets.all(12),
@@ -76,24 +81,7 @@ class _PosterEditState extends State<PosterEdit> {
         children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: _closeDialog,
-                  child: Icon(Icons.close),
-                ),
-                Expanded(
-                  child: GestureDetector(
-                    onTap: _savePoster,
-                    child: Text(
-                      t.common.actions.save,
-                      textAlign: TextAlign.right,
-                      style: theme.textTheme.titleMedium,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+            child: CloseSaveWidget(onSave: _savePoster, onClose: _closeDialog),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
@@ -177,51 +165,12 @@ class _PosterEditState extends State<PosterEdit> {
               children: [Text(t.campaigns.posters.editPoster, style: theme.textTheme.titleLarge)],
             ),
           ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextInputField(
-                    labelText: t.campaigns.address.street,
-                    borderColor: theme.colorScheme.tertiary,
-                    textController: streetTextController,
-                  ),
-                ),
-                Container(
-                  padding: EdgeInsets.only(left: 6),
-                  child: TextInputField(
-                    labelText: t.campaigns.address.housenumber,
-                    width: 75,
-                    borderColor: theme.colorScheme.tertiary,
-                    textController: houseNumberTextController,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Container(
-                  padding: EdgeInsets.only(right: 6),
-                  child: TextInputField(
-                    labelText: t.campaigns.address.zipcode,
-                    width: 75,
-                    borderColor: theme.colorScheme.tertiary,
-                    textController: zipCodeTextController,
-                  ),
-                ),
-                Expanded(
-                  child: TextInputField(
-                    labelText: t.campaigns.address.city_or_place,
-                    borderColor: theme.colorScheme.tertiary,
-                    textController: cityTextController,
-                  ),
-                ),
-              ],
-            ),
+          CreateAddressWidget(
+            streetTextController: streetTextController,
+            houseNumberTextController: houseNumberTextController,
+            zipCodeTextController: zipCodeTextController,
+            cityTextController: cityTextController,
+            inputBorderColor: lightBorderColor,
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
@@ -277,7 +226,7 @@ class _PosterEditState extends State<PosterEdit> {
                     labelText: t.campaigns.posters.comment.label,
                     hint: t.campaigns.posters.comment.hint,
                     textController: commentTextController,
-                    borderColor: theme.colorScheme.tertiary,
+                    borderColor: lightBorderColor,
                   ),
                 ),
               ],
@@ -298,28 +247,9 @@ class _PosterEditState extends State<PosterEdit> {
           ),
           Container(
             padding: EdgeInsets.only(top: 6, bottom: 24),
-            child: Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _onDeletePressed,
-                    style: ElevatedButton.styleFrom(
-                      foregroundColor: ThemeColors.textWarning,
-                      backgroundColor: theme.colorScheme.surface,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(24.0),
-                        side: BorderSide(
-                          color: ThemeColors.textWarning,
-                        ),
-                      ),
-                    ),
-                    child: Text(
-                      t.campaigns.posters.deletePoster.label,
-                      style: theme.textTheme.titleMedium?.apply(color: ThemeColors.textWarning),
-                    ),
-                  ),
-                ),
-              ],
+            child: DeleteAndSaveWidget(
+              onDelete: _onDeletePressed,
+              onSave: _savePoster,
             ),
           ),
         ],
@@ -414,6 +344,7 @@ class _PosterEditState extends State<PosterEdit> {
   }
 
   void _savePoster() async {
+    if (!context.mounted) return;
     final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
 
     final updateModel = PosterUpdateModel(

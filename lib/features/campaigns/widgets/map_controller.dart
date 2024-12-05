@@ -14,5 +14,10 @@ abstract class MapController {
     return null;
   }
 
-  void showMapPopover(LatLng coord, Widget widget, OnEditItemClickedCallback? onEditItemClicked) {}
+  void showMapPopover(
+    LatLng coord,
+    Widget widget,
+    OnEditItemClickedCallback? onEditItemClicked, {
+    Size? desiredSize,
+  }) {}
 }

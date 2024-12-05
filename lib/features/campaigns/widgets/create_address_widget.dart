@@ -7,6 +7,7 @@ class CreateAddressWidget extends StatelessWidget {
   final TextEditingController houseNumberTextController;
   final TextEditingController zipCodeTextController;
   final TextEditingController cityTextController;
+  final Color? inputBorderColor;
 
   const CreateAddressWidget({
     super.key,
@@ -14,6 +15,7 @@ class CreateAddressWidget extends StatelessWidget {
     required this.houseNumberTextController,
     required this.zipCodeTextController,
     required this.cityTextController,
+    this.inputBorderColor,
   });
 
   @override
@@ -28,6 +30,7 @@ class CreateAddressWidget extends StatelessWidget {
                 child: TextInputField(
                   textController: streetTextController,
                   labelText: t.campaigns.address.street,
+                  borderColor: inputBorderColor,
                 ),
               ),
               Container(
@@ -36,6 +39,7 @@ class CreateAddressWidget extends StatelessWidget {
                   width: 75,
                   labelText: t.campaigns.address.housenumber,
                   textController: houseNumberTextController,
+                  borderColor: inputBorderColor,
                 ),
               ),
             ],
@@ -51,12 +55,14 @@ class CreateAddressWidget extends StatelessWidget {
                   width: 75,
                   labelText: t.campaigns.address.zipcode,
                   textController: zipCodeTextController,
+                  borderColor: inputBorderColor,
                 ),
               ),
               Expanded(
                 child: TextInputField(
                   labelText: t.campaigns.address.city_or_place,
                   textController: cityTextController,
+                  borderColor: inputBorderColor,
                 ),
               ),
             ],

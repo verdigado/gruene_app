@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
-import 'package:gruene_app/features/campaigns/screens/doors_screen.dart';
+import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
@@ -17,7 +17,7 @@ class DoorsAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => DoorsAddScreenState();
 }
 
-class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin {
+class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin, DoorValidator {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -57,7 +57,7 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin {
             children: [
               Expanded(
                 child: Text(
-                  t.campaigns.posters.addPoster,
+                  t.campaigns.door.addDoor,
                   style: theme.textTheme.displayMedium!.apply(color: theme.colorScheme.surface),
                 ),
               ),
@@ -92,7 +92,8 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin {
                     child: TextInputField(
                       labelText: t.campaigns.door.closedDoors,
                       textController: closedDoorTextController,
-                      onlyAllowNumbers: true,
+                      inputType: InputFieldType.numbers0To999,
+                      selectAllTextOnFocus: true,
                     ),
                   ),
                 ),
@@ -100,6 +101,8 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin {
                   child: TextInputField(
                     labelText: t.campaigns.door.openedDoors,
                     textController: openedDoorTextController,
+                    inputType: InputFieldType.numbers0To999,
+                    selectAllTextOnFocus: true,
                   ),
                 ),
               ],
@@ -113,15 +116,37 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin {
 
   void _onSavePressed(BuildContext localContext) {
     if (!localContext.mounted) return;
+    final validationResult = validateDoors(openedDoorTextController.text, closedDoorTextController.text, context);
+    if (validationResult == null) return;
     Navigator.maybePop(
       context,
-      DoorsCreateModel(
+      DoorCreateModel(
         location: widget.location,
         address: getAddress(),
-        openedDoors: int.parse(openedDoorTextController.text),
-        closedDoors: int.parse(closedDoorTextController.text),
+        openedDoors: validationResult.openedDoors,
+        closedDoors: validationResult.closedDoors,
       ),
     );
+  }
+}
+
+mixin DoorValidator {
+  ({int closedDoors, int openedDoors})? validateDoors(
+    String openedDoorsRawValue,
+    String closedDoorsRawValue,
+    BuildContext context,
+  ) {
+    final openedDoors = int.tryParse(openedDoorsRawValue) ?? 0;
+    final closedDoors = int.tryParse(closedDoorsRawValue) ?? 0;
+    if (openedDoors + closedDoors == 0) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(t.campaigns.door.noDoorsWarning),
+        ),
+      );
+      return null;
+    }
+    return (closedDoors: closedDoors, openedDoors: openedDoors);
   }
 }
 

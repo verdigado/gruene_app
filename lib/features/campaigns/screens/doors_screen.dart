@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
+import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
+import 'package:gruene_app/features/campaigns/screens/doors_detail.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/map.dart';
@@ -58,7 +63,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
   }
 
   void _addPOIClicked(LatLng location) {
-    super.addPOIClicked<Object, DoorsAddScreen, DoorsCreateModel>(
+    super.addPOIClicked<Object, DoorsAddScreen, DoorCreateModel>(
       location,
       null,
       _getAddScreen,
@@ -72,9 +77,37 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     };
   }
 
-  void _onFeatureClick(feature) {}
+  void _onFeatureClick(dynamic rawFeature) async {
+    getPoi(String poiId) async {
+      final door = await campaignService.getPoiAsDoorDetail(poiId);
+      return door;
+    }
+
+    getPoiDetail(DoorDetailModel poster) {
+      return DoorsDetail(
+        poi: poster,
+      );
+    }
+
+    getEditPoiWidget(DoorDetailModel door) {
+      return DoorEdit(door: door, onSave: _savePoster, onDelete: deletePoi);
+    }
+
+    super.onFeatureClick<DoorDetailModel>(
+      rawFeature,
+      getPoi,
+      getPoiDetail,
+      getEditPoiWidget,
+      desiredSize: Size(145, 95),
+    );
+  }
 
   void _onNoFeatureClick() {}
+
+  void _savePoster(DoorUpdateModel doorUpdate) async {
+    final updatedMarker = await campaignService.updateDoor(doorUpdate);
+    mapController.setMarkerSource([updatedMarker]);
+  }
 
   DoorsAddScreen _getAddScreen(LatLng location, AddressModel? address, Object? additionalData) {
     return DoorsAddScreen(
@@ -83,20 +116,6 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     );
   }
 
-  Future<MarkerItemModel> saveNewAndGetMarkerItem(DoorsCreateModel newDoor) async =>
+  Future<MarkerItemModel> saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
       await _grueneApiService.createNewDoor(newDoor);
-}
-
-class DoorsCreateModel {
-  final LatLng location;
-  final AddressModel address;
-  final int openedDoors;
-  final int closedDoors;
-
-  DoorsCreateModel({
-    required this.location,
-    required this.address,
-    required this.openedDoors,
-    required this.closedDoors,
-  });
 }
