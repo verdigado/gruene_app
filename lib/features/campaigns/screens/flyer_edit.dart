@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
+import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/flyer_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
@@ -24,7 +25,7 @@ class FlyerEdit extends StatefulWidget {
   State<FlyerEdit> createState() => _FlyerEditState();
 }
 
-class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator {
+class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator, ConfirmDelete {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -99,7 +100,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator
           Container(
             padding: EdgeInsets.only(top: 6, bottom: 24),
             child: DeleteAndSaveWidget(
-              onDelete: _onDeletePressed,
+              onDelete: () => confirmDelete(context, _onDeletePressed),
               onSave: _saveFlyer,
             ),
           ),

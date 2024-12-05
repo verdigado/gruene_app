@@ -22,6 +22,7 @@
       "experience_areas": "Erfahrungsgebiete"
     },
     "posters": {
+      
       "label": "Plakate",
       "addPoster": "Plakat eintragen",
       "editPoster": "Plakat bearbeiten",
@@ -49,9 +50,7 @@
         "hint": "Bitte gib hierzu weitere Informationen an"
       },
       "deletePoster": {
-        "label": "Eintrag löschen",
-        "hint": "Bitte lösche Einträge ausschließlich, wenn es nicht anders geht. Markiere abgehängte Plakate als \"Abgehängt\".",
-        "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+        "hint": "Bitte lösche Einträge ausschließlich, wenn es nicht anders geht. Markiere abgehängte Plakate als \"Abgehängt\"."
       }
     },
     "door": {
@@ -72,6 +71,10 @@
       "countFlyer": "Anzahl der Flyer",
       "noFlyerWarning": "Bitte geben Sie mindestens einen Flyer ein!"
     },
+    "deleteEntry": {
+        "label": "Eintrag löschen",
+        "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+      },
     "team": {
       "label": "Team"
     },

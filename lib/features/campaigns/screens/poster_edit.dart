@@ -6,6 +6,7 @@ import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/poster_status.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
+import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
@@ -33,7 +34,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressMixin {
+class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelete {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -248,7 +249,7 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin {
           Container(
             padding: EdgeInsets.only(top: 6, bottom: 24),
             child: DeleteAndSaveWidget(
-              onDelete: _onDeletePressed,
+              onDelete: () => confirmDelete(context, _onDeletePressed),
               onSave: _savePoster,
             ),
           ),
@@ -285,56 +286,6 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin {
   }
 
   void _onDeletePressed() async {
-    final theme = Theme.of(context);
-    final shouldDelete = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: ThemeColors.alertBackground,
-          title: Center(
-            child: Text(
-              '${t.campaigns.posters.deletePoster.label}?',
-              style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
-            ),
-          ),
-          content: Text(
-            t.campaigns.posters.deletePoster.confirmation_dialog,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.labelMedium?.apply(
-              color: theme.colorScheme.surface,
-              fontSizeDelta: 1,
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.maybePop(context, false),
-              child: Text(
-                t.common.actions.cancel,
-                style: theme.textTheme.labelLarge?.apply(color: ThemeColors.textCancel),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.maybePop(context, true),
-              child: Text(
-                t.common.actions.delete,
-                style: theme.textTheme.labelLarge?.apply(
-                  color: ThemeColors.textWarning,
-                  fontWeightDelta: 2,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-    if (shouldDelete ?? false) {
-      _deleteAndReturn();
-    }
-  }
-
-  void _deleteAndReturn() {
     widget.onDelete(widget.poster.id);
     _closeDialog();
   }
