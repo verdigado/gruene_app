@@ -1,0 +1,33 @@
+parameters:
+  production_delivery:
+    description: Whether to deliver the build to production.
+    type: boolean
+macos:
+  xcode: 16.1.0
+environment:
+  FASTLANE_SKIP_UPDATE_CHECK: true
+steps:
+  - checkout
+  - prepare_workspace
+  - restore_environment_variables
+  - install_node_modules
+  - install_fastlane:
+      directory: ios
+#  - when:
+#      condition: << parameters.production_delivery >>
+#      steps:
+#        - run:
+#            name: '[FL] Production Upload'
+#            command: bundle exec fastlane ios production_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+#            working_directory: ios
+  - unless:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: '[FL] Beta Upload (TestFlight)'
+            command: bundle exec fastlane ios beta_upload ipa_path:attached_workspace/app-release.ipa
+            working_directory: ios
+  - run:
+      name: Create Github Release
+      command: yarn --silent github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}"
+      working_directory: tools

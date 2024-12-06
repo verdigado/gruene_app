@@ -1,0 +1,144 @@
+BUNDLE_IDENTIFIER = CredentialsManager::AppfileConfig.try_fetch_value(:app_identifier)
+
+before_all do
+  setup_circle_ci
+end
+
+default_platform(:ios)
+
+platform :ios do
+  private_lane :apple_auth do |options|
+    ensure_env_vars(
+      env_vars: ["APP_STORE_CONNECT_API_KEY_ID", "APP_STORE_CONNECT_API_ISSUER_ID", "APP_STORE_CONNECT_API_KEY_CONTENT"]
+    )
+
+    app_store_connect_api_key(
+      key_id: ENV['APP_STORE_CONNECT_API_KEY_ID'],
+      issuer_id: ENV['APP_STORE_CONNECT_API_ISSUER_ID'],
+      key_content: Base64.decode64(ENV['APP_STORE_CONNECT_API_KEY_CONTENT'])
+    )
+  end
+
+  # The following parameters have to be passed:
+  # version_name: The version name the build should use
+  # version_code: The version code the build should use
+  desc "Create a release build"
+  lane :build do |options|
+    version_code = options[:version_code]
+    version_name = options[:version_name]
+
+    puts(version_code)
+    puts(version_name)
+
+    if [version_code, version_name].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    match(type: "appstore", readonly: true)
+    update_code_signing_settings(
+      use_automatic_signing: false,
+      team_id: "BH3ML3K6G2",
+      bundle_identifier: BUNDLE_IDENTIFIER,
+      profile_name: "match AppStore #{BUNDLE_IDENTIFIER}",
+      build_configurations: "Release"
+    )
+
+    increment_build_number(
+      build_number: version_code
+    )
+
+    increment_version_number(
+      version_number: version_name
+    )
+
+    # Base64 encoded "environment=production"
+    env_prod_base64 = "ZW52aXJvbm1lbnQ9cHJvZHVjdGlvbg=="
+
+    build_app(
+       workspace: "Runner.xcworkspace",
+       output_directory: "#{ENV['HOME']}",
+       output_name: "app-release.ipa",
+       export_method: "app-store",
+       xcargs: "DART_DEFINES='#{env_prod_base64}'"
+     )
+  end
+
+  # The following parameters have to be passed:
+  # ipa_path: The path to the .ipa to upload
+  desc "Deliver ios app to beta (testflight)"
+  lane :beta_upload do |options|
+    apple_auth()
+
+    ipa_path = options[:ipa_path]
+
+    if [ipa_path].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    upload_to_testflight(
+      skip_waiting_for_build_processing: true,
+      ipa: "#{ENV['HOME']}/#{ipa_path}",
+      distribute_external: false
+    )
+  end
+
+  # The following parameters have to be passed:
+  # ipa_path: The path to the .ipa to upload
+  desc "Deliver ios app to production"
+  lane :production_upload do |options|
+    apple_auth()
+
+    version_name = options[:version_name]
+    ipa_path = options[:ipa_path]
+
+    if [ipa_path, version_name].include?(nil)
+      raise "'nil' passed as parameter! Aborting..."
+    end
+
+    puts("delivering v#{version_name}")
+
+    # https://docs.fastlane.tools/actions/deliver/
+    deliver(
+      ipa: "#{ENV['HOME']}/#{ipa_path}",
+      app_version: version_name,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      skip_screenshots: true,
+      skip_metadata: false,
+      overwrite_screenshots: true,
+      precheck_include_in_app_purchases: false,
+      submission_information: { add_id_info_uses_idfa: false }
+    )
+  end
+
+  desc "Promote the app from beta (testflight) to production"
+  lane :promote do |options|
+    apple_auth()
+
+    testflight_build_number = latest_testflight_build_number(app_identifier: bundle_identifier)
+    testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
+    app_store_build_number = app_store_build_number(app_identifier: bundle_identifier)
+
+    if testflight_build_number <= app_store_build_number
+      puts("Nothing to do, latest version already available in app store connect...")
+      next
+    end
+
+    puts("promoting v#{testflight_version} - #{testflight_build_number} to app store connect")
+
+    # https://docs.fastlane.tools/actions/deliver/#submit-build
+    deliver(
+      app_version: testflight_version,
+      build_number: testflight_build_number.to_s,
+      app_identifier: bundle_identifier,
+      submit_for_review: true,
+      automatic_release: true,
+      force: true,
+      skip_metadata: false,
+      skip_screenshots: true,
+      skip_binary_upload: true,
+      precheck_include_in_app_purchases: false,
+    )
+  end
+end
