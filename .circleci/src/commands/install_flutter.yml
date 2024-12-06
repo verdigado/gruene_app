@@ -1,0 +1,67 @@
+parameters:
+  precache:
+    type: enum
+    default: none
+    enum: [none, android, ios]
+steps:
+# Recommended installation not working at the moment, see https://github.com/leoafarias/fvm/issues/796
+#  - run:
+#      name: Install FVM
+#      command: curl -fsSL https://fvm.app/install.sh | bash
+# Therefore use workaround by installing dart first:
+# Workaround start
+  - when:
+      condition:
+        equal: [<< parameters.precache >>, ios]
+      steps:
+        - run:
+            name: Install Dart Mac
+            command: |
+              brew tap dart-lang/dart
+              brew install dart@3.5.3
+              brew link dart@3.5.3
+  - unless:
+      condition:
+        equal: [<< parameters.precache >>, ios]
+      steps:
+        - run:
+            name: Install Dart Linux
+            command: |
+              curl -o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/3.5.3/linux_packages/dart_3.5.3-1_amd64.deb
+              sudo dpkg -i dart.deb
+  - run:
+      name: Install FVM
+      command: |
+        dart pub global activate fvm
+        echo 'export PATH=$HOME/.pub-cache/bin:$PATH' >> $BASH_ENV
+        export PATH="$PATH":"$HOME/.pub-cache/bin"
+# Workaround end
+  - restore_cache:
+      keys:
+        - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
+        - v1-fvm-{{ arch }}-
+  - run:
+      name: Install Flutter
+      command: fvm install
+  - run:
+      name: Configure Flutter
+      command: fvm flutter config --no-analytics
+  - run:
+      name: Show Flutter version
+      command: fvm flutter --version
+  - run:
+      name: Install Flutter Packages
+      command: fvm flutter pub get --enforce-lockfile
+  - unless:
+      condition:
+          equal: [<< parameters.precache >>, none]
+      steps:
+        - run:
+            name: Precache Flutter Binary Artifacts
+            command: fvm flutter precache --<< parameters.precache >>
+            working_directory: << parameters.precache >>
+  - save_cache:
+      key: v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
+      paths:
+        - .fvm
+        - ~/fvm/

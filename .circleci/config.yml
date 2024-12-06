@@ -30,15 +30,63 @@ commands:
             - run:
                 command: circleci config validate
                 name: Validate circle config
-    install_dart_linux:
+    install_fastlane:
+        description: Restores and saves fastlane cache of the passed directory.
+        parameters:
+            directory:
+                type: string
         steps:
+            - restore_cache:
+                keys:
+                    - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                    - v1-gems-{{ arch }}-
+                name: Restore Fastlane Cache
             - run:
-                command: |
-                    curl -o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/3.5.3/linux_packages/dart_3.5.3-1_amd64.deb
-                    sudo dpkg -i dart.deb
-                name: Install Dart
-    install_fvm:
+                command: bundle config set path 'vendor/bundle'
+                name: Configure Installation Directory
+                working_directory: << parameters.directory >>
+            - run:
+                command: bundle check || bundle install
+                name: '[FL] Install'
+                working_directory: << parameters.directory >>
+            - save_cache:
+                key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
+                name: Save Fastlane Cache
+                paths:
+                    - << parameters.directory >>/vendor/bundle
+    install_flutter:
+        parameters:
+            precache:
+                default: none
+                enum:
+                    - none
+                    - android
+                    - ios
+                type: enum
         steps:
+            - when:
+                condition:
+                    equal:
+                        - << parameters.precache >>
+                        - ios
+                steps:
+                    - run:
+                        command: |
+                            brew tap dart-lang/dart
+                            brew install dart@3.5.3
+                            brew link dart@3.5.3
+                        name: Install Dart Mac
+            - unless:
+                condition:
+                    equal:
+                        - << parameters.precache >>
+                        - ios
+                steps:
+                    - run:
+                        command: |
+                            curl -o dart.deb https://storage.googleapis.com/dart-archive/channels/stable/release/3.5.3/linux_packages/dart_3.5.3-1_amd64.deb
+                            sudo dpkg -i dart.deb
+                        name: Install Dart Linux
             - run:
                 command: |
                     dart pub global activate fvm
@@ -47,21 +95,65 @@ commands:
                 name: Install FVM
             - restore_cache:
                 keys:
-                    - v1-fvm-{{ checksum ".fvmrc" }}-{{ arch }}
+                    - v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
+                    - v1-fvm-{{ arch }}-
             - run:
                 command: fvm install
                 name: Install Flutter
-            - save_cache:
-                key: v1-fvm-{{ checksum ".fvmrc" }}-{{ arch }}
-                paths:
-                    - .fvm
-                    - ~/fvm/
+            - run:
+                command: fvm flutter config --no-analytics
+                name: Configure Flutter
             - run:
                 command: fvm flutter --version
                 name: Show Flutter version
             - run:
-                command: fvm flutter config --no-analytics
-                name: Configure Flutter
+                command: fvm flutter pub get --enforce-lockfile
+                name: Install Flutter Packages
+            - unless:
+                condition:
+                    equal:
+                        - << parameters.precache >>
+                        - none
+                steps:
+                    - run:
+                        command: fvm flutter precache --<< parameters.precache >>
+                        name: Precache Flutter Binary Artifacts
+                        working_directory: << parameters.precache >>
+            - save_cache:
+                key: v1-fvm-{{ arch }}-{{ checksum ".fvmrc" }}-{{ checksum "pubspec.yaml" }}-{{ checksum "pubspec.lock"  }}
+                paths:
+                    - .fvm
+                    - ~/fvm/
+    install_gradle_dependencies:
+        description: Restores and saves the gradle cache.
+        steps:
+            - restore_cache:
+                keys:
+                    - v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
+                    - v1-gradle-
+            - run:
+                command: ./gradlew androidDependencies
+                name: Download Gradle Dependencies
+                working_directory: android
+            - save_cache:
+                key: v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
+                paths:
+                    - ~/.gradle
+    install_node_modules:
+        description: Restores and saves the node_modules directories of the tools directory.
+        steps:
+            - restore_cache:
+                keys:
+                    - v1-node-modules-{{checksum "tools/package-lock.json" }}
+                    - v1-node-modules-
+            - run:
+                command: '[ ! -d node_modules ] && npm ci --ignore-scripts --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache.'
+                name: Install node dependencies for npm workspaces
+                working_directory: tools
+            - save_cache:
+                key: v1-node-modules-{{checksum "tools/package-lock.json" }}
+                paths:
+                    - ~/tools/node_modules
     persist_environment_variables:
         description: Sets the environment variables specified in the file 'environment_variables'. Make sure the file is persisted and has been attached.
         steps:
@@ -106,59 +198,6 @@ commands:
             - run:
                 command: cat ~/attached_workspace/environment_variables >> ${BASH_ENV}
                 name: Restore environment variables
-    restore_gradle_cache:
-        description: Restores and saves the gradle cache.
-        steps:
-            - restore_cache:
-                keys:
-                    - v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
-                    - v1-gradle-
-            - run:
-                command: bundle exec fastlane dependencies
-                name: '[FL] Download Dependencies'
-            - save_cache:
-                key: v1-gradle-{{ checksum "android/build.gradle" }}-{{ checksum "android/app/build.gradle" }}-{{ checksum "android/settings.gradle" }}
-                paths:
-                    - ~/.gradle
-    restore_npm_cache:
-        description: Restores and saves the node_modules directories of the tools directory.
-        steps:
-            - restore_cache:
-                keys:
-                    - v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
-                    - v1-node-modules-
-            - run:
-                command: '[ ! -d node_modules ] && npm ci --ignore-scripts --loglevel warn --yes || echo package.json and package-lock.json unchanged. Using cache.'
-                name: Install node dependencies for npm workspaces
-                working_directory: tools
-            - save_cache:
-                key: v1-node-modules-{{ checksum "tools/package.json" }}-{{checksum "tools/package-lock.json" }}
-                paths:
-                    - ~/tools/node_modules
-    restore_ruby_cache:
-        description: Restores and saves fastlane cache of the passed directory.
-        parameters:
-            directory:
-                type: string
-        steps:
-            - restore_cache:
-                keys:
-                    - v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
-                    - v1-gems-{{ arch }}-
-                name: Restore Ruby Cache
-            - run:
-                command: bundle config set path 'vendor/bundle'
-                name: Configure Installation Directory
-                working_directory: << parameters.directory >>
-            - run:
-                command: bundle check || bundle install
-                name: '[FL] Install'
-                working_directory: << parameters.directory >>
-            - save_cache:
-                key: v1-gems-{{ arch }}-{{ checksum "<< parameters.directory >>/Gemfile.lock" }}
-                name: Save Ruby Cache
-                paths:
-                    - << parameters.directory >>/vendor/bundle
 jobs:
     build_android:
         docker:
@@ -172,17 +211,12 @@ jobs:
             - checkout
             - prepare_workspace
             - restore_environment_variables
-            - install_dart_linux
-            - install_fvm
-            - restore_ruby_cache:
-                directory: android
-            - run:
-                command: |
-                    fvm flutter pub get --enforce-lockfile
-                    fvm flutter precache --android
-                name: Install Flutter Packages
-                working_directory: android
+            - install_flutter:
+                precache: android
             - prepare_project
+            - install_fastlane:
+                directory: android
+            - install_gradle_dependencies
             - run:
                 command: bundle exec fastlane android build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
                 name: '[FL] Build'
@@ -215,7 +249,7 @@ jobs:
         shell: /bin/bash -eo pipefail
         steps:
             - checkout
-            - restore_npm_cache
+            - install_node_modules
             - run:
                 command: echo "export NEW_VERSION_NAME=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}
                 name: Calculate next version name
@@ -240,11 +274,7 @@ jobs:
         steps:
             - checkout
             - check_circleci_config
-            - install_dart_linux
-            - install_fvm
-            - run:
-                command: fvm flutter pub get --enforce-lockfile
-                name: Install Flutter Packages
+            - install_flutter
             - run:
                 command: fvm dart format -l 120 -o none --set-exit-if-changed .
                 name: Check Formatting
@@ -267,8 +297,8 @@ jobs:
             - checkout
             - prepare_workspace
             - restore_environment_variables
-            - restore_npm_cache
-            - restore_ruby_cache:
+            - install_node_modules
+            - install_fastlane:
                 directory: android
             - run:
                 command: echo "export ANDROID_RELEASE_ID='$(yarn --silent github-release create android ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}")'" >> ${BASH_ENV}

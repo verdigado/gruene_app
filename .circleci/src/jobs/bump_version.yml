@@ -10,7 +10,7 @@ resource_class: small
 shell: /bin/bash -eo pipefail
 steps:
   - checkout
-  - restore_npm_cache
+  - install_node_modules
   - run:
       name: Calculate next version name
       command: echo "export NEW_VERSION_NAME=$(yarn --silent next-version calc | jq .versionName)" >> ${BASH_ENV}

@@ -13,8 +13,8 @@ steps:
   - checkout
   - prepare_workspace
   - restore_environment_variables
-  - restore_npm_cache
-  - restore_ruby_cache:
+  - install_node_modules
+  - install_fastlane:
       directory: android
 #  - run:
 #      name: '[FL] Play Store Upload'
