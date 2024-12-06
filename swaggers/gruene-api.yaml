@@ -1,0 +1,2659 @@
+openapi: 3.0.0
+paths:
+  /v1/users:
+    get:
+      operationId: findUsers
+      summary: Find users
+      parameters:
+        - name: search
+          required: false
+          in: query
+          description: Search term to look for in firstname, lastname, email, username.
+          schema:
+            type: string
+        - name: userIds
+          required: false
+          in: query
+          description: Only return users with matching user id.
+          schema:
+            type: array
+            items:
+              type: string
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            maximum: 200
+            type: number
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindUsersResponse'
+        '401':
+          description: ''
+      tags:
+        - users
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/users/self:
+    get:
+      operationId: getSelf
+      summary: Get the authenticated user
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        '400':
+          description: No user provided by used authentication method
+        '401':
+          description: ''
+      tags:
+        - users
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/users/{userId}:
+    get:
+      operationId: getUser
+      summary: Get user by id
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User '
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - users
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/users/{userId}/rbac-structure:
+    get:
+      operationId: getUserRbacStructure
+      summary: Get user RBAC structure
+      parameters:
+        - name: userId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserRbacStructure'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - users
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/party/organizations:
+    get:
+      operationId: findOrganizations
+      summary: Find all organizations
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindNbOrganizationsResponse'
+        '401':
+          description: ''
+      tags:
+        - nb-api
+      security:
+        - basic: []
+        - api_key: []
+  /v1/party/groups:
+    get:
+      operationId: findGroups
+      summary: Find all groups
+      parameters:
+        - required: false
+          description: Filter by external reference type
+          name: filter[external_refs.type]
+          in: query
+          schema:
+            example: SHERPA
+            enum:
+              - SHERPA
+            type: string
+        - required: false
+          description: Filter by external reference ID (sherpa role id)
+          name: filter[external_refs.key]
+          in: query
+          schema:
+            example: '12345678'
+            type: string
+        - required: false
+          description: Filter by role level
+          name: filter[level]
+          in: query
+          schema:
+            enum:
+              - DE:BUNDESVERBAND
+              - DE:LANDESVERBAND
+              - DE:KREISVERBAND
+              - DE:ORTSVERBAND
+            type: string
+        - required: false
+          description: Filter by role type
+          name: filter[type]
+          in: query
+          schema:
+            example: EXECUTIVE_BOARD
+            type: string
+        - required: false
+          description: Filter by role slug
+          name: filter[slug]
+          in: query
+          schema:
+            example: KV_EXECUTIVE_BOARD
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindNbGroupsResponse'
+        '401':
+          description: ''
+      tags:
+        - nb-api
+      security:
+        - basic: []
+        - api_key: []
+  /v1/party/regionalchapters:
+    get:
+      operationId: findRegionalChapters
+      summary: Find all regional chapters
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          description: Page limit
+          schema:
+            minimum: 1
+            type: number
+        - name: offset
+          required: false
+          in: query
+          description: Page offset
+          schema:
+            minimum: 0
+            type: number
+        - required: false
+          description: Filter by query
+          name: filter[query]
+          in: query
+          schema:
+            type: string
+        - required: false
+          description: Filter by ID prefix
+          name: filter[id_prefix]
+          in: query
+          schema:
+            maxLength: 8
+            type: string
+        - required: false
+          description: Filter by type
+          name: filter[type]
+          in: query
+          schema:
+            enum:
+              - BV
+              - LV
+              - KV
+              - OV
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindNbRegionalChaptersResponse'
+        '401':
+          description: ''
+      tags:
+        - nb-api
+      security:
+        - basic: []
+        - api_key: []
+  /v1/party/regionalchapters/{divisionKey}:
+    get:
+      operationId: getRegionalChapter
+      summary: Get regional chapter by division key
+      parameters:
+        - name: divisionKey
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NbRegionalChapter'
+        '401':
+          description: ''
+      tags:
+        - nb-api
+      security:
+        - basic: []
+        - api_key: []
+  /v1/profiles:
+    get:
+      operationId: findProfiles
+      summary: Find user profiles
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: tags
+          required: false
+          in: query
+          description: Filter by profile tag ids
+          schema:
+            type: array
+            items:
+              type: string
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search term to look for in firstName, lastName and username
+          schema:
+            type: string
+        - name: division
+          required: false
+          in: query
+          description: |-
+            Division key to filter profiles.
+            Only include profiles that are member of given division.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindProfilesResponse'
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+    post:
+      operationId: createProfile
+      summary: Create user profile
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProfile'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+  /v1/profiles/self:
+    get:
+      operationId: getOwnProfile
+      summary: Get the authenticated user's profile
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: No user provided by used authentication method
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+  /v1/profiles/{profileId}:
+    get:
+      operationId: getProfile
+      summary: Get a user profile
+      parameters:
+        - name: profileId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PublicProfile'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updateProfile
+      summary: Update user profile
+      description: >-
+        When updating the collection attributes like `messengers` all items must
+        be included. Omitting an item means it will be deleted. If an `id`
+        attribute is present it means update the give item. Omitting the `id`
+        attribute will add a new item to the collection.
+      parameters:
+        - name: profileId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProfile'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: No user provided by used authentication method
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteProfile
+      summary: Delete user profile
+      parameters:
+        - name: profileId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+  /v1/profiles/{profileId}/image:
+    put:
+      operationId: updateProfileImage
+      summary: Update profile image
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - profileImage
+              properties:
+                profileImage:
+                  type: file
+      parameters:
+        - name: profileId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: No user provided by used authentication method
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteProfileImage
+      summary: Delete user profile image
+      parameters:
+        - name: profileId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Profile'
+        '400':
+          description: No user provided by used authentication method
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - api_key: []
+        - bearer: []
+        - oauth2: []
+  /v1/profile-tags:
+    get:
+      operationId: findProfileTags
+      summary: List profile tags
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search label attributes for substring
+          schema:
+            type: string
+        - name: type
+          required: false
+          in: query
+          description: Filter by type
+          schema:
+            example: interest
+            enum:
+              - skill
+              - interest
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindProfileTagsResponse'
+        '401':
+          description: ''
+      tags:
+        - profiles
+      security:
+        - bearer: []
+        - api_key: []
+  /v1/offboarding/users/self:
+    get:
+      operationId: findUsersToOffboard
+      summary: >-
+        Find users to offboard for the service associated with the used
+        credentials
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          description: >-
+            Amount of items to retrieve. This value is ignored when a cursor is
+            set.
+          schema:
+            minimum: 1
+            maximum: 1000
+            default: 200
+            type: number
+        - name: after
+          required: false
+          in: query
+          description: Cursor for the next result set.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindOffboardingUsersResponse'
+        '401':
+          description: ''
+      tags:
+        - offboarding
+      security:
+        - basic: []
+  /v1/offboarding/users/self/batch:
+    post:
+      operationId: batchUpdateOffboardingServiceUsers
+      summary: Batch update offboarding users for the authenticated service.
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BatchUpdateOffboardingServiceUsers'
+      responses:
+        '201':
+          description: ''
+        '401':
+          description: ''
+      tags:
+        - offboarding
+      security:
+        - basic: []
+  /v1/divisions:
+    get:
+      operationId: findDivisions
+      summary: Find divisions
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: hierarchy
+          required: false
+          in: query
+          description: Filter by hierarchy
+          schema:
+            example: GR
+            enum:
+              - GR
+              - GJ
+              - KPV
+            type: string
+        - name: level
+          required: false
+          in: query
+          description: Filter by hierarchy level
+          schema:
+            example: BV
+            enum:
+              - BV
+              - LV
+              - KV
+              - OV
+            type: string
+        - name: division_key
+          required: false
+          in: query
+          description: Filter by division keys
+          schema:
+            type: array
+            items:
+              type: string
+        - name: search
+          required: false
+          in: query
+          description: Search name attributes for substring
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindDivisionsResponse'
+        '401':
+          description: ''
+      tags:
+        - divisions
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/divisions/{divisionId}:
+    get:
+      operationId: getDivision
+      summary: Get division by id
+      parameters:
+        - name: divisionId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Division'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - divisions
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/roles:
+    get:
+      operationId: findRoles
+      summary: Find roles
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search term to look for in role name
+          schema:
+            type: string
+        - name: category
+          required: false
+          in: query
+          description: Filter by category id
+          schema:
+            type: array
+            items:
+              type: string
+        - name: tag
+          required: false
+          in: query
+          description: Filter by tag id
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindRolesResponse'
+        '401':
+          description: ''
+      tags:
+        - roles
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/roles/{roleId}:
+    get:
+      operationId: getRole
+      summary: Get role by id
+      parameters:
+        - name: roleId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Role'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - roles
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/role-tags:
+    get:
+      operationId: findRoleTags
+      summary: Find role tags
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search name attribute for substring
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindRoleTagsResponse'
+        '401':
+          description: ''
+      tags:
+        - roles
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/role-categories:
+    get:
+      operationId: findRoleCategories
+      summary: Find role categories
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: search
+          required: false
+          in: query
+          description: Search name attribute for substring
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindRoleCategoriesResponse'
+        '401':
+          description: ''
+      tags:
+        - roles
+      security:
+        - bearer: []
+        - basic: []
+        - api_key: []
+  /v1/campaigns/pois:
+    post:
+      operationId: createPoi
+      summary: Create a new POI
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePoi'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findPois
+      summary: Find POIs
+      parameters:
+        - name: type
+          required: false
+          in: query
+          description: filter by POI type
+          schema:
+            example: POSTER
+            enum:
+              - FLYER_SPOT
+              - POSTER
+              - HOUSE
+            type: string
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: '-74.006,40.7128,-73.935242,40.789142'
+            type: string
+        - name: agent_id
+          required: false
+          in: query
+          description: Filter by agent id
+          schema:
+            example: '1005'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindPoisResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/pois/{poiId}:
+    get:
+      operationId: getPoi
+      summary: Get a POI
+      parameters:
+        - name: poiId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updatePoi
+      summary: Update a POI
+      parameters:
+        - name: poiId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePoi'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deletePoi
+      summary: Delete a POI
+      parameters:
+        - name: poiId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/pois/{poiId}/photos:
+    post:
+      operationId: addPoiPhoto
+      summary: Add POI photo
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - image
+              properties:
+                image:
+                  type: file
+      parameters:
+        - name: poiId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/pois/{poiId}/photos/{photoId}:
+    delete:
+      operationId: deletePoiPhoto
+      summary: Delete a POI Photo
+      parameters:
+        - name: poiId
+          required: true
+          in: path
+          schema:
+            type: string
+        - name: photoId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /health:
+    get:
+      tags:
+        - health
+      security: []
+      description: health check endpoint
+      responses:
+        '200':
+          description: health check response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HealthCheckResponse'
+info:
+  title: Gruene API
+  description: >
+
+    ## OpenAPI Endpoints
+
+    <a href="/api-json">OpenAPI Spec in JSON</a><br>
+
+    <a href="/api-yaml">OpenAPI Spec in YAML</a><br>
+
+
+    ### Offboarding
+
+    Every service conntected to Grünes Netz needs to remove users when they are
+    removed from `saml.gruene.de`.
+
+    Connected services need to pull a list of users waiting for removal at least
+    once a week.
+
+    api.gruene.de needs to be informed whether the user did not exist or was
+    removed.
+
+    API tokens can be obtained from `technik@verdigado.com`.
+  version: 0.1.0
+  contact: {}
+tags: []
+servers:
+  - url: https://api.gruene.de
+    description: Production
+  - url: http://192.168.178.35:5000
+    description: Development
+components:
+  securitySchemes:
+    basic:
+      type: http
+      scheme: basic
+    bearer:
+      scheme: bearer
+      bearerFormat: JWT
+      type: http
+    api_key:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: Api Key Authentication
+  schemas:
+    'User':
+      type: object
+      properties:
+        id:
+          type: string
+          description: The User Id (Sherpa Id)
+          example: '12345678'
+        disabled:
+          type: boolean
+          description: |-
+            Flag that indicates if the user is not in sherpa anymore or has no
+            active memberships.
+        username:
+          type: string
+          description: The users username. Used to log in to Grünes Netz (gnetz username)
+          example: JohnDoe1
+        email:
+          type: string
+          description: Main user email address. Used to log in to Grünes Netz (gnetz email)
+          example: john.doe@example.com
+        firstName:
+          type: string
+          description: User first name
+          example: John
+        lastName:
+          type: string
+          description: User last name
+          example: Doe
+      required:
+        - id
+        - username
+        - email
+        - firstName
+        - lastName
+    FindUsersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/User'
+      required:
+        - data
+    UserRbacGroup:
+      type: object
+      properties:
+        id:
+          type: string
+          description: |-
+            The group id.
+            Contains the division id.
+          example: '2092'
+        divisionKey:
+          type: string
+          description: Division key of the division this group represents.
+          example: '10100000'
+        parentKey:
+          type: string
+          nullable: true
+          description: Division key of the parent division if there is one.
+          example: '10000000'
+        implicit:
+          type: boolean
+          description: >-
+            Indicate if user has a direct or indirect membership in the
+            division.
+
+            A indrect membership can be inherited, eg user is member if a KV so
+            the user is also
+
+            member of the LV/KV, or if the user has a role of a division he is
+            not part of.
+          example: true
+        name:
+          type: string
+          description: Name of the Group (division name)
+          example: Baden-Württemberg
+        displayName:
+          type: string
+          description: Descriptive name of the division.
+          example: Baden-Württemberg LV
+        hierarchy:
+          description: The root hierarchy the division belongs to
+          example: GR
+          enum:
+            - GR
+            - GJ
+            - KPV
+          type: string
+        level:
+          description: Level in the hierarchy
+          example: BV
+          enum:
+            - BV
+            - LV
+            - KV
+            - OV
+          type: string
+      required:
+        - id
+        - divisionKey
+        - parentKey
+        - implicit
+        - name
+        - displayName
+        - hierarchy
+        - level
+    UserRbacRole:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The role id.
+          example: '6051228'
+        groupId:
+          type: string
+          description: |-
+            The group id this role refers to.
+            Contains the division id.
+          example: '7874541'
+        divisionKey:
+          type: string
+          description: The division key this role refers to.
+          example: '10206400'
+        label:
+          type: string
+          description: Role name.
+          example: Kreisverband GR - Mitgliederbeauftragte
+      required:
+        - id
+        - groupId
+        - divisionKey
+        - label
+    UserRbacStructure:
+      type: object
+      properties:
+        userId:
+          type: string
+          description: |-
+            User id
+            @example: '1234'
+        groups:
+          description: List of RBAC groups
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRbacGroup'
+        roles:
+          description: List of RBAC roles
+          type: array
+          items:
+            $ref: '#/components/schemas/UserRbacRole'
+      required:
+        - userId
+        - groups
+        - roles
+    NbOrganization:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Unique character code to identify organization
+          example: GR
+        name:
+          type: string
+          description: Organization name
+          example: BÜNDNIS 90/DIE GRÜNEN
+        regional_chapter_id_prefix:
+          type: string
+          description: >-
+            Division keys belonging to this organization are always beginning
+            with this sequence.
+          example: '1'
+      required:
+        - id
+        - name
+        - regional_chapter_id_prefix
+    FindNbOrganizationsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NbOrganization'
+        count:
+          type: number
+      required:
+        - items
+        - count
+    NbExternalRef:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the external ref
+          example: SHERPA
+        key:
+          type: string
+          description: Id in the external system
+          example: '12345678'
+      required:
+        - type
+        - key
+    NbGroup:
+      type: object
+      properties:
+        name:
+          type: string
+          example: BAG Demokratie und Recht
+        slug:
+          type: string
+          example: BAG_DEMOKRATIE_RECHT
+        type:
+          type: string
+          example: WORKGROUP
+        active:
+          type: boolean
+          example: true
+        level:
+          type: string
+          example: DE:BUNDESVERBAND
+        organization:
+          $ref: '#/components/schemas/NbOrganization'
+        external_refs:
+          type: array
+          items:
+            $ref: '#/components/schemas/NbExternalRef'
+      required:
+        - name
+        - slug
+        - type
+        - active
+        - level
+        - organization
+        - external_refs
+    FindNbGroupsResponse:
+      type: object
+      properties:
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NbGroup'
+      required:
+        - items
+    NbRegionalChapter:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the regional chapter (division key)
+          example: '11004410'
+        name:
+          type: string
+          description: Regional chapter name
+          example: Neunkirchen-Seelscheid
+        type:
+          description: |-
+            Regional chapter type
+            Possible values: BV | LV | KV | OV
+          example: OV
+          enum:
+            - BV
+            - LV
+            - KV
+            - OV
+          type: string
+        organization:
+          $ref: '#/components/schemas/NbOrganization'
+        zip_code:
+          type: string
+          description: Zip code of office location
+          example: '53819'
+      required:
+        - id
+        - name
+        - type
+        - organization
+        - zip_code
+    FindNbRegionalChaptersResponse:
+      type: object
+      properties:
+        count:
+          type: number
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/NbRegionalChapter'
+      required:
+        - count
+        - items
+    ImageLink:
+      type: object
+      properties:
+        url:
+          type: string
+          description: Image url
+          example: >-
+            https://static.example.com/profiles/10b4be70-9e3d-40a5-a46a-b0668bdf7e03.jpg
+        mimetype:
+          type: string
+          description: Image mimetype
+          example: image/jpeg
+        width:
+          type: number
+          description: Width in pixels
+          example: 150
+          minimum: 0
+        height:
+          type: number
+          description: Height in pixels
+          example: 150
+          minimum: 0
+      required:
+        - url
+        - mimetype
+        - width
+        - height
+    ProfileImage:
+      type: object
+      properties:
+        thumbnail:
+          $ref: '#/components/schemas/ImageLink'
+        large:
+          $ref: '#/components/schemas/ImageLink'
+      required:
+        - thumbnail
+        - large
+    PhoneNumberEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        country:
+          type: string
+          description: Country code in german format
+          example: '0049'
+        number:
+          type: string
+          description: Phone number
+          example: '177234512345'
+      required:
+        - id
+        - country
+        - number
+    MessengerEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        type:
+          type: string
+          example: threema
+          enum:
+            - threema
+        externalId:
+          type: string
+          example: 822d7a5a
+      required:
+        - id
+        - type
+        - externalId
+    SocialMediaEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '123'
+        type:
+          description: Type of social media entry
+          example: mastodon
+          enum:
+            - facebook
+            - instagram
+            - mastodon
+            - twitter
+            - chatbegruenung
+          type: string
+        url:
+          type: string
+          description: Url to the platform account
+          example: https://mastodon.online/@saxgruen
+      required:
+        - id
+        - type
+        - url
+    ProfileTag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Tag id
+          example: '1'
+        type:
+          description: Tag type
+          example: '"interest'
+          enum:
+            - skill
+            - interest
+          type: string
+        label:
+          type: string
+          description: Tag label
+          example: Zeitpolitik
+        externalId:
+          type: string
+          description: External id
+          example: '100'
+      required:
+        - id
+        - type
+        - label
+    Address:
+      type: object
+      properties:
+        city:
+          type: string
+          description: Location city
+          example: Berlin
+        zip:
+          type: string
+          description: Location zip code
+          example: '10176'
+        line1:
+          type: string
+          description: First address line for street and house number
+          example: Bahnhofstr. 5
+      required:
+        - city
+        - zip
+        - line1
+    DivisionEmail:
+      type: object
+      properties:
+        tags:
+          description: Tags associated with email as string values
+          example:
+            - BV-GRÜNE-Info
+          type: array
+          items:
+            type: string
+        purposes:
+          description: Purposes associated with email
+          examples:
+            - - privat
+            - - grüne
+            - - dienstlich
+            - - Postanschrift
+            - - Rechnungsanschrift
+            - - Lieferanschrift
+          type: array
+          items:
+            type: string
+        address:
+          type: string
+          description: Email address
+          example: john.doe@example.com
+        isFavorite:
+          type: boolean
+          description: Indicate if this email is preferred for general inquiries
+          example: false
+      required:
+        - tags
+        - purposes
+        - address
+        - isFavorite
+    Division:
+      type: object
+      properties:
+        urls:
+          description: List of internet presences
+          example:
+            - https://example.com
+          type: array
+          items:
+            type: string
+        id:
+          type: string
+          description: The division id
+          example: '123'
+        divisionKey:
+          type: string
+          description: The division key
+          example: '10000000'
+        name1:
+          type: string
+          example: Landesverband
+        name2:
+          type: string
+          example: Baden-Württemberg
+        shortName:
+          type: string
+          description: Descriptive name of the division.
+          example: Baden-Württemberg LV
+        hierarchy:
+          type: object
+          description: The root hierarchy the division belongs to
+          example: GR
+        level:
+          description: Level in the hierarchy
+          example: BV
+          enum:
+            - BV
+            - LV
+            - KV
+            - OV
+          type: string
+        officeAddress:
+          nullable: true
+          description: Office address
+          allOf:
+            - $ref: '#/components/schemas/Address'
+        emails:
+          description: Email Addresses
+          type: array
+          items:
+            $ref: '#/components/schemas/DivisionEmail'
+      required:
+        - urls
+        - id
+        - divisionKey
+        - name1
+        - name2
+        - shortName
+        - hierarchy
+        - level
+        - officeAddress
+        - emails
+    DivisionMembership:
+      type: object
+      properties:
+        division:
+          $ref: '#/components/schemas/Division'
+        joinedAt:
+          format: date-time
+          type: string
+      required:
+        - division
+        - joinedAt
+    ProfileRole:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '12345'
+        type:
+          example: role
+          enum:
+            - role
+            - mandate
+            - office
+          type: string
+        name:
+          type: string
+          example: LAG Verkehr Mitarbeitende
+        alias:
+          type: string
+          example: LAG Mobilität
+      required:
+        - id
+        - type
+        - name
+        - alias
+    PublicProfile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 71eb2937-12f2-4483-906a-f01a972afecf
+        userId:
+          type: string
+          description: User id (Sherpa user id)
+          example: '12345678'
+        personalId:
+          type: string
+          description: personal identification number
+          example: '12345678'
+        username:
+          type: string
+          example: JohnDoe1
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        image:
+          $ref: '#/components/schemas/ProfileImage'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberEntry'
+        messengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessengerEntry'
+        socialMedia:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialMediaEntry'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileTag'
+        joinedAt:
+          format: date-time
+          type: string
+          description: First entry date in the BV
+        memberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/DivisionMembership'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileRole'
+        achievements:
+          example:
+            - Silberne Sonnenblume
+          type: array
+          items:
+            type: string
+        email:
+          type: string
+          example: john.doe@example.com
+      required:
+        - id
+        - userId
+        - personalId
+        - username
+        - firstName
+        - lastName
+        - phoneNumbers
+        - messengers
+        - socialMedia
+        - tags
+        - roles
+        - achievements
+    FindProfilesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PublicProfile'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+            hasNext:
+              required: true
+              type: boolean
+      required:
+        - data
+        - meta
+    CreateProfile:
+      type: object
+      properties:
+        userId:
+          type: string
+      required:
+        - userId
+    ProfilePrivacySettings:
+      type: object
+      properties:
+        overall:
+          example: BV_WIDE
+          enum:
+            - PRIVATE
+            - PUBLIC
+            - BV_WIDE
+            - LV_WIDE
+            - KV_WIDE
+            - OV_WIDE
+          type: string
+        email:
+          example: PRIVATE
+          enum:
+            - PRIVATE
+            - PUBLIC
+            - BV_WIDE
+            - LV_WIDE
+            - KV_WIDE
+            - OV_WIDE
+          type: string
+        chatbegruenung:
+          example: PUBLIC
+          enum:
+            - PRIVATE
+            - PUBLIC
+            - BV_WIDE
+            - LV_WIDE
+            - KV_WIDE
+            - OV_WIDE
+          type: string
+      required:
+        - overall
+        - email
+        - chatbegruenung
+    Profile:
+      type: object
+      properties:
+        id:
+          type: string
+          example: 71eb2937-12f2-4483-906a-f01a972afecf
+        userId:
+          type: string
+          description: User id (Sherpa user id)
+          example: '12345678'
+        personalId:
+          type: string
+          description: personal identification number
+          example: '12345678'
+        username:
+          type: string
+          example: JohnDoe1
+        firstName:
+          type: string
+          example: John
+        lastName:
+          type: string
+          example: Doe
+        email:
+          type: string
+          example: john.doe@example.com
+        image:
+          $ref: '#/components/schemas/ProfileImage'
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneNumberEntry'
+        messengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/MessengerEntry'
+        socialMedia:
+          type: array
+          items:
+            $ref: '#/components/schemas/SocialMediaEntry'
+        tags:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileTag'
+        joinedAt:
+          format: date-time
+          type: string
+          description: First entry date in the BV
+        memberships:
+          type: array
+          items:
+            $ref: '#/components/schemas/DivisionMembership'
+        roles:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileRole'
+        achievements:
+          example:
+            - Silberne Sonnenblume
+          type: array
+          items:
+            type: string
+        privacy:
+          $ref: '#/components/schemas/ProfilePrivacySettings'
+      required:
+        - id
+        - userId
+        - personalId
+        - username
+        - firstName
+        - lastName
+        - email
+        - phoneNumbers
+        - messengers
+        - socialMedia
+        - tags
+        - roles
+        - achievements
+        - privacy
+    UpdatePhoneNumber:
+      type: object
+      properties:
+        country:
+          type: string
+          description: Country code in german format
+          example: '0049'
+        number:
+          type: string
+          description: Phone number
+          example: '177234512345'
+        id:
+          type: string
+          example: '123'
+      required:
+        - country
+        - number
+    UpdateMessengerEntry:
+      type: object
+      properties:
+        type:
+          type: string
+          example: threema
+          enum:
+            - threema
+        externalId:
+          type: string
+          example: 822d7a5a
+        id:
+          type: string
+          example: '123'
+      required:
+        - type
+        - externalId
+    UpdateSocialMediaEntry:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of social media entry
+          example: mastodon
+          enum:
+            - facebook
+            - instagram
+            - mastodon
+            - twitter
+            - chatbegruenung
+        url:
+          type: string
+          description: Url to the platform account
+          example: https://mastodon.online/@saxgruen
+        id:
+          type: string
+          example: '123'
+      required:
+        - type
+        - url
+    UpdateProfile:
+      type: object
+      properties:
+        email:
+          type: string
+          example: john.doe2@example.com
+        phoneNumbers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdatePhoneNumber'
+        messengers:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdateMessengerEntry'
+        socialMedia:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpdateSocialMediaEntry'
+        tags:
+          description: List of external tag ids
+          example:
+            - '501'
+            - '14003317'
+          type: array
+          items:
+            type: string
+        privacy:
+          $ref: '#/components/schemas/ProfilePrivacySettings'
+      required:
+        - email
+        - phoneNumbers
+        - messengers
+        - socialMedia
+        - tags
+        - privacy
+    FindProfileTagsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProfileTag'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            total:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+      required:
+        - data
+        - meta
+    OffboardingUserInfo:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The User Id (Sherpa Id)
+          example: '12345678'
+        username:
+          type: string
+          description: The users username. Used to log in to Grünes Netz (gnetz username)
+          example: JohnDoe1
+        email:
+          type: string
+          description: The users email address.
+          example: john.doe@example.com
+      required:
+        - id
+        - username
+    FindOffboardingUsersResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/OffboardingUserInfo'
+        meta:
+          type: object
+          properties:
+            cursorNext:
+              required: false
+              type: string
+      required:
+        - data
+        - meta
+    UpsertOffboardingServiceUser:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The user's id.
+          example: '12345678'
+        status:
+          enum:
+            - deleted
+            - not_found
+            - anonymized
+          type: string
+      required:
+        - id
+        - status
+    BatchUpdateOffboardingServiceUsers:
+      type: object
+      properties:
+        upsert:
+          type: array
+          items:
+            $ref: '#/components/schemas/UpsertOffboardingServiceUser'
+    FindDivisionsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Division'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            total:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+      required:
+        - data
+        - meta
+    RoleAlias:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the role alias
+          example: '503'
+        label:
+          type: string
+          description: Label of the alias
+        divisionId:
+          type: string
+          description: Division id where this alias applies
+          example: '2092'
+        divisionKey:
+          type: string
+          description: Division key where this alias applies
+          example: '10100000'
+      required:
+        - id
+        - label
+        - divisionId
+        - divisionKey
+    RoleCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The role category id
+          example: '84'
+        label:
+          type: string
+          description: Name of the role category
+        aliases:
+          description: Role category aliases
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleAlias'
+      required:
+        - id
+        - label
+        - aliases
+    RoleTag:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Id of the role tag
+          example: '6590132'
+        name:
+          type: string
+          description: Name of the role tag
+      required:
+        - id
+        - name
+    Role:
+      type: object
+      properties:
+        id:
+          type: string
+          description: The role id
+          example: '123'
+        name:
+          type: string
+          description: Name of the role
+        hierarchy:
+          description: Hierarchy this role refers to
+          example: GR
+          enum:
+            - GR
+            - GJ
+            - KPV
+          type: string
+        type:
+          description: Type of role
+          example: ROLLE
+          enum:
+            - AMT
+            - BEZ
+            - MANDAT
+            - ROLLE
+            - SYSTEM
+          type: string
+        minAge:
+          type: number
+          nullable: true
+          description: Role min age
+          example: 0
+        maxAge:
+          type: number
+          description: Role max age
+          example: 99
+        level:
+          description: Hierarchy level this role applies to
+          example: LV
+          enum:
+            - ALL
+            - BV
+            - LV
+            - KV
+            - OV
+            - BEZV
+          type: string
+        categories:
+          description: Role categories
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleCategory'
+        tags:
+          description: Role tags
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTag'
+        aliases:
+          description: Role Aliases
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleAlias'
+      required:
+        - id
+        - name
+        - hierarchy
+        - type
+        - minAge
+        - maxAge
+        - level
+        - categories
+        - tags
+        - aliases
+    FindRolesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Role'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            total:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+      required:
+        - data
+        - meta
+    FindRoleTagsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleTag'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            total:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+      required:
+        - data
+        - meta
+    FindRoleCategoriesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/RoleCategory'
+        meta:
+          type: object
+          properties:
+            count:
+              required: true
+              type: number
+            total:
+              required: true
+              type: number
+            offset:
+              required: true
+              type: number
+            limit:
+              required: true
+              type: number
+      required:
+        - data
+        - meta
+    PoiAddress:
+      type: object
+      properties:
+        city:
+          type: string
+          description: Location city
+          example: Berlin
+        zip:
+          type: string
+          description: Location zip code
+          example: '10176'
+        street:
+          type: string
+          description: First address line for street and house number
+          example: Bahnhofstraße
+        houseNumber:
+          type: string
+          description: First address line for street and house number
+          example: 12/a
+      required:
+        - city
+        - zip
+        - street
+        - houseNumber
+    PoiPoster:
+      type: object
+      properties:
+        status:
+          description: Current status of the poster.
+          example: OK
+          enum:
+            - OK
+            - DAMAGED
+            - REMOVED
+            - MISSING
+          type: string
+        comment:
+          type: string
+          nullable: true
+          description: A short text to describe the state of the poster.
+          example: Poster was sprayed with graffiti.
+      required:
+        - status
+        - comment
+    PoiFlyerSpot:
+      type: object
+      properties:
+        flyerCount:
+          type: number
+          description: Number of flyers on this spot.
+          minimum: 0
+      required:
+        - flyerCount
+    PoiHouse:
+      type: object
+      properties:
+        countOpenedDoors:
+          type: number
+          description: Number of apartment doors that were opened for a conversation.
+          minimum: 0
+        countClosedDoors:
+          type: number
+          description: Number of appartment doors that remained closed.
+          minimum: 0
+      required:
+        - countOpenedDoors
+        - countClosedDoors
+    UpdatePoi:
+      type: object
+      properties:
+        address:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiAddress'
+        poster:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiPoster'
+        flyerSpot:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiFlyerSpot'
+        house:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiHouse'
+    CreatePoi:
+      type: object
+      properties:
+        coords:
+          description: Coordinates represented in GeoJSON [longitude, latitude]
+          example:
+            - 120.123
+            - -35.456
+          minItems: 2
+          maxItems: 2
+          type: array
+          items:
+            type: number
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        address:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiAddress'
+        poster:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiPoster'
+        flyerSpot:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiFlyerSpot'
+        house:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiHouse'
+      required:
+        - coords
+        - type
+    Image:
+      type: object
+      properties:
+        id:
+          type: string
+        type:
+          type: string
+          description: Image url
+          example: thumbnail
+        url:
+          type: string
+          description: Image url
+          example: >-
+            https://static.example.com/profiles/10b4be70-9e3d-40a5-a46a-b0668bdf7e03.jpg
+        mimetype:
+          type: string
+          description: Image mimetype
+          example: image/jpeg
+        width:
+          type: number
+          description: Width in pixels
+          example: 150
+        height:
+          type: number
+          description: Height in pixels
+          example: 150
+      required:
+        - id
+        - url
+        - mimetype
+        - width
+        - height
+    ImageSrcSet:
+      type: object
+      properties:
+        id:
+          type: string
+        original:
+          $ref: '#/components/schemas/Image'
+        srcset:
+          type: array
+          items:
+            $ref: '#/components/schemas/Image'
+      required:
+        - id
+        - original
+        - srcset
+    Poi:
+      type: object
+      properties:
+        coords:
+          description: Coordinates represented in GeoJSON [longitude, latitude]
+          example:
+            - 120.123
+            - -35.456
+          minItems: 2
+          maxItems: 2
+          type: array
+          items:
+            type: number
+        id:
+          type: string
+          example: '1'
+        agentId:
+          type: string
+        divisionKey:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        photos:
+          type: array
+          items:
+            $ref: '#/components/schemas/ImageSrcSet'
+        address:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/PoiAddress'
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        poster:
+          $ref: '#/components/schemas/PoiPoster'
+        flyerSpot:
+          $ref: '#/components/schemas/PoiFlyerSpot'
+        house:
+          $ref: '#/components/schemas/PoiHouse'
+      required:
+        - coords
+        - id
+        - agentId
+        - divisionKey
+        - createdAt
+        - photos
+        - address
+        - type
+    FindPoisResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Poi'
+      required:
+        - data
+    HealthCheckResponse:
+      type: object
+      properties:
+        status:
+          type: string
+          example: error
+        info:
+          type: object
+          additionalProperties:
+            type: object
+            required:
+              - status
+            properties:
+              status:
+                type: string
+                enum:
+                  - up
+                  - down
+          example:
+            memory_heap:
+              status: up
+            ldap:
+              status: up
+            sherpa:
+              status: up
+        error:
+          type: object
+          additionalProperties:
+            type: object
+            required:
+              - status
+            properties:
+              status:
+                type: string
+                enum:
+                  - up
+                  - down
+              message:
+                type: string
+          example:
+            keycloak:
+              status: down
+              example: client not authenticated
+        details:
+          type: object
+          additionalProperties:
+            type: object
+            required:
+              - status
+            properties:
+              status:
+                type: string
+                enum:
+                  - up
+                  - down
+              message:
+                type: string
+          example:
+            memory_heap:
+              status: up
+            ldap:
+              status: up
+            sherpa:
+              status: up
+            keycloak:
+              status: down
+              example: client not authenticated

@@ -5,3 +5,6 @@ steps:
   - run:
       name: Apply Production Environment
       command: cp .env.prod .env
+  - run:
+      command: fvm dart run build_runner build
+      name: Generate Swagger API

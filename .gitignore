@@ -73,6 +73,7 @@ lib/generated_plugin_registrant.dart
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+/.idea/caches/deviceStreaming.xml
 
 # AWS User-specific
 .idea/**/aws.xml
@@ -204,3 +205,5 @@ devtools_options.yaml
 .env
 report.xml
 node_modules
+
+/lib/swagger_generated_code/

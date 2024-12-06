@@ -1,6 +1,11 @@
 {
   "common": {
-    "appName": "Grüne App"
+    "appName": "Grüne App",
+    "actions": {
+      "save": "Speichern",
+      "cancel": "Abbrechen",
+      "delete": "Löschen"
+    }
   },
   "news": {
     "news": "Artikel",
@@ -17,19 +22,70 @@
       "experience_areas": "Erfahrungsgebiete"
     },
     "posters": {
-      "label": "Plakate"
+      
+      "label": "Plakate",
+      "addPoster": "Plakat eintragen",
+      "editPoster": "Plakat bearbeiten",
+      "info_details": "Infos & Bearbeiten",
+      "delete_photo": "Foto löschen",
+      "replace_photo": "Foto ersetzen",
+      "status": {
+        "damaged": {
+          "label": "Beschädigt",
+          "hint": "Als zu ersetzen melden"
+        },
+        "missing": {
+          "label": "Verschollen",
+          "hint": "Durch Fremdeinwirkung entfernt"
+        },
+        "removed": {
+          "label": "Abgehangen",
+          "hint": "Dauerhaft entfernt"
+        }
+      },
+      "status_damaged": "Beschädigt (Als zu ersetzen melden)",
+      "status_taken_down": "Als abgehängt markieren",
+      "comment": {
+        "label": "Beschreibung",
+        "hint": "Bitte gib hierzu weitere Informationen an"
+      },
+      "deletePoster": {
+        "hint": "Bitte lösche Einträge ausschließlich, wenn es nicht anders geht. Markiere abgehängte Plakate als \"Abgehängt\"."
+      }
     },
     "door": {
-      "label": "Haustür"
+      "label": "Haustür",
+      "addDoor": "Haustür eintragen",
+      "closedDoors": "Ungeöffnete Türen",
+      "editDoor": "Haustür bearbeiten",
+      "openedDoors": "Geöffnete Türen",
+      "noDoorsWarning": "Bitte gib mindestens eine Tür ein!",
+      "createDoor": {
+        "hint": "Bitte trage sowohl geöffnete, als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
+      }
     },
     "flyer": {
-      "label": "Flyer"
+      "label": "Flyer",
+      "addFlyer": "Wahlkampfstand eintragen",
+      "editFlyer": "Wahlkampfstand bearbeiten",
+      "countFlyer": "Anzahl der Flyer",
+      "noFlyerWarning": "Bitte geben Sie mindestens einen Flyer ein!"
     },
+    "deleteEntry": {
+        "label": "Eintrag löschen",
+        "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+      },
     "team": {
       "label": "Team"
     },
     "statistic": {
       "label": "Statistik"
+    },
+    "address": {
+      "street": "Straße",
+      "housenumber": "Hausnr.",
+      "zipcode": "PLZ",
+      "city_or_place": "Stadt / Ort"
     }
   },
   "profiles": {

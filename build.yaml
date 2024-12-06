@@ -1,0 +1,13 @@
+targets:
+  $default:
+    sources:
+      - swaggers/**
+    builders:
+      chopper_generator:
+        options:
+          header: "// Generated code"
+      swagger_dart_code_generator:
+        options:
+          input_folder: "swaggers/"
+          output_folder: "lib/swagger_generated_code/"
+          multipart_file_type: "MultipartFile"
