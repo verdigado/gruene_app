@@ -1,10 +1,7 @@
 steps:
   - run:
-      name: Generate Translations
-      command: fvm dart run slang
-  - run:
       name: Apply Production Environment
       command: cp .env.prod .env
   - run:
       command: fvm dart run build_runner build
-      name: Generate Swagger API
+      name: Generate Swagger API and Translations

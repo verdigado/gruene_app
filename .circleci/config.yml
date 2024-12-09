@@ -186,14 +186,11 @@ commands:
     prepare_project:
         steps:
             - run:
-                command: fvm dart run slang
-                name: Generate Translations
-            - run:
                 command: cp .env.prod .env
                 name: Apply Production Environment
             - run:
                 command: fvm dart run build_runner build
-                name: Generate Swagger API
+                name: Generate Swagger API and Translations
     prepare_workspace:
         description: Attach the workspace at ~/attached_workspace and list its contents
         steps:
