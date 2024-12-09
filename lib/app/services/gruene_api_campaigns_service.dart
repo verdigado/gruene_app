@@ -45,12 +45,7 @@ class GrueneApiCampaignsService {
     final requestParam = CreatePoi(
       coords: [newPoster.location.latitude, newPoster.location.longitude],
       type: poiType.transformToApiCreateType(),
-      address: PoiAddress(
-        city: newPoster.city,
-        zip: newPoster.zipCode,
-        street: newPoster.street,
-        houseNumber: newPoster.houseNumber,
-      ),
+      address: newPoster.address.transformToPoiAddress(),
     );
     // saving POI
     final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
@@ -69,12 +64,7 @@ class GrueneApiCampaignsService {
     final requestParam = CreatePoi(
       coords: [newDoor.location.latitude, newDoor.location.longitude],
       type: poiType.transformToApiCreateType(),
-      address: PoiAddress(
-        city: newDoor.address.city,
-        zip: newDoor.address.zipCode,
-        street: newDoor.address.street,
-        houseNumber: newDoor.address.houseNumber,
-      ),
+      address: newDoor.address.transformToPoiAddress(),
       house: PoiHouse(
         countOpenedDoors: newDoor.openedDoors.toDouble(),
         countClosedDoors: newDoor.closedDoors.toDouble(),
@@ -90,12 +80,7 @@ class GrueneApiCampaignsService {
     final requestParam = CreatePoi(
       coords: [newFlyer.location.latitude, newFlyer.location.longitude],
       type: poiType.transformToApiCreateType(),
-      address: PoiAddress(
-        city: newFlyer.address.city,
-        zip: newFlyer.address.zipCode,
-        street: newFlyer.address.street,
-        houseNumber: newFlyer.address.houseNumber,
-      ),
+      address: newFlyer.address.transformToPoiAddress(),
       flyerSpot: PoiFlyerSpot(
         flyerCount: newFlyer.flyerCount.toDouble(),
       ),
@@ -130,12 +115,7 @@ class GrueneApiCampaignsService {
 
   Future<MarkerItemModel> updatePoster(PosterUpdateModel posterUpdate) async {
     var dtoUpdate = UpdatePoi(
-      address: PoiAddress(
-        street: posterUpdate.street,
-        houseNumber: posterUpdate.housenumber,
-        zip: posterUpdate.zipCode,
-        city: posterUpdate.city,
-      ),
+      address: posterUpdate.address.transformToPoiAddress(),
       poster: PoiPoster(status: posterUpdate.status.transformToPoiPosterStatus(), comment: posterUpdate.comment),
     );
     // ignore: unused_local_variable
@@ -159,12 +139,7 @@ class GrueneApiCampaignsService {
 
   Future<MarkerItemModel> updateDoor(DoorUpdateModel doorUpdate) async {
     var dtoUpdate = UpdatePoi(
-      address: PoiAddress(
-        street: doorUpdate.address.street,
-        houseNumber: doorUpdate.address.houseNumber,
-        zip: doorUpdate.address.zipCode,
-        city: doorUpdate.address.city,
-      ),
+      address: doorUpdate.address.transformToPoiAddress(),
       house: PoiHouse(
         countOpenedDoors: doorUpdate.openedDoors.toDouble(),
         countClosedDoors: doorUpdate.closedDoors.toDouble(),
@@ -177,12 +152,7 @@ class GrueneApiCampaignsService {
 
   Future<MarkerItemModel> updateFlyer(FlyerUpdateModel flyerUpdate) async {
     var dtoUpdate = UpdatePoi(
-      address: PoiAddress(
-        street: flyerUpdate.address.street,
-        houseNumber: flyerUpdate.address.houseNumber,
-        zip: flyerUpdate.address.zipCode,
-        city: flyerUpdate.address.city,
-      ),
+      address: flyerUpdate.address.transformToPoiAddress(),
       flyerSpot: PoiFlyerSpot(
         flyerCount: flyerUpdate.flyerCount.toDouble(),
       ),

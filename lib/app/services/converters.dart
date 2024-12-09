@@ -1,10 +1,26 @@
 import 'package:gruene_app/app/services/enums.dart';
+import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+
+extension PoiTypeParsing on PoiType {
+  PoiServiceType transformToPoiServiceType() {
+    switch (this) {
+      case PoiType.flyerSpot:
+        return PoiServiceType.flyer;
+      case PoiType.poster:
+        return PoiServiceType.poster;
+      case PoiType.house:
+        return PoiServiceType.door;
+      case PoiType.swaggerGeneratedUnknown:
+        throw UnimplementedError();
+    }
+  }
+}
 
 extension PoiServiceTypeParsing on PoiServiceType {
   V1CampaignsPoisGetType transformToApiGetType() {
@@ -53,6 +69,30 @@ extension PoiPosterStatusParsing on PoiPosterStatus {
   }
 }
 
+extension PoiAddressParsing on PoiAddress {
+  AddressModel transformToAddressModel() {
+    final address = this;
+    return AddressModel(
+      street: address.street,
+      houseNumber: address.houseNumber,
+      zipCode: address.zip,
+      city: address.city,
+    );
+  }
+}
+
+extension AddressModelParsing on AddressModel {
+  PoiAddress transformToPoiAddress() {
+    final address = this;
+    return PoiAddress(
+      city: address.city,
+      zip: address.zipCode,
+      street: address.street,
+      houseNumber: address.houseNumber,
+    );
+  }
+}
+
 extension PoiParsing on Poi {
   MarkerItemModel transformToMarkerItem() {
     final poi = this;
@@ -61,7 +101,7 @@ extension PoiParsing on Poi {
     return MarkerItemModel(
       id: int.parse(poi.id),
       location: LatLng(poi.coords[0], poi.coords[1]),
-      status: '${poi.type.name}$statusSuffix',
+      status: '${poi.type.transformToPoiServiceType().name}$statusSuffix',
     );
   }
 
@@ -72,10 +112,7 @@ extension PoiParsing on Poi {
     }
     return DoorDetailModel(
       id: poi.id,
-      street: poi.address!.street,
-      houseNumber: poi.address!.houseNumber,
-      zipCode: poi.address!.zip,
-      city: poi.address!.city,
+      address: poi.address!.transformToAddressModel(),
       openedDoors: poi.house!.countOpenedDoors.toInt(),
       closedDoors: poi.house!.countClosedDoors.toInt(),
     );
@@ -90,10 +127,7 @@ extension PoiParsing on Poi {
       id: poi.id,
       thumbnailUrl: _getThumbnailImageUrl(poi),
       imageUrl: _getImageUrl(poi),
-      street: poi.address!.street,
-      houseNumber: poi.address!.houseNumber,
-      zipCode: poi.address!.zip,
-      city: poi.address!.city,
+      address: poi.address!.transformToAddressModel(),
       status: poi.poster!.status.transformToModelPosterStatus(),
       comment: poi.poster!.comment ?? '',
     );
@@ -106,10 +140,7 @@ extension PoiParsing on Poi {
     }
     return FlyerDetailModel(
       id: poi.id,
-      street: poi.address!.street,
-      houseNumber: poi.address!.houseNumber,
-      zipCode: poi.address!.zip,
-      city: poi.address!.city,
+      address: poi.address!.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
     );
   }

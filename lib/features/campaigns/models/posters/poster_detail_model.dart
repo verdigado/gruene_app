@@ -1,3 +1,5 @@
+import 'package:gruene_app/app/services/nominatim_service.dart';
+
 enum PosterStatus { ok, damaged, missing, removed }
 
 class PosterDetailModel {
@@ -5,10 +7,7 @@ class PosterDetailModel {
   String? thumbnailUrl;
   String? imageUrl;
 
-  final String street;
-  final String houseNumber;
-  final String zipCode;
-  final String city;
+  final AddressModel address;
   final String comment;
   final PosterStatus status;
 
@@ -16,10 +15,7 @@ class PosterDetailModel {
     required this.id,
     required this.thumbnailUrl,
     required this.imageUrl,
-    required this.street,
-    required this.houseNumber,
-    required this.zipCode,
-    required this.city,
+    required this.address,
     required this.status,
     required this.comment,
   });

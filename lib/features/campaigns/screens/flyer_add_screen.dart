@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
-import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
@@ -18,7 +18,7 @@ class FlyerAddScreen extends StatefulWidget {
   State<FlyerAddScreen> createState() => _FlyerAddScreenState();
 }
 
-class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressMixin, FlyerValidator {
+class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressExtension, FlyerValidator {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -103,23 +103,5 @@ class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressMixin, Flye
         flyerCount: validationResult.flyerCount,
       ),
     );
-  }
-}
-
-mixin FlyerValidator {
-  ({int flyerCount})? validateFlyer(
-    String flyerCountRawValue,
-    BuildContext context,
-  ) {
-    final flyerCount = int.tryParse(flyerCountRawValue) ?? 0;
-    if (flyerCount < 1) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.campaigns.flyer.noFlyerWarning),
-        ),
-      );
-      return null;
-    }
-    return (flyerCount: flyerCount);
   }
 }

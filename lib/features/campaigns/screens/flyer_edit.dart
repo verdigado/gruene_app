@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
-import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
-import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
-import 'package:gruene_app/features/campaigns/screens/flyer_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
@@ -25,7 +23,7 @@ class FlyerEdit extends StatefulWidget {
   State<FlyerEdit> createState() => _FlyerEditState();
 }
 
-class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator, ConfirmDelete {
+class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValidator, ConfirmDelete {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -45,10 +43,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressMixin, FlyerValidator
 
   @override
   void initState() {
-    streetTextController.text = widget.flyer.street;
-    houseNumberTextController.text = widget.flyer.houseNumber;
-    zipCodeTextController.text = widget.flyer.zipCode;
-    cityTextController.text = widget.flyer.city;
+    setAddress(widget.flyer.address);
     flyerCountTextController.text = widget.flyer.flyerCount.toString();
     super.initState();
   }
