@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             path: 'assets/icons/settings.svg',
             color: ThemeColors.background,
           ),
-          onPressed: () => context.push(Routes.settings),
+          onPressed: () => context.push(Routes.settings.path),
         ),
       ],
     );
