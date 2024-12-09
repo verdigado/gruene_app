@@ -14,6 +14,7 @@ import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/multiline_text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:photo_view/photo_view.dart';
 
 typedef OnSavePosterCallback = void Function(PosterUpdateModel posterUpdate);
 
@@ -263,9 +264,12 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelet
           PosterEdit.dummyAsset,
         );
     if (_currentPhoto != null) {
-      return Image.file(
-        _currentPhoto!,
-        fit: BoxFit.cover,
+      return GestureDetector(
+        onTap: _showPictureFullView,
+        child: Image.file(
+          _currentPhoto!,
+          fit: BoxFit.cover,
+        ),
       );
     }
     if (_isPhotoDeleted) return getDummyAsset();
@@ -276,10 +280,13 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelet
           return getDummyAsset();
         }
 
-        return FadeInImage.assetNetwork(
-          placeholder: PosterEdit.dummyAsset,
-          image: snapshot.data!,
-          fit: BoxFit.cover,
+        return GestureDetector(
+          onTap: _showPictureFullView,
+          child: FadeInImage.assetNetwork(
+            placeholder: PosterEdit.dummyAsset,
+            image: snapshot.data!,
+            fit: BoxFit.cover,
+          ),
         );
       },
     );
@@ -378,5 +385,43 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelet
         _currentPhoto = null;
       });
     }
+  }
+
+  void _showPictureFullView() async {
+    ImageProvider imageProvider;
+    if (_currentPhoto != null) {
+      imageProvider = FileImage(_currentPhoto!);
+    } else {
+      imageProvider = NetworkImage(widget.poster.imageUrl!);
+    }
+    final theme = Theme.of(context);
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Expanded(
+              child: PhotoView(
+                backgroundDecoration: BoxDecoration(color: ThemeColors.text.withAlpha(120)),
+                imageProvider: imageProvider,
+              ),
+            ),
+            Positioned(
+              right: 20,
+              top: 20,
+              child: GestureDetector(
+                onTap: () => Navigator.maybePop(context),
+                child: Icon(
+                  Icons.close,
+                  color: theme.colorScheme.surface,
+                  size: 30,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
