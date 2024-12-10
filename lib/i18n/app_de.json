@@ -4,7 +4,8 @@
     "actions": {
       "save": "Speichern",
       "cancel": "Abbrechen",
-      "delete": "Löschen"
+      "delete": "Löschen",
+      "edit": "Bearbeiten"
     }
   },
   "news": {
@@ -28,6 +29,13 @@
       "editPoster": "Plakat bearbeiten",
       "delete_photo": "Foto löschen",
       "replace_photo": "Foto ersetzen",
+      "my_posters_action": "Meine Plakate",
+      "my_posters_title": "Meine aufgehängten Plakate",
+      "created": "aufgehängt",
+      "updated": "aktualisiert",
+      "date_format": "dd.MM.yyyy",
+      "time_format": "HH:mm",
+      "datetime_display_template": "{date} um {time}",
       "status": {
         "damaged": {
           "label": "Beschädigt",

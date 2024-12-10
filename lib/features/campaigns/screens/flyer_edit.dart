@@ -10,7 +10,7 @@ import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dar
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-typedef OnSaveFlyerCallback = void Function(FlyerUpdateModel flyerUpdate);
+typedef OnSaveFlyerCallback = Future<void> Function(FlyerUpdateModel flyerUpdate);
 
 class FlyerEdit extends StatefulWidget {
   final FlyerDetailModel flyer;
@@ -113,7 +113,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValid
     _closeDialog();
   }
 
-  void _saveFlyer() {
+  void _saveFlyer() async {
     if (!context.mounted) return;
     final validationResult = validateFlyer(flyerCountTextController.text, context);
     if (validationResult == null) return;
@@ -123,7 +123,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValid
       address: getAddress(),
       flyerCount: validationResult.flyerCount,
     );
-    widget.onSave(updateModel);
+    await widget.onSave(updateModel);
     _closeDialog();
   }
 }

@@ -2,6 +2,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
+import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/poster_status.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
@@ -13,12 +15,10 @@ import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/multiline_text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
-import 'package:photo_view/photo_view.dart';
 
-typedef OnSavePosterCallback = void Function(PosterUpdateModel posterUpdate);
+typedef OnSavePosterCallback = Future<void> Function(PosterUpdateModel posterUpdate);
 
 class PosterEdit extends StatefulWidget {
-  static const dummyAsset = 'assets/splash/logo_android12.png';
   final PosterDetailModel poster;
   final OnSavePosterCallback onSave;
   final OnDeletePoiCallback onDelete;
@@ -79,7 +79,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
         children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
-            child: CloseSaveWidget(onSave: _savePoster, onClose: _closeDialog),
+            child: CloseSaveWidget(onSave: _savePoster, onClose: () => _closeDialog(ModalEditResult.cancel)),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
@@ -257,7 +257,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   Widget _getPosterPreview() {
     Widget getDummyAsset() => Image.asset(
-          PosterEdit.dummyAsset,
+          CampaignConstants.dummyImageAssetName,
         );
     if (_currentPhoto != null) {
       return GestureDetector(
@@ -279,7 +279,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
         return GestureDetector(
           onTap: _showPictureFullView,
           child: FadeInImage.assetNetwork(
-            placeholder: PosterEdit.dummyAsset,
+            placeholder: CampaignConstants.dummyImageAssetName,
             image: snapshot.data!,
             fit: BoxFit.cover,
           ),
@@ -290,11 +290,11 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _onDeletePressed() async {
     widget.onDelete(widget.poster.id);
-    _closeDialog();
+    _closeDialog(ModalEditResult.delete);
   }
 
-  void _closeDialog() {
-    Navigator.maybePop(context);
+  void _closeDialog(ModalEditResult editResult) {
+    Navigator.maybePop(context, editResult);
   }
 
   void _savePoster() async {
@@ -309,8 +309,9 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
       removePreviousPhotos: _isPhotoDeleted,
       newPhoto: reducedImage,
     );
-    widget.onSave(updateModel);
-    _closeDialog();
+    await widget.onSave(updateModel);
+
+    _closeDialog(ModalEditResult.save);
   }
 
   ButtonStyle _getSegmentedButtonStyle(ThemeData theme) {
@@ -387,34 +388,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     } else {
       imageProvider = NetworkImage(widget.poster.imageUrl!);
     }
-    final theme = Theme.of(context);
-    await showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return Stack(
-          children: [
-            Expanded(
-              child: PhotoView(
-                backgroundDecoration: BoxDecoration(color: ThemeColors.text.withAlpha(120)),
-                imageProvider: imageProvider,
-              ),
-            ),
-            Positioned(
-              right: 20,
-              top: 20,
-              child: GestureDetector(
-                onTap: () => Navigator.maybePop(context),
-                child: Icon(
-                  Icons.close,
-                  color: theme.colorScheme.surface,
-                  size: 30,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
+    MediaHelper.showPictureInFullView(context, imageProvider);
   }
 }

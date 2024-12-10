@@ -5,7 +5,10 @@ import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.da
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
+import 'package:intl/intl.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:turf/transform.dart';
 
@@ -97,6 +100,16 @@ extension PoiPosterStatusParsing on PoiPosterStatus {
       PoiPosterStatus.swaggerGeneratedUnknown => throw UnimplementedError(),
     };
   }
+
+  String translatePosterStatus() {
+    return switch (this) {
+      PoiPosterStatus.ok => '',
+      PoiPosterStatus.damaged => t.campaigns.posters.status.damaged.label,
+      PoiPosterStatus.removed => t.campaigns.posters.status.removed.label,
+      PoiPosterStatus.missing => t.campaigns.posters.status.missing.label,
+      PoiPosterStatus.swaggerGeneratedUnknown => throw UnimplementedError(),
+    };
+  }
 }
 
 extension PoiAddressParsing on PoiAddress {
@@ -173,6 +186,36 @@ extension PoiParsing on Poi {
       address: poi.address!.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
     );
+  }
+
+  PosterListItemModel transformToPosterListItem() {
+    final poi = this;
+    if (poi.type != PoiType.poster) {
+      throw Exception('Unexpected PoiType');
+    }
+    return PosterListItemModel(
+      id: poi.id,
+      thumbnailUrl: _getThumbnailImageUrl(poi),
+      imageUrl: _getImageUrl(poi),
+      address: poi.address!.transformToAddressModel(),
+      status: poi.poster!.status.translatePosterStatus(),
+      lastChangeStatus: poi._getLastChangeStatus(),
+      lastChangeDateTime: poi._getLastChangeDateTimeInfo(),
+      createdAt: poi.createdAt,
+    );
+  }
+
+  String _getLastChangeDateTimeInfo() {
+    final lastChange = updatedAt.toLocal();
+    final lastChangeDate = DateFormat(t.campaigns.posters.date_format).format(lastChange);
+    final lastChangeTime = DateFormat(t.campaigns.posters.time_format).format(lastChange);
+    return t.campaigns.posters.datetime_display_template
+        .replaceAll('{date}', lastChangeDate)
+        .replaceAll('{time}', lastChangeTime);
+  }
+
+  String _getLastChangeStatus() {
+    return createdAt == updatedAt ? t.campaigns.posters.created : t.campaigns.posters.updated;
   }
 
   String? _getThumbnailImageUrl(Poi poi) {

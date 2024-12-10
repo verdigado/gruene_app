@@ -3,6 +3,7 @@ import 'dart:math';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:turf/transform.dart';
 
 class MarkerItemHelper {
@@ -25,14 +26,20 @@ class MarkerItemHelper {
   }
 
   static Feature<Polygon> transformMapLayerModelToGeoJson(MapLayerModel mapLayerModel) {
-    final scoreColors = [ThemeColors.primary, ThemeColors.secondary, ThemeColors.tertiary];
+    final scoreColors = [
+      ThemeColors.primary.toHexStringRGB(),
+      ThemeColors.secondary.toHexStringRGB(),
+      ThemeColors.tertiary.toHexStringRGB(),
+    ];
+    // debugPrint(scoreColors[0].toHexStringRGB());
     final random = Random();
     final scoreColor = scoreColors[random.nextInt(scoreColors.length)];
     return Feature<Polygon>(
       id: mapLayerModel.id,
       properties: <String, dynamic>{
         'id': mapLayerModel.id.toString(),
-        'score_color': 'rgb(${scoreColor.red},${scoreColor.green},${scoreColor.blue})',
+        // 'score_color': 'rgb(${scoreColor.red},${scoreColor.green},${scoreColor.blue})',
+        'score_color': scoreColor,
         'score_opacity': random.nextDouble() * 0.8,
       },
       geometry: Polygon(coordinates: mapLayerModel.coords),

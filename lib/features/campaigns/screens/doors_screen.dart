@@ -130,7 +130,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   void _onNoFeatureClick() {}
 
-  void _saveDoor(DoorUpdateModel doorUpdate) async {
+  Future<void> _saveDoor(DoorUpdateModel doorUpdate) async {
     final updatedMarker = await campaignService.updateDoor(doorUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }

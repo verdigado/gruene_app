@@ -119,7 +119,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
     return await campaignService.createNewFlyer(newFlyer);
   }
 
-  void _saveFlyer(FlyerUpdateModel flyerUpdate) async {
+  Future<void> _saveFlyer(FlyerUpdateModel flyerUpdate) async {
     final updatedMarker = await campaignService.updateFlyer(flyerUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }

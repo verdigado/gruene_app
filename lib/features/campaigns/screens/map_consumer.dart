@@ -3,6 +3,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
@@ -15,7 +16,7 @@ typedef GetAddScreenCallback<T, U> = T Function(LatLng, AddressModel?, U?);
 typedef SaveNewAndGetMarkerCallback<T> = Future<MarkerItemModel> Function(T);
 typedef GetPoiCallback<T> = Future<T> Function(String);
 typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
-typedef EditPoiCallback<T> = Widget Function(T);
+typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
 typedef OnDeletePoiCallback = void Function(String posterId);
 
 abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
@@ -36,14 +37,12 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     GetAddScreenCallback<V, U> getAddScreen,
     SaveNewAndGetMarkerCallback<W> saveAndGetMarker,
   ) async {
-    final currentRoute = GoRouterState.of(context);
-
     var locationAddress = _nominatimService.getLocationAddress(location);
     U? additionalData;
     if (acquireAdditionalDataBefore != null) {
       additionalData = await acquireAdditionalDataBefore(context);
     }
-    var navState = _getNavState();
+    var navState = getNavState();
     final result = await navState.push(
       AppRoute<W?>(
         builder: (context) {
@@ -58,7 +57,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
               final address = snapshot.data;
               return ContentPage(
-                title: currentRoute.name ?? '',
+                title: getCurrentRoute().name ?? '',
                 child: getAddScreen(location, address, additionalData),
               );
             },
@@ -73,7 +72,8 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  NavigatorState _getNavState() => Navigator.of(context, rootNavigator: true);
+  NavigatorState getNavState() => Navigator.of(context, rootNavigator: true);
+  GoRouterState getCurrentRoute() => GoRouterState.of(context);
 
   Future<void> loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
     if (mapController.getCurrentZoomLevel() > mapController.minimumMarkerZoomLevel) {
@@ -86,7 +86,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     dynamic rawFeature,
     GetPoiCallback<U> getPoi,
     GetPoiDetailWidgetCallback<U> getPoiDetail,
-    EditPoiCallback<U> getPoiEdit, {
+    GetPoiEditWidgetCallback<U> getPoiEdit, {
     Size desiredSize = const Size(100, 100),
   }) async {
     final feature = rawFeature as Map<String, dynamic>;
@@ -107,9 +107,13 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     );
   }
 
-  void _editPoi(Widget Function() getEditWidget) {
+  void _editPoi(Widget Function() getEditWidget) async {
+    await showModalEditForm(context, getEditWidget);
+  }
+
+  static Future<ModalEditResult?> showModalEditForm(BuildContext context, Widget Function() getEditWidget) async {
     final theme = Theme.of(context);
-    showModalBottomSheet<void>(
+    return await showModalBottomSheet<ModalEditResult>(
       isScrollControlled: true,
       isDismissible: true,
       context: context,

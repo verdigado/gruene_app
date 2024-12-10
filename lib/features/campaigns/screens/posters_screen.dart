@@ -4,15 +4,19 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/screens/my_poster_list_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_detail.dart';
 import 'package:gruene_app/features/campaigns/screens/poster_edit.dart';
+import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
+import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/map.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
@@ -63,7 +67,29 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       children: [
         FilterChipCampaign(postersFilter, <String, List<String>>{}),
         Expanded(
-          child: mapContainer,
+          child: Stack(
+            children: [
+              mapContainer,
+              Positioned(
+                bottom: 20,
+                left: 20,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: ThemeColors.background,
+                    foregroundColor: ThemeColors.textDisabled,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                      side: BorderSide(
+                        color: ThemeColors.textDisabled,
+                      ),
+                    ),
+                  ),
+                  onPressed: showMyPosters,
+                  child: Text(t.campaigns.posters.my_posters_action),
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -102,29 +128,55 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
     };
   }
 
-  void _onFeatureClick(dynamic rawFeature) async {
-    getPoi(String poiId) async {
-      final poster = await campaignService.getPoiAsPosterDetail(poiId);
-      return poster;
-    }
+  Future<PosterDetailModel> _getPoi(String poiId) async {
+    final poster = await campaignService.getPoiAsPosterDetail(poiId);
+    return poster;
+  }
 
-    getPoiDetail(PosterDetailModel poster) {
+  Widget _getEditPosterWidget(PosterDetailModel poster) {
+    return PosterEdit(poster: poster, onSave: _savePoster, onDelete: deletePoi);
+  }
+
+  void _onFeatureClick(dynamic rawFeature) async {
+    getPoiDetailWidget(PosterDetailModel poster) {
       return PosterDetail(
         poi: poster,
       );
     }
 
-    getEditPosterWidget(PosterDetailModel poster) {
-      return PosterEdit(poster: poster, onSave: _savePoster, onDelete: deletePoi);
-    }
-
-    super.onFeatureClick<PosterDetailModel>(rawFeature, getPoi, getPoiDetail, getEditPosterWidget);
+    super.onFeatureClick<PosterDetailModel>(rawFeature, _getPoi, getPoiDetailWidget, _getEditPosterWidget);
   }
 
   void _onNoFeatureClick() {}
 
-  void _savePoster(PosterUpdateModel posterUpdate) async {
+  Future<void> _savePoster(PosterUpdateModel posterUpdate) async {
     final updatedMarker = await campaignService.updatePoster(posterUpdate);
     mapController.setMarkerSource([updatedMarker]);
+  }
+
+  void showMyPosters() async {
+    final theme = Theme.of(context);
+
+    final myPosters = await campaignService.getMyPosters();
+    myPosters.sort((b, a) => a.createdAt.compareTo(b.createdAt));
+
+    var navState = getNavState();
+    // ignore: unused_local_variable
+    final result = await navState.push(
+      AppRoute<void>(
+        builder: (context) {
+          return ContentPage(
+            contentBackgroundColor: theme.colorScheme.surfaceDim,
+            title: getCurrentRoute().name ?? '',
+            child: MyPosterListScreen(
+              myPosters: myPosters,
+              getPoi: _getPoi,
+              getPoiEdit: _getEditPosterWidget,
+              reloadPosterListItem: (id) => campaignService.getPoiAsPosterListItem(id),
+            ),
+          );
+        },
+      ),
+    );
   }
 }

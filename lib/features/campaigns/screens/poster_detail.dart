@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
@@ -12,8 +13,6 @@ class PosterDetail extends StatefulWidget {
 }
 
 class PosterDetailState extends State<PosterDetail> {
-  static const dummyAsset = 'assets/splash/logo_android12.png';
-
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -25,10 +24,13 @@ class PosterDetailState extends State<PosterDetail> {
             future: Future.delayed(Duration.zero, () => widget.poi.thumbnailUrl),
             builder: (context, snapshot) {
               if (!snapshot.hasData && !snapshot.hasError) {
-                return Image.asset(dummyAsset);
+                return Image.asset(CampaignConstants.dummyImageAssetName);
               }
 
-              return FadeInImage.assetNetwork(placeholder: dummyAsset, image: snapshot.data!);
+              return FadeInImage.assetNetwork(
+                placeholder: CampaignConstants.dummyImageAssetName,
+                image: snapshot.data!,
+              );
             },
           ),
         ),
