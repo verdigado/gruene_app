@@ -13,16 +13,10 @@ import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/map.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
-import 'package:maplibre_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 class FlyerScreen extends StatefulWidget {
-  FlyerScreen({super.key});
-
-  final List<FilterChipModel> flyerFilter = [
-    FilterChipModel(t.campaigns.filters.visited_areas, false),
-    FilterChipModel(t.campaigns.filters.routes, false),
-    FilterChipModel(t.campaigns.filters.experience_areas, false),
-  ];
+  const FlyerScreen({super.key});
 
   @override
   State<FlyerScreen> createState() => _FlyerScreenState();
@@ -30,6 +24,21 @@ class FlyerScreen extends StatefulWidget {
 
 class _FlyerScreenState extends MapConsumer<FlyerScreen> {
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.flyer);
+
+  final List<FilterChipModel> flyerFilter = [
+    FilterChipModel(
+      text: t.campaigns.filters.visited_areas,
+      isEnabled: false,
+    ),
+    FilterChipModel(
+      text: t.campaigns.filters.routes,
+      isEnabled: false,
+    ),
+    FilterChipModel(
+      text: t.campaigns.filters.experience_areas,
+      isEnabled: false,
+    ),
+  ];
 
   _FlyerScreenState() : super(NominatimService());
 
@@ -46,7 +55,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
 
     return Column(
       children: [
-        FilterChipCampaign(widget.flyerFilter, <String, List<String>>{}),
+        FilterChipCampaign(flyerFilter, <String, List<String>>{}),
         Expanded(
           child: mapContainer,
         ),

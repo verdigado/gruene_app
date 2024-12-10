@@ -19,13 +19,7 @@ import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 class PostersScreen extends StatefulWidget {
-  PostersScreen({super.key});
-
-  final List<FilterChipModel> postersFilter = [
-    FilterChipModel(t.campaigns.filters.routes, false),
-    FilterChipModel(t.campaigns.filters.polling_stations, false),
-    FilterChipModel(t.campaigns.filters.experience_areas, false),
-  ];
+  const PostersScreen({super.key});
 
   @override
   State<StatefulWidget> createState() => _PostersScreenState();
@@ -33,6 +27,21 @@ class PostersScreen extends StatefulWidget {
 
 class _PostersScreenState extends MapConsumer<PostersScreen> {
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.poster);
+
+  final List<FilterChipModel> postersFilter = [
+    FilterChipModel(
+      text: t.campaigns.filters.routes,
+      isEnabled: false,
+    ),
+    FilterChipModel(
+      text: t.campaigns.filters.polling_stations,
+      isEnabled: false,
+    ),
+    FilterChipModel(
+      text: t.campaigns.filters.experience_areas,
+      isEnabled: false,
+    ),
+  ];
 
   _PostersScreenState() : super(NominatimService());
 
@@ -52,7 +61,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
 
     return Column(
       children: [
-        FilterChipCampaign(widget.postersFilter, <String, List<String>>{}),
+        FilterChipCampaign(postersFilter, <String, List<String>>{}),
         Expanded(
           child: mapContainer,
         ),

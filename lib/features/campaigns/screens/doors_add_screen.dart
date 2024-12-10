@@ -6,7 +6,7 @@ import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
-import 'package:maplibre_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 class DoorsAddScreen extends StatefulWidget {
   final LatLng location;

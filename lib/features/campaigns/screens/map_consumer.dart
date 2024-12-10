@@ -75,9 +75,11 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
   NavigatorState _getNavState() => Navigator.of(context, rootNavigator: true);
 
-  void loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
-    final markerItems = await campaignService.loadPoisInRegion(locationSW, locationNE);
-    mapController.setMarkerSource(markerItems);
+  Future<void> loadVisibleItems(LatLng locationSW, LatLng locationNE) async {
+    if (mapController.getCurrentZoomLevel() > mapController.minimumMarkerZoomLevel) {
+      final markerItems = await campaignService.loadPoisInRegion(locationSW, locationNE);
+      mapController.setMarkerSource(markerItems);
+    }
   }
 
   void onFeatureClick<U>(

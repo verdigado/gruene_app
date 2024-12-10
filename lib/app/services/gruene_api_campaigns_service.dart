@@ -1,7 +1,6 @@
 import 'dart:typed_data';
 
 import 'package:chopper/chopper.dart' as chopper;
-import 'package:flutter/material.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
@@ -11,6 +10,7 @@ import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dar
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
+import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
@@ -19,7 +19,7 @@ import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart';
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
-import 'package:maplibre_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 part 'gruene_api_core.dart';
 
@@ -34,16 +34,25 @@ class GrueneApiCampaignsService {
 
   Future<List<MarkerItemModel>> loadPoisInRegion(LatLng locationSW, LatLng locationNE) async {
     final getPoisType = poiType.transformToApiGetType();
+
     final getPoisResult = await grueneApi.v1CampaignsPoisGet(
       type: getPoisType,
-      bbox: [locationSW.latitude, locationSW.longitude, locationNE.latitude, locationNE.longitude].join(','),
+      bbox: locationSW.transformToGeoJsonBBoxString(locationNE),
     );
     return getPoisResult.body!.data.map((p) => p.transformToMarkerItem()).toList();
   }
 
+  Future<List<MapLayerModel>> loadFocusAreasInRegion(LatLng locationSW, LatLng locationNE) async {
+    var transformToGeoJsonBBoxString = locationSW.transformToGeoJsonBBoxString(locationNE);
+    final getPoisResult = await grueneApi.v1CampaignsFocusAreasGet(
+      bbox: transformToGeoJsonBBoxString,
+    );
+    return getPoisResult.body!.data.map((layerItem) => layerItem.transformToMapLayer()).toList();
+  }
+
   Future<MarkerItemModel> createNewPoster(PosterCreateModel newPoster) async {
     final requestParam = CreatePoi(
-      coords: [newPoster.location.latitude, newPoster.location.longitude],
+      coords: newPoster.location.transformToGeoJsonCoords(),
       type: poiType.transformToApiCreateType(),
       address: newPoster.address.transformToPoiAddress(),
     );
@@ -62,7 +71,7 @@ class GrueneApiCampaignsService {
 
   Future<MarkerItemModel> createNewDoor(DoorCreateModel newDoor) async {
     final requestParam = CreatePoi(
-      coords: [newDoor.location.latitude, newDoor.location.longitude],
+      coords: newDoor.location.transformToGeoJsonCoords(),
       type: poiType.transformToApiCreateType(),
       address: newDoor.address.transformToPoiAddress(),
       house: PoiHouse(
@@ -78,7 +87,7 @@ class GrueneApiCampaignsService {
 
   Future<MarkerItemModel> createNewFlyer(FlyerCreateModel newFlyer) async {
     final requestParam = CreatePoi(
-      coords: [newFlyer.location.latitude, newFlyer.location.longitude],
+      coords: newFlyer.location.transformToGeoJsonCoords(),
       type: poiType.transformToApiCreateType(),
       address: newFlyer.address.transformToPoiAddress(),
       flyerSpot: PoiFlyerSpot(
@@ -116,13 +125,14 @@ class GrueneApiCampaignsService {
   Future<MarkerItemModel> updatePoster(PosterUpdateModel posterUpdate) async {
     var dtoUpdate = UpdatePoi(
       address: posterUpdate.address.transformToPoiAddress(),
-      poster: PoiPoster(status: posterUpdate.status.transformToPoiPosterStatus(), comment: posterUpdate.comment),
+      poster: PoiPoster(
+        status: posterUpdate.status.transformToPoiPosterStatus(),
+        comment: posterUpdate.comment,
+      ),
     );
-    // ignore: unused_local_variable
     var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: posterUpdate.id, body: dtoUpdate);
 
     if (posterUpdate.newPhoto != null || posterUpdate.removePreviousPhotos) {
-      debugPrint(updatePoiResponse.body!.photos.length.toString());
       for (var photo in updatePoiResponse.body!.photos) {
         updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPhotoIdDelete(
           poiId: posterUpdate.id,
