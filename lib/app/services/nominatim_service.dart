@@ -7,7 +7,7 @@ class NominatimService {
       lat: location.latitude,
       lon: location.longitude,
     );
-    final address = AddressModel.convertFromPlace(place);
+    final address = AddressModel.fromPlace(place);
     return address;
   }
 }
@@ -20,12 +20,9 @@ class AddressModel {
 
   const AddressModel({this.street = '', this.houseNumber = '', this.zipCode = '', this.city = ''});
 
-  static AddressModel convertFromPlace(Place place) {
-    return AddressModel(
-      street: place.address?['road']?.toString() ?? '',
-      houseNumber: place.address?['house_number']?.toString() ?? '',
-      zipCode: place.address?['postcode']?.toString() ?? '',
-      city: place.address?['city']?.toString() ?? '',
-    );
-  }
+  AddressModel.fromPlace(Place place)
+      : street = place.address?['road']?.toString() ?? '',
+        houseNumber = place.address?['house_number']?.toString() ?? '',
+        zipCode = place.address?['postcode']?.toString() ?? '',
+        city = place.address?['city']?.toString() ?? '';
 }

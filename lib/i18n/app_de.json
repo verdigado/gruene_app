@@ -14,6 +14,7 @@
   "campaigns": {
     "campaigns": "Wahlkampf",
     "label": "Wahlkampf",
+    "info_details": "Infos & Bearbeiten",
     "filters": {
       "focusAreas": "Fokusgebiete",
       "routes": "Routen",
@@ -22,11 +23,9 @@
       "experience_areas": "Erfahrungsgebiete"
     },
     "posters": {
-      
       "label": "Plakate",
       "addPoster": "Plakat eintragen",
       "editPoster": "Plakat bearbeiten",
-      "info_details": "Infos & Bearbeiten",
       "delete_photo": "Foto löschen",
       "replace_photo": "Foto ersetzen",
       "status": {
@@ -72,9 +71,9 @@
       "noFlyerWarning": "Bitte geben Sie mindestens einen Flyer ein!"
     },
     "deleteEntry": {
-        "label": "Eintrag löschen",
-        "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
-      },
+      "label": "Eintrag löschen",
+      "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+    },
     "team": {
       "label": "Team"
     },

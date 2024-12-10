@@ -1,19 +1,15 @@
+import 'package:gruene_app/app/services/nominatim_service.dart';
+
 class DoorDetailModel {
   String id;
 
-  final String street;
-  final String houseNumber;
-  final String zipCode;
-  final String city;
+  final AddressModel address;
   final int openedDoors;
   final int closedDoors;
 
   DoorDetailModel({
     required this.id,
-    required this.street,
-    required this.houseNumber,
-    required this.zipCode,
-    required this.city,
+    required this.address,
     required this.openedDoors,
     required this.closedDoors,
   });

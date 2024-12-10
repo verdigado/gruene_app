@@ -70,7 +70,7 @@ class DoorsDetail extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(vertical: 4),
             child: Text(
-              t.campaigns.posters.info_details,
+              t.campaigns.info_details,
               style: theme.textTheme.labelSmall?.apply(color: Colors.black, fontWeightDelta: 2),
             ),
           ),

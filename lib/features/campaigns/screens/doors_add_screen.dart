@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
@@ -17,7 +18,7 @@ class DoorsAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => DoorsAddScreenState();
 }
 
-class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin, DoorValidator {
+class DoorsAddScreenState extends State<DoorsAddScreen> with AddressExtension, DoorValidator {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -127,55 +128,5 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressMixin, DoorV
         closedDoors: validationResult.closedDoors,
       ),
     );
-  }
-}
-
-mixin DoorValidator {
-  ({int closedDoors, int openedDoors})? validateDoors(
-    String openedDoorsRawValue,
-    String closedDoorsRawValue,
-    BuildContext context,
-  ) {
-    final openedDoors = int.tryParse(openedDoorsRawValue) ?? 0;
-    final closedDoors = int.tryParse(closedDoorsRawValue) ?? 0;
-    if (openedDoors + closedDoors == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.campaigns.door.noDoorsWarning),
-        ),
-      );
-      return null;
-    }
-    return (closedDoors: closedDoors, openedDoors: openedDoors);
-  }
-}
-
-mixin AddressMixin {
-  abstract TextEditingController streetTextController;
-  abstract TextEditingController houseNumberTextController;
-  abstract TextEditingController zipCodeTextController;
-  abstract TextEditingController cityTextController;
-
-  void disposeAddressTextControllers() {
-    streetTextController.dispose();
-    houseNumberTextController.dispose();
-    zipCodeTextController.dispose();
-    cityTextController.dispose();
-  }
-
-  AddressModel getAddress() {
-    return AddressModel(
-      street: streetTextController.text,
-      houseNumber: houseNumberTextController.text,
-      zipCode: zipCodeTextController.text,
-      city: cityTextController.text,
-    );
-  }
-
-  void setAddress(AddressModel address) {
-    streetTextController.text = address.street;
-    houseNumberTextController.text = address.houseNumber;
-    zipCodeTextController.text = address.zipCode;
-    cityTextController.text = address.city;
   }
 }

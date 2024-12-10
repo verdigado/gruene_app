@@ -6,9 +6,8 @@ import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/poster_status.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
-import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
-import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
@@ -35,7 +34,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelete {
+class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -60,10 +59,7 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelet
 
   @override
   void initState() {
-    streetTextController.text = widget.poster.street;
-    houseNumberTextController.text = widget.poster.houseNumber;
-    zipCodeTextController.text = widget.poster.zipCode;
-    cityTextController.text = widget.poster.city;
+    setAddress(widget.poster.address);
     commentTextController.text = widget.poster.comment;
     if (widget.poster.status != PosterStatus.ok) _segmentedButtonSelection = {widget.poster.status};
 
@@ -307,10 +303,7 @@ class _PosterEditState extends State<PosterEdit> with AddressMixin, ConfirmDelet
 
     final updateModel = PosterUpdateModel(
       id: widget.poster.id,
-      street: streetTextController.text,
-      housenumber: houseNumberTextController.text,
-      zipCode: zipCodeTextController.text,
-      city: cityTextController.text,
+      address: getAddress(),
       status: _segmentedButtonSelection.isEmpty ? PosterStatus.ok : _segmentedButtonSelection.single,
       comment: commentTextController.text,
       removePreviousPhotos: _isPhotoDeleted,

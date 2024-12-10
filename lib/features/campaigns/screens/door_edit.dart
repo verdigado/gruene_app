@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
-import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
@@ -28,7 +28,7 @@ class DoorEdit extends StatefulWidget {
   State<DoorEdit> createState() => _DoorEditState();
 }
 
-class _DoorEditState extends State<DoorEdit> with AddressMixin, DoorValidator, ConfirmDelete {
+class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidator, ConfirmDelete {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -50,10 +50,10 @@ class _DoorEditState extends State<DoorEdit> with AddressMixin, DoorValidator, C
 
   @override
   void initState() {
-    streetTextController.text = widget.door.street;
-    houseNumberTextController.text = widget.door.houseNumber;
-    zipCodeTextController.text = widget.door.zipCode;
-    cityTextController.text = widget.door.city;
+    streetTextController.text = widget.door.address.street;
+    houseNumberTextController.text = widget.door.address.houseNumber;
+    zipCodeTextController.text = widget.door.address.zipCode;
+    cityTextController.text = widget.door.address.city;
     openedDoorTextController.text = widget.door.openedDoors.toString();
     closedDoorTextController.text = widget.door.closedDoors.toString();
     super.initState();
@@ -146,57 +146,5 @@ class _DoorEditState extends State<DoorEdit> with AddressMixin, DoorValidator, C
     );
     widget.onSave(updateModel);
     _closeDialog();
-  }
-}
-
-mixin ConfirmDelete {
-  void confirmDelete(BuildContext context, void Function() onDeletePressed) async {
-    final theme = Theme.of(context);
-    final shouldDelete = await showDialog<bool>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          backgroundColor: ThemeColors.alertBackground,
-          title: Center(
-            child: Text(
-              '${t.campaigns.deleteEntry.label}?',
-              style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
-            ),
-          ),
-          content: Text(
-            t.campaigns.deleteEntry.confirmation_dialog,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.labelMedium?.apply(
-              color: theme.colorScheme.surface,
-              fontSizeDelta: 1,
-            ),
-          ),
-          actionsAlignment: MainAxisAlignment.spaceBetween,
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.maybePop(context, false),
-              child: Text(
-                t.common.actions.cancel,
-                style: theme.textTheme.labelLarge?.apply(color: ThemeColors.textCancel),
-              ),
-            ),
-            TextButton(
-              onPressed: () => Navigator.maybePop(context, true),
-              child: Text(
-                t.common.actions.delete,
-                style: theme.textTheme.labelLarge?.apply(
-                  color: ThemeColors.textWarning,
-                  fontWeightDelta: 2,
-                ),
-              ),
-            ),
-          ],
-        );
-      },
-    );
-    if (shouldDelete ?? false) {
-      onDeletePressed();
-    }
   }
 }
