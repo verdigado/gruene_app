@@ -1,5 +1,5 @@
 import 'package:gruene_app/app/services/nominatim_service.dart';
-import 'package:maplibre_gl_platform_interface/maplibre_gl_platform_interface.dart';
+import 'package:maplibre_gl/maplibre_gl.dart';
 
 class FlyerCreateModel {
   final LatLng location;

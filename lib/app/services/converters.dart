@@ -2,10 +2,12 @@ import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:turf/transform.dart';
 
 extension PoiTypeParsing on PoiType {
   PoiServiceType transformToPoiServiceType() {
@@ -19,6 +21,34 @@ extension PoiTypeParsing on PoiType {
       case PoiType.swaggerGeneratedUnknown:
         throw UnimplementedError();
     }
+  }
+}
+
+extension LatLngParsing on LatLng {
+  String toLngLatString() {
+    return transformToGeoJsonCoords().join(',');
+  }
+
+  List<double> transformToGeoJsonCoords() {
+    return [longitude, latitude];
+  }
+
+  List<double> transformToGeoJsonBBox(LatLng northEast) {
+    final southWest = this;
+    final coords = southWest.transformToGeoJsonCoords();
+    coords.addAll(northEast.transformToGeoJsonCoords());
+    return coords;
+  }
+
+  String transformToGeoJsonBBoxString(LatLng northEast) {
+    return transformToGeoJsonBBox(northEast).join(',');
+  }
+}
+
+extension LatLngParsingExtended on List<double> {
+  LatLng transformToLatLng() {
+    if (length != 2) throw ArgumentError('coordinates should contain 2 items');
+    return LatLng(this[1], this[0]);
   }
 }
 
@@ -100,7 +130,7 @@ extension PoiParsing on Poi {
     if (poi.poster != null) statusSuffix = '_${poi.poster!.status.name}';
     return MarkerItemModel(
       id: int.parse(poi.id),
-      location: LatLng(poi.coords[0], poi.coords[1]),
+      location: poi.coords.transformToLatLng(),
       status: '${poi.type.transformToPoiServiceType().name}$statusSuffix',
     );
   }
@@ -161,5 +191,18 @@ extension PoiParsing on Poi {
 
     final image = poi.photos.map((x) => x.original).first;
     return image.url;
+  }
+}
+
+extension FocusAreaParsing on FocusArea {
+  MapLayerModel transformToMapLayer() {
+    toPosition(List<double?>? point) => Position(
+          point![0]!,
+          point[1]!,
+        );
+    toPositionList(List<List<double?>?> points) => points.map(toPosition).toList();
+
+    var coordList = polygon.coordinates.map(toPositionList).toList();
+    return MapLayerModel(id: id, coords: coordList);
   }
 }

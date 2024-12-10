@@ -5,9 +5,12 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
+import 'package:gruene_app/features/campaigns/helper/map_layer_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/util.dart';
+import 'package:gruene_app/features/campaigns/models/bounding_box.dart';
+import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -15,18 +18,22 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 typedef OnMapCreatedCallback = void Function(MapController controller);
 typedef AddPOIClickedCallback = void Function(LatLng location);
 typedef LoadVisibleItemsCallBack = void Function(LatLng locationSW, LatLng locationNE);
+typedef LoadDataLayersCallBack = void Function(LatLng locationSW, LatLng locationNE);
 typedef GetMarkerImagesCallback = Map<String, String> Function();
 typedef OnFeatureClickCallback = void Function(dynamic feature);
 typedef OnNoFeatureClickCallback = void Function();
 typedef OnEditItemClickedCallback = void Function();
+typedef AddMapLayersForContextCallback = void Function(MapLibreMapController mapLibreController);
 
 class MapContainer extends StatefulWidget {
   final OnMapCreatedCallback? onMapCreated;
   final AddPOIClickedCallback? addPOIClicked;
   final LoadVisibleItemsCallBack? loadVisibleItems;
+  final LoadDataLayersCallBack? loadDataLayers;
   final GetMarkerImagesCallback? getMarkerImages;
   final OnFeatureClickCallback? onFeatureClick;
   final OnNoFeatureClickCallback? onNoFeatureClick;
+  final AddMapLayersForContextCallback? addMapLayersForContext;
 
   const MapContainer({
     super.key,
@@ -36,6 +43,8 @@ class MapContainer extends StatefulWidget {
     required this.getMarkerImages,
     required this.onFeatureClick,
     required this.onNoFeatureClick,
+    this.loadDataLayers,
+    this.addMapLayersForContext,
   });
 
   @override
@@ -45,11 +54,13 @@ class MapContainer extends StatefulWidget {
 class _MapContainerState extends State<MapContainer> implements MapController {
   MapLibreMapController? _controller;
   final MarkerItemManager _markerItemManager = MarkerItemManager();
+  final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
   bool _isMapInitialized = false;
 
   static const markerSourceName = 'markers';
   static const markerLayerName = 'markerSymbols';
   static const addMarkerAssetName = 'assets/symbols/add_marker.svg';
+  static const minZoomMarkerItems = 12.0;
 
   List<Widget> popups = [];
 
@@ -104,6 +115,23 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     if (onMapCreated != null) {
       onMapCreated(this);
     }
+
+    _loadDataOnMap();
+  }
+
+  void _loadDataOnMap() async {
+    final visRegion = await _controller?.getVisibleRegion();
+    debugPrint('Bounding Box: SW-${visRegion!.southwest} NE-${visRegion.northeast}');
+    debugPrint('Zoom level: ${_controller!.cameraPosition!.zoom}');
+
+    final loadVisibleItems = widget.loadVisibleItems;
+    if (loadVisibleItems != null) {
+      loadVisibleItems(visRegion.southwest, visRegion.northeast);
+    }
+    final loadDataLayers = widget.loadDataLayers;
+    if (loadDataLayers != null) {
+      loadDataLayers(visRegion.southwest, visRegion.northeast);
+    }
   }
 
   void _onIconTap() {
@@ -149,9 +177,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   void _onCameraIdle() async {
     if (!_isMapInitialized) return;
-    final visRegion = await _controller?.getVisibleRegion();
 
-    widget.loadVisibleItems!(visRegion!.southwest, visRegion.northeast);
+    _loadDataOnMap();
   }
 
   void _onStyleLoadedCallback() async {
@@ -161,7 +188,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
       });
     }
 
-    _controller!.addGeoJsonSource(
+    await _controller!.addGeoJsonSource(
       markerSourceName,
       MarkerItemHelper.transformListToGeoJson(<MarkerItemModel>[]).toJson(),
     );
@@ -175,20 +202,57 @@ class _MapContainerState extends State<MapContainer> implements MapController {
         iconAllowOverlap: true,
       ),
       enableInteraction: false,
+      minzoom: minZoomMarkerItems,
       filter: [
         '!',
         ['has', 'point_count'],
       ],
     );
+    // init context layers re-directed to context screens
+    widget.addMapLayersForContext!(_controller!);
   }
 
   @override
   void setMarkerSource(List<MarkerItemModel> poiList) {
     _markerItemManager.addMarkers(poiList);
     _controller!.setGeoJsonSource(
-      'markers',
+      markerSourceName,
       MarkerItemHelper.transformListToGeoJson(_markerItemManager.getMarkers()).toJson(),
     );
+  }
+
+  @override
+  void setLayerSource(String sourceId, List<MapLayerModel> layerData) async {
+    _mapLayerManager.addLayerData(sourceId, layerData);
+    final sourceIds = await _controller!.getSourceIds();
+    Future<void> Function(Map<String, dynamic> data) setLayerData;
+    if (sourceIds.contains(sourceId)) {
+      setLayerData = (data) async {
+        await _controller!.setGeoJsonSource(
+          sourceId,
+          data,
+        );
+      };
+    } else {
+      setLayerData = (data) async {
+        await _controller!.addGeoJsonSource(
+          sourceId,
+          data,
+        );
+      };
+    }
+    final data = MarkerItemHelper.transformMapLayerDataToGeoJson(_mapLayerManager.getMapLayerData(sourceId)).toJson();
+    await setLayerData(data);
+  }
+
+  @override
+  void removeLayerSource(String sourceId) async {
+    /* 
+    * A bug prevents using correct method -> see https://github.com/maplibre/flutter-maplibre-gl/issues/526
+    * Therefore we set it as empty datasource. Once the issue has been corrected
+    */
+    // await _controller!.removeSource(sourceId);
+    await _controller!.setGeoJsonSource(sourceId, MarkerItemHelper.transformMapLayerDataToGeoJson([]).toJson());
   }
 
   @override
@@ -200,7 +264,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void removeMarkerItem(int markerItemId) {
     _markerItemManager.removeMarker(markerItemId);
     _controller!.setGeoJsonSource(
-      'markers',
+      markerSourceName,
       MarkerItemHelper.transformListToGeoJson(_markerItemManager.getMarkers()).toJson(),
     );
   }
@@ -335,33 +399,6 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     });
   }
 
-  // void doShowPopup(Point<num> point, Widget widget) {
-  //   final mediaQuery = MediaQuery.of(context);
-
-  //   // var arrowDxOffset = (point.x / pixelRatio) - (popupWidth / 2);
-  //   final pixelRatio = mediaQuery.devicePixelRatio;
-  //   var arrowDxOffset = (point.x / pixelRatio) - (mediaQuery.size.width / 2);
-  //   var arrowDyOffset = (point.y / pixelRatio) - 10;
-  //   final contentDxOffset = arrowDxOffset < 100 && arrowDxOffset > 0 ? -50.0 : 0.0;
-  //   debugPrint('Point: $point');
-  //   debugPrint('width: ${mediaQuery.size.width}');
-  //   debugPrint('pixelRatio: $pixelRatio');
-  //   debugPrint('arrowDxOffset: $arrowDxOffset');
-  //   debugPrint('arrowDyOffset: $arrowDyOffset');
-  //   debugPrint('contentDxOffset: $contentDxOffset');
-  //   showPopover(
-  //     context: context,
-  //     arrowHeight: 15,
-  //     arrowWidth: 30,
-  //     direction: PopoverDirection.top,
-  //     contentDxOffset: contentDxOffset,
-  //     arrowDyOffset: arrowDyOffset,
-  //     arrowDxOffset: arrowDxOffset,
-  //     barrierColor: Colors.transparent,
-  //     bodyBuilder: (context) => widget,
-  //   );
-  // }
-
   void onTapPopup(OnEditItemClickedCallback? onEditItemClicked) {
     if (onEditItemClicked == null) return;
     setState(() {
@@ -369,6 +406,20 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     });
     onEditItemClicked();
   }
+
+  @override
+  Future<BoundingBox> getCurrentBoundingBox() async {
+    final visRegion = await _controller?.getVisibleRegion();
+    return BoundingBox(southwest: visRegion!.southwest, northeast: visRegion.northeast);
+  }
+
+  @override
+  double getCurrentZoomLevel() {
+    return _controller!.cameraPosition!.zoom;
+  }
+
+  @override
+  double get minimumMarkerZoomLevel => minZoomMarkerItems;
 }
 
 class MyTriangle extends CustomClipper<Path> {
@@ -377,9 +428,6 @@ class MyTriangle extends CustomClipper<Path> {
     Path path = Path();
     path.addPolygon(
       [
-        // Offset(0, size.height),
-        // Offset(size.width / 2, 0),
-        // Offset(size.width, size.height),
         Offset(0, 0),
         Offset(size.width / 2, size.height),
         Offset(size.width, 0),

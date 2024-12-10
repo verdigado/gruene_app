@@ -1,4 +1,5 @@
 import 'dart:math' as math;
+import 'package:gruene_app/app/services/converters.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 import 'package:tuple/tuple.dart';
 
@@ -6,10 +7,8 @@ class MapHelper {
   static LatLng extractLatLngFromFeature(dynamic rawFeature) {
     final feature = rawFeature as Map<String, dynamic>;
     final geometry = feature['geometry'] as Map<String, dynamic>;
-    final coordinates = geometry['coordinates'] as List<dynamic>;
-    final latitude = coordinates[1] as double;
-    final longitude = coordinates[0] as double;
-    return LatLng(latitude, longitude);
+    final coordinates = geometry['coordinates'] as List<double>;
+    return coordinates.transformToLatLng();
   }
 
   static dynamic getClosestFeature(List<dynamic> features, LatLng target) {

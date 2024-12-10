@@ -1110,6 +1110,137 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/campaigns/focus-areas:
+    post:
+      operationId: createFocusArea
+      summary: Create a new FocusArea
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateFocusArea'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FocusArea'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findFocusAreas
+      summary: Find FocusAreas
+      parameters:
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: '-74.006,40.7128,-73.935242,40.789142'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindFocusAreasResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/focus-areas/{focusAreaId}:
+    get:
+      operationId: getFocusArea
+      summary: Get a FocusArea
+      parameters:
+        - name: focusAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FocusArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updateFocusArea
+      summary: Update a FocusArea
+      parameters:
+        - name: focusAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateFocusArea'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FocusArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteFocusArea
+      summary: Delete a FocusArea
+      parameters:
+        - name: focusAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FocusArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /health:
     get:
       tags:
@@ -2588,6 +2719,86 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Poi'
+      required:
+        - data
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the polygon
+          example: Polygon
+          default: Polygon
+        coordinates:
+          type: array
+          items:
+            name: coordinates
+            type: array
+            items:
+              required: true
+              description: |-
+                Coordinates of the polygon
+                Must follow the GeoJSON standard
+              type: array
+              items:
+                type: number
+      required:
+        - type
+        - coordinates
+    UpdateFocusArea:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - description
+        - polygon
+    CreateFocusArea:
+      type: object
+      properties:
+        key:
+          type: string
+        description:
+          type: string
+          nullable: true
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - key
+        - description
+        - polygon
+    FocusArea:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        key:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        description:
+          type: string
+          nullable: true
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - id
+        - key
+        - createdAt
+        - description
+        - polygon
+    FindFocusAreasResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/FocusArea'
       required:
         - data
     HealthCheckResponse:
