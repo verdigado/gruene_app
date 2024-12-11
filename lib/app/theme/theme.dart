@@ -18,17 +18,17 @@ class ThemeColors {
   // Softer Grey (#F9FAFB)
   static const Color backgroundSecondary = Color(0xFFF9FAFB);
 
-  // Black (#000000)
-  static const Color text = Color(0xFF000000);
-
   // Dark Grey (#343433)
-  static const Color textAccent = Color(0xFF343433);
-
-  // Middle Grey (#9CABAF)
-  static const Color textDisabled = Color(0xFF9CABAF);
+  static const Color text = Color(0xFF343433);
 
   // Light Grey (#CCE7D7)
   static const Color textLight = Color(0xFFCCE7D7);
+
+  // Black (#000000)
+  static const Color textDark = Color(0xFF000000);
+
+  // Middle Grey (#9CABAF)
+  static const Color textDisabled = Color(0xFF9CABAF);
 
   static const Color textWarning = Color(0xFFCB4040);
 
@@ -61,6 +61,7 @@ class _ThemeTextStyles {
     ),
   );
   static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21, letterSpacing: 0.02);
+  static TextStyle titleSmall = titleMedium.copyWith(fontSize: 16, letterSpacing: 0.01);
 
   static TextStyle bodyMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
@@ -145,6 +146,7 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     displayMedium: _ThemeTextStyles.displayMedium,
     titleLarge: _ThemeTextStyles.titleLarge,
     titleMedium: _ThemeTextStyles.titleMedium,
+    titleSmall: _ThemeTextStyles.titleSmall,
     bodyLarge: _ThemeTextStyles.bodyLarge,
     bodyMedium: _ThemeTextStyles.bodyMedium,
     labelLarge: _ThemeTextStyles.labelLarge,

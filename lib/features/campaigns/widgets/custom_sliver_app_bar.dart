@@ -25,7 +25,7 @@ class CustomSliverAppBar extends StatelessWidget {
             path: 'assets/icons/settings.svg',
             color: ThemeColors.background,
           ),
-          onPressed: () => context.push(Routes.settings),
+          onPressed: () => context.push(Routes.settings.path),
         ),
       ],
       pinned: true,

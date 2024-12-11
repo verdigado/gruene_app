@@ -103,7 +103,13 @@
     "generalSettings": "App",
     "pushNotifications": "Push Nachrichten",
     "accessibility": "Barrierefreiheit",
-    "supportAndFeedback": "Support & Feedback",
+    "support": {
+      "support": "Support & Feedback",
+      "contacts": "Kontakte für Support & Feedback zur App",
+      "generalFeedback": "Allgemeines Feedback",
+      "campaignSupport": "Support Wahlkampf-Bereich",
+      "otherSupport": "Support andere Bereiche"
+    },
     "actionNetwork": "Action Network",
     "newsletter": "Newsletter",
     "legalSettings": "Rechtliches",

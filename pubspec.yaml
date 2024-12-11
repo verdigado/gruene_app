@@ -35,12 +35,13 @@ dependencies:
   jwt_decoder: ^2.0.1
   flutter_native_splash: ^2.4.2
   webview_flutter: ^4.10.0
+  url_launcher: ^6.3.1
   maplibre_gl: ^0.20.0
   maplibre_gl_platform_interface: ^0.20.0
 #--------- swagger_dart_code_generator --------------
   chopper: ^8.0.0
   json_annotation: ^4.8.0
-#---------------------------------------------------- 
+#----------------------------------------------------
   http: ^1.2.2
   turf: ^0.0.10
   camerawesome: ^2.1.0
@@ -63,7 +64,7 @@ dev_dependencies:
   chopper_generator: ^8.0.0
   json_serializable: ^6.6.1
   swagger_dart_code_generator: ^3.0.1
-#---------------------------------------------------- 
+#----------------------------------------------------
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec

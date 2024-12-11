@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/constants/config.dart';
+import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/utils/open_inappbrowser.dart';
@@ -26,7 +28,10 @@ class SettingsScreen extends StatelessWidget {
         SectionTitle(title: t.settings.generalSettings),
         SettingsItem(title: t.settings.pushNotifications, onPress: () => {}),
         SettingsItem(title: t.settings.accessibility, onPress: () => {}),
-        SettingsItem(title: t.settings.supportAndFeedback, onPress: () => {}),
+        SettingsItem(
+          title: t.settings.support.support,
+          onPress: () => context.pushNamed(Routes.support.name!),
+        ),
         SettingsItem(
           title: t.settings.actionNetwork,
           onPress: () => {},

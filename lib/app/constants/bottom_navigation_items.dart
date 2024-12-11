@@ -18,26 +18,26 @@ final List<BottomNavigationItem> bottomNavigationItems = [
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/news.svg',
     getLabel: (BuildContext context) => t.news.label,
-    route: Routes.news,
+    route: Routes.news.path,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/campaigns.svg',
     getLabel: (BuildContext context) => t.campaigns.label,
-    route: Routes.campaigns,
+    route: Routes.campaigns.path,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/profiles.svg',
     getLabel: (BuildContext context) => t.profiles.label,
-    route: Routes.profiles,
+    route: Routes.profiles.path,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/mfa.svg',
     getLabel: (BuildContext context) => t.mfa.label,
-    route: Routes.mfa,
+    route: Routes.mfa.path,
   ),
   BottomNavigationItem(
     iconPath: 'assets/bottom_navigation/tools.svg',
     getLabel: (BuildContext context) => t.tools.label,
-    route: Routes.tools,
+    route: Routes.tools.path,
   ),
 ];
