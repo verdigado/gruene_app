@@ -20,7 +20,7 @@ class AuthRepository {
           Config.oidcClientId,
           Config.oidcCallbackPath,
           issuer: Config.oidcIssuer,
-          scopes: ['openid', 'profile', 'email'],
+          scopes: ['openid', 'profile', 'email', 'offline_access'],
         ),
       );
 

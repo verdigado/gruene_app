@@ -1,6 +1,9 @@
-import 'dart:typed_data';
+import 'dart:async';
+import 'dart:io';
 
 import 'package:chopper/chopper.dart' as chopper;
+import 'package:flutter/foundation.dart';
+import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
@@ -16,7 +19,7 @@ import 'package:gruene_app/features/campaigns/models/posters/poster_create_model
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
-import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -29,7 +32,7 @@ class GrueneApiCampaignsService {
   final PoiServiceType poiType;
 
   GrueneApiCampaignsService({required this.poiType}) {
-    grueneApi = _GrueneApiCore().getService();
+    grueneApi = _GrueneApiCore().service;
   }
 
   Future<List<MarkerItemModel>> loadPoisInRegion(LatLng locationSW, LatLng locationNE) async {
@@ -39,6 +42,8 @@ class GrueneApiCampaignsService {
       type: getPoisType,
       bbox: locationSW.transformToGeoJsonBBoxString(locationNE),
     );
+    if (getPoisResult.error != null) debugPrint(getPoisResult.error!.toString());
+
     return getPoisResult.body!.data.map((p) => p.transformToMarkerItem()).toList();
   }
 
@@ -177,7 +182,7 @@ class GrueneApiCampaignsService {
     // ignore: unused_local_variable
     final savePoiPhotoResponse = await grueneApi.v1CampaignsPoisPoiIdPhotosPost(
       poiId: poiId,
-      image: MultipartFile.fromBytes(
+      image: http.MultipartFile.fromBytes(
         'image',
         photo,
         filename: 'poi_${poiId}_$timeStamp.jpg',
