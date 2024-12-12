@@ -3,11 +3,11 @@
 <plist version="1.0">
 <dict>
     <key>NSCameraUsageDescription</key>
-    <string>Taking pictures while creating new POIs</string>
+    <string>Wir benötigen Zugriff auf deine Kamera, um Bilder von Flyern und Plakaten aufzunehmen.</string>
     <key>NSMicrophoneUsageDescription</key>
-    <string>To enable microphone access when recording video - NOT USED</string>
+    <string>Wir benötigen Zugriff auf dein Mikrofon, um Ton für Videos aufzunehmen. - NOT USED</string>
     <key>NSLocationWhenInUseUsageDescription</key>
-    <string>Determine your location when opening a map.</string>
+    <string>Wir benötigen Zugriff auf deinen Standort, um deine Position auf der Karte anzuzeigen.</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
