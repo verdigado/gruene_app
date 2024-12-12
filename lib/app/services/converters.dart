@@ -6,6 +6,8 @@ import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
+import 'package:gruene_app/features/campaigns/widgets/enhanced_wheel_slider.dart';
+import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:intl/intl.dart';
@@ -247,5 +249,31 @@ extension FocusAreaParsing on FocusArea {
 
     var coordList = polygon.coordinates.map(toPositionList).toList();
     return MapLayerModel(id: id, coords: coordList);
+  }
+}
+
+extension SliderRangeParsing on SliderInputRange {
+  InputFieldType getInputFieldType() {
+    return switch (this) {
+      SliderInputRange.numbers0To99 => InputFieldType.numbers0To99,
+      SliderInputRange.numbers0To999 => InputFieldType.numbers0To999,
+      SliderInputRange.numbers1To999 => InputFieldType.numbers1To999,
+    };
+  }
+
+  int getMinValue() {
+    return switch (this) {
+      SliderInputRange.numbers0To99 => 0,
+      SliderInputRange.numbers0To999 => 0,
+      SliderInputRange.numbers1To999 => 1,
+    };
+  }
+
+  int getMaxValue() {
+    return switch (this) {
+      SliderInputRange.numbers0To99 => 99,
+      SliderInputRange.numbers0To999 => 999,
+      SliderInputRange.numbers1To999 => 999,
+    };
   }
 }

@@ -7,7 +7,7 @@ import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
-import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
+import 'package:gruene_app/features/campaigns/widgets/enhanced_wheel_slider.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 typedef OnSaveDoorCallback = Future<void> Function(DoorUpdateModel doorUpdate);
@@ -39,7 +39,6 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
   TextEditingController cityTextController = TextEditingController();
 
   TextEditingController closedDoorTextController = TextEditingController();
-
   TextEditingController openedDoorTextController = TextEditingController();
 
   @override
@@ -54,8 +53,6 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
     houseNumberTextController.text = widget.door.address.houseNumber;
     zipCodeTextController.text = widget.door.address.zipCode;
     cityTextController.text = widget.door.address.city;
-    openedDoorTextController.text = widget.door.openedDoors.toString();
-    closedDoorTextController.text = widget.door.closedDoors.toString();
     super.initState();
   }
 
@@ -89,24 +86,30 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
             child: Row(
               children: [
                 Flexible(
-                  child: Container(
-                    padding: EdgeInsets.only(right: 6),
-                    child: TextInputField(
-                      labelText: t.campaigns.door.closedDoors,
-                      textController: closedDoorTextController,
-                      inputType: InputFieldType.numbers0To999,
-                      borderColor: lightBorderColor,
-                      selectAllTextOnFocus: true,
-                    ),
+                  child: EnhancedWheelSlider(
+                    labelText: t.campaigns.door.closedDoors,
+                    textController: closedDoorTextController,
+                    initialValue: widget.door.closedDoors,
+                    labelColor: ThemeColors.textDisabled,
+                    sliderColor: ThemeColors.text,
+                    borderColor: lightBorderColor,
+                    actionColor: theme.colorScheme.secondary,
+                    sliderInputRange: SliderInputRange.numbers0To999,
                   ),
                 ),
+                SizedBox(
+                  width: 10,
+                ),
                 Flexible(
-                  child: TextInputField(
+                  child: EnhancedWheelSlider(
                     labelText: t.campaigns.door.openedDoors,
+                    initialValue: widget.door.openedDoors,
                     textController: openedDoorTextController,
-                    inputType: InputFieldType.numbers0To999,
+                    labelColor: ThemeColors.textDisabled,
+                    sliderColor: ThemeColors.text,
                     borderColor: lightBorderColor,
-                    selectAllTextOnFocus: true,
+                    actionColor: theme.colorScheme.secondary,
+                    sliderInputRange: SliderInputRange.numbers0To999,
                   ),
                 ),
               ],
