@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/enums.dart';
@@ -32,25 +33,37 @@ class PostersScreen extends StatefulWidget {
 class _PostersScreenState extends MapConsumer<PostersScreen> {
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.poster);
 
-  final List<FilterChipModel> postersFilter = [
-    FilterChipModel(
-      text: t.campaigns.filters.routes,
-      isEnabled: false,
-    ),
-    FilterChipModel(
-      text: t.campaigns.filters.polling_stations,
-      isEnabled: false,
-    ),
-    FilterChipModel(
-      text: t.campaigns.filters.experience_areas,
-      isEnabled: false,
-    ),
-  ];
+  late List<FilterChipModel> postersFilter;
 
   _PostersScreenState() : super(NominatimService());
 
   @override
   GrueneApiCampaignsService get campaignService => _grueneApiService;
+
+  @override
+  void initState() {
+    postersFilter = [
+      FilterChipModel(
+        text: t.campaigns.filters.routes,
+        isEnabled: false,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.focusAreas,
+        isEnabled: true,
+        stateChanged: onFocusAreaStateChanged,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.polling_stations,
+        isEnabled: false,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.experience_areas,
+        isEnabled: false,
+      ),
+    ];
+
+    super.initState();
+  }
 
   @override
   Widget build(localContext) {
@@ -61,6 +74,8 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
+      addMapLayersForContext: addMapLayersForContext,
+      loadDataLayers: loadDataLayers,
     );
 
     return Column(
@@ -147,7 +162,9 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
     super.onFeatureClick<PosterDetailModel>(rawFeature, _getPoi, getPoiDetailWidget, _getEditPosterWidget);
   }
 
-  void _onNoFeatureClick() {}
+  void _onNoFeatureClick(Point<double> point) {
+    showFocusAreaInfoAtPoint(point);
+  }
 
   Future<void> _savePoster(PosterUpdateModel posterUpdate) async {
     final updatedMarker = await campaignService.updatePoster(posterUpdate);

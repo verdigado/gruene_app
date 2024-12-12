@@ -21,7 +21,7 @@ typedef LoadVisibleItemsCallBack = void Function(LatLng locationSW, LatLng locat
 typedef LoadDataLayersCallBack = void Function(LatLng locationSW, LatLng locationNE);
 typedef GetMarkerImagesCallback = Map<String, String> Function();
 typedef OnFeatureClickCallback = void Function(dynamic feature);
-typedef OnNoFeatureClickCallback = void Function();
+typedef OnNoFeatureClickCallback = void Function(Point<double> point);
 typedef OnEditItemClickedCallback = void Function();
 typedef AddMapLayersForContextCallback = void Function(MapLibreMapController mapLibreController);
 
@@ -153,12 +153,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     final onFeatureClick = widget.onFeatureClick;
     final onNoFeatureClick = widget.onNoFeatureClick;
 
-    final pixelRatio = MediaQuery.of(context).devicePixelRatio;
-
-    final touchTargetSize = pixelRatio * 38.0; // corresponds to 1 cm roughly
-    final rect = Rect.fromCenter(center: Offset(point.x, point.y), width: touchTargetSize, height: touchTargetSize);
-
-    final jsonFeatures = await controller.queryRenderedFeaturesInRect(rect, [markerLayerName], null);
+    List<dynamic> jsonFeatures = await getFeaturesInScreen(point, [markerLayerName]);
     final features = jsonFeatures.map((e) => e as Map<String, dynamic>).where((x) {
       // if (x.containsKey('id')) return true;
       if (x['properties'] == null) return false;
@@ -171,8 +166,41 @@ class _MapContainerState extends State<MapContainer> implements MapController {
       final feature = MapHelper.getClosestFeature(features, targetLatLng);
       onFeatureClick(feature);
     } else if (onNoFeatureClick != null) {
-      onNoFeatureClick();
+      onNoFeatureClick(point);
     }
+  }
+
+  @override
+  Future<dynamic> getClosestFeaturesInScreen(
+    Point<double> point,
+    List<String> layers,
+  ) async {
+    var features = await getFeaturesInScreen(
+      point,
+      layers,
+    );
+    if (features.isNotEmpty) {
+      final controller = _controller!;
+      final targetLatLng = await controller.toLatLng(point);
+      return MapHelper.getClosestFeature(features, targetLatLng);
+    } else {
+      return null;
+    }
+  }
+
+  @override
+  Future<List<dynamic>> getFeaturesInScreen(
+    Point<double> point,
+    List<String> layers,
+  ) async {
+    final controller = _controller!;
+    final pixelRatio = MediaQuery.of(context).devicePixelRatio;
+
+    final touchTargetSize = pixelRatio * 38.0; // corresponds to 1 cm roughly
+    final rect = Rect.fromCenter(center: Offset(point.x, point.y), width: touchTargetSize, height: touchTargetSize);
+
+    final jsonFeatures = await controller.queryRenderedFeaturesInRect(rect, layers, null);
+    return jsonFeatures;
   }
 
   void _onCameraIdle() async {
@@ -249,7 +277,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void removeLayerSource(String sourceId) async {
     /* 
     * A bug prevents using correct method -> see https://github.com/maplibre/flutter-maplibre-gl/issues/526
-    * Therefore we set it as empty datasource. Once the issue has been corrected
+    * Therefore we set it as empty datasource. Once the issue has been corrected we can use the designated method.
     */
     // await _controller!.removeSource(sourceId);
     await _controller!.setGeoJsonSource(sourceId, MarkerItemHelper.transformMapLayerDataToGeoJson([]).toJson());

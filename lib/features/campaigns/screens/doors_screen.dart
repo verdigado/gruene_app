@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
@@ -31,10 +33,6 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
   late List<FilterChipModel> doorsFilter;
 
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.door);
-
-  bool focusAreasVisible = false;
-  final String focusAreadId = 'focusArea';
-  final minZoomFocusAreaLayer = 11.5;
 
   _DoorsScreenState() : super(NominatimService());
 
@@ -75,7 +73,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
       addMapLayersForContext: addMapLayersForContext,
-      loadDataLayers: _loadDataLayers,
+      loadDataLayers: loadDataLayers,
     );
 
     return Column(
@@ -128,7 +126,9 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     );
   }
 
-  void _onNoFeatureClick() {}
+  void _onNoFeatureClick(Point<double> point) {
+    showFocusAreaInfoAtPoint(point);
+  }
 
   Future<void> _saveDoor(DoorUpdateModel doorUpdate) async {
     final updatedMarker = await campaignService.updateDoor(doorUpdate);
@@ -144,56 +144,4 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   Future<MarkerItemModel> _saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
       await _grueneApiService.createNewDoor(newDoor);
-
-  void onFocusAreaStateChanged(bool state) async {
-    focusAreasVisible = state;
-    if (focusAreasVisible) {
-      _loadFocusAreaLayer();
-    } else {
-      mapController.removeLayerSource(focusAreadId);
-    }
-  }
-
-  void addMapLayersForContext(MapLibreMapController mapLibreController) async {
-    final focusAreaFillLayerId = '${focusAreadId}_layer';
-    final focusAreaBorderLayerId = '${focusAreadId}_border';
-
-    await mapLibreController.addFillLayer(
-      focusAreadId,
-      focusAreaFillLayerId,
-      FillLayerProperties(
-        fillColor: [
-          Expressions.interpolate,
-          ['exponential', 0.5],
-          [Expressions.zoom],
-          18,
-          ['get', 'score_color'],
-        ],
-        fillOpacity: ['get', 'score_opacity'],
-      ),
-      minzoom: minZoomFocusAreaLayer,
-    );
-
-    await mapLibreController.addLineLayer(
-      focusAreadId,
-      focusAreaBorderLayerId,
-      LineLayerProperties(lineColor: 'rgba(0, 0, 0, 1)', lineWidth: 1),
-      minzoom: minZoomFocusAreaLayer,
-    );
-  }
-
-  void _loadFocusAreaLayer() async {
-    if (mapController.getCurrentZoomLevel() > minZoomFocusAreaLayer) {
-      final bbox = await mapController.getCurrentBoundingBox();
-
-      final focusAreas = await campaignService.loadFocusAreasInRegion(bbox.southwest, bbox.northeast);
-      mapController.setLayerSource(focusAreadId, focusAreas);
-    }
-  }
-
-  void _loadDataLayers(LatLng locationSW, LatLng locationNE) async {
-    if (focusAreasVisible) {
-      _loadFocusAreaLayer();
-    }
-  }
 }

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/widgets.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
@@ -25,22 +27,33 @@ class FlyerScreen extends StatefulWidget {
 class _FlyerScreenState extends MapConsumer<FlyerScreen> {
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.flyer);
 
-  final List<FilterChipModel> flyerFilter = [
-    FilterChipModel(
-      text: t.campaigns.filters.visited_areas,
-      isEnabled: false,
-    ),
-    FilterChipModel(
-      text: t.campaigns.filters.routes,
-      isEnabled: false,
-    ),
-    FilterChipModel(
-      text: t.campaigns.filters.experience_areas,
-      isEnabled: false,
-    ),
-  ];
+  late List<FilterChipModel> flyerFilter;
 
   _FlyerScreenState() : super(NominatimService());
+
+  @override
+  void initState() {
+    flyerFilter = [
+      FilterChipModel(
+        text: t.campaigns.filters.visited_areas,
+        isEnabled: false,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.focusAreas,
+        isEnabled: true,
+        stateChanged: onFocusAreaStateChanged,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.routes,
+        isEnabled: false,
+      ),
+      FilterChipModel(
+        text: t.campaigns.filters.experience_areas,
+        isEnabled: false,
+      ),
+    ];
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -51,6 +64,8 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
+      addMapLayersForContext: addMapLayersForContext,
+      loadDataLayers: loadDataLayers,
     );
 
     return Column(
@@ -103,7 +118,9 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
     );
   }
 
-  void _onNoFeatureClick() {}
+  void _onNoFeatureClick(Point<double> point) {
+    showFocusAreaInfoAtPoint(point);
+  }
 
   @override
   GrueneApiCampaignsService get campaignService => _grueneApiService;

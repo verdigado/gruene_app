@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
@@ -26,24 +24,16 @@ class MarkerItemHelper {
   }
 
   static Feature<Polygon> transformMapLayerModelToGeoJson(MapLayerModel mapLayerModel) {
-    // final scoreColors = [
-    //   ThemeColors.primary.toHexStringRGB(),
-    //   ThemeColors.secondary.toHexStringRGB(),
-    //   ThemeColors.tertiary.toHexStringRGB(),
-    // ];
-    // debugPrint(scoreColors[0].toHexStringRGB());
-    final random = Random();
     var opacities = [0, 0.2, 0.35, 0.5, 0.65];
     final scoreColor = ThemeColors.secondary.toHexStringRGB(); //scoreColors[random.nextInt(scoreColors.length)];
+    var scoreIndex = mapLayerModel.score.toInt() - 1;
     return Feature<Polygon>(
       id: mapLayerModel.id,
       properties: <String, dynamic>{
         'id': mapLayerModel.id.toString(),
-        // 'score_color': 'rgb(${scoreColor.red},${scoreColor.green},${scoreColor.blue})',
         'score_color': scoreColor,
-
-        'score_opacity': opacities[random.nextInt(opacities.length)],
-        // 'score_opacity': random.nextDouble() * 0.8,
+        'score_opacity': scoreIndex > opacities.length || scoreIndex < 0 ? opacities.first : opacities[scoreIndex],
+        'info': mapLayerModel.description,
       },
       geometry: Polygon(coordinates: mapLayerModel.coords),
     );

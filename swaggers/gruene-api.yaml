@@ -2755,10 +2755,15 @@ components:
         description:
           type: string
           nullable: true
+        score:
+          type: number
+          minimum: 1
+          maximum: 5
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
         - description
+        - score
         - polygon
     CreateFocusArea:
       type: object
@@ -2768,11 +2773,16 @@ components:
         description:
           type: string
           nullable: true
+        score:
+          type: number
+          minimum: 1
+          maximum: 5
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
         - key
         - description
+        - score
         - polygon
     FocusArea:
       type: object
@@ -2788,6 +2798,8 @@ components:
         description:
           type: string
           nullable: true
+        score:
+          type: number
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
@@ -2795,6 +2807,7 @@ components:
         - key
         - createdAt
         - description
+        - score
         - polygon
     FindFocusAreasResponse:
       type: object
