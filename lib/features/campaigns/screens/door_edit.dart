@@ -10,7 +10,7 @@ import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dar
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-typedef OnSaveDoorCallback = void Function(DoorUpdateModel doorUpdate);
+typedef OnSaveDoorCallback = Future<void> Function(DoorUpdateModel doorUpdate);
 
 class DoorEdit extends StatefulWidget {
   final DoorDetailModel door;
@@ -133,7 +133,7 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
     _closeDialog();
   }
 
-  void _saveDoor() {
+  void _saveDoor() async {
     if (!context.mounted) return;
     final validationResult = validateDoors(openedDoorTextController.text, closedDoorTextController.text, context);
     if (validationResult == null) return;
@@ -144,7 +144,7 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
       openedDoors: validationResult.openedDoors,
       closedDoors: validationResult.closedDoors,
     );
-    widget.onSave(updateModel);
+    await widget.onSave(updateModel);
     _closeDialog();
   }
 }

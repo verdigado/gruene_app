@@ -7,8 +7,9 @@ class MapHelper {
   static LatLng extractLatLngFromFeature(dynamic rawFeature) {
     final feature = rawFeature as Map<String, dynamic>;
     final geometry = feature['geometry'] as Map<String, dynamic>;
-    final coordinates = geometry['coordinates'] as List<double>;
-    return coordinates.transformToLatLng();
+    final coordinates = geometry['coordinates'] as List<dynamic>;
+
+    return coordinates.cast<double>().transformToLatLng();
   }
 
   static dynamic getClosestFeature(List<dynamic> features, LatLng target) {

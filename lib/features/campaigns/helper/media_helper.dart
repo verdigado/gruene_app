@@ -2,9 +2,12 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:camerawesome/camerawesome_plugin.dart';
-import 'package:flutter/widgets.dart';
+import 'package:flutter/material.dart';
+import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:image/image.dart' as image_lib;
+import 'package:photo_view/photo_view.dart';
 
 class MediaHelper {
   static const int maxUploadDimension = 1200;
@@ -69,6 +72,36 @@ class MediaHelper {
     await compressAction;
     return resizedImg!;
   }
-}
 
-enum ImageType { jpeg, png }
+  static void showPictureInFullView(BuildContext context, ImageProvider imageProvider) async {
+    final theme = Theme.of(context);
+    await showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: PhotoView(
+                backgroundDecoration: BoxDecoration(color: ThemeColors.text.withAlpha(120)),
+                imageProvider: imageProvider,
+              ),
+            ),
+            Positioned(
+              right: 20,
+              top: 20,
+              child: GestureDetector(
+                onTap: () => Navigator.maybePop(context),
+                child: Icon(
+                  Icons.close,
+                  color: theme.colorScheme.surface,
+                  size: 30,
+                ),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
+}

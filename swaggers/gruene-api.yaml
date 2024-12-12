@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/User '
         '400':
           description: No user provided by used authentication method
         '401':
@@ -1300,7 +1300,7 @@ components:
       name: x-api-key
       description: Api Key Authentication
   schemas:
-    'User':
+    'User ':
       type: object
       properties:
         id:
@@ -1340,7 +1340,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/User'
+            $ref: '#/components/schemas/User '
       required:
         - data
     UserRbacGroup:
@@ -2683,6 +2683,9 @@ components:
         createdAt:
           format: date-time
           type: string
+        updatedAt:
+          format: date-time
+          type: string
         photos:
           type: array
           items:
@@ -2709,6 +2712,7 @@ components:
         - agentId
         - divisionKey
         - createdAt
+        - updatedAt
         - photos
         - address
         - type

@@ -14,6 +14,7 @@ import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart';
@@ -104,6 +105,10 @@ class GrueneApiCampaignsService {
     return _getPoi(poiId, (p) => p.transformPoiToPosterDetail());
   }
 
+  Future<PosterListItemModel> getPoiAsPosterListItem(String poiId) {
+    return _getPoi(poiId, (p) => p.transformToPosterListItem());
+  }
+
   Future<DoorDetailModel> getPoiAsDoorDetail(String poiId) {
     return _getPoi(poiId, (p) => p.transformPoiToDoorDetail());
   }
@@ -185,5 +190,15 @@ class GrueneApiCampaignsService {
       ),
     );
     return savePoiPhotoResponse;
+  }
+
+  Future<List<PosterListItemModel>> getMyPosters() async {
+    final getPoisType = poiType.transformToApiGetType();
+
+    final getPoisResult = await grueneApi.v1CampaignsPoisGet(
+      type: getPoisType,
+      agentId: '1',
+    );
+    return getPoisResult.body!.data.map((p) => p.transformToPosterListItem()).toList();
   }
 }
