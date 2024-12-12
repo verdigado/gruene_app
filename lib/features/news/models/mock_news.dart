@@ -12,6 +12,7 @@ List<NewsModel> news = [
     creator: 'Kreisverband',
     categories: ['education'],
     date: DateTime(2022, 12, 12),
+    bookmarked: false,
   ),
   NewsModel(
     id: 1,
@@ -20,10 +21,11 @@ List<NewsModel> news = [
         'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.',
     author: 'Stefan Laak',
     image: 'assets/graphics/placeholders/placeholder_2.jpg',
-    type: 'event',
+    type: 'Weiterbildung',
     creator: 'Landesverband',
     categories: ['campaign'],
     date: DateTime(2022, 1, 14),
+    bookmarked: true,
   ),
   NewsModel(
     id: 1,
@@ -36,6 +38,7 @@ List<NewsModel> news = [
     creator: 'Bundesverband',
     categories: ['argumentation'],
     date: DateTime(2024, 10, 2),
+    bookmarked: false,
   ),
   NewsModel(
     id: 1,
@@ -48,5 +51,6 @@ List<NewsModel> news = [
     creator: 'Bundesverband',
     categories: ['education'],
     date: DateTime(2022, 12, 12),
+    bookmarked: true,
   ),
 ];

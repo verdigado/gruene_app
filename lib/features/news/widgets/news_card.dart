@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/news/models/news_model.dart';
 
@@ -29,6 +28,10 @@ class NewsCard extends StatelessWidget {
       child: Card(
         color: theme.colorScheme.surface,
         margin: const EdgeInsets.symmetric(vertical: 8),
+        // WARNING: The order of stack children is important here!
+        // - The decoration container with the linear gradient has to be on top of the image
+        // - The InkWell has to be on top of the image and card content
+        // - The top bar has to be on top of the InkWell
         child: Stack(
           children: [
             // Teaser image
@@ -70,7 +73,7 @@ class NewsCard extends StatelessWidget {
                       ),
                     ),
                     Chip(
-                      label: Text(news.creator),
+                      label: Text(news.creator, style: theme.textTheme.labelSmall),
                       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                       backgroundColor: theme.colorScheme.surface,
                       shape: StadiumBorder(),
@@ -82,16 +85,32 @@ class NewsCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Pressable around the whole card
+            // InkWell/Pressable around the whole card
             Positioned.fill(
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () => context.push('/news/${news.id}'),
+                  onTap: () {},
                   customBorder: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
                 ),
+              ),
+            ),
+            // Top type and bookmark bar
+            Container(
+              padding: EdgeInsets.only(left: 16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(news.type,
+                      style: theme.textTheme.labelSmall
+                          ?.copyWith(color: theme.colorScheme.surface, fontWeight: FontWeight.w700)),
+                  IconButton(
+                      onPressed: () {},
+                      icon: Icon(news.bookmarked ? Icons.bookmark_added : Icons.bookmark_add_outlined,
+                          color: theme.colorScheme.surface, size: 24)),
+                ],
               ),
             ),
           ],

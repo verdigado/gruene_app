@@ -8,6 +8,7 @@ class NewsModel {
   String creator;
   List<String> categories;
   DateTime date;
+  bool bookmarked;
 
   NewsModel({
     required this.id,
@@ -19,5 +20,6 @@ class NewsModel {
     required this.creator,
     required this.categories,
     required this.date,
+    required this.bookmarked,
   });
 }
