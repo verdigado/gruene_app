@@ -3,8 +3,8 @@ import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
+import 'package:gruene_app/features/campaigns/widgets/enhanced_wheel_slider.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
-import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -27,6 +27,7 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressExtension, D
   TextEditingController zipCodeTextController = TextEditingController();
   @override
   TextEditingController cityTextController = TextEditingController();
+
   TextEditingController openedDoorTextController = TextEditingController();
   TextEditingController closedDoorTextController = TextEditingController();
 
@@ -88,22 +89,30 @@ class DoorsAddScreenState extends State<DoorsAddScreen> with AddressExtension, D
             child: Row(
               children: [
                 Flexible(
-                  child: Container(
-                    padding: EdgeInsets.only(right: 6),
-                    child: TextInputField(
-                      labelText: t.campaigns.door.closedDoors,
-                      textController: closedDoorTextController,
-                      inputType: InputFieldType.numbers0To999,
-                      selectAllTextOnFocus: true,
-                    ),
+                  child: EnhancedWheelSlider(
+                    labelText: t.campaigns.door.closedDoors,
+                    initialValue: 0,
+                    textController: closedDoorTextController,
+                    labelColor: theme.colorScheme.surface,
+                    sliderColor: theme.colorScheme.surface,
+                    borderColor: theme.colorScheme.surface,
+                    actionColor: theme.colorScheme.secondary,
+                    sliderInputRange: SliderInputRange.numbers0To999,
                   ),
                 ),
+                SizedBox(
+                  width: 10,
+                ),
                 Flexible(
-                  child: TextInputField(
+                  child: EnhancedWheelSlider(
                     labelText: t.campaigns.door.openedDoors,
+                    initialValue: 1,
                     textController: openedDoorTextController,
-                    inputType: InputFieldType.numbers0To999,
-                    selectAllTextOnFocus: true,
+                    labelColor: theme.colorScheme.surface,
+                    sliderColor: theme.colorScheme.surface,
+                    borderColor: theme.colorScheme.surface,
+                    actionColor: theme.colorScheme.secondary,
+                    sliderInputRange: SliderInputRange.numbers0To999,
                   ),
                 ),
               ],

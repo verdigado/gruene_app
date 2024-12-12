@@ -3,8 +3,8 @@ import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
 import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
+import 'package:gruene_app/features/campaigns/widgets/enhanced_wheel_slider.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';
-import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -75,11 +75,15 @@ class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressExtension, 
                   child: SizedBox(),
                 ),
                 Flexible(
-                  child: TextInputField(
+                  child: EnhancedWheelSlider(
                     labelText: t.campaigns.flyer.countFlyer,
+                    initialValue: 1,
                     textController: flyerCountTextController,
-                    inputType: InputFieldType.numbers1To999,
-                    selectAllTextOnFocus: true,
+                    labelColor: theme.colorScheme.surface,
+                    sliderColor: theme.colorScheme.surface,
+                    borderColor: theme.colorScheme.surface,
+                    actionColor: theme.colorScheme.secondary,
+                    sliderInputRange: SliderInputRange.numbers1To999,
                   ),
                 ),
               ],
