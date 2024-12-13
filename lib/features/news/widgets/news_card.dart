@@ -67,11 +67,7 @@ class NewsCard extends StatelessWidget {
                   children: [
                     Text(news.title, style: theme.textTheme.titleLarge),
                     SizedBox(height: 8),
-                    Expanded(
-                      child: Text(
-                        news.content,
-                      ),
-                    ),
+                    Expanded(child: Text(news.abstract)),
                     Chip(
                       label: Text(news.creator, style: theme.textTheme.labelSmall),
                       padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
@@ -90,7 +86,7 @@ class NewsCard extends StatelessWidget {
               child: Material(
                 color: Colors.transparent,
                 child: InkWell(
-                  onTap: () {},
+                  onTap: () => context.push('/news/${news.id}'),
                   customBorder: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                   ),
@@ -103,13 +99,22 @@ class NewsCard extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(news.type,
-                      style: theme.textTheme.labelSmall
-                          ?.copyWith(color: theme.colorScheme.surface, fontWeight: FontWeight.w700)),
+                  Text(
+                    news.type,
+                    style: theme.textTheme.labelSmall?.copyWith(
+                      color: theme.colorScheme.surface,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  ),
                   IconButton(
-                      onPressed: () {},
-                      icon: Icon(news.bookmarked ? Icons.bookmark_added : Icons.bookmark_add_outlined,
-                          color: theme.colorScheme.surface, size: 24)),
+                    // TODO: Add bookmarking functionality
+                    onPressed: () {},
+                    icon: Icon(
+                      news.bookmarked ? Icons.bookmark_added : Icons.bookmark_add_outlined,
+                      color: theme.colorScheme.surface,
+                      size: 24,
+                    ),
+                  ),
                 ],
               ),
             ),

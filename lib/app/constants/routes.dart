@@ -27,8 +27,8 @@ GoRoute buildRoute(String path, String name, Widget child, {List<RouteBase>? rou
 }
 
 class Routes {
-  // static GoRoute newsDetail = buildRoute(':newsId', t.news.news, NewsDetailScreen());
-  static GoRoute news = buildRoute('/news/:newsId', t.news.news, NewsScreen());
+  static GoRoute newsDetail = buildRoute(':newsId', t.news.newsDetail, NewsDetailScreen());
+  static GoRoute news = buildRoute('/news', t.news.news, NewsScreen(), routes: [newsDetail]);
   static GoRoute campaigns = buildRoute('/campaigns', t.campaigns.campaigns, CampaignsScreen());
   static GoRoute profiles = buildRoute('/profiles', t.profiles.profiles, ProfilesScreen());
   static GoRoute mfa = buildRoute('/mfa', t.mfa.mfa, MfaScreen());

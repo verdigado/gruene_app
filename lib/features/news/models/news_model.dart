@@ -1,6 +1,7 @@
 class NewsModel {
   int id;
   String title;
+  String abstract;
   String content;
   String author;
   String image;
@@ -13,6 +14,7 @@ class NewsModel {
   NewsModel({
     required this.id,
     required this.title,
+    required this.abstract,
     required this.content,
     required this.author,
     required this.image,
