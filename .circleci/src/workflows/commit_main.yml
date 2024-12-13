@@ -5,5 +5,7 @@ when:
 jobs:
   - bump_version
   - build_android:
+      context:
+        - app_signing_android
       requires:
         - bump_version
