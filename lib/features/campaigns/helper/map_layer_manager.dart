@@ -8,9 +8,11 @@ class MapLayerDataManager {
       loadedLayers.putIfAbsent(sourceId, () => []);
     }
     final currentLayerData = loadedLayers[sourceId]!;
-    layerData.retainWhere(
-      (newLayerItem) => !currentLayerData.any((currentLayerItem) => currentLayerItem.id == newLayerItem.id),
-    );
+    // Currently disabled until a proper manager is enabled
+    // layerData.retainWhere(
+    //   (newLayerItem) => !currentLayerData.any((currentLayerItem) => currentLayerItem.id == newLayerItem.id),
+    // );
+    currentLayerData.clear();
     currentLayerData.addAll(layerData);
   }
 

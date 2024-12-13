@@ -259,7 +259,7 @@ extension FocusAreaParsing on FocusArea {
     toPositionList(List<List<double?>?> points) => points.map(toPosition).toList();
 
     var coordList = polygon.coordinates.map(toPositionList).toList();
-    return MapLayerModel(id: id, coords: coordList);
+    return MapLayerModel(id: id, coords: coordList, score: score, description: description);
   }
 }
 

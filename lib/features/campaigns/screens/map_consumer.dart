@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
@@ -22,6 +24,10 @@ typedef OnDeletePoiCallback = void Function(String posterId);
 abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
   late MapController mapController;
   final NominatimService _nominatimService;
+
+  bool focusAreasVisible = false;
+  final String _focusAreadId = 'focusArea';
+  final _minZoomFocusAreaLayer = 11.5;
 
   MapConsumer(this._nominatimService);
 
@@ -131,5 +137,84 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     final id = int.parse(poiId);
     await campaignService.deletePoi(poiId);
     mapController.removeMarkerItem(id);
+  }
+
+  void addMapLayersForContext(MapLibreMapController mapLibreController) async {
+    final focusAreaBorderLayerId = '${_focusAreadId}_border';
+
+    await mapLibreController.addFillLayer(
+      _focusAreadId,
+      focusAreaFillLayerId,
+      FillLayerProperties(
+        fillColor: [
+          Expressions.interpolate,
+          ['exponential', 0.5],
+          [Expressions.zoom],
+          18,
+          ['get', 'score_color'],
+        ],
+        fillOpacity: ['get', 'score_opacity'],
+      ),
+      enableInteraction: false,
+      minzoom: _minZoomFocusAreaLayer,
+    );
+
+    await mapLibreController.addLineLayer(
+      _focusAreadId,
+      focusAreaBorderLayerId,
+      LineLayerProperties(lineColor: 'rgba(0, 0, 0, 1)', lineWidth: 1),
+      minzoom: _minZoomFocusAreaLayer,
+      enableInteraction: false,
+    );
+  }
+
+  void onFocusAreaStateChanged(bool state) async {
+    focusAreasVisible = state;
+    if (focusAreasVisible) {
+      loadFocusAreaLayer();
+    } else {
+      mapController.removeLayerSource(_focusAreadId);
+    }
+  }
+
+  String get focusAreaFillLayerId => '${_focusAreadId}_layer';
+  void loadDataLayers(LatLng locationSW, LatLng locationNE) async {
+    if (focusAreasVisible) {
+      loadFocusAreaLayer();
+    }
+  }
+
+  void loadFocusAreaLayer() async {
+    if (mapController.getCurrentZoomLevel() > _minZoomFocusAreaLayer) {
+      final bbox = await mapController.getCurrentBoundingBox();
+
+      final focusAreas = await campaignService.loadFocusAreasInRegion(bbox.southwest, bbox.northeast);
+      mapController.setLayerSource(_focusAreadId, focusAreas);
+    }
+  }
+
+  void showFocusAreaInfoAtPoint(Point<double> point) async {
+    if (!focusAreasVisible) return;
+    var features = await mapController.getFeaturesInScreen(
+      point,
+      [focusAreaFillLayerId],
+    );
+    if (features.isNotEmpty) {
+      final feature = features.first;
+      if (feature['properties'] == null) return;
+      final properties = feature['properties'] as Map<String, dynamic>;
+      if (properties['info'] == null) return;
+      _showInfo(properties['info'] as String);
+    }
+  }
+
+  void _showInfo(String infoText) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(infoText),
+        duration: Duration(milliseconds: 600),
+      ),
+    );
   }
 }

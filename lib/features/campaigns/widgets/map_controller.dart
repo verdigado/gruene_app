@@ -14,6 +14,16 @@ abstract class MapController {
 
   Future<Point<num>?> getScreenPointFromLatLng(LatLng coord);
 
+  Future<List<dynamic>> getFeaturesInScreen(
+    Point<double> point,
+    List<String> layers,
+  );
+
+  Future<dynamic> getClosestFeaturesInScreen(
+    Point<double> point,
+    List<String> layers,
+  );
+
   void showMapPopover(
     LatLng coord,
     Widget widget,
