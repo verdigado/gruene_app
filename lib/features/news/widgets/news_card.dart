@@ -6,15 +6,11 @@ import 'package:gruene_app/features/news/models/news_model.dart';
 const double imageHeight = 160;
 
 class NewsCard extends StatelessWidget {
-  final void Function() setFavorite;
   final NewsModel news;
-  final bool favorite;
 
   const NewsCard({
     super.key,
-    required this.setFavorite,
     required this.news,
-    required this.favorite,
   });
 
   @override
@@ -93,7 +89,7 @@ class NewsCard extends StatelessWidget {
                 ),
               ),
             ),
-            // Top type and bookmark bar
+            // Top bar with type and bookmark
             Container(
               padding: EdgeInsets.only(left: 16),
               child: Row(

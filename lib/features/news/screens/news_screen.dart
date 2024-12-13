@@ -9,7 +9,7 @@ class NewsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListView(
       padding: const EdgeInsets.all(16),
-      children: news.map((item) => NewsCard(setFavorite: () => {}, news: item, favorite: false)).toList(),
+      children: news.map((item) => NewsCard(news: item)).toList(),
     );
   }
 }
