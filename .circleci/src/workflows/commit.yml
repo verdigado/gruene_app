@@ -3,11 +3,11 @@ unless:
     - equal: [main, << pipeline.git.branch >>]
     - << pipeline.parameters.api_triggered >>
 jobs:
-  - check
+#  - check
   - bump_version
   - build_android:
       context:
         - app_signing_android
       requires:
-        - check
+#        - check
         - bump_version

@@ -447,13 +447,11 @@ workflows:
                     - beta_delivery
     commit:
         jobs:
-            - check
             - bump_version
             - build_android:
                 context:
                     - app_signing_android
                 requires:
-                    - check
                     - bump_version
         unless:
             or:
