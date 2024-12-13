@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
@@ -13,7 +14,7 @@ import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_detail.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
-import 'package:gruene_app/features/campaigns/widgets/map.dart';
+import 'package:gruene_app/features/campaigns/widgets/map_with_location.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -65,7 +66,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    MapContainer mapContainer = MapContainer(
+    final mapContainer = MapWithLocation(
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
@@ -97,7 +98,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   Map<String, String> _getMarkerImages() {
     return {
-      'door': 'assets/symbols/doors/door.png',
+      'door': CampaignConstants.doorAssetName,
     };
   }
 

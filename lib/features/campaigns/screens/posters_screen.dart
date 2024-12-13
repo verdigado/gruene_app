@@ -6,6 +6,7 @@ import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
@@ -19,7 +20,7 @@ import 'package:gruene_app/features/campaigns/screens/poster_edit.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
-import 'package:gruene_app/features/campaigns/widgets/map.dart';
+import 'package:gruene_app/features/campaigns/widgets/map_with_location.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -67,7 +68,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
 
   @override
   Widget build(localContext) {
-    MapContainer mapContainer = MapContainer(
+    var mapContainer = MapWithLocation(
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
@@ -136,10 +137,10 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
 
   Map<String, String> _getMarkerImages() {
     return {
-      'poster_ok': 'assets/symbols/posters/poster.png',
-      'poster_damaged': 'assets/symbols/posters/poster_damaged.png',
-      'poster_missing': 'assets/symbols/posters/poster_damaged.png',
-      'poster_removed': 'assets/symbols/posters/poster_removed.png',
+      'poster_ok': CampaignConstants.posterOkAssetName,
+      'poster_damaged': CampaignConstants.posterDamagedAssetName,
+      'poster_missing': CampaignConstants.posterDamagedAssetName,
+      'poster_removed': CampaignConstants.posterRemovedAssetName,
     };
   }
 

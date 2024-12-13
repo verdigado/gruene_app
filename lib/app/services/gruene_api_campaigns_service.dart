@@ -69,7 +69,7 @@ class GrueneApiCampaignsService {
       // saving Photo along with POI
       var poiId = newPoiResponse.body!.id;
 
-      _storeNewPhoto(poiId, newPoster.photo!);
+      await _storeNewPhoto(poiId, newPoster.photo!);
     }
 
     return newPoiResponse.body!.transformToMarkerItem();

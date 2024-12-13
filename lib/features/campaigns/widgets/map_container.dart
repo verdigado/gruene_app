@@ -9,9 +9,11 @@ import 'package:gruene_app/features/campaigns/helper/map_layer_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/util.dart';
+import 'package:gruene_app/features/campaigns/location/determine_position.dart';
 import 'package:gruene_app/features/campaigns/models/bounding_box.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/widgets/location_button.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
@@ -34,6 +36,8 @@ class MapContainer extends StatefulWidget {
   final OnFeatureClickCallback? onFeatureClick;
   final OnNoFeatureClickCallback? onNoFeatureClick;
   final AddMapLayersForContextCallback? addMapLayersForContext;
+  final LatLng? userLocation;
+  final bool locationAvailable;
 
   const MapContainer({
     super.key,
@@ -45,6 +49,8 @@ class MapContainer extends StatefulWidget {
     required this.onNoFeatureClick,
     this.loadDataLayers,
     this.addMapLayersForContext,
+    required this.locationAvailable,
+    this.userLocation,
   });
 
   @override
@@ -56,11 +62,15 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   final MarkerItemManager _markerItemManager = MarkerItemManager();
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
   bool _isMapInitialized = false;
+  bool _permissionGiven = false;
+  final locationGrueneHQ = LatLng(52.528810, 13.379300);
 
   static const markerSourceName = 'markers';
   static const markerLayerName = 'markerSymbols';
   static const addMarkerAssetName = 'assets/symbols/add_marker.svg';
   static const minZoomMarkerItems = 12.0;
+  static const double zoomLevelUserLocation = 16;
+  static const double zoomLevelUserOverview = 8.5;
 
   List<Widget> popups = [];
 
@@ -69,33 +79,54 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     northeast: LatLng(55.1, 15.5),
   ); //typically Germany
 
+  var followUserLocation = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _permissionGiven = widget.locationAvailable;
+  }
+
   @override
   Widget build(BuildContext context) {
+    final userLocation = widget.userLocation;
+    final cameraPosition = userLocation != null
+        ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
+        : CameraPosition(target: locationGrueneHQ, zoom: zoomLevelUserOverview);
+
     return Scaffold(
       body: Stack(
         children: [
           MapLibreMap(
-            // minMaxZoomPreference: MinMaxZoomPreference(14, 18),
             styleString: Config.maplibreUrl,
             onMapCreated: _onMapCreated,
-            initialCameraPosition: const CameraPosition(target: LatLng(52.528810, 13.379300), zoom: 16),
+            initialCameraPosition: cameraPosition,
             onStyleLoadedCallback: _onStyleLoadedCallback,
             cameraTargetBounds: CameraTargetBounds(_cameraTargetBounds),
             trackCameraPosition: true,
             onCameraIdle: _onCameraIdle,
             onMapClick: _onMapClick,
-
-            // rotateGesturesEnabled: false,
+            // myLocationEnabled: true,
+            // myLocationTrackingMode: _permissionGiven ? MyLocationTrackingMode.Tracking : MyLocationTrackingMode.None,
+            myLocationTrackingMode: MyLocationTrackingMode.none,
+            myLocationRenderMode: MyLocationRenderMode.normal,
+            minMaxZoomPreference: const MinMaxZoomPreference(4.5, 18.0),
           ),
           Center(
             child: Container(
-              padding:
-                  EdgeInsets.only(bottom: 65 /* height of the add_marker icon to position it exactly on the middle */),
+              padding: EdgeInsets.only(
+                bottom: 65, /* height of the add_marker icon to position it exactly on the middle */
+              ),
               child: GestureDetector(
                 onTap: _onIconTap,
                 child: SvgPicture.asset(addMarkerAssetName),
               ),
             ),
+          ),
+          Positioned(
+            bottom: 12,
+            right: 12,
+            child: LocationButton(bringCameraToUser: bringCameraToUser, followUserLocation: followUserLocation),
           ),
           ...popups,
         ],
@@ -448,6 +479,32 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   @override
   double get minimumMarkerZoomLevel => minZoomMarkerItems;
+
+  Future<void> bringCameraToUser(RequestedPosition positionRequest) async {
+    final controller = _controller;
+    if (controller == null) {
+      return;
+    }
+    final position = positionRequest.position;
+    if (position == null) return;
+
+    final cameraUpdate = CameraUpdate.newCameraPosition(
+      CameraPosition(
+        target: LatLng(position.latitude, position.longitude),
+        bearing: 0,
+        tilt: 0,
+        zoom: zoomLevelUserLocation,
+      ),
+    );
+    await controller.animateCamera(cameraUpdate);
+    if (!mounted) return;
+
+    // await controller.updateMyLocationTrackingMode(MyLocationTrackingMode.tracking);
+    if (!mounted) return;
+    if (!_permissionGiven) {
+      setState(() => _permissionGiven = true);
+    }
+  }
 }
 
 class MyTriangle extends CustomClipper<Path> {
