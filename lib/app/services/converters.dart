@@ -69,6 +69,17 @@ extension PoiServiceTypeParsing on PoiServiceType {
     }
   }
 
+  V1CampaignsPoisSelfGetType transformToApiSelfGetType() {
+    switch (this) {
+      case PoiServiceType.poster:
+        return V1CampaignsPoisSelfGetType.poster;
+      case PoiServiceType.door:
+        return V1CampaignsPoisSelfGetType.house;
+      case PoiServiceType.flyer:
+        return V1CampaignsPoisSelfGetType.flyerSpot;
+    }
+  }
+
   CreatePoiType transformToApiCreateType() {
     switch (this) {
       case PoiServiceType.poster:

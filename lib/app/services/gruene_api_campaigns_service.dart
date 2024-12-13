@@ -198,12 +198,9 @@ class GrueneApiCampaignsService {
   }
 
   Future<List<PosterListItemModel>> getMyPosters() async {
-    final getPoisType = poiType.transformToApiGetType();
+    final getPoisType = poiType.transformToApiSelfGetType();
 
-    final getPoisResult = await grueneApi.v1CampaignsPoisGet(
-      type: getPoisType,
-      agentId: '1',
-    );
+    final getPoisResult = await grueneApi.v1CampaignsPoisSelfGet(type: getPoisType);
     return getPoisResult.body!.data.map((p) => p.transformToPosterListItem()).toList();
   }
 }

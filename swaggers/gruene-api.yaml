@@ -52,7 +52,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User '
+                $ref: '#/components/schemas/User'
         '400':
           description: No user provided by used authentication method
         '401':
@@ -79,7 +79,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/User '
+                $ref: '#/components/schemas/User'
         '401':
           description: ''
         '404':
@@ -894,6 +894,137 @@ paths:
         - bearer: []
         - basic: []
         - api_key: []
+  /v1/campaigns/areas:
+    post:
+      operationId: createArea
+      summary: Create a new Area
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateArea'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findAreas
+      summary: Find Areas
+      parameters:
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: '-74.006,40.7128,-73.935242,40.789142'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindAreasResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/areas/{areaId}:
+    get:
+      operationId: getArea
+      summary: Get a Area
+      parameters:
+        - name: areaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updateArea
+      summary: Update a Area
+      parameters:
+        - name: areaId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateArea'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteArea
+      summary: Delete a Area
+      parameters:
+        - name: areaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Area'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /v1/campaigns/pois:
     post:
       operationId: createPoi
@@ -940,12 +1071,41 @@ paths:
           schema:
             example: '-74.006,40.7128,-73.935242,40.789142'
             type: string
-        - name: agent_id
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindPoisResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/pois/self:
+    get:
+      operationId: findOwnPois
+      summary: Find own POIs
+      parameters:
+        - name: type
           required: false
           in: query
-          description: Filter by agent id
+          description: filter by POI type
           schema:
-            example: '1005'
+            example: POSTER
+            enum:
+              - FLYER_SPOT
+              - POSTER
+              - HOUSE
+            type: string
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: '-74.006,40.7128,-73.935242,40.789142'
             type: string
       responses:
         '200':
@@ -1300,7 +1460,7 @@ components:
       name: x-api-key
       description: Api Key Authentication
   schemas:
-    'User ':
+    User:
       type: object
       properties:
         id:
@@ -1340,7 +1500,7 @@ components:
         data:
           type: array
           items:
-            $ref: '#/components/schemas/User '
+            $ref: '#/components/schemas/User'
       required:
         - data
     UserRbacGroup:
@@ -2489,6 +2649,135 @@ components:
       required:
         - data
         - meta
+    AreaFlyerSpot:
+      type: object
+      properties:
+        flyerCount:
+          type: number
+          description: Number of flyers on this spot.
+          minimum: 0
+      required:
+        - flyerCount
+    AreaHouse:
+      type: object
+      properties:
+        countOpenedDoors:
+          type: number
+          description: Number of apartment doors that were opened for a conversation.
+          minimum: 0
+        countClosedDoors:
+          type: number
+          description: Number of apartment doors that remained closed.
+          minimum: 0
+      required:
+        - countOpenedDoors
+        - countClosedDoors
+    Polygon:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the polygon
+          example: Polygon
+          default: Polygon
+        coordinates:
+          type: array
+          items:
+            name: coordinates
+            type: array
+            items:
+              required: true
+              description: |-
+                Coordinates of the polygon
+                Must follow the GeoJSON standard
+              type: array
+              items:
+                type: number
+      required:
+        - type
+        - coordinates
+    UpdateArea:
+      type: object
+      properties:
+        comment:
+          type: string
+          nullable: true
+        flyerSpot:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AreaFlyerSpot'
+        house:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AreaHouse'
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - comment
+        - polygon
+    CreateArea:
+      type: object
+      properties:
+        type:
+          enum:
+            - FLYER_SPOT
+            - HOUSE
+          type: string
+        comment:
+          type: string
+          nullable: true
+        flyerSpot:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AreaFlyerSpot'
+        house:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/AreaHouse'
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - type
+        - comment
+        - polygon
+    Area:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          enum:
+            - FLYER_SPOT
+            - HOUSE
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        comment:
+          type: string
+          nullable: true
+        flyerSpot:
+          $ref: '#/components/schemas/AreaFlyerSpot'
+        house:
+          $ref: '#/components/schemas/AreaHouse'
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - id
+        - type
+        - createdAt
+        - comment
+        - polygon
+    FindAreasResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Area'
+      required:
+        - data
     PoiAddress:
       type: object
       properties:
@@ -2725,40 +3014,21 @@ components:
             $ref: '#/components/schemas/Poi'
       required:
         - data
-    Polygon:
-      type: object
-      properties:
-        type:
-          type: string
-          description: Type of the polygon
-          example: Polygon
-          default: Polygon
-        coordinates:
-          type: array
-          items:
-            name: coordinates
-            type: array
-            items:
-              required: true
-              description: |-
-                Coordinates of the polygon
-                Must follow the GeoJSON standard
-              type: array
-              items:
-                type: number
-      required:
-        - type
-        - coordinates
     UpdateFocusArea:
       type: object
       properties:
         description:
           type: string
           nullable: true
+        score:
+          type: number
+          minimum: 1
+          maximum: 5
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
         - description
+        - score
         - polygon
     CreateFocusArea:
       type: object
@@ -2768,11 +3038,16 @@ components:
         description:
           type: string
           nullable: true
+        score:
+          type: number
+          minimum: 1
+          maximum: 5
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
         - key
         - description
+        - score
         - polygon
     FocusArea:
       type: object
@@ -2788,6 +3063,8 @@ components:
         description:
           type: string
           nullable: true
+        score:
+          type: number
         polygon:
           $ref: '#/components/schemas/Polygon'
       required:
@@ -2795,6 +3072,7 @@ components:
         - key
         - createdAt
         - description
+        - score
         - polygon
     FindFocusAreasResponse:
       type: object
