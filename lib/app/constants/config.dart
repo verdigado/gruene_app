@@ -10,4 +10,10 @@ class Config {
   static String get addressSearchUrl => dotenv.env['MAP_ADDRESSSEARCH_URL'] ?? '';
   static String get gruenesNetzApiUrl => dotenv.env['GRUENES_NETZ_API_URL'] ?? 'http://localhost:5000';
   static String get gruenesNetzApiKey => dotenv.env['GRUENES_NETZ_API_KEY'] ?? '';
+  static bool get androidFloss {
+    // may be needed when building for f-droid store
+    final configValue = dotenv.env['ANDROID_FLOSS'] ?? 'false';
+    final value = bool.tryParse(configValue, caseSensitive: false);
+    return value ?? false;
+  }
 }

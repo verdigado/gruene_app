@@ -5,7 +5,9 @@
       "save": "Speichern",
       "cancel": "Abbrechen",
       "delete": "Löschen",
-      "edit": "Bearbeiten"
+      "edit": "Bearbeiten",
+      "settings": "Einstellungen",
+      "openSettings": "Einstellungen öffnen"
     }
   },
   "news": {
@@ -94,6 +96,18 @@
       "zipcode": "PLZ",
       "city_or_place": "Stadt / Ort"
     }
+  },
+  "location": {
+    "activateLocationAccess": "Standortermittlung aktivieren",
+    "activateLocationAccessRationale": "Erlauben Sie der App Ihren Standort zu benutzen, um diesen auf der Karte anzuzeigen.",
+    "activateLocationAccessSettings": "Aktivieren Sie die Standortermittlung in den Einstellungen.",
+    "askPermissionsAgain": "Soll noch einmal nach der Berechtigung gefragt werden?",
+    "grantLocation": "Ich möchte meinen Standort freigeben.",
+    "grantPermission": "Berechtigung erteilen",
+    "locationAccessDeactivated": "Die Standortfreigabe ist deaktiviert.",
+    "locationGranted": "Standort ist freigegeben.",
+    "locationPermission": "Standortberechtigung",
+    "checkSettings": "Prüfe Einstellungen..."
   },
   "profiles": {
     "profiles": "Mitglieder",
