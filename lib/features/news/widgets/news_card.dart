@@ -63,14 +63,18 @@ class NewsCard extends StatelessWidget {
                   children: [
                     Text(news.title, style: theme.textTheme.titleLarge),
                     SizedBox(height: 8),
-                    Expanded(child: Text(news.abstract)),
-                    Chip(
-                      label: Text(news.creator, style: theme.textTheme.labelSmall),
-                      padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
-                      backgroundColor: theme.colorScheme.surface,
-                      shape: StadiumBorder(),
-                      side: BorderSide(
-                        color: theme.colorScheme.primary,
+                    Expanded(child: Text(news.abstract, maxLines: 4, overflow: TextOverflow.ellipsis)),
+                    Container(
+                      margin: EdgeInsets.only(top: 16),
+                      child: Chip(
+                        label: Text(news.creator, style: theme.textTheme.labelSmall),
+                        padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                        visualDensity: VisualDensity(vertical: -4),
+                        backgroundColor: theme.colorScheme.surface,
+                        shape: StadiumBorder(),
+                        side: BorderSide(
+                          color: theme.colorScheme.primary,
+                        ),
                       ),
                     ),
                   ],
