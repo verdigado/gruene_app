@@ -11,3 +11,9 @@ jobs:
       requires:
 #        - check
         - bump_version
+  - deliver_android:
+      production_delivery: false
+      context:
+        - gruene_google_playstore
+      requires:
+        - build_android

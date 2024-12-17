@@ -120,7 +120,7 @@ platform :android do
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )
     beta_version_codes = google_play_track_version_codes(
-      track: beta_track,
+      track: "beta",
       package_name: APPLICATION_ID,
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )
@@ -136,7 +136,7 @@ platform :android do
     upload_to_play_store(
       version_code: beta_version_codes[0],
       package_name: APPLICATION_ID,
-      track: beta_track,
+      track: "beta",
       track_promote_to: "production",
       skip_upload_changelogs: true,
       skip_upload_images: true,
