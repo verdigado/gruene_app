@@ -5,6 +5,7 @@ import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/features/campaigns/screens/campaigns_screen.dart';
 import 'package:gruene_app/features/login/screens/login_screen.dart';
 import 'package:gruene_app/features/mfa/screens/mfa_screen.dart';
+import 'package:gruene_app/features/news/screens/news_detail_screen.dart';
 import 'package:gruene_app/features/news/screens/news_screen.dart';
 import 'package:gruene_app/features/profiles/screens/profiles_screen.dart';
 import 'package:gruene_app/features/settings/screens/settings_screen.dart';
@@ -26,7 +27,8 @@ GoRoute buildRoute(String path, String name, Widget child, {List<RouteBase>? rou
 }
 
 class Routes {
-  static GoRoute news = buildRoute('/news', t.news.news, NewsScreen());
+  static GoRoute newsDetail = buildRoute(':newsId', t.news.newsDetail, NewsDetailScreen());
+  static GoRoute news = buildRoute('/news', t.news.news, NewsScreen(), routes: [newsDetail]);
   static GoRoute campaigns = buildRoute('/campaigns', t.campaigns.campaigns, CampaignsScreen());
   static GoRoute profiles = buildRoute('/profiles', t.profiles.profiles, ProfilesScreen());
   static GoRoute mfa = buildRoute('/mfa', t.mfa.mfa, MfaScreen());

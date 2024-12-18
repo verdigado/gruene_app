@@ -11,8 +11,11 @@
     }
   },
   "news": {
-    "news": "Artikel",
-    "label": "Artikel"
+    "news": "News",
+    "label": "Artikel",
+    "newsDetail": "Artikel",
+    "writtenBy": "Von ${author}",
+    "updatedAt": "Stand: ${date}"
   },
   "campaigns": {
     "campaigns": "Wahlkampf",

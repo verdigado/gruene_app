@@ -62,7 +62,7 @@ class _ThemeTextStyles {
       color: ThemeColors.text,
     ),
   );
-  static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21, letterSpacing: 0.02);
+  static TextStyle titleLarge = titleMedium.copyWith(fontSize: 21);
   static TextStyle titleSmall = titleMedium.copyWith(fontSize: 16, letterSpacing: 0.01);
 
   static TextStyle bodyMedium = GoogleFonts.ptSans(
