@@ -35,6 +35,8 @@ class ThemeColors {
   static const Color textCancel = Color(0xFF0A84FF);
 
   static const Color alertBackground = Color(0xFF252525);
+
+  static const Color focusAreaBaseColor = Color(0xFF3033A1);
 }
 
 class _ThemeTextStyles {

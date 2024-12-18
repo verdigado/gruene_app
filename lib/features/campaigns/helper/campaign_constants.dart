@@ -5,4 +5,12 @@ class CampaignConstants {
   static const posterOkAssetName = 'assets/symbols/posters/poster.png';
   static const posterDamagedAssetName = 'assets/symbols/posters/poster_damaged.png';
   static const posterRemovedAssetName = 'assets/symbols/posters/poster_removed.png';
+
+  static Map<int, String> scoreInfos = {
+    1: 'Stufe 1: wenige Plakate aufhängen, keine Flyer verteilen, keine Haustüren',
+    2: 'Stufe 2: mehr Plakate aufhängen, Flyer verteilen wenn Zeit, keine Haustüren',
+    3: 'Stufe 3: viele Plakate aufhängen, Flyer verteilen, Haustüren wenn Zeit',
+    4: 'Stufe 4: viele Plakate aufhängen, viele Flyer verteilen, Haustüren',
+    5: 'Stufe 5: viele Plakate aufhängen, sehr viele Flyer verteilen, Haustüren auf jeden Fall',
+  };
 }

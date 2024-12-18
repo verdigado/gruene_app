@@ -1,4 +1,5 @@
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -24,9 +25,10 @@ class MarkerItemHelper {
   }
 
   static Feature<Polygon> transformMapLayerModelToGeoJson(MapLayerModel mapLayerModel) {
-    var opacities = [0, 0.2, 0.35, 0.5, 0.65];
-    final scoreColor = ThemeColors.secondary.toHexStringRGB(); //scoreColors[random.nextInt(scoreColors.length)];
-    var scoreIndex = mapLayerModel.score.toInt() - 1;
+    var opacities = [0, 0.15, 0.4, 0.55, 0.85];
+    final scoreColor = ThemeColors.focusAreaBaseColor.toHexStringRGB();
+    var score = mapLayerModel.score.toInt();
+    var scoreIndex = score - 1;
     return Feature<Polygon>(
       id: mapLayerModel.id,
       properties: <String, dynamic>{
@@ -34,6 +36,7 @@ class MarkerItemHelper {
         'score_color': scoreColor,
         'score_opacity': scoreIndex > opacities.length || scoreIndex < 0 ? opacities.first : opacities[scoreIndex],
         'info': mapLayerModel.description,
+        'score_info': CampaignConstants.scoreInfos[score],
       },
       geometry: Polygon(coordinates: mapLayerModel.coords),
     );
