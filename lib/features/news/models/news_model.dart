@@ -1,12 +1,12 @@
 class NewsModel {
-  int id;
+  String id;
   String title;
   String abstract;
   String content;
   String author;
   String image;
   String type;
-  String creator;
+  String ?creator;
   List<String> categories;
   DateTime date;
   bool bookmarked;
