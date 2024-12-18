@@ -5,11 +5,14 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
+import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 
 void main() async {
   await dotenv.load(fileName: '.env');
@@ -20,6 +23,8 @@ void main() async {
   if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
+
+  GetIt.I.registerSingleton<GrueneApi>(createGrueneApiClient());
 
   runApp(TranslationProvider(child: const MyApp()));
 }

@@ -1,28 +1,29 @@
-part of 'gruene_api_campaigns_service.dart';
+import 'dart:async';
+import 'dart:io';
 
-class _GrueneApiCore {
-  late GrueneApi _grueneApiService;
-  final _authRepository = AuthRepository();
+import 'package:chopper/chopper.dart' as chopper;
+import 'package:flutter/foundation.dart';
+import 'package:gruene_app/app/auth/repository/auth_repository.dart';
+import 'package:gruene_app/app/constants/config.dart';
+import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 
-  _GrueneApiCore() {
-    List<chopper.Interceptor> interceptors = [];
-    chopper.Authenticator? authenticator;
+GrueneApi createGrueneApiClient() {
+  List<chopper.Interceptor> interceptors = [];
+  chopper.Authenticator? authenticator;
 
-    if (Config.gruenesNetzApiKey.isNotEmpty) {
-      interceptors.add(ApiKeyInterceptor());
-    } else {
-      authenticator = AccessTokenAuthenticator(_authRepository);
-      interceptors.add(AuthInterceptor(_authRepository));
-    }
-
-    _grueneApiService = GrueneApi.create(
-      baseUrl: Uri.parse(Config.gruenesNetzApiUrl),
-      authenticator: authenticator,
-      interceptors: interceptors,
-    );
+  if (Config.gruenesNetzApiKey.isNotEmpty) {
+    interceptors.add(ApiKeyInterceptor());
+  } else {
+    AuthRepository repo = AuthRepository();
+    authenticator = AccessTokenAuthenticator(repo);
+    interceptors.add(AuthInterceptor(repo));
   }
 
-  GrueneApi get service => _grueneApiService;
+  return GrueneApi.create(
+    baseUrl: Uri.parse(Config.gruenesNetzApiUrl),
+    authenticator: authenticator,
+    interceptors: interceptors,
+  );
 }
 
 class ApiKeyInterceptor implements chopper.Interceptor {
