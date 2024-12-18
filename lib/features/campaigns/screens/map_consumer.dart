@@ -162,7 +162,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     await mapLibreController.addLineLayer(
       _focusAreadId,
       focusAreaBorderLayerId,
-      LineLayerProperties(lineColor: 'rgba(0, 0, 0, 1)', lineWidth: 1),
+      LineLayerProperties(lineColor: ThemeColors.background.toHexStringRGB(), lineWidth: 1),
       minzoom: _minZoomFocusAreaLayer,
       enableInteraction: false,
     );
@@ -203,8 +203,11 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
       final feature = features.first;
       if (feature['properties'] == null) return;
       final properties = feature['properties'] as Map<String, dynamic>;
-      if (properties['info'] == null) return;
-      _showInfo(properties['info'] as String);
+      var infoText = <String>[];
+      if (properties['info'] != null) infoText.add(properties['info'] as String);
+      if (properties['score_info'] != null) infoText.add(properties['score_info'] as String);
+
+      if (infoText.isNotEmpty) _showInfo(infoText.join('\n'));
     }
   }
 
@@ -212,8 +215,10 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: Text(infoText),
-        duration: Duration(milliseconds: 600),
+        content: Text(
+          infoText,
+        ),
+        duration: Duration(milliseconds: 800),
       ),
     );
   }
