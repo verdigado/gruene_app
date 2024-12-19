@@ -16,6 +16,7 @@ import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/location_button.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'dart:convert';
 
 typedef OnMapCreatedCallback = void Function(MapController controller);
 typedef AddPOIClickedCallback = void Function(LatLng location);
@@ -282,6 +283,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   @override
   void setLayerSource(String sourceId, List<MapLayerModel> layerData) async {
+    return;
+    debugPrint('anfang');
     _mapLayerManager.addLayerData(sourceId, layerData);
     final sourceIds = await _controller!.getSourceIds();
     Future<void> Function(Map<String, dynamic> data) setLayerData;
@@ -301,6 +304,11 @@ class _MapContainerState extends State<MapContainer> implements MapController {
       };
     }
     final data = MarkerItemHelper.transformMapLayerDataToGeoJson(_mapLayerManager.getMapLayerData(sourceId)).toJson();
+    //debugPrint(jsonEncode(data));
+    var layerIds = await _controller!.getLayerIds(); 
+    // layerIds.forEach((x) => debugPrint(x.toString()));
+    //_controller.fillManager!.allLayerProperties
+    debugPrint('ende');
     await setLayerData(data);
   }
 

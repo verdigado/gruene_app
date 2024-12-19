@@ -33,7 +33,7 @@ class MarkerItemHelper {
       id: mapLayerModel.id,
       properties: <String, dynamic>{
         'id': mapLayerModel.id.toString(),
-        'score_color': scoreColor,
+        'score_color': 'green',
         'score_opacity': scoreIndex > opacities.length || scoreIndex < 0 ? opacities.first : opacities[scoreIndex],
         'info': mapLayerModel.description,
         'score_info': CampaignConstants.scoreInfos[score],

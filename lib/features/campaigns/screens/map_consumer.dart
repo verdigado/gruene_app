@@ -12,6 +12,8 @@ import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart'; 
+
 
 typedef GetAdditionalDataBeforeCallback<T> = Future<T?> Function(BuildContext);
 typedef GetAddScreenCallback<T, U> = T Function(LatLng, AddressModel?, U?);
@@ -141,23 +143,30 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
   void addMapLayersForContext(MapLibreMapController mapLibreController) async {
     final focusAreaBorderLayerId = '${_focusAreadId}_border';
+    final data = MarkerItemHelper.transformMapLayerDataToGeoJson([]).toJson();
+    await mapLibreController.addGeoJsonSource(
+      _focusAreadId,
+      data,
+    ); 
 
     await mapLibreController.addFillLayer(
       _focusAreadId,
       focusAreaFillLayerId,
       FillLayerProperties(
-        fillColor: [
-          Expressions.interpolate,
-          ['exponential', 0.5],
-          [Expressions.zoom],
-          18,
-          ['get', 'score_color'],
-        ],
-        fillOpacity: ['get', 'score_opacity'],
+        fillColor: 'red',
+//        fillColor: [
+//          Expressions.interpolate,
+//          ['exponential', 0.5],
+//          [Expressions.zoom],
+//          18,
+//          'green',
+//        ],
+        //fillOpacity: ['get', 'score_opacity'],
       ),
       enableInteraction: false,
-      minzoom: _minZoomFocusAreaLayer,
+//      minzoom: _minZoomFocusAreaLayer,
     );
+    debugPrint('layer load');
 
     await mapLibreController.addLineLayer(
       _focusAreadId,
