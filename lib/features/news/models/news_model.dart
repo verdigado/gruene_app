@@ -34,7 +34,9 @@ class NewsModel {
       abstract: news.summary ?? '',
       content: news.body.content,
       author: '',
-      image: news.featuredImage?.original.url ?? 'assets/graphics/placeholders/placeholder_1.jpg',
+      // image: news.featuredImage?.original.url ?? 'assets/graphics/placeholders/placeholder_1.jpg',
+      // use placeholder as long as drupal blocks image access
+      image: 'assets/graphics/placeholders/placeholder_2.jpg',
       type: news.division?.shortName ?? '',
       creator: news.categories.isNotEmpty ? news.categories.first.label : null,
       categories: news.categories.map((cat) => cat.label).toList(),
