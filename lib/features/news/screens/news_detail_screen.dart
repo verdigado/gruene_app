@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/utils/format_date.dart';
 import 'package:gruene_app/app/utils/utils.dart';
 import 'package:gruene_app/features/news/models/mock_news.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class NewsDetailScreen extends StatelessWidget {
-  const NewsDetailScreen({super.key});
+  final String newsId;
+  const NewsDetailScreen({super.key, required this.newsId});
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final newsId = int.parse(GoRouterState.of(context).pathParameters['newsId']!);
     final newsItem = news.firstWhereOrNull((item) => item.id == newsId);
 
     if (newsItem == null) {

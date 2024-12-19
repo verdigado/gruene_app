@@ -27,7 +27,15 @@ GoRoute buildRoute(String path, String name, Widget child, {List<RouteBase>? rou
 }
 
 class Routes {
-  static GoRoute newsDetail = buildRoute(':newsId', t.news.newsDetail, NewsDetailScreen());
+  static GoRoute newsDetail = GoRoute(
+    name: t.news.newsDetail,
+    path: ':newsId',
+    pageBuilder: (BuildContext context, GoRouterState state) => buildPageWithoutAnimation<void>(
+      context: context,
+      state: state,
+      child: MainLayout(child: NewsDetailScreen(newsId: state.pathParameters['newsId']!)),
+    ),
+  );
   static GoRoute news = buildRoute('/news', t.news.news, NewsScreen(), routes: [newsDetail]);
   static GoRoute campaigns = buildRoute('/campaigns', t.campaigns.campaigns, CampaignsScreen());
   static GoRoute profiles = buildRoute('/profiles', t.profiles.profiles, ProfilesScreen());
