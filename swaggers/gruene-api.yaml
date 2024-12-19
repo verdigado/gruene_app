@@ -943,10 +943,35 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/campaigns/areas/self:
+    get:
+      operationId: findOwnAreas
+      summary: Find own Areas
+      parameters:
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: '-74.006,40.7128,-73.935242,40.789142'
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindAreasResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /v1/campaigns/areas/{areaId}:
     get:
       operationId: getArea
-      summary: Get a Area
+      summary: Get an Area
       parameters:
         - name: areaId
           required: true
@@ -971,7 +996,7 @@ paths:
         - oauth2: []
     put:
       operationId: updateArea
-      summary: Update a Area
+      summary: Update an Area
       parameters:
         - name: areaId
           required: true
@@ -1002,7 +1027,7 @@ paths:
         - oauth2: []
     delete:
       operationId: deleteArea
-      summary: Delete a Area
+      summary: Delete an Area
       parameters:
         - name: areaId
           required: true
@@ -1649,8 +1674,6 @@ info:
   contact: {}
 tags: []
 servers:
-  - url: http://0.0.0.0:5000
-    description: localhost
   - url: https://api.gruene.de
     description: Production
 components:
@@ -3173,7 +3196,7 @@ components:
         id:
           type: string
           example: '1'
-        agentId:
+        userId:
           type: string
         divisionKey:
           type: string
@@ -3206,7 +3229,7 @@ components:
       required:
         - coords
         - id
-        - agentId
+        - userId
         - divisionKey
         - createdAt
         - updatedAt
