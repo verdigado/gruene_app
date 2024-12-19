@@ -80,20 +80,7 @@ class _NewsScreenState extends State<NewsScreen> {
     }
     return response.body!.data
         .map(
-          (news) => NewsModel(
-            id: news.id,
-            title: news.title,
-            abstract: news.summary ?? '',
-            content: news.body.content,
-            author: '',
-            image: news.featuredImage?.original.url ??
-                'assets/graphics/placeholders/placeholder_1.jpg',
-            type: news.division?.shortName ?? '',
-            creator: news.categories.isNotEmpty ? news.categories.first.label : null,
-            categories: news.categories.map((cat) => cat.label).toList(),
-            date: news.createdAt,
-            bookmarked: false,
-          ),
+          (news) => NewsModel.fromApi(news),
         )
         .toList();
   }
