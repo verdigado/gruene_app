@@ -1,10 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:chopper/chopper.dart' as chopper;
 import 'package:flutter/foundation.dart';
-import 'package:gruene_app/app/auth/repository/auth_repository.dart';
-import 'package:gruene_app/app/constants/config.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
@@ -25,15 +23,13 @@ import 'package:http_parser/http_parser.dart';
 import 'package:intl/intl.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-part 'gruene_api_core.dart';
-
 class GrueneApiCampaignsService {
   late GrueneApi grueneApi;
 
   final PoiServiceType poiType;
 
   GrueneApiCampaignsService({required this.poiType}) {
-    grueneApi = _GrueneApiCore().service;
+    grueneApi = GetIt.I<GrueneApi>();
   }
 
   Future<List<MarkerItemModel>> loadPoisInRegion(LatLng locationSW, LatLng locationNE) async {
