@@ -1270,6 +1270,137 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/campaigns/experience-areas:
+    post:
+      operationId: createExperienceArea
+      summary: Create a new ExperienceArea
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateExperienceArea'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceArea'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findExperienceAreas
+      summary: Find ExperienceAreas
+      parameters:
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: 52.01,12.01,54.01, 14.01
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindExperienceAreasResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/experience-areas/{experienceAreaId}:
+    get:
+      operationId: getExperienceArea
+      summary: Get a ExperienceArea
+      parameters:
+        - name: experienceAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updateExperienceArea
+      summary: Update a ExperienceArea
+      parameters:
+        - name: experienceAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateExperienceArea'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteExperienceArea
+      summary: Delete a ExperienceArea
+      parameters:
+        - name: experienceAreaId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ExperienceArea'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /v1/campaigns/focus-areas:
     post:
       operationId: createFocusArea
@@ -1401,6 +1532,83 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/news:
+    get:
+      operationId: findNews
+      summary: Find news
+      parameters:
+        - name: limit
+          required: false
+          in: query
+          schema:
+            minimum: 1
+            default: 20
+            type: number
+        - name: offset
+          required: false
+          in: query
+          schema:
+            minimum: 0
+            type: number
+        - name: division_key
+          required: false
+          in: query
+          schema:
+            type: string
+        - name: search
+          required: false
+          in: query
+          description: Search name attributes for substring
+          schema:
+            type: string
+        - name: category
+          required: false
+          in: query
+          description: Filter by category id
+          schema:
+            type: array
+            items:
+              type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindNewsResponse'
+        '401':
+          description: ''
+      tags:
+        - news
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/news/{newsId}:
+    get:
+      operationId: getNews
+      summary: Get a news post
+      parameters:
+        - name: newsId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/News'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - news
+      security:
+        - bearer: []
+        - oauth2: []
   /health:
     get:
       tags:
@@ -1441,10 +1649,10 @@ info:
   contact: {}
 tags: []
 servers:
+  - url: http://0.0.0.0:5000
+    description: localhost
   - url: https://api.gruene.de
     description: Production
-  - url: http://192.168.178.35:5000
-    description: Development
 components:
   securitySchemes:
     basic:
@@ -3014,6 +3222,70 @@ components:
             $ref: '#/components/schemas/Poi'
       required:
         - data
+    UpdateExperienceArea:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - description
+        - polygon
+    CreateExperienceArea:
+      type: object
+      properties:
+        description:
+          type: string
+          nullable: true
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - description
+        - type
+        - polygon
+    ExperienceArea:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        createdAt:
+          format: date-time
+          type: string
+        description:
+          type: string
+          nullable: true
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        polygon:
+          $ref: '#/components/schemas/Polygon'
+      required:
+        - id
+        - createdAt
+        - description
+        - type
+        - polygon
+    FindExperienceAreasResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/ExperienceArea'
+      required:
+        - data
     UpdateFocusArea:
       type: object
       properties:
@@ -3081,6 +3353,74 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/FocusArea'
+      required:
+        - data
+    NewsCategory:
+      type: object
+      properties:
+        id:
+          type: string
+          description: Ids are matching profile tags of type 'interest'
+          example: '14013854'
+        label:
+          type: string
+          example: Abfall
+      required:
+        - id
+        - label
+    NewsBody:
+      type: object
+      properties:
+        type:
+          type: string
+        content:
+          type: string
+      required:
+        - type
+        - content
+    News:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        division:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/Division'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/NewsCategory'
+        summary:
+          type: string
+          nullable: true
+        featuredImage:
+          nullable: true
+          allOf:
+            - $ref: '#/components/schemas/ImageSrcSet'
+        body:
+          $ref: '#/components/schemas/NewsBody'
+      required:
+        - id
+        - title
+        - createdAt
+        - division
+        - categories
+        - summary
+        - featuredImage
+        - body
+    FindNewsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/News'
       required:
         - data
     HealthCheckResponse:
