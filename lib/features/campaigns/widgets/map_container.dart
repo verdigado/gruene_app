@@ -282,6 +282,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   @override
   void setLayerSource(String sourceId, List<MapLayerModel> layerData) async {
+    return;
     _mapLayerManager.addLayerData(sourceId, layerData);
     final sourceIds = await _controller!.getSourceIds();
     Future<void> Function(Map<String, dynamic> data) setLayerData;

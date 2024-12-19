@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:convert';
+import 'dart:math' as m;
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -12,6 +13,7 @@ import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:turf/transform.dart';
 
 typedef GetAdditionalDataBeforeCallback<T> = Future<T?> Function(BuildContext);
 typedef GetAddScreenCallback<T, U> = T Function(LatLng, AddressModel?, U?);
@@ -141,29 +143,66 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
   void addMapLayersForContext(MapLibreMapController mapLibreController) async {
     final focusAreaBorderLayerId = '${_focusAreadId}_border';
+    final geoJson = '''
+  {
+    "type": "FeatureCollection",
+    "features": [
+      {
+        "type": "Feature",
+        "properties": {},
+        "geometry": {
+          "coordinates": [
+            [
+              [
+                13.817953159985848,
+                52.72086321871197
+              ],
+              [
+                13.021969068749826,
+                52.72086321871197
+              ],
+              [
+                13.021969068749826,
+                52.2987245090556
+              ],
+              [
+                13.817953159985848,
+                52.2987245090556
+              ],
+              [
+                13.817953159985848,
+                52.72086321871197
+              ]
+            ]
+          ],
+          "type": "Polygon"
+        }
+      }
+    ]
+  } 
+  ''';
 
+    // final data = MarkerItemHelper.transformMapLayerDataToGeoJson([]).toJson();
+    mapLibreController.addGeoJsonSource(
+      _focusAreadId,
+      jsonDecode(geoJson) as Map<String, dynamic>,
+    );
     await mapLibreController.addFillLayer(
       _focusAreadId,
       focusAreaFillLayerId,
       FillLayerProperties(
-        fillColor: [
-          Expressions.interpolate,
-          ['exponential', 0.5],
-          [Expressions.zoom],
-          18,
-          ['get', 'score_color'],
-        ],
+        fillColor: 'red',
         fillOpacity: ['get', 'score_opacity'],
       ),
       enableInteraction: false,
-      minzoom: _minZoomFocusAreaLayer,
+      // minzoom: _minZoomFocusAreaLayer,
     );
 
     await mapLibreController.addLineLayer(
       _focusAreadId,
       focusAreaBorderLayerId,
       LineLayerProperties(lineColor: ThemeColors.background.toHexStringRGB(), lineWidth: 1),
-      minzoom: _minZoomFocusAreaLayer,
+      // minzoom: _minZoomFocusAreaLayer,
       enableInteraction: false,
     );
   }
@@ -193,7 +232,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     }
   }
 
-  void showFocusAreaInfoAtPoint(Point<double> point) async {
+  void showFocusAreaInfoAtPoint(m.Point<double> point) async {
     if (!focusAreasVisible) return;
     var features = await mapController.getFeaturesInScreen(
       point,
