@@ -81,8 +81,7 @@ class NewsCard extends StatelessWidget {
                             news.creator!,
                             style: theme.textTheme.labelSmall,
                           ),
-                          padding:
-                              EdgeInsets.symmetric(vertical: 4, horizontal: 8),
+                          padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
                           visualDensity: VisualDensity(vertical: -4),
                           backgroundColor: theme.colorScheme.surface,
                           shape: StadiumBorder(),
@@ -124,9 +123,7 @@ class NewsCard extends StatelessWidget {
                     // TODO: Add bookmarking functionality
                     onPressed: () {},
                     icon: Icon(
-                      news.bookmarked
-                          ? Icons.bookmark_added
-                          : Icons.bookmark_add_outlined,
+                      news.bookmarked ? Icons.bookmark_added : Icons.bookmark_add_outlined,
                       color: theme.colorScheme.surface,
                       size: 24,
                     ),

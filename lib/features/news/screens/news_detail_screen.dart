@@ -4,8 +4,7 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/utils/format_date.dart';
 import 'package:gruene_app/features/news/models/news_model.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
-import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart'
-    as api;
+import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart' as api;
 
 class NewsDetailScreen extends StatefulWidget {
   final String newsId;
@@ -91,8 +90,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                               ),
                               Text(
                                 news.abstract,
-                                style: theme.textTheme.bodyMedium
-                                    ?.copyWith(fontWeight: FontWeight.w700),
+                                style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
                               ),
                               SizedBox(height: 24),
                               Text(news.content),
@@ -109,9 +107,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                     // TODO: Add bookmarking functionality
                     onPressed: () {},
                     icon: Icon(
-                      news.bookmarked
-                          ? Icons.bookmark_added
-                          : Icons.bookmark_add_outlined,
+                      news.bookmarked ? Icons.bookmark_added : Icons.bookmark_add_outlined,
                       color: theme.colorScheme.surface,
                       size: 24,
                     ),
