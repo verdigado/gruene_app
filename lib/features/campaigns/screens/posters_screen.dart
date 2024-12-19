@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
-import 'package:gruene_app/features/campaigns/screens/fleaflet_helper/floating_menu_button.dart';
 import 'package:gruene_app/features/campaigns/screens/helper/map_mock_data.dart';
 import 'package:gruene_app/features/campaigns/widgets/filter_chip_widget.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:popover/popover.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 const bool kIsWeb = bool.fromEnvironment('dart.library.js_util');
 

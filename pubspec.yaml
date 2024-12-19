@@ -53,7 +53,6 @@ dependencies:
   shared_preferences: ^2.3.3
   url_launcher: ^6.3.1
   vector_map_tiles: ^8.0.0
-  google_maps_flutter: ^2.10.0
   turf: ^0.0.10
   popover: ^0.3.1
 
