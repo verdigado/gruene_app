@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
@@ -94,6 +95,23 @@ class _MapContainerState extends State<MapContainer> implements MapController {
         ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
         : CameraPosition(target: locationGrueneHQ, zoom: zoomLevelUserOverview);
 
+    Widget addMarker = SizedBox(
+      height: 0,
+      width: 0,
+    );
+    if (popups.isEmpty) {
+      addMarker = Center(
+        child: Container(
+          padding: EdgeInsets.only(
+            bottom: 65, /* height of the add_marker icon to position it exactly on the middle */
+          ),
+          child: GestureDetector(
+            onTap: _onIconTap,
+            child: SvgPicture.asset(addMarkerAssetName),
+          ),
+        ),
+      );
+    }
     return Scaffold(
       body: Stack(
         children: [
@@ -112,17 +130,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
             myLocationRenderMode: MyLocationRenderMode.normal,
             minMaxZoomPreference: const MinMaxZoomPreference(4.5, 18.0),
           ),
-          Center(
-            child: Container(
-              padding: EdgeInsets.only(
-                bottom: 65, /* height of the add_marker icon to position it exactly on the middle */
-              ),
-              child: GestureDetector(
-                onTap: _onIconTap,
-                child: SvgPicture.asset(addMarkerAssetName),
-              ),
-            ),
-          ),
+          addMarker,
           Positioned(
             bottom: 12,
             right: 12,
@@ -338,25 +346,30 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void showMapPopover(
     LatLng coord,
     Widget widget,
-    OnEditItemClickedCallback? onEditItemClicked, {
-    Size? desiredSize,
-  }) async {
+    OnEditItemClickedCallback? onEditItemClicked,
+    Size desiredSize,
+  ) async {
     if (!mounted) return;
 
-    await moveMapIfItemIsOnBorder(coord);
+    await moveMapIfItemIsOnBorder(coord, desiredSize);
     final point = await getScreenPointFromLatLng(coord);
 
     _showPopOver(
       point,
       widget,
       onEditItemClicked,
-      desiredSize: desiredSize!,
+      desiredSize: desiredSize,
     );
   }
 
-  Future<void> moveMapIfItemIsOnBorder(LatLng itemCoordinate) async {
+  Future<void> moveMapIfItemIsOnBorder(LatLng itemCoordinate, Size desiredSize) async {
+    final mediaQuery = MediaQuery.of(context);
+    final currentSize = mediaQuery.size;
+
+    final verticalBorderThresholdInPercent = (desiredSize.height / currentSize.height) * 1.9;
+    final horizontalBorderThresholdInPercent = (desiredSize.width / currentSize.width) / 2 * 1.1;
+
     const animationInMilliseconds = 300;
-    const borderThresholdInPercent = 0.18;
     final centerCoord = _controller!.cameraPosition!.target;
     final visibleRegion = await _controller!.getVisibleRegion();
     final visibleRegionHeight = visibleRegion.northeast.latitude - visibleRegion.southwest.latitude;
@@ -365,13 +378,13 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     double? newLatitude;
     double? newLongitude;
 
-    var verticalThresholdDistance = visibleRegionHeight * borderThresholdInPercent;
-    var horizontalThresholdDistance = visibleRegionWidth * borderThresholdInPercent;
+    var verticalThresholdDistance = visibleRegionHeight * verticalBorderThresholdInPercent;
+    var horizontalThresholdDistance = visibleRegionWidth * horizontalBorderThresholdInPercent;
 
     // check whether coordinate is in border region (defined as percentage of visible area) of visible area
     if ((visibleRegion.northeast.latitude - verticalThresholdDistance) < itemCoordinate.latitude) {
       final diff = itemCoordinate.latitude - (visibleRegion.northeast.latitude - verticalThresholdDistance);
-      newLatitude = centerCoord.latitude + (diff * 1.5);
+      newLatitude = centerCoord.latitude + diff + (verticalThresholdDistance * 0.4);
     } else if ((visibleRegion.southwest.latitude + verticalThresholdDistance) > itemCoordinate.latitude) {
       newLatitude = centerCoord.latitude - (verticalThresholdDistance / 2);
     }
@@ -402,7 +415,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     Size desiredSize = const Size(100, 100),
   }) {
     final mediaQuery = MediaQuery.of(context);
-    final pixelRatio = mediaQuery.devicePixelRatio;
+    var pixelRatio = Platform.isAndroid ? mediaQuery.devicePixelRatio : 1.0;
 
     setState(() {
       popups.clear();

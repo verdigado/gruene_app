@@ -39,7 +39,7 @@ class MapHelper {
   }
 
   static String extractPoiIdFromFeature(Map<String, dynamic> feature) {
-    final id = feature['id'] as String;
+    final id = feature['id'].toString();
     return id;
   }
 }
