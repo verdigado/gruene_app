@@ -24,7 +24,7 @@ void main() async {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
 
-  GetIt.I.registerSingleton<GrueneApi>(createGrueneApiClient());
+  GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
 
   runApp(TranslationProvider(child: const MyApp()));
 }
