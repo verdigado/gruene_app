@@ -22,7 +22,7 @@ platform :ios do
   # The following parameters have to be passed:
   # version_name: The version name the build should use
   # version_code: The version code the build should use
-  desc "Create a release build"
+  desc "Create an ios release build"
   lane :build do |options|
     version_code = options[:version_code]
     version_name = options[:version_name]
@@ -112,7 +112,7 @@ platform :ios do
     )
   end
 
-  desc "Promote the app from beta (testflight) to production"
+  desc "Promote the ios app from beta (testflight) to production"
   lane :promote do |options|
     apple_auth()
 

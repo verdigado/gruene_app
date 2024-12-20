@@ -41,7 +41,7 @@ android {
         if (project.hasProperty("KEYSTORE_PATH")) { // Signing with env variables (CI)
             println "Signing using env variables"
             release {
-                storeFile file("file://" + project.HOME + project.KEYSTORE_PATH)
+                storeFile file("file://" + project.KEYSTORE_PATH)
                 storePassword project.KEYSTORE_PASSWORD
                 keyAlias project.KEYSTORE_KEY_ALIAS
                 keyPassword project.KEYSTORE_KEY_PASSWORD

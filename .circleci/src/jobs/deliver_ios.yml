@@ -13,13 +13,13 @@ steps:
   - install_node_modules
   - install_fastlane:
       directory: ios
-#  - when:
-#      condition: << parameters.production_delivery >>
-#      steps:
-#        - run:
-#            name: '[FL] Production Upload'
-#            command: bundle exec fastlane ios production_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-#            working_directory: ios
+  - when:
+      condition: << parameters.production_delivery >>
+      steps:
+        - run:
+            name: '[FL] Production Upload'
+            command: bundle exec fastlane ios production_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
+            working_directory: ios
   - unless:
       condition: << parameters.production_delivery >>
       steps:
