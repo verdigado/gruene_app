@@ -9,6 +9,7 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/utils/open_inappbrowser.dart';
 import 'package:gruene_app/app/widgets/section_title.dart';
 import 'package:gruene_app/features/settings/widgets/settings_item.dart';
+import 'package:gruene_app/features/settings/widgets/version_number.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -67,6 +68,7 @@ class SettingsScreen extends StatelessWidget {
                 ),
               )
             : Container(),
+        VersionNumber(),
       ],
     );
   }
