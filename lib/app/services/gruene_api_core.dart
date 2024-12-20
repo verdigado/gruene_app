@@ -6,9 +6,11 @@ import 'package:flutter/foundation.dart';
 import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
-GrueneApi createGrueneApiClient() {
-  List<chopper.Interceptor> interceptors = [];
+Future<GrueneApi> createGrueneApiClient() async {
+  final userAgentHeaderValue = await _getUserAgentString();
+  List<chopper.Interceptor> interceptors = [UserAgentInterceptor(userAgentHeaderValue)];
   chopper.Authenticator? authenticator;
 
   if (Config.gruenesNetzApiKey.isNotEmpty) {
@@ -24,6 +26,40 @@ GrueneApi createGrueneApiClient() {
     authenticator: authenticator,
     interceptors: interceptors,
   );
+}
+
+Future<String> _getUserAgentString() async {
+  var packageInfo = await PackageInfo.fromPlatform();
+
+  return '${packageInfo.packageName} ${packageInfo.version}+${packageInfo.buildNumber} (${_getSystemDescription()}, ${packageInfo.installerStore})';
+}
+
+String _getSystemDescription() {
+  if (Platform.isAndroid) {
+    return 'Android';
+  } else if (Platform.isIOS) {
+    return 'iOS';
+  } else {
+    return 'unknown_OS';
+  }
+}
+
+class UserAgentInterceptor implements chopper.Interceptor {
+  final String userAgentHeaderValue;
+
+  UserAgentInterceptor(this.userAgentHeaderValue);
+
+  @override
+  FutureOr<chopper.Response<BodyType>> intercept<BodyType>(chopper.Chain<BodyType> chain) async {
+    final updatedRequest = chopper.applyHeader(
+      chain.request,
+      HttpHeaders.userAgentHeader,
+      userAgentHeaderValue,
+      override: true,
+    );
+
+    return chain.proceed(updatedRequest);
+  }
 }
 
 class ApiKeyInterceptor implements chopper.Interceptor {
