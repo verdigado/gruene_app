@@ -1,46 +1,48 @@
+import 'package:gruene_app/app/models/division_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 
 class NewsModel {
   String id;
   String title;
-  String abstract;
+  String summary;
   String content;
   String author;
   String image;
   String type;
-  String? creator;
+  DivisionModel? division;
   List<String> categories;
-  DateTime date;
+  DateTime createdAt;
   bool bookmarked;
 
   NewsModel({
     required this.id,
     required this.title,
-    required this.abstract,
+    required this.summary,
     required this.content,
     required this.author,
     required this.image,
     required this.type,
-    required this.creator,
+    required this.division,
     required this.categories,
-    required this.date,
+    required this.createdAt,
     required this.bookmarked,
   });
 
   static NewsModel fromApi(News news) {
+    final division = news.division;
     return NewsModel(
       id: news.id,
       title: news.title,
-      abstract: news.summary ?? '',
+      summary: news.summary ?? 'Leere Zusammenfassung.',
       content: news.body.content,
-      author: '',
+      author: 'Peter Platzhalter',
+      // TODO: Use placeholder as long as drupal blocks image access
       // image: news.featuredImage?.original.url ?? 'assets/graphics/placeholders/placeholder_1.jpg',
-      // use placeholder as long as drupal blocks image access
-      image: 'assets/graphics/placeholders/placeholder_2.jpg',
-      type: news.division?.shortName ?? '',
-      creator: news.categories.isNotEmpty ? news.categories.first.label : null,
-      categories: news.categories.map((cat) => cat.label).toList(),
-      date: news.createdAt,
+      image: 'assets/graphics/placeholders/placeholder_${int.parse(news.id) % 3 + 1}.jpg',
+      type: news.categories.firstOrNull?.label ?? '',
+      division: division != null ? DivisionModel.fromApi(division) : null,
+      categories: news.categories.map((category) => category.label).toList(),
+      createdAt: news.createdAt,
       bookmarked: false,
     );
   }
