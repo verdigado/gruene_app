@@ -52,6 +52,7 @@ dependencies:
   photo_view: ^0.15.0
   wheel_slider: ^1.2.1
   geolocator: ^13.0.2
+  flutter_html: ^3.0.0-beta.2
 
 dev_dependencies:
 

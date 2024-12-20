@@ -16,6 +16,7 @@ class NewsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final division = news.division;
     return Container(
       height: 384,
       decoration: BoxDecoration(
@@ -64,21 +65,21 @@ class NewsCard extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(news.title, style: theme.textTheme.titleLarge),
+                    Text(news.title, style: theme.textTheme.titleLarge, maxLines: 2, overflow: TextOverflow.ellipsis),
                     SizedBox(height: 8),
                     Expanded(
                       child: Text(
-                        news.abstract,
+                        news.summary,
                         maxLines: 4,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
-                    if (news.creator != null)
+                    if (division != null)
                       Container(
                         margin: EdgeInsets.only(top: 16),
                         child: Chip(
                           label: Text(
-                            news.creator!,
+                            division.levelName,
                             style: theme.textTheme.labelSmall,
                           ),
                           padding: EdgeInsets.symmetric(vertical: 4, horizontal: 8),
