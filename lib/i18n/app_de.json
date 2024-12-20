@@ -141,7 +141,8 @@
     "legalNotice": "Impressum",
     "dataProtectionStatement": "Datenschutzerklärung",
     "termsOfUse": "Nutzungsbedingungen",
-    "logout": "Ausloggen"
+    "logout": "Ausloggen",
+    "version": "Version ${version}"
   },
   "tools": {
     "tools": "Tools",
