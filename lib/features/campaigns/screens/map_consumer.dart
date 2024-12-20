@@ -7,6 +7,7 @@ import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
+import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
@@ -141,6 +142,12 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
   void addMapLayersForContext(MapLibreMapController mapLibreController) async {
     final focusAreaBorderLayerId = '${_focusAreadId}_border';
+
+    final data = MarkerItemHelper.transformMapLayerDataToGeoJson([]).toJson();
+    await mapLibreController.addGeoJsonSource(
+      _focusAreadId,
+      data,
+    );
 
     await mapLibreController.addFillLayer(
       _focusAreadId,

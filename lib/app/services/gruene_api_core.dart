@@ -56,7 +56,7 @@ class AuthInterceptor implements chopper.Interceptor {
     final updatedRequest = chopper.applyHeader(
       chain.request,
       HttpHeaders.authorizationHeader,
-      '${_AuthConstants.bearerPrefix} ${token!}1',
+      '${_AuthConstants.bearerPrefix} ${token!}',
       // Do not override existing header
       override: false,
     );
