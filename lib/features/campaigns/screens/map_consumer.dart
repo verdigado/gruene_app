@@ -110,7 +110,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
       coord,
       popupWidget,
       () => _editPoi(() => getPoiEdit(poi)),
-      desiredSize: desiredSize,
+      desiredSize,
     );
   }
 

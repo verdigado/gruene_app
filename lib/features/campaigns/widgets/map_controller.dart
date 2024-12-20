@@ -27,9 +27,9 @@ abstract class MapController {
   void showMapPopover(
     LatLng coord,
     Widget widget,
-    OnEditItemClickedCallback? onEditItemClicked, {
-    Size? desiredSize,
-  });
+    OnEditItemClickedCallback? onEditItemClicked,
+    Size desiredSize,
+  );
 
   void setLayerSource(String sourceId, List<MapLayerModel> layerData);
 
