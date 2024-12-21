@@ -24,6 +24,6 @@ steps:
       command: echo "export ANDROID_RELEASE_ID='$(yarn --silent github-release create android ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}")'" >> ${BASH_ENV}
       working_directory: tools
   - run:
-      name: Upload Apks to Github Release
-      command: yarn github-release-asset upload android --releaseId ${ANDROID_RELEASE_ID} --files "$(ls ~/attached_workspace/*.apk)" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+      name: Add Builds to Github Release
+      command: yarn github-release-asset upload android --releaseId ${ANDROID_RELEASE_ID} --files "$(ls ~/attached_workspace/*.{apk,aab})" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
       working_directory: tools

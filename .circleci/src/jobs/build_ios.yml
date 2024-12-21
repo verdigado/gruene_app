@@ -20,7 +20,8 @@ steps:
       command: bundle exec fastlane ios build version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
       working_directory: ios
   - store_artifacts:
-      path: app-release.ipa
+      path: ~/app-release.ipa
+      destination: app-release.ipa
   - persist_to_workspace:
       root: ~/
       paths:
