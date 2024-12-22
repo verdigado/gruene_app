@@ -280,7 +280,8 @@ jobs:
                 name: '[FL] Build'
                 working_directory: ios
             - store_artifacts:
-                path: app-release.ipa
+                destination: app-release.ipa
+                path: ~/app-release.ipa
             - persist_to_workspace:
                 paths:
                     - app-release.ipa
@@ -357,8 +358,8 @@ jobs:
                 name: Create Github Release
                 working_directory: tools
             - run:
-                command: yarn github-release-asset upload android --releaseId ${ANDROID_RELEASE_ID} --files "$(ls ~/attached_workspace/*.apk)" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
-                name: Upload Apks to Github Release
+                command: yarn github-release-asset upload android --releaseId ${ANDROID_RELEASE_ID} --files "$(ls ~/attached_workspace/*.{apk,aab})" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Add Builds to Github Release
                 working_directory: tools
     deliver_ios:
         environment:
@@ -391,8 +392,12 @@ jobs:
                         name: '[FL] Beta Upload (TestFlight)'
                         working_directory: ios
             - run:
-                command: yarn --silent github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}"
+                command: echo "export IOS_RELEASE_ID='$(yarn --silent github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}")'" >> ${BASH_ENV}
                 name: Create Github Release
+                working_directory: tools
+            - run:
+                command: yarn github-release-asset upload ios --releaseId ${IOS_RELEASE_ID} --files "$(ls ~/attached_workspace/*.ipa)" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Add Build to Github Release
                 working_directory: tools
 parameters:
     api_triggered:
