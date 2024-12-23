@@ -133,7 +133,7 @@ class GrueneApiCampaignsService {
       address: posterUpdate.address.transformToPoiAddress(),
       poster: PoiPoster(
         status: posterUpdate.status.transformToPoiPosterStatus(),
-        comment: posterUpdate.comment,
+        comment: posterUpdate.comment.isEmpty ? null : posterUpdate.comment,
       ),
     );
     var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: posterUpdate.id, body: dtoUpdate);
