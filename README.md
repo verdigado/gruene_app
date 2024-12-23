@@ -1,5 +1,12 @@
 # Gruene App
 
+## Contents
+
+- [Conventions](#conventions)
+- [Environment Variables](#environment-variables)
+- [Compiling the App](#compiling-the-app)
+- [CI/CD](docs/cicd.md)
+
 ## Conventions
 
 ### Code Style
