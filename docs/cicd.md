@@ -172,24 +172,3 @@ fastlane match development
 
 The current certificates and provisioning profiles can be viewed in
 [Appstoreconnect](https://developer.apple.com/account/resources/certificates).
-
-## Versioning
-
-Versions consist of a version name and a version code and are set in [version.yaml](../version.yaml).
-Versions are automatically bumped and committed using the corresponding scripts in [tools](../tools) in the
-delivery [workflows](#workflows) in the CI.
-
-### Version Name
-
-We use the [calver schema](https://calver.org) `YYYY.MM.PATCH` for versioning.
-`PATCH` is a counter for the number of releases in the corresponding month starting with 0.
-
-Examples:
-
-- First versions of 2024: `2024.1.0`, `2024.1.1`, `2024.1.2`.
-- First version of February 2024: `2024.2.0`.
-
-### Version Code
-
-An additional consecutive version code is used for unique identification in the app stores.
-The version code has to be incremented for every new release uploaded to the stores.
