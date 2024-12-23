@@ -129,10 +129,10 @@ extension PoiAddressParsing on PoiAddress {
   AddressModel transformToAddressModel() {
     final address = this;
     return AddressModel(
-      street: address.street,
-      houseNumber: address.houseNumber,
-      zipCode: address.zip,
-      city: address.city,
+      street: address.street ?? '',
+      houseNumber: address.houseNumber ?? '',
+      zipCode: address.zip ?? '',
+      city: address.city ?? '',
     );
   }
 }
@@ -141,10 +141,10 @@ extension AddressModelParsing on AddressModel {
   PoiAddress transformToPoiAddress() {
     final address = this;
     return PoiAddress(
-      city: address.city,
-      zip: address.zipCode,
-      street: address.street,
-      houseNumber: address.houseNumber,
+      city: address.city.isEmpty ? null : address.city,
+      zip: address.zipCode.isEmpty ? null : address.zipCode,
+      street: address.street.isEmpty ? null : address.street,
+      houseNumber: address.houseNumber.isEmpty ? null : address.houseNumber,
     );
   }
 }
@@ -168,7 +168,7 @@ extension PoiParsing on Poi {
     }
     return DoorDetailModel(
       id: poi.id,
-      address: poi.address!.transformToAddressModel(),
+      address: poi.address.transformToAddressModel(),
       openedDoors: poi.house!.countOpenedDoors.toInt(),
       closedDoors: poi.house!.countClosedDoors.toInt(),
     );
@@ -183,7 +183,7 @@ extension PoiParsing on Poi {
       id: poi.id,
       thumbnailUrl: _getThumbnailImageUrl(poi),
       imageUrl: _getImageUrl(poi),
-      address: poi.address!.transformToAddressModel(),
+      address: poi.address.transformToAddressModel(),
       status: poi.poster!.status.transformToModelPosterStatus(),
       comment: poi.poster!.comment ?? '',
     );
@@ -196,7 +196,7 @@ extension PoiParsing on Poi {
     }
     return FlyerDetailModel(
       id: poi.id,
-      address: poi.address!.transformToAddressModel(),
+      address: poi.address.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
     );
   }
@@ -210,7 +210,7 @@ extension PoiParsing on Poi {
       id: poi.id,
       thumbnailUrl: _getThumbnailImageUrl(poi),
       imageUrl: _getImageUrl(poi),
-      address: poi.address!.transformToAddressModel(),
+      address: poi.address.transformToAddressModel(),
       status: poi.poster!.status.translatePosterStatus(),
       lastChangeStatus: poi._getLastChangeStatus(),
       lastChangeDateTime: poi._getLastChangeDateTimeInfo(),
