@@ -142,7 +142,8 @@
     "dataProtectionStatement": "Datenschutzerklärung",
     "termsOfUse": "Nutzungsbedingungen",
     "logout": "Ausloggen",
-    "version": "Version ${version}"
+    "version": "Version ${version}",
+    "notImplemented": "(folgt)"
   },
   "tools": {
     "tools": "Tools",
