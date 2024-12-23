@@ -3,7 +3,7 @@ import 'package:flutter_html/flutter_html.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/utils/format_date.dart';
-import 'package:gruene_app/app/utils/open_inappbrowser.dart';
+import 'package:gruene_app/app/utils/open_url.dart';
 import 'package:gruene_app/features/news/models/news_model.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart' as api;
@@ -98,7 +98,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                               SizedBox(height: 24),
                               Html(
                                 data: news.content,
-                                onLinkTap: (url, _, __) => url != null ? openInAppBrowser(url, context) : null,
+                                onLinkTap: (url, _, __) => url != null ? openUrl(url, context) : null,
                               ),
                             ],
                           ),
