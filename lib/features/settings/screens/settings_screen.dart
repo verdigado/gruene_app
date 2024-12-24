@@ -6,7 +6,7 @@ import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
-import 'package:gruene_app/app/utils/open_inappbrowser.dart';
+import 'package:gruene_app/app/utils/open_url.dart';
 import 'package:gruene_app/app/widgets/section_title.dart';
 import 'package:gruene_app/features/settings/widgets/settings_item.dart';
 import 'package:gruene_app/features/settings/widgets/version_number.dart';
@@ -42,17 +42,17 @@ class SettingsScreen extends StatelessWidget {
         SectionTitle(title: t.settings.legalSettings),
         SettingsItem(
           title: t.settings.legalNotice,
-          onPress: () => openInAppBrowser(legalNoticeUrl, context),
+          onPress: () => openUrl(legalNoticeUrl, context),
           isExternal: true,
         ),
         SettingsItem(
           title: t.settings.dataProtectionStatement,
-          onPress: () => openInAppBrowser(dataProtectionStatementUrl, context),
+          onPress: () => openUrl(dataProtectionStatementUrl, context),
           isExternal: true,
         ),
         SettingsItem(
           title: t.settings.termsOfUse,
-          onPress: () => openInAppBrowser(termsOfUseUrl, context),
+          onPress: () => openUrl(termsOfUseUrl, context),
           isExternal: true,
         ),
         isLoggedIn
