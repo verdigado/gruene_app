@@ -24,11 +24,11 @@ class SettingsScreen extends StatelessWidget {
       padding: const EdgeInsets.only(top: 32),
       children: [
         SectionTitle(title: t.settings.campaignsSettings),
-        SettingsItem(title: t.settings.inviteNonMember, onPress: () => {}),
-        SettingsItem(title: t.settings.offlineMaps, onPress: () => {}),
+        SettingsItem(title: t.settings.inviteNonMember, onPress: () => {}, isImplemented: false),
+        SettingsItem(title: t.settings.offlineMaps, onPress: () => {}, isImplemented: false),
         SectionTitle(title: t.settings.generalSettings),
-        SettingsItem(title: t.settings.pushNotifications, onPress: () => {}),
-        SettingsItem(title: t.settings.accessibility, onPress: () => {}),
+        SettingsItem(title: t.settings.pushNotifications, onPress: () => {}, isImplemented: false),
+        SettingsItem(title: t.settings.accessibility, onPress: () => {}, isImplemented: false),
         SettingsItem(
           title: t.settings.support.support,
           onPress: () => context.pushNamed(Routes.support.name!),
@@ -37,8 +37,9 @@ class SettingsScreen extends StatelessWidget {
           title: t.settings.actionNetwork,
           onPress: () => {},
           isExternal: true,
+          isImplemented: false,
         ),
-        SettingsItem(title: t.settings.newsletter, onPress: () => {}, isExternal: true),
+        SettingsItem(title: t.settings.newsletter, onPress: () => {}, isExternal: true, isImplemented: false),
         SectionTitle(title: t.settings.legalSettings),
         SettingsItem(
           title: t.settings.legalNotice,
