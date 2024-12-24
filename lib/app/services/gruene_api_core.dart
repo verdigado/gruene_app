@@ -13,12 +13,12 @@ Future<GrueneApi> createGrueneApiClient() async {
   List<chopper.Interceptor> interceptors = [UserAgentInterceptor(userAgentHeaderValue)];
   chopper.Authenticator? authenticator;
 
-  if (Config.gruenesNetzApiKey.isNotEmpty) {
-    interceptors.add(ApiKeyInterceptor());
+  if (Config.gruenesNetzAccessToken.isNotEmpty) {
+    interceptors.add(AuthInterceptor.withFixedAccessToken(Config.gruenesNetzAccessToken));
   } else {
     AuthRepository repo = AuthRepository();
     authenticator = AccessTokenAuthenticator(repo);
-    interceptors.add(AuthInterceptor(repo));
+    interceptors.add(AuthInterceptor.withAuthenticatorRepository(repo));
   }
 
   return GrueneApi.create(
@@ -62,33 +62,23 @@ class UserAgentInterceptor implements chopper.Interceptor {
   }
 }
 
-class ApiKeyInterceptor implements chopper.Interceptor {
-  @override
-  FutureOr<chopper.Response<BodyType>> intercept<BodyType>(chopper.Chain<BodyType> chain) {
-    final updatedRequest = chopper.applyHeader(
-      chain.request,
-      'x-api-key',
-      Config.gruenesNetzApiKey,
-      // Do not override existing header
-      override: false,
-    );
-
-    return chain.proceed(updatedRequest);
-  }
-}
-
 class _AuthConstants {
   static const bearerPrefix = 'Bearer';
 }
 
 class AuthInterceptor implements chopper.Interceptor {
-  const AuthInterceptor(this._repo);
+  const AuthInterceptor._(this._authRepo, this._accessToken);
 
-  final AuthRepository _repo;
+  const AuthInterceptor.withFixedAccessToken(String accessToken) : this._(null, accessToken);
+  const AuthInterceptor.withAuthenticatorRepository(AuthRepository authRepo) : this._(authRepo, null);
+
+  final AuthRepository? _authRepo;
+
+  final String? _accessToken;
 
   @override
   FutureOr<chopper.Response<BodyType>> intercept<BodyType>(chopper.Chain<BodyType> chain) async {
-    var token = await _repo.getAccessToken();
+    var token = _accessToken ?? await _authRepo?.getAccessToken();
     final updatedRequest = chopper.applyHeader(
       chain.request,
       HttpHeaders.authorizationHeader,
