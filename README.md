@@ -14,17 +14,16 @@
 
 1. Install the Android SDK via the [Android plugin](https://www.jetbrains.com/help/idea/create-your-first-android-application.html#754fd) or Android Studio
 2. Install [fvm](https://fvm.app/documentation/getting-started/installation) (flutter version manager)
-3. Install [fvm](https://fvm.app/documentation/getting-started/installation) (flutter version manager)
-4. Install flutter
+3. Install flutter
 ``` shell
 fvm install
 ```
-5. Configure local environment
+4. Configure local environment
 ``` shell
 cp .env.dev .env
 ```
-6. [Optional] Adjust the environment variables in `.env` as needed
-7. [Optional] Open IntelliJ settings and
+5. [Optional] Adjust the environment variables in `.env` as needed
+6. [Optional] Open IntelliJ settings and
     - Install the Android plugin and set the Android SDK path
     - Install the Dart plugin and set the Dart SDK path
     - Install the Flutter plugin and set the Flutter SDK path

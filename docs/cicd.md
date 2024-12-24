@@ -8,9 +8,9 @@
 - [Configuring Secrets](#configuring-secrets)
 - [Workflows](#workflows)
 - [Creating a new Release or Promotion](#creating-a-new-release-or-promotion)
+- [GitHub Access](#github-access)
 - [Fastlane](#fastlane)
 - [App Signing](#app-signing)
-- [Versioning](#versioning)
 
 ## CI/CD Tech Stack
 
@@ -118,6 +118,18 @@ Usually, the order would be as follows:
 
 In special cases (e.g. for an urgent hotfix), releases can be directly delivered to production (ios: distribution) by
 triggering the `production_delivery` workflow.
+
+### GitHub Access
+
+CircleCI is configured to use different methods to access GitHub.
+- For normal read-only access to this repository, CircleCI automatically adds
+a [deploy key](https://github.com/verdigado/gruene_app/settings/keys) during initial setup of CircleCI for the repo.
+- For write access to this repository the [VerdigadoBot GitHub app](https://github.com/organizations/verdigado/settings/apps/verdigadobot) is used. It has to be installed in the repo.
+CircleCI has access to this app using its private key (set in [contexts](#configuring-secrets)).
+The GitHub app is used for version bump commits and the creation of tags and releases. 
+- For read-only access to additional repos, the GitHub machine user `VerdigadoCI` is used. 
+CircleCI has access to this user through a [user key](https://app.circleci.com/settings/project/github/verdigado/gruene_app/ssh).
+This is used to access the [app-signing](#app-signing) repository.
 
 ## Fastlane
 
