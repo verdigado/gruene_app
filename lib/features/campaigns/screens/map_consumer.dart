@@ -29,10 +29,18 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
   bool focusAreasVisible = false;
   final String _focusAreadId = 'focusArea';
   final _minZoomFocusAreaLayer = 11.5;
+  ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _lastInfoSnackBar;
+  String? _lastFocusAreaId;
 
   MapConsumer(this._nominatimService);
 
   GrueneApiCampaignsService get campaignService;
+
+  @override
+  void dispose() {
+    _lastInfoSnackBar?.close();
+    super.dispose();
+  }
 
   void onMapCreated(MapController controller) {
     mapController = controller;
@@ -211,22 +219,46 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
       if (feature['properties'] == null) return;
       final properties = feature['properties'] as Map<String, dynamic>;
       var infoText = <String>[];
+
+      String? currentFocusAreaId;
+      if (properties['id'] != null) {
+        currentFocusAreaId = properties['id'].toString();
+        if (_lastFocusAreaId != null && _lastFocusAreaId == currentFocusAreaId) {
+          hideCurrentSnackBar();
+          return;
+        }
+      }
       if (properties['info'] != null) infoText.add(properties['info'] as String);
       if (properties['score_info'] != null) infoText.add(properties['score_info'] as String);
 
-      if (infoText.isNotEmpty) _showInfo(infoText.join('\n'));
+      if (infoText.isNotEmpty) {
+        _lastFocusAreaId = currentFocusAreaId;
+        _showInfo(infoText.join('\n'));
+      }
     }
   }
 
-  void _showInfo(String infoText) {
+  void hideCurrentSnackBar() {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
-    ScaffoldMessenger.of(context).showSnackBar(
+  }
+
+  void _showInfo(String infoText) {
+    var scaffoldMessenger = ScaffoldMessenger.of(context);
+
+    scaffoldMessenger.removeCurrentSnackBar();
+    _lastInfoSnackBar = scaffoldMessenger.showSnackBar(
       SnackBar(
         content: Text(
           infoText,
         ),
-        duration: Duration(milliseconds: 800),
+        duration: Duration(days: 1),
+        showCloseIcon: true,
       ),
     );
+
+    _lastInfoSnackBar!.closed.then((SnackBarClosedReason reason) {
+      _lastFocusAreaId = null;
+      _lastInfoSnackBar = null;
+    });
   }
 }
