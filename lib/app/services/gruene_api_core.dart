@@ -13,8 +13,8 @@ Future<GrueneApi> createGrueneApiClient() async {
   List<chopper.Interceptor> interceptors = [UserAgentInterceptor(userAgentHeaderValue)];
   chopper.Authenticator? authenticator;
 
-  if (Config.gruenesNetzAccessToken.isNotEmpty) {
-    interceptors.add(AuthInterceptor.withFixedAccessToken(Config.gruenesNetzAccessToken));
+  if (Config.grueneApiAccessToken.isNotEmpty) {
+    interceptors.add(AuthInterceptor.withFixedAccessToken(Config.grueneApiAccessToken));
   } else {
     AuthRepository repo = AuthRepository();
     authenticator = AccessTokenAuthenticator(repo);
@@ -22,7 +22,7 @@ Future<GrueneApi> createGrueneApiClient() async {
   }
 
   return GrueneApi.create(
-    baseUrl: Uri.parse(Config.gruenesNetzApiUrl),
+    baseUrl: Uri.parse(Config.grueneApiUrl),
     authenticator: authenticator,
     interceptors: interceptors,
   );

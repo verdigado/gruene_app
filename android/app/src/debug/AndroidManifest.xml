@@ -4,4 +4,6 @@
          to allow setting breakpoints, to provide hot reload, etc.
     -->
     <uses-permission android:name="android.permission.INTERNET"/>
+   <!-- this setting allows using local keycloak and api instances via non-https connection in development -->
+    <application android:usesCleartextTraffic="true"/>
 </manifest>
