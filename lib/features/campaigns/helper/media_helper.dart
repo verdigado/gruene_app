@@ -18,6 +18,27 @@ class MediaHelper {
         builder: (context) {
           return CameraAwesomeBuilder.awesome(
             saveConfig: SaveConfig.photo(),
+            bottomActionsBuilder: (state) => AwesomeBottomActions(
+              state: state,
+              left: AwesomeCameraSwitchButton(
+                state: state,
+                scale: 1.0,
+                onSwitchTap: (state) {
+                  state.switchCameraSensor(
+                    aspectRatio: state.sensorConfig.aspectRatio,
+                  );
+                },
+              ),
+              right: GestureDetector(
+                onTap: () => Navigator.maybePop(context),
+                child: Icon(
+                  Icons.close,
+                  size: 40,
+                  color: ThemeColors.background,
+                ),
+              ),
+            ),
+            availableFilters: [],
             onMediaCaptureEvent: (mediaCapture) async {
               if (mediaCapture.status == MediaCaptureStatus.success) {
                 final imageFile = File(mediaCapture.captureRequest.path!);
