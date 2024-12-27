@@ -79,6 +79,8 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       loadDataLayers: loadDataLayers,
     );
 
+    final theme = Theme.of(localContext);
+
     return Column(
       children: [
         FilterChipCampaign(postersFilter, <String, List<String>>{}),
@@ -91,17 +93,25 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
                 left: 20,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: ThemeColors.background,
-                    foregroundColor: ThemeColors.textDisabled,
+                    backgroundColor: ThemeColors.secondary,
+                    foregroundColor: ThemeColors.background,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
-                        color: ThemeColors.textDisabled,
+                        color: ThemeColors.background,
                       ),
                     ),
+                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   ),
                   onPressed: showMyPosters,
-                  child: Text(t.campaigns.posters.my_posters_action),
+                  child: Text(
+                    t.campaigns.posters.my_posters_action,
+                    style: theme.textTheme.bodyMedium?.apply(
+                      color: ThemeColors.background,
+                      letterSpacingDelta: 1,
+                      fontWeightDelta: 5,
+                    ),
+                  ),
                 ),
               ),
             ],
