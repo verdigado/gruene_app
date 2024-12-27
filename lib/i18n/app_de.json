@@ -20,7 +20,6 @@
   "campaigns": {
     "campaigns": "Wahlkampf",
     "label": "Wahlkampf",
-    "info_details": "Infos & Bearbeiten",
     "filters": {
       "focusAreas": "Fokusgebiete",
       "routes": "Routen",
