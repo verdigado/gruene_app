@@ -89,6 +89,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValid
                     sliderColor: ThemeColors.text,
                     borderColor: lightBorderColor,
                     actionColor: theme.colorScheme.secondary,
+                    sliderInterval: 25,
                     sliderInputRange: SliderInputRange.numbers0To999,
                   ),
                 ),
