@@ -25,7 +25,7 @@ class MarkerItemHelper {
   }
 
   static Feature<Polygon> transformMapLayerModelToGeoJson(MapLayerModel mapLayerModel) {
-    var opacities = [0, 0.15, 0.4, 0.55, 0.85];
+    var opacities = [0, 0.15, 0.4, 0.55, 0.75];
     final scoreColor = ThemeColors.focusAreaBaseColor.toHexStringRGB();
     var score = mapLayerModel.score.toInt();
     var scoreIndex = score - 1;

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/map_layer_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
@@ -66,9 +67,6 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   bool _permissionGiven = false;
   final locationGrueneHQ = LatLng(52.528810, 13.379300);
 
-  static const markerSourceName = 'markers';
-  static const markerLayerName = 'markerSymbols';
-  static const addMarkerAssetName = 'assets/symbols/add_marker.svg';
   static const minZoomMarkerItems = 12.0;
   static const double zoomLevelUserLocation = 16;
   static const double zoomLevelUserOverview = 8.5;
@@ -107,7 +105,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
           ),
           child: GestureDetector(
             onTap: _onIconTap,
-            child: SvgPicture.asset(addMarkerAssetName),
+            child: SvgPicture.asset(CampaignConstants.addMarkerAssetName),
           ),
         ),
       );
@@ -192,7 +190,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     final onFeatureClick = widget.onFeatureClick;
     final onNoFeatureClick = widget.onNoFeatureClick;
 
-    List<dynamic> jsonFeatures = await getFeaturesInScreen(point, [markerLayerName]);
+    List<dynamic> jsonFeatures = await getFeaturesInScreen(point, [CampaignConstants.markerLayerName]);
     final features = jsonFeatures.map((e) => e as Map<String, dynamic>).where((x) {
       // if (x.containsKey('id')) return true;
       if (x['properties'] == null) return false;
@@ -256,13 +254,13 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     }
 
     await _controller!.addGeoJsonSource(
-      markerSourceName,
+      CampaignConstants.markerSourceName,
       MarkerItemHelper.transformListToGeoJson(<MarkerItemModel>[]).toJson(),
     );
 
     await _controller!.addSymbolLayer(
-      markerSourceName,
-      markerLayerName,
+      CampaignConstants.markerSourceName,
+      CampaignConstants.markerLayerName,
       const SymbolLayerProperties(
         iconImage: ['get', 'status_type'],
         iconSize: 2,
@@ -283,7 +281,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void setMarkerSource(List<MarkerItemModel> poiList) {
     _markerItemManager.addMarkers(poiList);
     _controller!.setGeoJsonSource(
-      markerSourceName,
+      CampaignConstants.markerSourceName,
       MarkerItemHelper.transformListToGeoJson(_markerItemManager.getMarkers()).toJson(),
     );
   }
@@ -331,7 +329,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void removeMarkerItem(int markerItemId) {
     _markerItemManager.removeMarker(markerItemId);
     _controller!.setGeoJsonSource(
-      markerSourceName,
+      CampaignConstants.markerSourceName,
       MarkerItemHelper.transformListToGeoJson(_markerItemManager.getMarkers()).toJson(),
     );
   }

@@ -5,6 +5,10 @@ class CampaignConstants {
   static const posterOkAssetName = 'assets/symbols/posters/poster.png';
   static const posterDamagedAssetName = 'assets/symbols/posters/poster_damaged.png';
   static const posterRemovedAssetName = 'assets/symbols/posters/poster_removed.png';
+  static const addMarkerAssetName = 'assets/symbols/add_marker.svg';
+
+  static const markerSourceName = 'markers';
+  static const markerLayerName = 'markerSymbols';
 
   static Map<int, String> scoreInfos = {
     1: 'Stufe 1: wenige Plakate aufhängen, keine Flyer verteilen, keine Haustüren',

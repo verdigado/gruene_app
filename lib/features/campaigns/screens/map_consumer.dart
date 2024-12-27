@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
@@ -172,6 +173,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
       ),
       enableInteraction: false,
       minzoom: _minZoomFocusAreaLayer,
+      belowLayerId: CampaignConstants.markerLayerName,
     );
 
     await mapLibreController.addLineLayer(
