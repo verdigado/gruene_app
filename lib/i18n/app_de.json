@@ -40,6 +40,7 @@
       "date_format": "dd.MM.yyyy",
       "time_format": "HH:mm",
       "datetime_display_template": "{date} um {time}",
+      "info_poster_guidelines": "Wusstest Du, dass es je nach Region unterschiedliche gesetzliche Vorgaben und Regeln für das Aufhängen von Plakaten gibt? Bitte wende Dich an Deinen Orts- oder Kreisverband für weitere Informationen, bevor Du Plakate aufhängst!",
       "status": {
         "damaged": {
           "label": "Beschädigt",

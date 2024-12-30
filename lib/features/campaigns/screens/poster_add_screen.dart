@@ -50,6 +50,7 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Container(
       margin: EdgeInsets.all(24),
       child: Column(
@@ -85,6 +86,26 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
             cityTextController: cityTextController,
           ),
           SaveCancelOnCreateWidget(onSave: _onSavePressed),
+          Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                color: ThemeColors.background,
+              ),
+              SizedBox(width: 10),
+              SizedBox(
+                width: mediaQuery.size.width - 82,
+                child: Text(
+                  t.campaigns.posters.info_poster_guidelines,
+                  style: theme.textTheme.labelMedium!.apply(
+                    color: ThemeColors.background,
+                    fontWeightDelta: 3,
+                    letterSpacingDelta: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
