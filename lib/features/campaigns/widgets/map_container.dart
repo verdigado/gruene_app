@@ -17,6 +17,7 @@ import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/widgets/location_button.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 typedef OnMapCreatedCallback = void Function(MapController controller);
@@ -413,11 +414,12 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     Size desiredSize = const Size(100, 100),
   }) {
     final mediaQuery = MediaQuery.of(context);
+    final theme = Theme.of(context);
     var pixelRatio = Platform.isAndroid ? mediaQuery.devicePixelRatio : 1.0;
 
     setState(() {
       popups.clear();
-      num popupHeight = desiredSize.height;
+      num popupHeight = desiredSize.height - 15;
       num popupWidth = desiredSize.width;
       popups.add(
         GestureDetector(
@@ -435,34 +437,70 @@ class _MapContainerState extends State<MapContainer> implements MapController {
       final heightArrowTriangle = 10.0;
       popups.add(
         Positioned(
-          top: ((pointOnScreen.y / pixelRatio) - popupHeight).toDouble() - (5 + heightArrowTriangle),
+          top: ((pointOnScreen.y / pixelRatio) - popupHeight).toDouble() - (5 + heightArrowTriangle) - 5,
           left: (pointOnScreen.x / pixelRatio) - (popupWidth / 2),
-          child: GestureDetector(
-            onTap: () => onTapPopup(onEditItemClicked),
-            child: Column(
-              children: [
-                Container(
-                  decoration: BoxDecoration(
-                    color: ThemeColors.background,
-                    borderRadius: BorderRadius.circular(5),
-                  ),
-                  padding: EdgeInsets.only(top: 3, left: 5, right: 5),
-                  width: popupWidth.toDouble(),
-                  height: popupHeight.toDouble(),
-                  child: widget,
+          child: Column(
+            children: [
+              Container(
+                width: popupWidth.toDouble(),
+                height: popupHeight.toDouble() + 5,
+                decoration: BoxDecoration(
+                  color: ThemeColors.background,
+                  borderRadius: BorderRadius.circular(5),
                 ),
-                Center(
-                  child: ClipPath(
-                    clipper: MyTriangle(),
-                    child: Container(
-                      color: ThemeColors.background,
-                      width: 15,
-                      height: heightArrowTriangle,
+                padding: EdgeInsets.only(top: 3, left: 5, right: 5),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      padding: EdgeInsets.symmetric(vertical: 4),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              setState(() {
+                                popups.clear();
+                              });
+                            },
+                            child: Icon(
+                              Icons.close,
+                              size: 14,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () => onTapPopup(onEditItemClicked),
+                            child: Text(
+                              t.common.actions.edit,
+                              style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textDark, fontWeightDelta: 2),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    GestureDetector(
+                      onTap: () => onTapPopup(onEditItemClicked),
+                      child: Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5),
+                        width: popupWidth.toDouble(),
+                        height: popupHeight.toDouble() - 25,
+                        child: widget,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Center(
+                child: ClipPath(
+                  clipper: MyTriangle(),
+                  child: Container(
+                    color: ThemeColors.background,
+                    width: 15,
+                    height: heightArrowTriangle,
                   ),
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ),
       );

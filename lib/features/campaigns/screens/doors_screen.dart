@@ -123,7 +123,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       getPoi,
       getPoiDetail,
       getEditPoiWidget,
-      desiredSize: Size(145, 95),
+      desiredSize: Size(145, 110),
     );
   }
 

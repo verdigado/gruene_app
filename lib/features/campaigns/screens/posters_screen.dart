@@ -170,7 +170,13 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       );
     }
 
-    super.onFeatureClick<PosterDetailModel>(rawFeature, _getPoi, getPoiDetailWidget, _getEditPosterWidget);
+    super.onFeatureClick<PosterDetailModel>(
+      rawFeature,
+      _getPoi,
+      getPoiDetailWidget,
+      _getEditPosterWidget,
+      desiredSize: Size(150, 150),
+    );
   }
 
   void _onNoFeatureClick(Point<double> point) {

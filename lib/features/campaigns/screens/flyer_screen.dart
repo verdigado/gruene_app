@@ -115,7 +115,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       getPoi,
       getPoiDetail,
       getEditPoiWidget,
-      desiredSize: Size(145, 70),
+      desiredSize: Size(150, 92),
     );
   }
 

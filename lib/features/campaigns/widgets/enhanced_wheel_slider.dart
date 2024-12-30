@@ -74,38 +74,37 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
       ),
       child: Column(
         children: [
-          Stack(
-            children: [
-              Align(
-                alignment: Alignment.centerLeft,
-                child: Text(
-                  widget.labelText,
-                  style: theme.textTheme.labelMedium?.apply(
-                    color: _labelColor,
-                    fontWeightDelta: 5,
+          GestureDetector(
+            onTap: () => setState(() {
+              if (!showSlider) {
+                final val = int.tryParse(widget.textController.text) ?? _nCurrentValue;
+
+                _nCurrentValue = val;
+              }
+              showSlider = !showSlider;
+            }),
+            child: Stack(
+              children: [
+                Align(
+                  alignment: Alignment.centerLeft,
+                  child: Text(
+                    widget.labelText,
+                    style: theme.textTheme.labelMedium?.apply(
+                      color: _labelColor,
+                      fontWeightDelta: 5,
+                    ),
                   ),
                 ),
-              ),
-              Align(
-                alignment: Alignment.centerRight,
-                child: GestureDetector(
+                Align(
+                  alignment: Alignment.centerRight,
                   child: Icon(
                     Icons.edit,
                     size: 20,
                     color: _sliderColor,
                   ),
-                  onTap: () => setState(() {
-                    // switch
-                    if (!showSlider) {
-                      final val = int.tryParse(widget.textController.text) ?? _nCurrentValue;
-
-                      _nCurrentValue = val;
-                    }
-                    showSlider = !showSlider;
-                  }),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
           SizedBox(
             height: 6,
