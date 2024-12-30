@@ -79,7 +79,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
         children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
-            child: CloseSaveWidget(onSave: _savePoster, onClose: () => _closeDialog(ModalEditResult.cancel)),
+            child: CloseSaveWidget(onClose: () => _closeDialog(ModalEditResult.cancel)),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),

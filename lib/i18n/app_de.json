@@ -45,7 +45,7 @@
       "status": {
         "damaged": {
           "label": "Beschädigt",
-          "hint": "Als zu ersetzen melden"
+          "hint": "Durch Fremdeinwirkung beschädigt"
         },
         "missing": {
           "label": "Verschollen",
@@ -56,8 +56,6 @@
           "hint": "Dauerhaft entfernt"
         }
       },
-      "status_damaged": "Beschädigt (Als zu ersetzen melden)",
-      "status_taken_down": "Als abgehängt markieren",
       "comment": {
         "label": "Beschreibung",
         "hint": "Bitte gib hierzu weitere Informationen an"
