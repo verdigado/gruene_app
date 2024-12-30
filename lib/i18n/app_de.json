@@ -66,13 +66,13 @@
     },
     "door": {
       "label": "Haustür",
-      "addDoor": "Haustür eintragen",
+      "addDoor": "Haustüren eintragen",
       "closedDoors": "Ungeöffnete Türen",
-      "editDoor": "Haustür bearbeiten",
+      "editDoor": "Haustüren bearbeiten",
       "openedDoors": "Geöffnete Türen",
       "noDoorsWarning": "Bitte gib mindestens eine Tür ein!",
       "createDoor": {
-        "hint": "Bitte trage sowohl geöffnete, als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
+        "hint": "Bitte trage sowohl geöffnete als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
       }
     },
     "flyer": {
@@ -96,7 +96,7 @@
       "street": "Straße",
       "housenumber": "Hausnr.",
       "zipcode": "PLZ",
-      "city_or_place": "Stadt / Ort"
+      "city_or_place": "Stadt/Ort"
     }
   },
   "location": {
