@@ -15,10 +15,13 @@ class EnhancedWheelSlider extends StatefulWidget {
   final Color? actionColor;
   final SliderInputRange sliderInputRange;
 
+  final int sliderInterval;
+
   const EnhancedWheelSlider({
     super.key,
     required this.labelText,
     this.initialValue = 1,
+    this.sliderInterval = 1,
     required this.textController,
     this.labelColor,
     this.borderColor,
@@ -33,7 +36,6 @@ class EnhancedWheelSlider extends StatefulWidget {
 
 class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
   int _nCurrentValue = 1;
-  // final TextEditingController _textController = TextEditingController();
 
   bool showSlider = true;
 
@@ -44,7 +46,6 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
 
   @override
   void dispose() {
-    // _textController.dispose();
     super.dispose();
   }
 
@@ -54,6 +55,8 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
     _labelColor = widget.labelColor ?? Colors.black;
     _sliderColor = widget.sliderColor ?? Colors.black;
     _actionColor = widget.actionColor ?? Colors.black;
+
+    showSlider = (_nCurrentValue % widget.sliderInterval == 0);
 
     setState(() {
       _nCurrentValue = widget.initialValue;
@@ -123,6 +126,7 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
         height: inputHeight,
         child: WheelSlider.number(
           perspective: 0.01,
+          interval: widget.sliderInterval,
           isInfinite: false,
           totalCount: widget.sliderInputRange.getMaxValue(),
           initValue: _nCurrentValue,

@@ -1,6 +1,7 @@
 {
   "common": {
     "appName": "Grüne App",
+    "error": "Fehler",
     "actions": {
       "save": "Speichern",
       "cancel": "Abbrechen",

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 mixin AddressExtension {
   abstract TextEditingController streetTextController;
@@ -40,11 +41,15 @@ mixin FlyerValidator {
   ) {
     final flyerCount = int.tryParse(flyerCountRawValue) ?? 0;
     if (flyerCount < 1) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.campaigns.flyer.noFlyerWarning),
+      final theme = Theme.of(context);
+      MotionToast.error(
+        description: Text(
+          t.campaigns.flyer.noFlyerWarning,
+          style: theme.textTheme.labelMedium!.apply(
+            color: ThemeColors.background,
+          ),
         ),
-      );
+      ).show(context);
       return null;
     }
     return (flyerCount: flyerCount);
@@ -112,11 +117,15 @@ mixin DoorValidator {
     final openedDoors = int.tryParse(openedDoorsRawValue) ?? 0;
     final closedDoors = int.tryParse(closedDoorsRawValue) ?? 0;
     if (openedDoors + closedDoors == 0) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text(t.campaigns.door.noDoorsWarning),
+      final theme = Theme.of(context);
+      MotionToast.error(
+        description: Text(
+          t.campaigns.door.noDoorsWarning,
+          style: theme.textTheme.labelMedium!.apply(
+            color: ThemeColors.background,
+          ),
         ),
-      );
+      ).show(context);
       return null;
     }
     return (closedDoors: closedDoors, openedDoors: openedDoors);
