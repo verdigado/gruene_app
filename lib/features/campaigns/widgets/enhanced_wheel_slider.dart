@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/converters.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/widgets/text_input_field.dart';
 import 'package:wheel_slider/wheel_slider.dart';
 
@@ -56,10 +57,9 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
     _sliderColor = widget.sliderColor ?? Colors.black;
     _actionColor = widget.actionColor ?? Colors.black;
 
-    showSlider = (_nCurrentValue % widget.sliderInterval == 0);
-
     setState(() {
       _nCurrentValue = widget.initialValue;
+      showSlider = (_nCurrentValue % widget.sliderInterval == 0);
     });
 
     super.initState();
@@ -148,47 +148,50 @@ class _EnhancedWheelSliderState extends State<EnhancedWheelSlider> {
         ),
       );
     } else {
-      return SizedBox(
-        height: inputHeight,
-        child: Row(
-          children: [
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: GestureDetector(
-                onTap: () => _changeValue(-1),
-                child: Icon(
-                  Icons.remove_circle,
-                  size: iconSize,
-                  color: _actionColor,
+      return Container(
+        color: ThemeColors.background,
+        child: SizedBox(
+          height: inputHeight,
+          child: Row(
+            children: [
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  onTap: () => _changeValue(widget.sliderInterval * -1),
+                  child: Icon(
+                    Icons.remove_circle,
+                    size: iconSize,
+                    color: _actionColor,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(
-              width: 6,
-            ),
-            Expanded(
-              child: TextInputField(
-                labelText: widget.labelText,
-                textController: widget.textController,
-                inputType: widget.sliderInputRange.getInputFieldType(),
-                selectAllTextOnFocus: true,
+              SizedBox(
+                width: 6,
               ),
-            ),
-            SizedBox(
-              width: 6,
-            ),
-            Container(
-              padding: EdgeInsets.only(top: 10),
-              child: GestureDetector(
-                onTap: () => _changeValue(1),
-                child: Icon(
-                  Icons.add_circle,
-                  size: iconSize,
-                  color: _actionColor,
+              Expanded(
+                child: TextInputField(
+                  labelText: widget.labelText,
+                  textController: widget.textController,
+                  inputType: widget.sliderInputRange.getInputFieldType(),
+                  selectAllTextOnFocus: true,
                 ),
               ),
-            ),
-          ],
+              SizedBox(
+                width: 6,
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10),
+                child: GestureDetector(
+                  onTap: () => _changeValue(widget.sliderInterval),
+                  child: Icon(
+                    Icons.add_circle,
+                    size: iconSize,
+                    color: _actionColor,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       );
     }
