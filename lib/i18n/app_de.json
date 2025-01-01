@@ -19,6 +19,10 @@
     "updatedAt": "Stand: ${date}"
   },
   "campaigns": {
+    "map": {
+      "mapData": "Kartendaten",
+      "osmContributors": "OpenStreetMap Mitwirkende"
+    },
     "campaigns": "Wahlkampf",
     "label": "Wahlkampf",
     "filters": {
