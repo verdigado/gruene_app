@@ -16,7 +16,7 @@ class CampaignsScreen extends StatefulWidget {
 class _CampaignsScreen extends State<CampaignsScreen> with SingleTickerProviderStateMixin {
   final List<CampaignMenuModel> campaignTabs = <CampaignMenuModel>[
     CampaignMenuModel(t.campaigns.door.label, true, DoorsScreen()),
-    CampaignMenuModel(t.campaigns.posters.label, true, PostersScreen()),
+    CampaignMenuModel(t.campaigns.poster.label, true, PostersScreen()),
     CampaignMenuModel(t.campaigns.flyer.label, true, FlyerScreen()),
     CampaignMenuModel(t.campaigns.team.label, false, TeamsScreen()),
     CampaignMenuModel(t.campaigns.statistic.label, false, StatisticsScreen()),

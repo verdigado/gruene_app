@@ -113,7 +113,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                             child: GestureDetector(
                               onTap: _deleteAndAcquireNewPhoto,
                               child: Text(
-                                t.campaigns.posters.delete_photo,
+                                t.campaigns.poster.delete_photo,
                                 style: theme.textTheme.labelMedium!.apply(
                                   color: theme.colorScheme.surface,
                                   shadows: [
@@ -135,7 +135,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                             child: GestureDetector(
                               onTap: _acquireNewPhoto,
                               child: Text(
-                                t.campaigns.posters.replace_photo,
+                                t.campaigns.poster.replace_photo,
                                 style: theme.textTheme.labelMedium!.apply(
                                   color: theme.colorScheme.surface,
                                   fontWeightDelta: 2,
@@ -160,7 +160,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
             child: Row(
-              children: [Text(t.campaigns.posters.editPoster, style: theme.textTheme.titleLarge)],
+              children: [Text(t.campaigns.poster.editPoster, style: theme.textTheme.titleLarge)],
             ),
           ),
           CreateAddressWidget(
@@ -221,8 +221,8 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
               children: [
                 Expanded(
                   child: MultiLineTextInputField(
-                    labelText: t.campaigns.posters.comment.label,
-                    hint: t.campaigns.posters.comment.hint,
+                    labelText: t.campaigns.poster.comment.label,
+                    hint: t.campaigns.poster.comment.hint,
                     textController: commentTextController,
                     borderColor: lightBorderColor,
                   ),
@@ -236,7 +236,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
               children: [
                 Flexible(
                   child: Text(
-                    t.campaigns.posters.deletePoster.hint,
+                    t.campaigns.poster.deletePoster.hint,
                     style: theme.textTheme.labelMedium?.apply(color: ThemeColors.textDisabled),
                   ),
                 ),

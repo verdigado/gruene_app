@@ -60,7 +60,7 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
             children: [
               Expanded(
                 child: Text(
-                  t.campaigns.posters.addPoster,
+                  t.campaigns.poster.addPoster,
                   style: theme.textTheme.displayMedium!.apply(color: theme.colorScheme.surface),
                 ),
               ),
@@ -96,7 +96,7 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
               SizedBox(
                 width: mediaQuery.size.width - 82,
                 child: Text(
-                  t.campaigns.posters.info_poster_guidelines,
+                  t.campaigns.poster.info_poster_guidelines,
                   style: theme.textTheme.labelMedium!.apply(
                     color: ThemeColors.background,
                     fontWeightDelta: 3,

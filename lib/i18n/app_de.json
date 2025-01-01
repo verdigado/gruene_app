@@ -28,8 +28,8 @@
       "polling_stations": "Wahllokale",
       "experience_areas": "Erfahrungsgebiete"
     },
-    "posters": {
-      "label": "Plakate",
+    "poster": {
+      "label": "Plakat",
       "addPoster": "Plakat eintragen",
       "editPoster": "Plakat bearbeiten",
       "delete_photo": "Foto löschen",

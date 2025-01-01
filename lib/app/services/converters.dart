@@ -117,9 +117,9 @@ extension PoiPosterStatusParsing on PoiPosterStatus {
   String translatePosterStatus() {
     return switch (this) {
       PoiPosterStatus.ok => '',
-      PoiPosterStatus.damaged => t.campaigns.posters.status.damaged.label,
-      PoiPosterStatus.removed => t.campaigns.posters.status.removed.label,
-      PoiPosterStatus.missing => t.campaigns.posters.status.missing.label,
+      PoiPosterStatus.damaged => t.campaigns.poster.status.damaged.label,
+      PoiPosterStatus.removed => t.campaigns.poster.status.removed.label,
+      PoiPosterStatus.missing => t.campaigns.poster.status.missing.label,
       PoiPosterStatus.swaggerGeneratedUnknown => throw UnimplementedError(),
     };
   }
@@ -220,15 +220,15 @@ extension PoiParsing on Poi {
 
   String _getLastChangeDateTimeInfo() {
     final lastChange = updatedAt.toLocal();
-    final lastChangeDate = DateFormat(t.campaigns.posters.date_format).format(lastChange);
-    final lastChangeTime = DateFormat(t.campaigns.posters.time_format).format(lastChange);
-    return t.campaigns.posters.datetime_display_template
+    final lastChangeDate = DateFormat(t.campaigns.poster.date_format).format(lastChange);
+    final lastChangeTime = DateFormat(t.campaigns.poster.time_format).format(lastChange);
+    return t.campaigns.poster.datetime_display_template
         .replaceAll('{date}', lastChangeDate)
         .replaceAll('{time}', lastChangeTime);
   }
 
   String _getLastChangeStatus() {
-    return createdAt == updatedAt ? t.campaigns.posters.created : t.campaigns.posters.updated;
+    return createdAt == updatedAt ? t.campaigns.poster.created : t.campaigns.poster.updated;
   }
 
   String? _getThumbnailImageUrl(Poi poi) {
