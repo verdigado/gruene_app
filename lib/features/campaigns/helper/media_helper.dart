@@ -29,14 +29,7 @@ class MediaHelper {
                   );
                 },
               ),
-              right: GestureDetector(
-                onTap: () => Navigator.maybePop(context),
-                child: Icon(
-                  Icons.close,
-                  size: 40,
-                  color: ThemeColors.background,
-                ),
-              ),
+              right: _getCloseButton(context),
             ),
             availableFilters: [],
             onMediaCaptureEvent: (mediaCapture) async {
@@ -50,6 +43,19 @@ class MediaHelper {
       ),
     );
     return image;
+  }
+
+  static Widget? _getCloseButton(BuildContext context) {
+    if (!Platform.isIOS) return null;
+
+    return GestureDetector(
+      onTap: () => Navigator.maybePop(context),
+      child: Icon(
+        Icons.close,
+        size: 40,
+        color: ThemeColors.background,
+      ),
+    );
   }
 
   static Future<Uint8List?> resizeAndReduceImageFile(File? photo) async {
