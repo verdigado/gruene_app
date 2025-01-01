@@ -470,9 +470,19 @@ class _MapContainerState extends State<MapContainer> implements MapController {
                           ),
                           GestureDetector(
                             onTap: () => onTapPopup(onEditItemClicked),
-                            child: Text(
-                              t.common.actions.edit,
-                              style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textDark, fontWeightDelta: 2),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 1.5, color: ThemeColors.textDark),
+                                ),
+                              ),
+                              child: Text(
+                                t.common.actions.edit,
+                                style: theme.textTheme.labelSmall?.apply(
+                                  color: ThemeColors.textDark,
+                                  fontWeightDelta: 2,
+                                ),
+                              ),
                             ),
                           ),
                         ],
