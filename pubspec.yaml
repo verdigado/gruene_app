@@ -88,6 +88,7 @@ flutter:
     - assets/symbols/posters/
     - assets/symbols/doors/
     - assets/symbols/flyer/
+    - assets/maps/
     - .env
 
 

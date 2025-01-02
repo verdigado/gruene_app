@@ -15,6 +15,7 @@ import 'package:gruene_app/features/campaigns/location/determine_position.dart';
 import 'package:gruene_app/features/campaigns/models/bounding_box.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/widgets/attribution_dialog.dart';
 import 'package:gruene_app/features/campaigns/widgets/location_button.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
@@ -89,6 +90,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   @override
   Widget build(BuildContext context) {
+    const mapLibreColor = Color(0xFF979897);
+
     final userLocation = widget.userLocation;
     final cameraPosition = userLocation != null
         ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
@@ -117,6 +120,9 @@ class _MapContainerState extends State<MapContainer> implements MapController {
           MapLibreMap(
             styleString: Config.maplibreUrl,
             onMapCreated: _onMapCreated,
+            attributionButtonMargins: const Point(-100, -100),
+            logoViewMargins: const Point(double.maxFinite, double.maxFinite),
+
             initialCameraPosition: cameraPosition,
             onStyleLoadedCallback: _onStyleLoadedCallback,
             cameraTargetBounds: CameraTargetBounds(_cameraTargetBounds),
@@ -134,6 +140,21 @@ class _MapContainerState extends State<MapContainer> implements MapController {
             bottom: 12,
             right: 12,
             child: LocationButton(bringCameraToUser: bringCameraToUser, followUserLocation: followUserLocation),
+          ),
+          Positioned(
+            bottom: -8,
+            right: -8,
+            child: IconButton(
+              color: mapLibreColor,
+              iconSize: 20,
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) => const AttributionDialog(),
+                );
+              },
+            ),
           ),
           ...popups,
         ],
