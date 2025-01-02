@@ -29,7 +29,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
   bool focusAreasVisible = false;
   final String _focusAreadId = 'focusArea';
-  final _minZoomFocusAreaLayer = 11.5;
+  final _minZoomFocusAreaLayer = 11.0;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _lastInfoSnackBar;
   String? _lastFocusAreaId;
 
@@ -207,6 +207,8 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
 
       final focusAreas = await campaignService.loadFocusAreasInRegion(bbox.southwest, bbox.northeast);
       mapController.setLayerSource(_focusAreadId, focusAreas);
+    } else {
+      _lastInfoSnackBar?.close();
     }
   }
 
@@ -238,6 +240,14 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
         _showInfo(infoText.join('\n'));
       }
     }
+  }
+
+  void showMapInfoAfterCameraMove() {
+    var minZoomLevels = [_minZoomFocusAreaLayer, mapController.minimumMarkerZoomLevel];
+    minZoomLevels.sort();
+    var largestMinZoomLevel = minZoomLevels.last;
+    var toggleEnableInfo = mapController.getCurrentZoomLevel() < largestMinZoomLevel;
+    mapController.toggleInfoForMissingMapFeatures(toggleEnableInfo);
   }
 
   void hideCurrentSnackBar() {

@@ -1,14 +1,24 @@
 import 'package:gruene_app/app/geocode/nominatim.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 class NominatimService {
+  final Logger _logger = Logger();
+
   Future<AddressModel> getLocationAddress(LatLng location) async {
-    final place = await Nominatim.reverseSearch(
-      lat: location.latitude,
-      lon: location.longitude,
-    );
-    final address = AddressModel.fromPlace(place);
-    return address;
+    try {
+      final place = await Nominatim.reverseSearch(
+        lat: location.latitude,
+        lon: location.longitude,
+      );
+      final address = AddressModel.fromPlace(place);
+      return address;
+    } catch (e) {
+      _logger.e(
+        'Nominatim reverse search failed on (lat: ${location.latitude}, lon: ${location.longitude}): ${e.toString()}',
+      );
+      return AddressModel();
+    }
   }
 }
 

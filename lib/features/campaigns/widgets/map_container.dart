@@ -15,6 +15,7 @@ import 'package:gruene_app/features/campaigns/location/determine_position.dart';
 import 'package:gruene_app/features/campaigns/models/bounding_box.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/widgets/attribution_dialog.dart';
 import 'package:gruene_app/features/campaigns/widgets/location_button.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
@@ -28,6 +29,7 @@ typedef GetMarkerImagesCallback = Map<String, String> Function();
 typedef OnFeatureClickCallback = void Function(dynamic feature);
 typedef OnNoFeatureClickCallback = void Function(Point<double> point);
 typedef OnEditItemClickedCallback = void Function();
+typedef ShowMapInfoAfterCameraMoveCallback = void Function();
 typedef AddMapLayersForContextCallback = void Function(MapLibreMapController mapLibreController);
 
 class MapContainer extends StatefulWidget {
@@ -39,6 +41,7 @@ class MapContainer extends StatefulWidget {
   final OnFeatureClickCallback? onFeatureClick;
   final OnNoFeatureClickCallback? onNoFeatureClick;
   final AddMapLayersForContextCallback? addMapLayersForContext;
+  final ShowMapInfoAfterCameraMoveCallback? showMapInfoAfterCameraMove;
   final LatLng? userLocation;
   final bool locationAvailable;
 
@@ -53,6 +56,7 @@ class MapContainer extends StatefulWidget {
     this.loadDataLayers,
     this.addMapLayersForContext,
     required this.locationAvailable,
+    required this.showMapInfoAfterCameraMove,
     this.userLocation,
   });
 
@@ -66,13 +70,14 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
-  final locationGrueneHQ = LatLng(52.528810, 13.379300);
+  final locationCenterGermany = LatLng(51.163361, 10.447683);
 
-  static const minZoomMarkerItems = 12.0;
+  static const minZoomMarkerItems = 11.5;
   static const double zoomLevelUserLocation = 16;
-  static const double zoomLevelUserOverview = 8.5;
+  static const double zoomLevelUserOverview = 5.2;
 
   List<Widget> popups = [];
+  List<Widget> infos = [];
 
   final LatLngBounds _cameraTargetBounds = LatLngBounds(
     southwest: LatLng(46.8, 5.6),
@@ -80,6 +85,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   ); //typically Germany
 
   var followUserLocation = true;
+
+  bool _showAddMarker = true;
 
   @override
   void didChangeDependencies() {
@@ -89,16 +96,18 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   @override
   Widget build(BuildContext context) {
+    const mapLibreColor = Color(0xFF979897);
+
     final userLocation = widget.userLocation;
     final cameraPosition = userLocation != null
         ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
-        : CameraPosition(target: locationGrueneHQ, zoom: zoomLevelUserOverview);
+        : CameraPosition(target: locationCenterGermany, zoom: zoomLevelUserOverview);
 
     Widget addMarker = SizedBox(
       height: 0,
       width: 0,
     );
-    if (popups.isEmpty) {
+    if (popups.isEmpty && _showAddMarker) {
       addMarker = Center(
         child: Container(
           padding: EdgeInsets.only(
@@ -117,13 +126,16 @@ class _MapContainerState extends State<MapContainer> implements MapController {
           MapLibreMap(
             styleString: Config.maplibreUrl,
             onMapCreated: _onMapCreated,
+            attributionButtonMargins: const Point(-100, -100),
+            logoViewMargins: const Point(double.maxFinite, double.maxFinite),
+
             initialCameraPosition: cameraPosition,
             onStyleLoadedCallback: _onStyleLoadedCallback,
             cameraTargetBounds: CameraTargetBounds(_cameraTargetBounds),
             trackCameraPosition: true,
             onCameraIdle: _onCameraIdle,
             onMapClick: _onMapClick,
-            // myLocationEnabled: true,
+            myLocationEnabled: _permissionGiven,
             // myLocationTrackingMode: _permissionGiven ? MyLocationTrackingMode.Tracking : MyLocationTrackingMode.None,
             myLocationTrackingMode: MyLocationTrackingMode.none,
             myLocationRenderMode: MyLocationRenderMode.normal,
@@ -135,7 +147,23 @@ class _MapContainerState extends State<MapContainer> implements MapController {
             right: 12,
             child: LocationButton(bringCameraToUser: bringCameraToUser, followUserLocation: followUserLocation),
           ),
+          Positioned(
+            bottom: -8,
+            right: -8,
+            child: IconButton(
+              color: mapLibreColor,
+              iconSize: 20,
+              icon: const Icon(Icons.info_outline),
+              onPressed: () {
+                showDialog<void>(
+                  context: context,
+                  builder: (context) => const AttributionDialog(),
+                );
+              },
+            ),
+          ),
           ...popups,
+          ...infos,
         ],
       ),
     );
@@ -159,16 +187,26 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   void _loadDataOnMap() async {
     final visRegion = await _controller?.getVisibleRegion();
+    var currentZoomLevel = _controller!.cameraPosition!.zoom;
+
     debugPrint('Bounding Box: SW-${visRegion!.southwest} NE-${visRegion.northeast}');
-    debugPrint('Zoom level: ${_controller!.cameraPosition!.zoom}');
+    debugPrint('Zoom level: $currentZoomLevel');
+
+    _showAddMarker = currentZoomLevel > minimumMarkerZoomLevel;
 
     final loadVisibleItems = widget.loadVisibleItems;
     if (loadVisibleItems != null) {
       loadVisibleItems(visRegion.southwest, visRegion.northeast);
     }
+
     final loadDataLayers = widget.loadDataLayers;
     if (loadDataLayers != null) {
       loadDataLayers(visRegion.southwest, visRegion.northeast);
+    }
+
+    final showInfo = widget.showMapInfoAfterCameraMove;
+    if (showInfo != null) {
+      showInfo();
     }
   }
 
@@ -470,9 +508,19 @@ class _MapContainerState extends State<MapContainer> implements MapController {
                           ),
                           GestureDetector(
                             onTap: () => onTapPopup(onEditItemClicked),
-                            child: Text(
-                              t.common.actions.edit,
-                              style: theme.textTheme.labelSmall?.apply(color: ThemeColors.textDark, fontWeightDelta: 2),
+                            child: Container(
+                              decoration: BoxDecoration(
+                                border: Border(
+                                  bottom: BorderSide(width: 1.5, color: ThemeColors.textDark),
+                                ),
+                              ),
+                              child: Text(
+                                t.common.actions.edit,
+                                style: theme.textTheme.labelSmall?.apply(
+                                  color: ThemeColors.textDark,
+                                  fontWeightDelta: 2,
+                                ),
+                              ),
                             ),
                           ),
                         ],
@@ -552,6 +600,59 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     if (!mounted) return;
     if (!_permissionGiven) {
       setState(() => _permissionGiven = true);
+    }
+  }
+
+  @override
+  void toggleInfoForMissingMapFeatures(bool enable) {
+    if (enable) {
+      if (infos.isNotEmpty) return;
+      setState(() {
+        final mediaQuery = MediaQuery.of(context);
+        final theme = Theme.of(context);
+        infos.add(
+          IgnorePointer(
+            child: Positioned.fill(
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                  padding: EdgeInsets.only(top: 50),
+                  child: Container(
+                    padding: EdgeInsets.all(12),
+                    width: mediaQuery.size.width * 0.75,
+                    decoration: BoxDecoration(
+                      color: ThemeColors.infoBackground.withAlpha(130),
+                      border: Border.all(color: ThemeColors.infoBackground, width: 4),
+                      borderRadius: BorderRadius.all(Radius.circular(6)),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          Icons.info,
+                          color: ThemeColors.textCancel,
+                          size: 24,
+                        ),
+                        SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            t.campaigns.map.noMapDataInfo,
+                            style: theme.textTheme.labelLarge?.apply(color: ThemeColors.textCancel),
+                            softWrap: true,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      });
+    } else {
+      setState(() {
+        infos.clear();
+      });
     }
   }
 }

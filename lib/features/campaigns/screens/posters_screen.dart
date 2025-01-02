@@ -77,6 +77,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       onNoFeatureClick: _onNoFeatureClick,
       addMapLayersForContext: addMapLayersForContext,
       loadDataLayers: loadDataLayers,
+      showMapInfoAfterCameraMove: showMapInfoAfterCameraMove,
     );
 
     final theme = Theme.of(localContext);
@@ -105,7 +106,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
                   ),
                   onPressed: showMyPosters,
                   child: Text(
-                    t.campaigns.posters.my_posters_action,
+                    t.campaigns.poster.my_posters_action,
                     style: theme.textTheme.bodyMedium?.apply(
                       color: ThemeColors.background,
                       letterSpacingDelta: 1,

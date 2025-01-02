@@ -55,6 +55,7 @@ class CreateAddressWidget extends StatelessWidget {
                   width: 75,
                   labelText: t.campaigns.address.zipcode,
                   textController: zipCodeTextController,
+                  inputType: InputFieldType.numbers,
                   borderColor: inputBorderColor,
                 ),
               ),

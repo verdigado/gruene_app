@@ -16,6 +16,7 @@ class DeleteAndSaveWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Container(
           padding: EdgeInsets.only(right: 20),
@@ -37,13 +38,23 @@ class DeleteAndSaveWidget extends StatelessWidget {
             ),
           ),
         ),
-        Expanded(
-          child: GestureDetector(
-            onTap: onSave,
+        Container(
+          padding: EdgeInsets.only(left: 20),
+          child: ElevatedButton(
+            onPressed: onSave,
+            style: ElevatedButton.styleFrom(
+              foregroundColor: ThemeColors.background,
+              backgroundColor: ThemeColors.primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(24.0),
+                side: BorderSide(
+                  color: ThemeColors.primary,
+                ),
+              ),
+            ),
             child: Text(
               t.common.actions.save,
-              textAlign: TextAlign.right,
-              style: theme.textTheme.titleMedium,
+              style: theme.textTheme.titleSmall?.apply(color: ThemeColors.background),
             ),
           ),
         ),
