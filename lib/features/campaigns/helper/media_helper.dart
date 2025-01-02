@@ -13,7 +13,24 @@ import 'package:photo_view/photo_view.dart';
 class MediaHelper {
   static const int maxUploadDimension = 1200;
 
-  static Future<File?> acquirePhoto(BuildContext context) async {
+  static Future<File?> acquirePhoto(BuildContext context, {bool useCameraAwesome = false}) async {
+    if (useCameraAwesome) return await acquirePhotoWithCameraAwesome(context);
+    return await acquirePhotoWithImagePicker(context);
+  }
+
+  static Future<File?> acquirePhotoWithImagePicker(BuildContext context) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
+      if (pickedImage != null) {
+        return File(pickedImage.path);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
+  static Future<File?> acquirePhotoWithCameraAwesome(BuildContext context) async {
     var image = await Navigator.of(context, rootNavigator: true).push(
       AppRoute<File?>(
         builder: (context) {
