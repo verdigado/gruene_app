@@ -908,14 +908,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
-  motion_toast:
-    dependency: "direct main"
-    description:
-      name: motion_toast
-      sha256: "5a4775bf5a89a2402456047f194df5a5d6ac717af0d7694c8b9e37f324d1efd7"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.11.0"
   mobile_scanner:
     dependency: "direct main"
     description:
@@ -924,6 +916,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "6.0.2"
+  motion_toast:
+    dependency: "direct main"
+    description:
+      name: motion_toast
+      sha256: "5a4775bf5a89a2402456047f194df5a5d6ac717af0d7694c8b9e37f324d1efd7"
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.11.0"
   nested:
     dependency: transitive
     description:
