@@ -36,8 +36,10 @@ class WelcomeView extends StatelessWidget {
               height: 64,
               child: FilledButton(
                 onPressed: () => context.read<AuthBloc>().add(SignInRequested()),
-                child: Text(t.login.loginMembers,
-                    style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),),
+                child: Text(
+                  t.login.loginMembers,
+                  style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
+                ),
               ),
             ),
             // TODO #203: Uncomment for guest login
