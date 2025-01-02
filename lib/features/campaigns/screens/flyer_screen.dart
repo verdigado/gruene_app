@@ -67,6 +67,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       onNoFeatureClick: _onNoFeatureClick,
       addMapLayersForContext: addMapLayersForContext,
       loadDataLayers: loadDataLayers,
+      showMapInfoAfterCameraMove: showMapInfoAfterCameraMove,
     );
 
     return Column(
