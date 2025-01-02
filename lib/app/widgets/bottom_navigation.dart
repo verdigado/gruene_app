@@ -14,40 +14,42 @@ class BottomNavigation extends StatelessWidget {
     final currentRouteIndex = bottomNavigationItems.indexWhere((item) => item.route == currentRoute);
     final theme = Theme.of(context);
 
-    return SizedBox(
-      height: 64.0,
-      child: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: theme.colorScheme.surface,
-        items: bottomNavigationItems.map((item) {
-          final isSelected = currentRoute == item.route;
-          return BottomNavigationBarItem(
-            icon: Padding(
-              padding: const EdgeInsets.only(bottom: 4.0),
-              child: SizedBox(
-                height: 26.0,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SvgPicture.asset(
-                      item.iconPath,
-                      colorFilter: ColorFilter.mode(
-                        isSelected ? theme.colorScheme.primary : ThemeColors.textDisabled,
-                        BlendMode.srcIn,
+    return currentRouteIndex >= 0
+        ? SizedBox(
+            height: 64.0,
+            child: BottomNavigationBar(
+              type: BottomNavigationBarType.fixed,
+              backgroundColor: theme.colorScheme.surface,
+              items: bottomNavigationItems.map((item) {
+                final isSelected = currentRoute == item.route;
+                return BottomNavigationBarItem(
+                  icon: Padding(
+                    padding: const EdgeInsets.only(bottom: 4.0),
+                    child: SizedBox(
+                      height: 26.0,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SvgPicture.asset(
+                            item.iconPath,
+                            colorFilter: ColorFilter.mode(
+                              isSelected ? theme.colorScheme.primary : ThemeColors.textDisabled,
+                              BlendMode.srcIn,
+                            ),
+                          ),
+                        ],
                       ),
                     ),
-                  ],
-                ),
-              ),
+                  ),
+                  label: item.getLabel(context),
+                );
+              }).toList(),
+              currentIndex: currentRouteIndex,
+              onTap: (index) {
+                context.go(bottomNavigationItems[index].route);
+              },
             ),
-            label: item.getLabel(context),
-          );
-        }).toList(),
-        currentIndex: currentRouteIndex,
-        onTap: (index) {
-          context.go(bottomNavigationItems[index].route);
-        },
-      ),
-    );
+          )
+        : SizedBox.shrink();
   }
 }

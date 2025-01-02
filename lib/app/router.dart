@@ -21,8 +21,9 @@ GoRouter createAppRouter(BuildContext context) {
       final authBloc = context.read<AuthBloc>();
       final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
       final isLoggingIn = state.uri.toString() == Routes.login.path;
+      final isMfa = state.uri.toString() == Routes.mfa.path;
 
-      if (!isLoggedIn && !isLoggingIn) return Routes.login.path;
+      if (!isLoggedIn && !isLoggingIn && !isMfa) return Routes.login.path;
       if (isLoggedIn && isLoggingIn) return Routes.news.path;
 
       return null;
