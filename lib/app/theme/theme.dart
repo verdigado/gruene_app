@@ -38,7 +38,7 @@ class ThemeColors {
 
   static const Color focusAreaBaseColor = Color(0xFF3033A1);
 
-  static const Color info = Color(0xFFFFF7C8);
+  static const Color infoBackground = Color(0xFFFFF7C8);
 }
 
 class _ThemeTextStyles {

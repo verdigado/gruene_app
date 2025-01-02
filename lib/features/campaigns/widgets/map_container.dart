@@ -70,7 +70,6 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
-  // final locationGrueneHQ = LatLng(52.528810, 13.379300);
   final locationCenterGermany = LatLng(51.163361, 10.447683);
 
   static const minZoomMarkerItems = 11.5;
@@ -136,7 +135,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
             trackCameraPosition: true,
             onCameraIdle: _onCameraIdle,
             onMapClick: _onMapClick,
-            // myLocationEnabled: true,
+            myLocationEnabled: _permissionGiven,
             // myLocationTrackingMode: _permissionGiven ? MyLocationTrackingMode.Tracking : MyLocationTrackingMode.None,
             myLocationTrackingMode: MyLocationTrackingMode.none,
             myLocationRenderMode: MyLocationRenderMode.normal,
@@ -622,8 +621,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
                     padding: EdgeInsets.all(12),
                     width: mediaQuery.size.width * 0.75,
                     decoration: BoxDecoration(
-                      color: ThemeColors.info.withAlpha(130),
-                      border: Border.all(color: ThemeColors.info, width: 4),
+                      color: ThemeColors.infoBackground.withAlpha(130),
+                      border: Border.all(color: ThemeColors.infoBackground, width: 4),
                       borderRadius: BorderRadius.all(Radius.circular(6)),
                     ),
                     child: Row(
