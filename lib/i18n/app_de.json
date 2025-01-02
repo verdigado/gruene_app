@@ -101,12 +101,13 @@
       "housenumber": "Hausnr.",
       "zipcode": "PLZ",
       "city_or_place": "Stadt/Ort"
-    }
+    },
+    "noMapDataInfo": "Bitte zoome in die Karte, um mehr Informationen zu sehen."
   },
   "location": {
     "activateLocationAccess": "Standortermittlung aktivieren",
-    "activateLocationAccessRationale": "Erlauben Sie der App Ihren Standort zu benutzen, um diesen auf der Karte anzuzeigen.",
-    "activateLocationAccessSettings": "Aktivieren Sie die Standortermittlung in den Einstellungen.",
+    "activateLocationAccessRationale": "Erlaube der App deinen Standort zu benutzen, um diesen auf der Karte anzuzeigen.",
+    "activateLocationAccessSettings": "Aktiviere die Standortermittlung in den Einstellungen.",
     "askPermissionsAgain": "Soll noch einmal nach der Berechtigung gefragt werden?",
     "grantLocation": "Ich möchte meinen Standort freigeben.",
     "grantPermission": "Berechtigung erteilen",

@@ -77,6 +77,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       onNoFeatureClick: _onNoFeatureClick,
       addMapLayersForContext: addMapLayersForContext,
       loadDataLayers: loadDataLayers,
+      showMapInfoAfterCameraMove: showMapInfoAfterCameraMove,
     );
 
     final theme = Theme.of(localContext);

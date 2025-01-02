@@ -75,6 +75,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       onNoFeatureClick: _onNoFeatureClick,
       addMapLayersForContext: addMapLayersForContext,
       loadDataLayers: loadDataLayers,
+      showMapInfoAfterCameraMove: showMapInfoAfterCameraMove,
     );
 
     return Column(

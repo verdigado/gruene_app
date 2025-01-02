@@ -39,4 +39,6 @@ abstract class MapController {
   double getCurrentZoomLevel();
 
   double get minimumMarkerZoomLevel;
+
+  void toggleInfoForMissingMapFeatures(bool enable) {}
 }

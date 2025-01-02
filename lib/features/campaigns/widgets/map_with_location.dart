@@ -11,6 +11,7 @@ class MapWithLocation extends StatelessWidget {
   final OnFeatureClickCallback? onFeatureClick;
   final OnNoFeatureClickCallback? onNoFeatureClick;
   final AddMapLayersForContextCallback? addMapLayersForContext;
+  final ShowMapInfoAfterCameraMoveCallback? showMapInfoAfterCameraMove;
 
   const MapWithLocation({
     super.key,
@@ -20,6 +21,7 @@ class MapWithLocation extends StatelessWidget {
     required this.getMarkerImages,
     required this.onFeatureClick,
     required this.onNoFeatureClick,
+    required this.showMapInfoAfterCameraMove,
     this.loadDataLayers,
     this.addMapLayersForContext,
   });
@@ -45,6 +47,7 @@ class MapWithLocation extends StatelessWidget {
           onNoFeatureClick: onNoFeatureClick,
           addMapLayersForContext: addMapLayersForContext,
           loadDataLayers: loadDataLayers,
+          showMapInfoAfterCameraMove: showMapInfoAfterCameraMove,
           locationAvailable: position?.isAvailable() ?? false,
           userLocation: position?.toLatLng(),
         );
