@@ -43,6 +43,7 @@
       "my_posters_title": "Meine aufgehängten Plakate",
       "created": "aufgehängt",
       "updated": "aktualisiert",
+      "noPhotoWarning": "Bitte wähle ein Foto oder nimm eins mit der Kamera auf!",
       "date_format": "dd.MM.yyyy",
       "time_format": "HH:mm",
       "datetime_display_template": "{date} um {time}",

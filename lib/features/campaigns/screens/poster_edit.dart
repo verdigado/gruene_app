@@ -35,7 +35,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete {
+class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete, PosterValidator {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -109,6 +109,31 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                                 borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.zero),
                               ),
                               child: _getPosterPreview(),
+                            ),
+                            Positioned.fill(
+                              right: 10,
+                              top: 5,
+                              child: Align(
+                                alignment: Alignment.topRight,
+                                child: GestureDetector(
+                                  onTap: _pickImageFromDevice,
+                                  child: Container(
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ThemeColors.secondary.withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate,
+                                        color: Colors.white,
+                                        size: 30.0,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
                             Positioned.fill(
                               left: 10,
@@ -318,6 +343,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _savePoster() async {
     if (!context.mounted) return;
+    if (!validatePoster(_currentPhoto, context)) return;
 
     setState(() {
       _isWorking = true;
@@ -430,5 +456,15 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
         ),
       ),
     );
+  }
+
+  void _pickImageFromDevice() async {
+    final photo = await MediaHelper.pickImageFromDevice(context);
+
+    if (photo != null) {
+      setState(() {
+        _currentPhoto = photo;
+      });
+    }
   }
 }

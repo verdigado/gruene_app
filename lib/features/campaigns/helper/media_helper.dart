@@ -7,6 +7,7 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:image/image.dart' as image_lib;
+import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
 
 class MediaHelper {
@@ -130,5 +131,17 @@ class MediaHelper {
         );
       },
     );
+  }
+
+  static Future<File?> pickImageFromDevice(BuildContext context) async {
+    try {
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        return File(pickedImage.path);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
   }
 }
