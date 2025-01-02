@@ -85,7 +85,6 @@ class KeycloakClient {
       await _setupRequest(
           clientId, tabId, deviceId, deviceOs, devicePushId, keyAlgorithm, signatureAlgorithm, publicKey, key);
     } on DioException catch (err) {
-      KeycloakExceptionType type;
       if (err.type == DioExceptionType.badResponse) {
         throw KeycloakClientException('', dioException: err);
       }
