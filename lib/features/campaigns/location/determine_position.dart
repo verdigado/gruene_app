@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/features/campaigns/location/dialogs.dart';
 import 'package:gruene_app/features/campaigns/location/location_ffi.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:logger/logger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
 enum LocationStatus {
@@ -78,21 +81,42 @@ class RequestedPosition {
 Future<RequestedPosition> determinePosition(
   BuildContext context, {
   bool requestIfNotGranted = false,
+  bool preferLastKnownPosition = false,
 }) async {
+  final Logger logger = Logger();
+
   final permission = await checkAndRequestLocationPermission(
     context,
     requestIfNotGranted: requestIfNotGranted,
   );
-
   if (!permission.isPermissionGranted()) {
     return RequestedPosition(null, permission);
   }
 
   var position = await Geolocator.getLastKnownPosition(forceAndroidLocationManager: Config.androidFloss);
-  final settings = AndroidSettings(forceLocationManager: Config.androidFloss);
-  position ??= await Geolocator.getCurrentPosition(locationSettings: settings);
+  if (preferLastKnownPosition && position != null) {
+    return RequestedPosition(position, permission);
+  }
+  try {
+    try {
+      final settings = getAndroidSettings();
+      position = await Geolocator.getCurrentPosition(locationSettings: settings);
+    } on LocationServiceDisabledException {
+      final settings = getAndroidSettings(forceLocationManager: true);
+      position = await Geolocator.getCurrentPosition(locationSettings: settings);
+    }
+  } on TimeoutException {
+    logger.d('Timeout occured when acquiring geo location');
+  }
 
   return RequestedPosition(position, permission);
+}
+
+AndroidSettings getAndroidSettings({bool? forceLocationManager}) {
+  return AndroidSettings(
+    forceLocationManager: forceLocationManager ?? Config.androidFloss,
+    timeLimit: Duration(seconds: 30),
+  );
 }
 
 /// Ensures all preconditions needed to determine the current position.
