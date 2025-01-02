@@ -111,10 +111,10 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                               child: _getPosterPreview(),
                             ),
                             Positioned.fill(
-                              right: 10,
-                              top: 5,
+                              left: 10,
+                              bottom: 5,
                               child: Align(
-                                alignment: Alignment.topRight,
+                                alignment: Alignment.bottomLeft,
                                 child: GestureDetector(
                                   onTap: _pickImageFromDevice,
                                   child: Container(
@@ -136,34 +136,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                               ),
                             ),
                             Positioned.fill(
-                              left: 10,
-                              bottom: 5,
-                              child: Align(
-                                alignment: Alignment.bottomLeft,
-                                child: GestureDetector(
-                                  onTap: _deleteAndAcquireNewPhoto,
-                                  child: Container(
-                                    padding: EdgeInsets.only(top: 15, right: 20),
-                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                    child: Text(
-                                      t.campaigns.poster.delete_photo,
-                                      style: theme.textTheme.labelMedium!.apply(
-                                        color: theme.colorScheme.surface,
-                                        fontSizeDelta: 2,
-                                        letterSpacingDelta: 2,
-                                        shadows: [
-                                          Shadow(
-                                            offset: Offset(-1.5, -1.5),
-                                            color: theme.colorScheme.secondary,
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Positioned.fill(
                               right: 10,
                               bottom: 5,
                               child: Align(
@@ -171,21 +143,17 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                                 child: GestureDetector(
                                   onTap: _acquireNewPhoto,
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 15, left: 20),
-                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                    child: Text(
-                                      t.campaigns.poster.replace_photo,
-                                      style: theme.textTheme.labelMedium!.apply(
-                                        color: theme.colorScheme.surface,
-                                        fontSizeDelta: 2,
-                                        fontWeightDelta: 2,
-                                        letterSpacingDelta: 2,
-                                        shadows: [
-                                          Shadow(
-                                            offset: Offset(-1.5, -1.5),
-                                            color: theme.colorScheme.secondary,
-                                          ),
-                                        ],
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ThemeColors.secondary.withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.photo_camera,
+                                        color: Colors.white,
+                                        size: 30.0,
                                       ),
                                     ),
                                   ),
