@@ -2,6 +2,7 @@
   "common": {
     "appName": "Grüne App",
     "error": "Fehler",
+    "notImplementedYet": "Diese Funktion befindet sich noch in der Entwicklung. Wir bitten um Verständnis.",
     "actions": {
       "save": "Speichern",
       "cancel": "Abbrechen",
