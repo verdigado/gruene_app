@@ -67,11 +67,12 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
-  final locationGrueneHQ = LatLng(52.528810, 13.379300);
+  // final locationGrueneHQ = LatLng(52.528810, 13.379300);
+  final locationCenterGermany = LatLng(51.163361, 10.447683);
 
   static const minZoomMarkerItems = 12.0;
   static const double zoomLevelUserLocation = 16;
-  static const double zoomLevelUserOverview = 8.5;
+  static const double zoomLevelUserOverview = 5.2;
 
   List<Widget> popups = [];
 
@@ -95,7 +96,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     final userLocation = widget.userLocation;
     final cameraPosition = userLocation != null
         ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
-        : CameraPosition(target: locationGrueneHQ, zoom: zoomLevelUserOverview);
+        : CameraPosition(target: locationCenterGermany, zoom: zoomLevelUserOverview);
 
     Widget addMarker = SizedBox(
       height: 0,
