@@ -112,16 +112,22 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                             alignment: Alignment.bottomLeft,
                             child: GestureDetector(
                               onTap: _deleteAndAcquireNewPhoto,
-                              child: Text(
-                                t.campaigns.poster.delete_photo,
-                                style: theme.textTheme.labelMedium!.apply(
-                                  color: theme.colorScheme.surface,
-                                  shadows: [
-                                    Shadow(
-                                      offset: Offset(-1.5, -1.5),
-                                      color: theme.colorScheme.secondary,
-                                    ),
-                                  ],
+                              child: Container(
+                                padding: EdgeInsets.only(top: 15, right: 20),
+                                decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
+                                child: Text(
+                                  t.campaigns.poster.delete_photo,
+                                  style: theme.textTheme.labelMedium!.apply(
+                                    color: theme.colorScheme.surface,
+                                    fontSizeDelta: 2,
+                                    letterSpacingDelta: 2,
+                                    shadows: [
+                                      Shadow(
+                                        offset: Offset(-1.5, -1.5),
+                                        color: theme.colorScheme.secondary,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
@@ -134,17 +140,23 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                             alignment: Alignment.bottomRight,
                             child: GestureDetector(
                               onTap: _acquireNewPhoto,
-                              child: Text(
-                                t.campaigns.poster.replace_photo,
-                                style: theme.textTheme.labelMedium!.apply(
-                                  color: theme.colorScheme.surface,
-                                  fontWeightDelta: 2,
-                                  shadows: [
-                                    Shadow(
-                                      offset: Offset(-1.5, -1.5),
-                                      color: theme.colorScheme.secondary,
-                                    ),
-                                  ],
+                              child: Container(
+                                padding: EdgeInsets.only(top: 15, left: 20),
+                                decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
+                                child: Text(
+                                  t.campaigns.poster.replace_photo,
+                                  style: theme.textTheme.labelMedium!.apply(
+                                    color: theme.colorScheme.surface,
+                                    fontSizeDelta: 2,
+                                    fontWeightDelta: 2,
+                                    letterSpacingDelta: 2,
+                                    shadows: [
+                                      Shadow(
+                                        offset: Offset(-1.5, -1.5),
+                                        color: theme.colorScheme.secondary,
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),
