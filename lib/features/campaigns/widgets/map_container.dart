@@ -635,7 +635,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
                         SizedBox(width: 10),
                         Expanded(
                           child: Text(
-                            t.campaigns.noMapDataInfo,
+                            t.campaigns.map.noMapDataInfo,
                             style: theme.textTheme.labelLarge?.apply(color: ThemeColors.textCancel),
                             softWrap: true,
                           ),

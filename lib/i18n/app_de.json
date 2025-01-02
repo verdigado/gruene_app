@@ -21,7 +21,8 @@
   "campaigns": {
     "map": {
       "mapData": "Kartendaten",
-      "osmContributors": "OpenStreetMap Mitwirkende"
+      "osmContributors": "OpenStreetMap Mitwirkende",
+      "noMapDataInfo": "Bitte zoome in die Karte, um mehr Informationen zu sehen."
     },
     "campaigns": "Wahlkampf",
     "label": "Wahlkampf",
@@ -101,8 +102,7 @@
       "housenumber": "Hausnr.",
       "zipcode": "PLZ",
       "city_or_place": "Stadt/Ort"
-    },
-    "noMapDataInfo": "Bitte zoome in die Karte, um mehr Informationen zu sehen."
+    }
   },
   "location": {
     "activateLocationAccess": "Standortermittlung aktivieren",
