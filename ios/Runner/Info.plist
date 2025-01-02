@@ -8,6 +8,8 @@
     <string>Wir benötigen Zugriff auf dein Mikrofon, um Ton für Videos aufzunehmen. - NOT USED</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Wir benötigen Zugriff auf deinen Standort, um deine Position auf der Karte anzuzeigen.</string>
+    <key>NSFaceIDUsageDescription</key>
+    <string>Um Freigabe für Logins in anderen Apps zu bestätigen benötigt die App Zugriff auf Face ID.</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>

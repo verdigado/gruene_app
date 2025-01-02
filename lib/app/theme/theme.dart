@@ -53,7 +53,7 @@ class _ThemeTextStyles {
       color: ThemeColors.text,
     ),
   );
-  static TextStyle displayLarge = displayMedium.copyWith(fontSize: 34, letterSpacing: 0.03);
+  static TextStyle displayLarge = displayMedium.copyWith(fontSize: 34, height: 1.2, letterSpacing: 0.03);
 
   static TextStyle titleMedium = GoogleFonts.ptSans(
     textStyle: TextStyle(
@@ -180,5 +180,19 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     trackColor: trackColor,
     thumbColor: thumbColor,
     trackOutlineWidth: WidgetStatePropertyAll(0),
+  ),
+  inputDecorationTheme: InputDecorationTheme(
+    border: OutlineInputBorder(
+      borderSide: BorderSide(color: ThemeColors.textLight, width: 1),
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+    enabledBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: ThemeColors.textLight, width: 1),
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
+    focusedBorder: OutlineInputBorder(
+      borderSide: BorderSide(color: ThemeColors.textLight, width: 1),
+      borderRadius: BorderRadius.all(Radius.circular(5)),
+    ),
   ),
 );
