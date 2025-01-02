@@ -5,18 +5,18 @@ class PosterStatusHelper {
   static List<(PosterStatus, String, String)> getPosterStatusOptions = <(PosterStatus, String, String)>[
     (
       PosterStatus.damaged,
-      t.campaigns.posters.status.damaged.label,
-      t.campaigns.posters.status.damaged.hint,
+      t.campaigns.poster.status.damaged.label,
+      t.campaigns.poster.status.damaged.hint,
     ),
     (
       PosterStatus.missing,
-      t.campaigns.posters.status.missing.label,
-      t.campaigns.posters.status.missing.hint,
+      t.campaigns.poster.status.missing.label,
+      t.campaigns.poster.status.missing.hint,
     ),
     (
       PosterStatus.removed,
-      t.campaigns.posters.status.removed.label,
-      t.campaigns.posters.status.removed.hint,
+      t.campaigns.poster.status.removed.label,
+      t.campaigns.poster.status.removed.hint,
     ),
   ];
 }

@@ -28,8 +28,8 @@
       "polling_stations": "Wahllokale",
       "experience_areas": "Erfahrungsgebiete"
     },
-    "posters": {
-      "label": "Plakate",
+    "poster": {
+      "label": "Plakat",
       "addPoster": "Plakat eintragen",
       "editPoster": "Plakat bearbeiten",
       "delete_photo": "Foto löschen",
@@ -45,19 +45,17 @@
       "status": {
         "damaged": {
           "label": "Beschädigt",
-          "hint": "Als zu ersetzen melden"
+          "hint": "Durch Fremdeinwirkung beschädigt"
         },
         "missing": {
           "label": "Verschollen",
           "hint": "Durch Fremdeinwirkung entfernt"
         },
         "removed": {
-          "label": "Abgehangen",
+          "label": "Abgehängt",
           "hint": "Dauerhaft entfernt"
         }
       },
-      "status_damaged": "Beschädigt (Als zu ersetzen melden)",
-      "status_taken_down": "Als abgehängt markieren",
       "comment": {
         "label": "Beschreibung",
         "hint": "Bitte gib hierzu weitere Informationen an"
@@ -68,13 +66,13 @@
     },
     "door": {
       "label": "Haustür",
-      "addDoor": "Haustür eintragen",
+      "addDoor": "Haustüren eintragen",
       "closedDoors": "Ungeöffnete Türen",
-      "editDoor": "Haustür bearbeiten",
+      "editDoor": "Haustüren bearbeiten",
       "openedDoors": "Geöffnete Türen",
       "noDoorsWarning": "Bitte gib mindestens eine Tür ein!",
       "createDoor": {
-        "hint": "Bitte trage sowohl geöffnete, als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
+        "hint": "Bitte trage sowohl geöffnete als auch verschlossen gebliebene Türen ein, damit wir eine genauere Statistik erhalten."
       }
     },
     "flyer": {
@@ -98,7 +96,7 @@
       "street": "Straße",
       "housenumber": "Hausnr.",
       "zipcode": "PLZ",
-      "city_or_place": "Stadt / Ort"
+      "city_or_place": "Stadt/Ort"
     }
   },
   "location": {

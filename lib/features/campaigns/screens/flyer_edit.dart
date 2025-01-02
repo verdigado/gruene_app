@@ -58,7 +58,7 @@ class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValid
         children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
-            child: CloseSaveWidget(onSave: _saveFlyer, onClose: _closeDialog),
+            child: CloseSaveWidget(onClose: _closeDialog),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),

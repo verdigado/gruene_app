@@ -66,7 +66,7 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
         children: [
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),
-            child: CloseSaveWidget(onSave: _saveDoor, onClose: _closeDialog),
+            child: CloseSaveWidget(onClose: _closeDialog),
           ),
           Container(
             padding: EdgeInsets.symmetric(vertical: 6),

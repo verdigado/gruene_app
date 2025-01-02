@@ -47,7 +47,7 @@ class _MyPosterListScreenState extends State<MyPosterListScreen> {
             child: Align(
               alignment: Alignment.centerLeft,
               child: Text(
-                t.campaigns.posters.my_posters_title,
+                t.campaigns.poster.my_posters_title,
                 style: theme.textTheme.titleMedium,
               ),
             ),
