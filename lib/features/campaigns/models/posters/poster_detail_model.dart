@@ -10,6 +10,7 @@ class PosterDetailModel {
   final AddressModel address;
   final String comment;
   final PosterStatus status;
+  final String createdAt;
 
   PosterDetailModel({
     required this.id,
@@ -18,5 +19,6 @@ class PosterDetailModel {
     required this.address,
     required this.status,
     required this.comment,
+    required this.createdAt,
   });
 }

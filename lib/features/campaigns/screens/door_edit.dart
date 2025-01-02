@@ -74,6 +74,13 @@ class _DoorEditState extends State<DoorEdit> with AddressExtension, DoorValidato
               children: [Text(t.campaigns.door.editDoor, style: theme.textTheme.titleLarge)],
             ),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '* ${widget.door.createdAt}',
+              style: theme.textTheme.labelMedium!.apply(color: ThemeColors.textDisabled),
+            ),
+          ),
           CreateAddressWidget(
             streetTextController: streetTextController,
             houseNumberTextController: houseNumberTextController,

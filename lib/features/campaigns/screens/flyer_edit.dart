@@ -66,6 +66,13 @@ class _FlyerEditState extends State<FlyerEdit> with AddressExtension, FlyerValid
               children: [Text(t.campaigns.flyer.editFlyer, style: theme.textTheme.titleLarge)],
             ),
           ),
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              '* ${widget.flyer.createdAt}',
+              style: theme.textTheme.labelMedium!.apply(color: ThemeColors.textDisabled),
+            ),
+          ),
           CreateAddressWidget(
             streetTextController: streetTextController,
             houseNumberTextController: houseNumberTextController,
