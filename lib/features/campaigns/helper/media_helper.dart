@@ -1,11 +1,9 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:camerawesome/camerawesome_plugin.dart';
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
-import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:image/image.dart' as image_lib;
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -13,12 +11,7 @@ import 'package:photo_view/photo_view.dart';
 class MediaHelper {
   static const int maxUploadDimension = 1200;
 
-  static Future<File?> acquirePhoto(BuildContext context, {bool useCameraAwesome = false}) async {
-    if (useCameraAwesome) return await acquirePhotoWithCameraAwesome(context);
-    return await acquirePhotoWithImagePicker(context);
-  }
-
-  static Future<File?> acquirePhotoWithImagePicker(BuildContext context) async {
+  static Future<File?> acquirePhoto(BuildContext context) async {
     try {
       final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedImage != null) {
@@ -28,52 +21,6 @@ class MediaHelper {
       debugPrint(e.toString());
     }
     return null;
-  }
-
-  static Future<File?> acquirePhotoWithCameraAwesome(BuildContext context) async {
-    var image = await Navigator.of(context, rootNavigator: true).push(
-      AppRoute<File?>(
-        builder: (context) {
-          return CameraAwesomeBuilder.awesome(
-            saveConfig: SaveConfig.photo(),
-            bottomActionsBuilder: (state) => AwesomeBottomActions(
-              state: state,
-              left: AwesomeCameraSwitchButton(
-                state: state,
-                scale: 1.0,
-                onSwitchTap: (state) {
-                  state.switchCameraSensor(
-                    aspectRatio: state.sensorConfig.aspectRatio,
-                  );
-                },
-              ),
-              right: _getCloseButton(context),
-            ),
-            availableFilters: [],
-            onMediaCaptureEvent: (mediaCapture) async {
-              if (mediaCapture.status == MediaCaptureStatus.success) {
-                final imageFile = File(mediaCapture.captureRequest.path!);
-                Navigator.maybePop(context, imageFile);
-              }
-            },
-          );
-        },
-      ),
-    );
-    return image;
-  }
-
-  static Widget? _getCloseButton(BuildContext context) {
-    if (!Platform.isIOS) return null;
-
-    return GestureDetector(
-      onTap: () => Navigator.maybePop(context),
-      child: Icon(
-        Icons.close,
-        size: 40,
-        color: ThemeColors.background,
-      ),
-    );
   }
 
   static Future<Uint8List?> resizeAndReduceImageFile(File? photo) async {

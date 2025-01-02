@@ -65,6 +65,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     setAddress(widget.poster.address);
     commentTextController.text = widget.poster.comment;
     if (widget.poster.status != PosterStatus.ok) _segmentedButtonSelection = {widget.poster.status};
+    _isPhotoDeleted = (widget.poster.imageUrl == null);
 
     super.initState();
   }
@@ -389,15 +390,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     if (photo != null) {
       setState(() {
         _currentPhoto = photo;
-      });
-    }
-  }
-
-  void _deleteAndAcquireNewPhoto() {
-    if (_currentPhoto != null || widget.poster.imageUrl != null) {
-      setState(() {
-        _isPhotoDeleted = true;
-        _currentPhoto = null;
       });
     }
   }
