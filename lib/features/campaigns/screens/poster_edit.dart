@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -50,6 +51,8 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
   File? _currentPhoto;
   bool _isPhotoDeleted = false;
 
+  bool _isWorking = false;
+
   @override
   void dispose() {
     disposeAddressTextControllers();
@@ -73,204 +76,208 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     final currentSize = MediaQuery.of(context).size;
     final lightBorderColor = ThemeColors.textLight;
     var imageRowHeight = 130.0;
-    return Container(
-      padding: EdgeInsets.all(12),
-      child: Column(
-        children: [
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: CloseSaveWidget(onClose: () => _closeDialog(ModalEditResult.cancel)),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Container(
-                    height: imageRowHeight,
-                    clipBehavior: Clip.hardEdge,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.zero),
-                    ),
-                    child: Stack(
-                      children: [
-                        Container(
-                          width: currentSize.width,
-                          height: imageRowHeight,
-                          clipBehavior: Clip.antiAlias,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.rectangle,
-                            borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.zero),
-                          ),
-                          child: _getPosterPreview(),
+    return Stack(
+      children: [
+        Container(
+          padding: EdgeInsets.all(12),
+          child: Column(
+            children: [
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: CloseSaveWidget(onClose: () => _closeDialog(ModalEditResult.cancel)),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Container(
+                        height: imageRowHeight,
+                        clipBehavior: Clip.hardEdge,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.rectangle,
+                          borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.zero),
                         ),
-                        Positioned.fill(
-                          left: 10,
-                          bottom: 5,
-                          child: Align(
-                            alignment: Alignment.bottomLeft,
-                            child: GestureDetector(
-                              onTap: _deleteAndAcquireNewPhoto,
-                              child: Container(
-                                padding: EdgeInsets.only(top: 15, right: 20),
-                                decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                child: Text(
-                                  t.campaigns.poster.delete_photo,
-                                  style: theme.textTheme.labelMedium!.apply(
-                                    color: theme.colorScheme.surface,
-                                    fontSizeDelta: 2,
-                                    letterSpacingDelta: 2,
-                                    shadows: [
-                                      Shadow(
-                                        offset: Offset(-1.5, -1.5),
-                                        color: theme.colorScheme.secondary,
+                        child: Stack(
+                          children: [
+                            Container(
+                              width: currentSize.width,
+                              height: imageRowHeight,
+                              clipBehavior: Clip.antiAlias,
+                              decoration: BoxDecoration(
+                                shape: BoxShape.rectangle,
+                                borderRadius: BorderRadius.vertical(top: Radius.circular(10), bottom: Radius.zero),
+                              ),
+                              child: _getPosterPreview(),
+                            ),
+                            Positioned.fill(
+                              left: 10,
+                              bottom: 5,
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: GestureDetector(
+                                  onTap: _deleteAndAcquireNewPhoto,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 15, right: 20),
+                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
+                                    child: Text(
+                                      t.campaigns.poster.delete_photo,
+                                      style: theme.textTheme.labelMedium!.apply(
+                                        color: theme.colorScheme.surface,
+                                        fontSizeDelta: 2,
+                                        letterSpacingDelta: 2,
+                                        shadows: [
+                                          Shadow(
+                                            offset: Offset(-1.5, -1.5),
+                                            color: theme.colorScheme.secondary,
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
-                        ),
-                        Positioned.fill(
-                          right: 10,
-                          bottom: 5,
-                          child: Align(
-                            alignment: Alignment.bottomRight,
-                            child: GestureDetector(
-                              onTap: _acquireNewPhoto,
-                              child: Container(
-                                padding: EdgeInsets.only(top: 15, left: 20),
-                                decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                child: Text(
-                                  t.campaigns.poster.replace_photo,
-                                  style: theme.textTheme.labelMedium!.apply(
-                                    color: theme.colorScheme.surface,
-                                    fontSizeDelta: 2,
-                                    fontWeightDelta: 2,
-                                    letterSpacingDelta: 2,
-                                    shadows: [
-                                      Shadow(
-                                        offset: Offset(-1.5, -1.5),
-                                        color: theme.colorScheme.secondary,
+                            Positioned.fill(
+                              right: 10,
+                              bottom: 5,
+                              child: Align(
+                                alignment: Alignment.bottomRight,
+                                child: GestureDetector(
+                                  onTap: _acquireNewPhoto,
+                                  child: Container(
+                                    padding: EdgeInsets.only(top: 15, left: 20),
+                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
+                                    child: Text(
+                                      t.campaigns.poster.replace_photo,
+                                      style: theme.textTheme.labelMedium!.apply(
+                                        color: theme.colorScheme.surface,
+                                        fontSizeDelta: 2,
+                                        fontWeightDelta: 2,
+                                        letterSpacingDelta: 2,
+                                        shadows: [
+                                          Shadow(
+                                            offset: Offset(-1.5, -1.5),
+                                            color: theme.colorScheme.secondary,
+                                          ),
+                                        ],
                                       ),
-                                    ],
+                                    ),
                                   ),
                                 ),
                               ),
                             ),
-                          ),
+                          ],
                         ),
-                      ],
+                      ),
                     ),
-                  ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [Text(t.campaigns.poster.editPoster, style: theme.textTheme.titleLarge)],
-            ),
-          ),
-          CreateAddressWidget(
-            streetTextController: streetTextController,
-            houseNumberTextController: houseNumberTextController,
-            zipCodeTextController: zipCodeTextController,
-            cityTextController: cityTextController,
-            inputBorderColor: lightBorderColor,
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Expanded(
-                  child: Column(
-                    children: [
-                      Align(
-                        alignment: Alignment.center,
-                        child: SegmentedButton<PosterStatus>(
-                          multiSelectionEnabled: false,
-                          emptySelectionAllowed: true,
-                          showSelectedIcon: false,
-                          selected: _segmentedButtonSelection,
-                          onSelectionChanged: (Set<PosterStatus> newSelection) {
-                            setState(() {
-                              _segmentedButtonSelection = newSelection;
-                            });
-                          },
-                          segments: PosterStatusHelper.getPosterStatusOptions
-                              .map<ButtonSegment<PosterStatus>>(((PosterStatus, String, String) posterStatusContext) {
-                            return ButtonSegment<PosterStatus>(
-                              value: posterStatusContext.$1,
-                              label: Text(posterStatusContext.$2),
-                            );
-                          }).toList(),
-                          style: buttonStyle,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 25,
-                        child: Text(
-                          _getCurrentPosterStatusHint(),
-                          style: theme.textTheme.labelMedium!.apply(
-                            color: ThemeColors.textDisabled,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [Text(t.campaigns.poster.editPoster, style: theme.textTheme.titleLarge)],
+                ),
+              ),
+              CreateAddressWidget(
+                streetTextController: streetTextController,
+                houseNumberTextController: houseNumberTextController,
+                zipCodeTextController: zipCodeTextController,
+                cityTextController: cityTextController,
+                inputBorderColor: lightBorderColor,
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Align(
+                            alignment: Alignment.center,
+                            child: SegmentedButton<PosterStatus>(
+                              multiSelectionEnabled: false,
+                              emptySelectionAllowed: true,
+                              showSelectedIcon: false,
+                              selected: _segmentedButtonSelection,
+                              onSelectionChanged: (Set<PosterStatus> newSelection) {
+                                setState(() {
+                                  _segmentedButtonSelection = newSelection;
+                                });
+                              },
+                              segments: PosterStatusHelper.getPosterStatusOptions.map<ButtonSegment<PosterStatus>>(
+                                  ((PosterStatus, String, String) posterStatusContext) {
+                                return ButtonSegment<PosterStatus>(
+                                  value: posterStatusContext.$1,
+                                  label: Text(posterStatusContext.$2),
+                                );
+                              }).toList(),
+                              style: buttonStyle,
+                            ),
                           ),
-                        ),
+                          SizedBox(
+                            height: 25,
+                            child: Text(
+                              _getCurrentPosterStatusHint(),
+                              style: theme.textTheme.labelMedium!.apply(
+                                color: ThemeColors.textDisabled,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            height: 140,
-            child: Row(
-              children: [
-                Expanded(
-                  child: MultiLineTextInputField(
-                    labelText: t.campaigns.poster.comment.label,
-                    hint: t.campaigns.poster.comment.hint,
-                    textController: commentTextController,
-                    borderColor: lightBorderColor,
-                  ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                height: 140,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: MultiLineTextInputField(
+                        labelText: t.campaigns.poster.comment.label,
+                        hint: t.campaigns.poster.comment.hint,
+                        textController: commentTextController,
+                        borderColor: lightBorderColor,
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
-          ),
-          Container(
-            padding: EdgeInsets.symmetric(vertical: 6),
-            child: Row(
-              children: [
-                Flexible(
-                  child: Text(
-                    t.campaigns.poster.deletePoster.hint,
-                    style: theme.textTheme.labelMedium?.apply(color: ThemeColors.textDisabled),
-                  ),
+              ),
+              Container(
+                padding: EdgeInsets.symmetric(vertical: 6),
+                child: Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        t.campaigns.poster.deletePoster.hint,
+                        style: theme.textTheme.labelMedium?.apply(color: ThemeColors.textDisabled),
+                      ),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 6, bottom: 24),
+                child: DeleteAndSaveWidget(
+                  onDelete: () => confirmDelete(context, _onDeletePressed),
+                  onSave: _savePoster,
+                ),
+              ),
+            ],
           ),
-          Container(
-            padding: EdgeInsets.only(top: 6, bottom: 24),
-            child: DeleteAndSaveWidget(
-              onDelete: () => confirmDelete(context, _onDeletePressed),
-              onSave: _savePoster,
-            ),
-          ),
-        ],
-      ),
+        ),
+        _getLoadingScreen(),
+      ],
     );
   }
 
   Widget _getPosterPreview() {
-    Widget getDummyAsset() => Image.asset(
-          CampaignConstants.dummyImageAssetName,
-        );
+    Widget getDummyAsset() => Image.asset(CampaignConstants.dummyImageAssetName);
+
     if (_currentPhoto != null) {
       return GestureDetector(
         onTap: _showPictureFullView,
@@ -311,7 +318,15 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _savePoster() async {
     if (!context.mounted) return;
-    final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
+
+    setState(() {
+      _isWorking = true;
+    });
+
+    final reducedImage = await Future.delayed(
+      Duration(milliseconds: 250),
+      () => MediaHelper.resizeAndReduceImageFile(_currentPhoto),
+    );
 
     final updateModel = PosterUpdateModel(
       id: widget.poster.id,
@@ -401,5 +416,19 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
       imageProvider = NetworkImage(widget.poster.imageUrl!);
     }
     MediaHelper.showPictureInFullView(context, imageProvider);
+  }
+
+  Widget _getLoadingScreen() {
+    if (!_isWorking) return SizedBox(height: 0, width: 0);
+    return Positioned.fill(
+      child: Container(
+        decoration: BoxDecoration(color: ThemeColors.text.withAlpha(120)),
+        child: Center(
+          child: CircularProgressIndicator(
+            color: ThemeColors.primary,
+          ),
+        ),
+      ),
+    );
   }
 }
