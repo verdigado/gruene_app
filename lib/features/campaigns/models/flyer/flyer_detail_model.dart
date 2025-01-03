@@ -7,9 +7,12 @@ class FlyerDetailModel {
 
   final int flyerCount;
 
+  final String createdAt;
+
   FlyerDetailModel({
     required this.id,
     required this.address,
     required this.flyerCount,
+    required this.createdAt,
   });
 }

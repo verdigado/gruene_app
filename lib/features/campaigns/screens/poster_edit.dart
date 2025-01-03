@@ -174,6 +174,13 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                   children: [Text(t.campaigns.poster.editPoster, style: theme.textTheme.titleLarge)],
                 ),
               ),
+              Align(
+                alignment: Alignment.centerLeft,
+                child: Text(
+                  '* ${widget.poster.createdAt}',
+                  style: theme.textTheme.labelMedium!.apply(color: ThemeColors.textDisabled),
+                ),
+              ),
               CreateAddressWidget(
                 streetTextController: streetTextController,
                 houseNumberTextController: houseNumberTextController,
