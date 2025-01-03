@@ -9,7 +9,8 @@
       "delete": "Löschen",
       "edit": "Bearbeiten",
       "settings": "Einstellungen",
-      "openSettings": "Einstellungen öffnen"
+      "openSettings": "Einstellungen öffnen",
+      "close": "Schließen"
     }
   },
   "news": {
@@ -33,6 +34,13 @@
       "visited_areas": "Besuchte Gebiete",
       "polling_stations": "Wahllokale",
       "experience_areas": "Erfahrungsgebiete"
+    },
+    "infoToast": {
+      "focusAreas_activated": "Fokusgebiete aktiviert",
+      "focusAreas_deactivated": "Fokusgebiete deaktiviert",
+      "focusAreas_aboutTitle": "Über Fokusgebiete",
+      "focusAreas_aboutText": "Fokusgebiete zeigen Dir, wo sich Wahlkampf in welcher Form besonders lohnt. Diese Fokusgebiete sind in Level 1 (wenig) bis 5 (viel) aufgeteilt.\nKlicke auf ein Fokusgebiet, um mehr Infos zu erhalten.",
+      "more": "mehr Info"
     },
     "poster": {
       "label": "Plakat",
