@@ -117,9 +117,9 @@ platform :ios do
   lane :promote do |options|
     apple_auth()
 
-    testflight_build_number = latest_testflight_build_number(app_identifier: bundle_identifier)
+    testflight_build_number = latest_testflight_build_number(app_identifier: BUNDLE_IDENTIFIER)
     testflight_version = lane_context[SharedValues::LATEST_TESTFLIGHT_VERSION]
-    app_store_build_number = app_store_build_number(app_identifier: bundle_identifier)
+    app_store_build_number = app_store_build_number(app_identifier: BUNDLE_IDENTIFIER)
 
     if testflight_build_number <= app_store_build_number
       puts("Nothing to do, latest version already available in app store connect...")
@@ -132,7 +132,7 @@ platform :ios do
     deliver(
       app_version: testflight_version,
       build_number: testflight_build_number.to_s,
-      app_identifier: bundle_identifier,
+      app_identifier: BUNDLE_IDENTIFIER,
       submit_for_review: true,
       # TODO change to true
       automatic_release: false,
