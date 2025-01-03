@@ -141,7 +141,8 @@
     "tokenScan": {
       "title": "2FA - QR-Code scannen",
       "intro": "Scanne den QR-Code des Accounts, für den Du den zweiten Faktor aktivieren willst.",
-      "doManual": "Einrichtungsschlüssel manuell eingeben"
+      "doManual": "Einrichtungsschlüssel manuell eingeben",
+      "oidcIssuerMissmatch": "Die Authenticator-Funktion kann nur mit dem Grüne Netz verwendet werden."
     },
     "tokenInput": {
       "title": "2FA - Manuelle Einrichtung",

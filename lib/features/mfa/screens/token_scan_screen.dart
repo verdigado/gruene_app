@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
@@ -14,6 +15,17 @@ class TokenScanScreen extends StatelessWidget {
 
   void onDetect(BarcodeCapture barcode, BuildContext context) async {
     String value = barcode.barcodes.firstOrNull?.displayValue ?? '';
+
+    // prevent authenticator registration with arbitrary keycloak instances
+    if (!value.startsWith(Config.oidcIssuer)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(t.mfa.tokenScan.oidcIssuerMissmatch),
+        ),
+      );
+      return;
+    }
+
     var bloc = context.read<MfaBloc>();
     if (bloc.state.isLoading) {
       return;
@@ -28,6 +40,7 @@ class TokenScanScreen extends StatelessWidget {
           content: Text(bloc.state.error.toString()),
         ),
       );
+      return;
     }
 
     Future<void> waitForReadyStatus() async {
