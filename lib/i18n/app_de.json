@@ -130,7 +130,57 @@
   },
   "mfa": {
     "mfa": "Zwei-Faktor-Authentifizierung",
-    "label": "2FA"
+    "label": "2FA",
+    "intro": {
+      "title": "Du hast noch keinen zweiten Faktor eingerichtet.",
+      "info": {
+        "easyLogin": "Mit der Zwei-Faktor-Authentifizierung kannst Du Dich ganz einfach im Grünen Netz einloggen.",
+        "noShortMessageNeeded": "Kein Code per SMS mehr notwendig!",
+        "scanQRCode": "Zur Einrichtung des zweiten Faktors musst du nur mit deiner Kamera den QR-Code in den Einstellungen deines Grünes Netz-Accounts einscannen.",
+        "notificationOnLogin": "Danach erhältst Du bei jeder Anmeldung automatisch eine Benachrichtigung zur Freigabe der Anmeldung."
+      },
+      "startSetup": "Jetzt einrichten",
+      "moreInformation": {
+        "text": "Mehr Informationen zur Einrichtung findest du",
+        "link": "hier",
+        "point": "."
+      }
+    },
+    "tokenScan": {
+      "title": "2FA - QR-Code scannen",
+      "intro": "Scanne den QR-Code des Accounts, für den Du den zweiten Faktor aktivieren willst.",
+      "doManual": "Einrichtungsschlüssel manuell eingeben",
+      "oidcIssuerMissmatch": "Die Authenticator-Funktion kann nur mit dem Grüne Netz verwendet werden."
+    },
+    "tokenInput": {
+      "title": "2FA - Manuelle Einrichtung",
+      "intro": "Manuelle Einrichtung",
+      "token": "Action Token URL",
+      "submit": "Speichern"
+    },
+    "ready": {
+      "refresh": "Aktualisieren",
+      "noLoginAttempt": "Es liegen aktuell keine Anmeldeversuche vor.",
+      "lastRefreshAt": "zuletzt aktualisiert",
+      "never": "nie",
+      "lastLoginAttempt": "Letzte Anmeldung",
+      "loginAttemptApproved": "Anmeldung freigegeben",
+      "oclock": "Uhr",
+      "betaVersion": "Diese Funktion befindet sich noch in der Entwicklung. Wir bitten um Verständnis.",
+      "delete": {
+        "title": "App als zweiten Faktor deaktivieren",
+        "text": "Bitte entferne die App in deiner Account Console bevor du sie hier als zweiten Faktor deaktivierst. Sollte diese App dein einziger konfigurierter zweiter Faktor sein, wirst du dich ansonsten nach dem Deaktivieren nicht mehr einloggen können.",
+        "submit": "Jetzt deaktivieren"
+      }
+    },
+    "verify": {
+      "title": "Bist Du das?",
+      "intro": "Ein Tool fordert Zugriff auf Deinen Account an:",
+      "oclock": "Uhr",
+      "authenticateForApproval": "Bitte bestätige die Anmeldung.",
+      "approve": "Anmeldung erlauben",
+      "deny": "Anmeldung verweigern"
+    }
   },
   "settings": {
     "settings": "App-Einstellungen",
@@ -167,6 +217,7 @@
     "welcome": "Willkommen!",
     "loginMembers": "Jetzt einloggen",
     "loginNonMembers": "Login für Nicht-Parteimitglieder",
+    "mfa": "Zur Zwei-Faktor-Authentifizierung",
     "dataProtection": "Datenschutz",
     "legalNotice": "Impressum",
     "termsOfUse": "Nutzungsbedingungen",

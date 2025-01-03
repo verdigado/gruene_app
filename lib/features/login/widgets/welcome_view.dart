@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
+import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/utils/open_url.dart';
@@ -30,8 +32,10 @@ class WelcomeView extends StatelessWidget {
           height: 64,
           child: FilledButton(
             onPressed: () => context.read<AuthBloc>().add(SignInRequested()),
-            child:
-                Text(t.login.loginMembers, style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface)),
+            child: Text(
+              t.login.loginMembers,
+              style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
+            ),
           ),
         ),
         // TODO #203: Uncomment for guest login
@@ -46,6 +50,20 @@ class WelcomeView extends StatelessWidget {
         //     ),
         //   ),
         // ),
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 24),
+          child: OutlinedButton(
+            onPressed: () => {
+              context.push(
+                Routes.mfa.path,
+              ),
+            },
+            child: Text(
+              t.login.mfa,
+              style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
+            ),
+          ),
+        ),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

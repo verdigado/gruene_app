@@ -11,20 +11,32 @@ import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
+import 'package:gruene_app/features/mfa/bloc/mfa_event.dart';
+import 'package:gruene_app/features/mfa/domain/mfa_factory.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
+import 'package:keycloak_authenticator/api.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   await dotenv.load(fileName: '.env');
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  LocaleSettings.useDeviceLocale();
+  final locale = await LocaleSettings.useDeviceLocale();
+
+  if (locale.languageCode == 'de') {
+    timeago.setLocaleMessages('de', timeago.DeMessages());
+  } else {
+    timeago.setLocaleMessages('en', timeago.EnMessages());
+  }
 
   if (!kIsWeb && defaultTargetPlatform == TargetPlatform.android) {
     await InAppWebViewController.setWebContentsDebuggingEnabled(kDebugMode);
   }
 
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
+  GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
 
   runApp(TranslationProvider(child: const MyApp()));
 }
@@ -37,8 +49,15 @@ class MyApp extends StatelessWidget {
     final authRepository = AuthRepository();
     final router = createAppRouter(context);
 
-    return BlocProvider(
-      create: (context) => AuthBloc(authRepository)..add(CheckTokenRequested()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => AuthBloc(authRepository)..add(CheckTokenRequested()),
+        ),
+        BlocProvider(
+          create: (context) => MfaBloc()..add(InitMfa()),
+        ),
+      ],
       child: BlocListener<AuthBloc, AuthState>(
         listener: (context, state) {
           router.refresh();
