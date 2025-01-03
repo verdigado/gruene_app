@@ -424,10 +424,6 @@ jobs:
             FASTLANE_SKIP_UPDATE_CHECK: true
         macos:
             xcode: 16.1.0
-        parameters:
-            production_delivery:
-                description: Whether to deliver the build to production.
-                type: boolean
         steps:
             - checkout
             - install_node_modules
