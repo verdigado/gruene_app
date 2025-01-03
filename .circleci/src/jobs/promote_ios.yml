@@ -10,7 +10,7 @@ steps:
   - run:
       name: '[FL] Apple AppStore Promotion'
       command: bundle exec fastlane ios promote
-      working_directory: native
+      working_directory: ios
   - run:
       name: Remove Beta Flag from Github Release
       command: yarn github-promote-release promote --platform ios --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
