@@ -1,7 +1,3 @@
-parameters:
-  production_delivery:
-    description: Whether to deliver the build to production.
-    type: boolean
 macos:
   xcode: 16.1.0
 environment:
