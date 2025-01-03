@@ -611,8 +611,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
         final mediaQuery = MediaQuery.of(context);
         final theme = Theme.of(context);
         infos.add(
-          IgnorePointer(
-            child: Positioned.fill(
+          Positioned.fill(
+            child: IgnorePointer(
               child: Align(
                 alignment: Alignment.topCenter,
                 child: Container(
