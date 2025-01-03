@@ -10,10 +10,13 @@ import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
+import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
+import 'package:motion_toast/motion_toast.dart';
 
 typedef GetAdditionalDataBeforeCallback<T> = Future<T?> Function(BuildContext);
 typedef GetAddScreenCallback<T, U> = T Function(LatLng, AddressModel?, U?);
@@ -23,7 +26,7 @@ typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
 typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
 typedef OnDeletePoiCallback = void Function(String posterId);
 
-abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
+abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo {
   late MapController mapController;
   final NominatimService _nominatimService;
 
@@ -189,8 +192,11 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
     focusAreasVisible = state;
     if (focusAreasVisible) {
       loadFocusAreaLayer();
+      showInfoToast(t.campaigns.infoToast.focusAreas_activated, moreInfoCallback: () => showAboutFocusArea(context));
     } else {
       mapController.removeLayerSource(_focusAreadId);
+      hideCurrentSnackBar();
+      showInfoToast(t.campaigns.infoToast.focusAreas_deactivated);
     }
   }
 
@@ -272,5 +278,52 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> {
       _lastFocusAreaId = null;
       _lastInfoSnackBar = null;
     });
+  }
+
+  void showInfoToast(String toastText, {void Function()? moreInfoCallback}) {
+    final theme = Theme.of(context);
+
+    List<Widget> showMoreInfo() {
+      if (moreInfoCallback == null) return List<Widget>.empty();
+      return [
+        SizedBox(
+          width: 12,
+        ),
+        Text(
+          t.campaigns.infoToast.more,
+          style: theme.textTheme.labelMedium!.apply(color: ThemeColors.textDark, decoration: TextDecoration.underline),
+        ),
+      ];
+    }
+
+    MotionToast? toast;
+    tapToast() {
+      toast!.closeOverlay();
+      moreInfoCallback!();
+    }
+
+    toast = MotionToast(
+      icon: Icons.info,
+      secondaryColor: ThemeColors.textCancel,
+      primaryColor: ThemeColors.infoBackground,
+      width: 300,
+      height: 80,
+      description: GestureDetector(
+        onTap: tapToast,
+        child: Row(
+          children: [
+            Text(
+              toastText,
+              style: theme.textTheme.labelMedium!.apply(
+                color: ThemeColors.textDark,
+              ),
+            ),
+            ...showMoreInfo(),
+          ],
+        ),
+      ),
+    );
+
+    toast.show(context);
   }
 }
