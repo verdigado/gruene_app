@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
@@ -129,5 +131,26 @@ mixin DoorValidator {
       return null;
     }
     return (closedDoors: closedDoors, openedDoors: openedDoors);
+  }
+}
+
+mixin PosterValidator {
+  bool validatePoster(
+    File? currentPhoto,
+    BuildContext context,
+  ) {
+    if (currentPhoto == null) {
+      final theme = Theme.of(context);
+      MotionToast.error(
+        description: Text(
+          t.campaigns.poster.noPhotoWarning,
+          style: theme.textTheme.labelMedium!.apply(
+            color: ThemeColors.background,
+          ),
+        ),
+      ).show(context);
+      return false;
+    }
+    return true;
   }
 }

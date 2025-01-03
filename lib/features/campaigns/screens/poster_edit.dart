@@ -35,7 +35,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete {
+class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete, PosterValidator {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -65,6 +65,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     setAddress(widget.poster.address);
     commentTextController.text = widget.poster.comment;
     if (widget.poster.status != PosterStatus.ok) _segmentedButtonSelection = {widget.poster.status};
+    _isPhotoDeleted = (widget.poster.imageUrl == null);
 
     super.initState();
   }
@@ -116,22 +117,19 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: GestureDetector(
-                                  onTap: _deleteAndAcquireNewPhoto,
+                                  onTap: _pickImageFromDevice,
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 15, right: 20),
-                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                    child: Text(
-                                      t.campaigns.poster.delete_photo,
-                                      style: theme.textTheme.labelMedium!.apply(
-                                        color: theme.colorScheme.surface,
-                                        fontSizeDelta: 2,
-                                        letterSpacingDelta: 2,
-                                        shadows: [
-                                          Shadow(
-                                            offset: Offset(-1.5, -1.5),
-                                            color: theme.colorScheme.secondary,
-                                          ),
-                                        ],
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ThemeColors.secondary.withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.add_photo_alternate,
+                                        color: Colors.white,
+                                        size: 30.0,
                                       ),
                                     ),
                                   ),
@@ -146,21 +144,17 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                                 child: GestureDetector(
                                   onTap: _acquireNewPhoto,
                                   child: Container(
-                                    padding: EdgeInsets.only(top: 15, left: 20),
-                                    decoration: BoxDecoration(color: ThemeColors.background.withAlpha(0)),
-                                    child: Text(
-                                      t.campaigns.poster.replace_photo,
-                                      style: theme.textTheme.labelMedium!.apply(
-                                        color: theme.colorScheme.surface,
-                                        fontSizeDelta: 2,
-                                        fontWeightDelta: 2,
-                                        letterSpacingDelta: 2,
-                                        shadows: [
-                                          Shadow(
-                                            offset: Offset(-1.5, -1.5),
-                                            color: theme.colorScheme.secondary,
-                                          ),
-                                        ],
+                                    width: 50,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      shape: BoxShape.circle,
+                                      color: ThemeColors.secondary.withAlpha(100),
+                                    ),
+                                    child: Center(
+                                      child: Icon(
+                                        Icons.photo_camera,
+                                        color: Colors.white,
+                                        size: 30.0,
                                       ),
                                     ),
                                   ),
@@ -318,6 +312,7 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _savePoster() async {
     if (!context.mounted) return;
+    if (!validatePoster(_currentPhoto, context)) return;
 
     setState(() {
       _isWorking = true;
@@ -399,15 +394,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
     }
   }
 
-  void _deleteAndAcquireNewPhoto() {
-    if (_currentPhoto != null || widget.poster.imageUrl != null) {
-      setState(() {
-        _isPhotoDeleted = true;
-        _currentPhoto = null;
-      });
-    }
-  }
-
   void _showPictureFullView() async {
     ImageProvider imageProvider;
     if (_currentPhoto != null) {
@@ -430,5 +416,15 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
         ),
       ),
     );
+  }
+
+  void _pickImageFromDevice() async {
+    final photo = await MediaHelper.pickImageFromDevice(context);
+
+    if (photo != null) {
+      setState(() {
+        _currentPhoto = photo;
+      });
+    }
   }
 }

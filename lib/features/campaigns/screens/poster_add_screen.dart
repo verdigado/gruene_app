@@ -23,7 +23,7 @@ class PosterAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersAddState();
 }
 
-class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
+class _PostersAddState extends State<PosterAddScreen> with AddressExtension, PosterValidator {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -64,18 +64,40 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
                   style: theme.textTheme.displayMedium!.apply(color: theme.colorScheme.surface),
                 ),
               ),
-              Container(
-                alignment: Alignment.centerRight,
-                width: 50,
-                height: 50,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(color: ThemeColors.background, width: 1),
-                  gradient: LinearGradient(
-                    colors: [Color(0xFF03BD4E), Color(0xFF875CFF)],
+              GestureDetector(
+                onTap: _pickImageFromDevice,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: Icon(
+                      Icons.add_photo_alternate,
+                      color: Colors.white,
+                      size: 30.0,
+                    ),
                   ),
                 ),
-                child: _getPhotoPreviewOrIcon(),
+              ),
+              SizedBox(width: 6),
+              GestureDetector(
+                onTap: _acquireNewPhoto,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  width: 50,
+                  height: 50,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    border: Border.all(color: ThemeColors.background, width: 1),
+                    gradient: LinearGradient(
+                      colors: [Color(0xFF03BD4E), Color(0xFF875CFF)],
+                    ),
+                  ),
+                  child: _getPhotoPreviewOrIcon(),
+                ),
               ),
             ],
           ),
@@ -120,23 +142,17 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
         ),
-        child: GestureDetector(
-          onTap: _acquireNewPhoto,
-          child: Image.file(
-            _currentPhoto!,
-            fit: BoxFit.cover,
-          ),
+        child: Image.file(
+          _currentPhoto!,
+          fit: BoxFit.cover,
         ),
       );
     } else {
       return Center(
-        child: GestureDetector(
-          onTap: _acquireNewPhoto,
-          child: Icon(
-            Icons.photo_camera,
-            color: Colors.white,
-            size: 30.0,
-          ),
+        child: Icon(
+          Icons.photo_camera,
+          color: Colors.white,
+          size: 30.0,
         ),
       );
     }
@@ -154,6 +170,8 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
 
   void _onSavePressed(BuildContext localContext) async {
     if (!localContext.mounted) return;
+    if (!validatePoster(_currentPhoto, context)) return;
+
     final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
 
     _saveAndReturn(reducedImage);
@@ -168,5 +186,15 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
         photo: reducedImage,
       ),
     );
+  }
+
+  void _pickImageFromDevice() async {
+    final photo = await MediaHelper.pickImageFromDevice(context);
+
+    if (photo != null) {
+      setState(() {
+        _currentPhoto = photo;
+      });
+    }
   }
 }

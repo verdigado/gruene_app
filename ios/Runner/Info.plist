@@ -8,6 +8,8 @@
     <string>Wir benötigen Zugriff auf dein Mikrofon, um Ton für Videos aufzunehmen. - NOT USED</string>
     <key>NSLocationWhenInUseUsageDescription</key>
     <string>Wir benötigen Zugriff auf deinen Standort, um deine Position auf der Karte anzuzeigen.</string>
+    <key>NSPhotoLibraryUsageDescription</key>
+    <string>Wir benötigen Zugriff auf deine Foto-Ordner, damit du Bilder zu Plakaten hinzufügen kannst.</string>
     <key>CFBundleDevelopmentRegion</key>
     <string>$(DEVELOPMENT_LANGUAGE)</string>
     <key>CFBundleDisplayName</key>
