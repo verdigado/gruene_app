@@ -56,7 +56,7 @@ dependencies:
   motion_toast: ^2.11.0
   keycloak_authenticator:
     path: ./packages/keycloak_authenticator
-  mobile_scanner: ^6.0.2
+  mobile_scanner: ^7.0.0-beta.3
   timeago: ^3.7.0
   local_auth: ^2.3.0
   image_picker: ^1.1.2
