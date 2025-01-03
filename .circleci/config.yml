@@ -414,7 +414,7 @@ jobs:
             - run:
                 command: bundle exec fastlane android promote
                 name: '[FL] Google PlayStore Promotion'
-                working_directory: native
+                working_directory: android
             - run:
                 command: yarn github-promote-release promote --platform android --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
                 name: Remove Beta Flag from Github Release
@@ -432,7 +432,7 @@ jobs:
             - run:
                 command: bundle exec fastlane ios promote
                 name: '[FL] Apple AppStore Promotion'
-                working_directory: native
+                working_directory: ios
             - run:
                 command: yarn github-promote-release promote --platform ios --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
                 name: Remove Beta Flag from Github Release

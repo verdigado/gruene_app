@@ -12,7 +12,7 @@ steps:
   - run:
       name: '[FL] Google PlayStore Promotion'
       command: bundle exec fastlane android promote
-      working_directory: native
+      working_directory: android
   - run:
       name: Remove Beta Flag from Github Release
       command: yarn github-promote-release promote --platform android --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
