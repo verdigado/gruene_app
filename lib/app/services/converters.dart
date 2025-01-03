@@ -171,6 +171,7 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       openedDoors: poi.house!.countOpenedDoors.toInt(),
       closedDoors: poi.house!.countClosedDoors.toInt(),
+      createdAt: _getDateTimeAsString(poi.createdAt),
     );
   }
 
@@ -186,6 +187,7 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       status: poi.poster!.status.transformToModelPosterStatus(),
       comment: poi.poster!.comment ?? '',
+      createdAt: _getDateTimeAsString(poi.createdAt),
     );
   }
 
@@ -198,6 +200,7 @@ extension PoiParsing on Poi {
       id: poi.id,
       address: poi.address.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
+      createdAt: _getDateTimeAsString(poi.createdAt),
     );
   }
 
@@ -220,6 +223,10 @@ extension PoiParsing on Poi {
 
   String _getLastChangeDateTimeInfo() {
     final lastChange = updatedAt.toLocal();
+    return _getDateTimeAsString(lastChange);
+  }
+
+  String _getDateTimeAsString(DateTime lastChange) {
     final lastChangeDate = DateFormat(t.campaigns.poster.date_format).format(lastChange);
     final lastChangeTime = DateFormat(t.campaigns.poster.time_format).format(lastChange);
     return t.campaigns.poster.datetime_display_template

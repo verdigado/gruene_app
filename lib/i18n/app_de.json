@@ -2,13 +2,15 @@
   "common": {
     "appName": "Grüne App",
     "error": "Fehler",
+    "notImplementedYet": "Diese Funktion befindet sich noch in der Entwicklung. Wir bitten um Verständnis.",
     "actions": {
       "save": "Speichern",
       "cancel": "Abbrechen",
       "delete": "Löschen",
       "edit": "Bearbeiten",
       "settings": "Einstellungen",
-      "openSettings": "Einstellungen öffnen"
+      "openSettings": "Einstellungen öffnen",
+      "close": "Schließen"
     }
   },
   "news": {
@@ -33,16 +35,22 @@
       "polling_stations": "Wahllokale",
       "experience_areas": "Erfahrungsgebiete"
     },
+    "infoToast": {
+      "focusAreas_activated": "Fokusgebiete aktiviert",
+      "focusAreas_deactivated": "Fokusgebiete deaktiviert",
+      "focusAreas_aboutTitle": "Über Fokusgebiete",
+      "focusAreas_aboutText": "Fokusgebiete zeigen Dir, wo sich Wahlkampf in welcher Form besonders lohnt. Diese Fokusgebiete sind in Level 1 (wenig) bis 5 (viel) aufgeteilt.\nKlicke auf ein Fokusgebiet, um mehr Infos zu erhalten.",
+      "more": "mehr Info"
+    },
     "poster": {
       "label": "Plakat",
       "addPoster": "Plakat eintragen",
       "editPoster": "Plakat bearbeiten",
-      "delete_photo": "Foto löschen",
-      "replace_photo": "Foto ersetzen",
       "my_posters_action": "Meine Plakate",
       "my_posters_title": "Meine aufgehängten Plakate",
       "created": "aufgehängt",
       "updated": "aktualisiert",
+      "noPhotoWarning": "Bitte wähle ein Foto oder nimm eins mit der Kamera auf!",
       "date_format": "dd.MM.yyyy",
       "time_format": "HH:mm",
       "datetime_display_template": "{date} um {time}",
@@ -212,6 +220,7 @@
     "mfa": "Zur Zwei-Faktor-Authentifizierung",
     "dataProtection": "Datenschutz",
     "legalNotice": "Impressum",
+    "termsOfUse": "Nutzungsbedingungen",
     "discover": "App erkunden",
     "discoverDescription": "Erfahre hier, was Dich erwartet."
   }

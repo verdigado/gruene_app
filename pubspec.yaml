@@ -44,7 +44,6 @@ dependencies:
 #----------------------------------------------------
   http: ^1.2.2
   turf: ^0.0.10
-  camerawesome: ^2.1.0
   intl: ^0.19.0
   image: ^4.3.0
   http_parser: ^4.0.2
@@ -60,6 +59,7 @@ dependencies:
   mobile_scanner: ^6.0.2
   timeago: ^3.7.0
   local_auth: ^2.3.0
+  image_picker: ^1.1.2
 
 dev_dependencies:
 

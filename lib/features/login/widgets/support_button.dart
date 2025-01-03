@@ -16,17 +16,17 @@ class SupportButton extends StatelessWidget {
       width: 48,
       child: RotatedBox(
         quarterTurns: 3,
-        child: OutlinedButton.icon(
+        child: FilledButton.icon(
           onPressed: () => openUrl(supportUrl, context),
           icon: CustomIcon(
             path: 'assets/icons/heart.svg',
-            color: theme.colorScheme.tertiary,
+            color: theme.colorScheme.surface,
             width: 16,
             height: 16,
           ),
           label: Text(
             t.login.support,
-            style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
+            style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
           ),
         ),
       ),

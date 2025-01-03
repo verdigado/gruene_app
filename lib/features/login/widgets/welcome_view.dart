@@ -86,6 +86,18 @@ class WelcomeView extends StatelessWidget {
                 style: theme.textTheme.labelSmall,
               ),
             ),
+            Container(
+              width: 4,
+              height: 4,
+              decoration: BoxDecoration(color: theme.primaryColor, shape: BoxShape.circle),
+            ),
+            TextButton(
+              onPressed: () => openUrl(termsOfUseUrl, context),
+              child: Text(
+                t.login.termsOfUse,
+                style: theme.textTheme.labelSmall,
+              ),
+            ),
           ],
         ),
       ],
