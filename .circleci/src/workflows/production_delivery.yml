@@ -1,0 +1,35 @@
+when:
+  and:
+    - << pipeline.parameters.api_triggered >>
+    - equal: [<< pipeline.parameters.workflow_type >>, production_delivery]
+jobs:
+  - bump_version:
+      context:
+        - github
+      prepare_delivery: true
+
+  - build_android:
+      context:
+        - app_signing_android
+      requires:
+        - bump_version
+  - deliver_android:
+      production_delivery: true
+      context:
+        - github
+        - gruene_google_playstore
+      requires:
+        - build_android
+
+  - build_ios:
+      context:
+        - app_signing_ios
+      requires:
+        - bump_version
+  - deliver_ios:
+      production_delivery: true
+      context:
+        - github
+        - gruene_apple_appstore
+      requires:
+        - build_ios

@@ -7,8 +7,8 @@ const CIRCLECI_URL = 'https://circleci.com/api/v2/project/github/verdigado/gruen
 const WORKFLOW_TYPES = [
   'none',
   'beta_delivery',
-  // 'production_delivery',
-  // 'promotion'
+  'production_delivery',
+  'promotion'
 ]
 
 program

@@ -17,14 +17,14 @@ steps:
       condition: << parameters.production_delivery >>
       steps:
         - run:
-            name: '[FL] Production Upload'
+            name: '[FL] Apple AppStore Upload'
             command: bundle exec fastlane ios production_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
             working_directory: ios
   - unless:
       condition: << parameters.production_delivery >>
       steps:
         - run:
-            name: '[FL] Beta Upload (TestFlight)'
+            name: '[FL] Apple Testflight Upload'
             command: bundle exec fastlane ios beta_upload ipa_path:attached_workspace/app-release.ipa
             working_directory: ios
   - run:
