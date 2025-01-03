@@ -101,7 +101,8 @@ platform :android do
       skip_upload_images: true,
       skip_upload_screenshots: true,
       skip_upload_metadata: true,
-      release_status: "completed",
+      # TODO change to "completed"
+      release_status: production_delivery === true ? "draft" : "completed",
       skip_upload_apk: true,
       aab: "#{ENV['HOME']}/#{aab_path}",
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
@@ -143,7 +144,8 @@ platform :android do
       skip_upload_screenshots: true,
       skip_upload_metadata: true,
       skip_upload_apk: true,
-      release_status: "completed",
+      # TODO change to "completed"
+      release_status: "draft",
       json_key_data: ENV["GOOGLE_SERVICE_ACCOUNT_JSON"]
     )
   end
