@@ -10,7 +10,7 @@ import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
-import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
+import 'package:gruene_app/features/campaigns/screens/mixins.dart';
 import 'package:gruene_app/features/campaigns/widgets/app_route.dart';
 import 'package:gruene_app/features/campaigns/widgets/content_page.dart';
 import 'package:gruene_app/features/campaigns/widgets/map_controller.dart';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
-import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
+import 'package:gruene_app/features/campaigns/screens/mixins.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/enhanced_wheel_slider.dart';
 import 'package:gruene_app/features/campaigns/widgets/save_cancel_on_create_widget.dart';

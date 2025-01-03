@@ -3,7 +3,7 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/screens/map_consumer.dart';
-import 'package:gruene_app/features/campaigns/screens/screen_extensions.dart';
+import 'package:gruene_app/features/campaigns/screens/mixins.dart';
 import 'package:gruene_app/features/campaigns/widgets/close_save_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
 import 'package:gruene_app/features/campaigns/widgets/delete_and_save_widget.dart';
