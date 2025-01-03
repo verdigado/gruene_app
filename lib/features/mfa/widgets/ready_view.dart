@@ -30,7 +30,7 @@ class _ReadyViewState extends State<ReadyView> {
   }
 
   void _startPeriodicRefresh() {
-    _timer = Timer.periodic(Duration(seconds: 10), (timer) {
+    _timer = Timer.periodic(Duration(seconds: 5), (timer) {
       context.read<MfaBloc>().add(RefreshMfa());
     });
   }

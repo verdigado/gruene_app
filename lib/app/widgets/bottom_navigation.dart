@@ -12,9 +12,10 @@ class BottomNavigation extends StatelessWidget {
     final route = GoRouter.of(context).routerDelegate.currentConfiguration.matches[0].route as GoRoute;
     final currentRoute = route.path;
     final currentRouteIndex = bottomNavigationItems.indexWhere((item) => item.route == currentRoute);
+    final bottomNavVisible = currentRouteIndex >= 0;
     final theme = Theme.of(context);
 
-    return currentRouteIndex >= 0
+    return bottomNavVisible
         ? SizedBox(
             height: 64.0,
             child: BottomNavigationBar(

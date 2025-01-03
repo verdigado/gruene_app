@@ -160,7 +160,7 @@
       "betaVersion": "Diese Funktion befindet sich noch in der Entwicklung. Wir bitten um Verständnis.",
       "delete": {
         "title": "App als zweiten Faktor deaktivieren",
-        "text": "Bitte entferne die App in deiner Account Console bevor du sie hier als zweiten Faktor deaktivierst.",
+        "text": "Bitte entferne die App in deiner Account Console bevor du sie hier als zweiten Faktor deaktivierst. Sollte diese App dein einziger konfigurierter zweiter Faktor sein, wirst du dich ansonsten nach dem Deaktivieren nicht mehr einloggen können.",
         "submit": "Jetzt deaktivieren"
       }
     },
