@@ -1,0 +1,14 @@
+when:
+  and:
+    - << pipeline.parameters.api_triggered >>
+    - equal: [<< pipeline.parameters.workflow_type >>, promotion]
+jobs:
+  - promote_android:
+      context:
+        - github
+        - gruene_google_playstore
+
+  - promote_ios:
+      context:
+        - github
+        - gruene_apple_appstore

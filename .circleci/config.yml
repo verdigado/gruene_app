@@ -351,7 +351,7 @@ jobs:
                 directory: android
             - run:
                 command: bundle exec fastlane android upload aab_path:attached_workspace/app-release.aab production_delivery:"<< parameters.production_delivery >>" version_name:${NEW_VERSION_NAME} version_code:${NEW_VERSION_CODE}
-                name: '[FL] Play Store Upload'
+                name: '[FL] Google PlayStore Upload'
                 working_directory: android
             - run:
                 command: echo "export ANDROID_RELEASE_ID='$(yarn --silent github-release create android ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}")'" >> ${BASH_ENV}
@@ -382,14 +382,14 @@ jobs:
                 steps:
                     - run:
                         command: bundle exec fastlane ios production_upload ipa_path:attached_workspace/app-release.ipa version_name:${NEW_VERSION_NAME}
-                        name: '[FL] Production Upload'
+                        name: '[FL] Apple AppStore Upload'
                         working_directory: ios
             - unless:
                 condition: << parameters.production_delivery >>
                 steps:
                     - run:
                         command: bundle exec fastlane ios beta_upload ipa_path:attached_workspace/app-release.ipa
-                        name: '[FL] Beta Upload (TestFlight)'
+                        name: '[FL] Apple Testflight Upload'
                         working_directory: ios
             - run:
                 command: echo "export IOS_RELEASE_ID='$(yarn --silent github-release create ios ${NEW_VERSION_NAME} ${NEW_VERSION_CODE} --production-delivery << parameters.production_delivery >> --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME} --release-notes "Release v${NEW_VERSION_NAME}+${NEW_VERSION_CODE}")'" >> ${BASH_ENV}
@@ -399,6 +399,49 @@ jobs:
                 command: yarn github-release-asset upload ios --releaseId ${IOS_RELEASE_ID} --files "$(ls ~/attached_workspace/*.ipa)" --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
                 name: Add Build to Github Release
                 working_directory: tools
+    promote_android:
+        docker:
+            - image: cimg/android:2024.08.1-node
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        resource_class: small
+        shell: /bin/bash -eo pipefail
+        steps:
+            - checkout
+            - install_node_modules
+            - install_fastlane:
+                directory: android
+            - run:
+                command: bundle exec fastlane android promote
+                name: '[FL] Google PlayStore Promotion'
+                working_directory: native
+            - run:
+                command: yarn github-promote-release promote --platform android --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Remove Beta Flag from Github Release
+                working_directory: tools
+    promote_ios:
+        environment:
+            FASTLANE_SKIP_UPDATE_CHECK: true
+        macos:
+            xcode: 16.1.0
+        parameters:
+            production_delivery:
+                description: Whether to deliver the build to production.
+                type: boolean
+        steps:
+            - checkout
+            - install_node_modules
+            - install_fastlane:
+                directory: ios
+            - run:
+                command: bundle exec fastlane ios promote
+                name: '[FL] Apple AppStore Promotion'
+                working_directory: native
+            - run:
+                command: yarn github-promote-release promote --platform ios --github-private-key ${GITHUB_PRIVATE_KEY} --owner ${CIRCLE_PROJECT_USERNAME} --repo ${CIRCLE_PROJECT_REPONAME}
+                name: Remove Beta Flag from Github Release
+                working_directory: tools
+            - notify
 parameters:
     api_triggered:
         default: false
@@ -480,4 +523,56 @@ workflows:
                     - main
                     - << pipeline.git.branch >>
                 - not: << pipeline.parameters.api_triggered >>
+    production_delivery:
+        jobs:
+            - bump_version:
+                context:
+                    - github
+                prepare_delivery: true
+            - build_android:
+                context:
+                    - app_signing_android
+                requires:
+                    - bump_version
+            - deliver_android:
+                context:
+                    - github
+                    - gruene_google_playstore
+                production_delivery: true
+                requires:
+                    - build_android
+            - build_ios:
+                context:
+                    - app_signing_ios
+                requires:
+                    - bump_version
+            - deliver_ios:
+                context:
+                    - github
+                    - gruene_apple_appstore
+                production_delivery: true
+                requires:
+                    - build_ios
+        when:
+            and:
+                - << pipeline.parameters.api_triggered >>
+                - equal:
+                    - << pipeline.parameters.workflow_type >>
+                    - production_delivery
+    promotion:
+        jobs:
+            - promote_android:
+                context:
+                    - github
+                    - gruene_google_playstore
+            - promote_ios:
+                context:
+                    - github
+                    - gruene_apple_appstore
+        when:
+            and:
+                - << pipeline.parameters.api_triggered >>
+                - equal:
+                    - << pipeline.parameters.workflow_type >>
+                    - promotion
 

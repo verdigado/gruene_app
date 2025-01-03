@@ -102,7 +102,8 @@ platform :ios do
       ipa: "#{ENV['HOME']}/#{ipa_path}",
       app_version: version_name,
       submit_for_review: true,
-      automatic_release: true,
+      # TODO change to true
+      automatic_release: false,
       force: true,
       skip_screenshots: true,
       skip_metadata: false,
@@ -133,7 +134,8 @@ platform :ios do
       build_number: testflight_build_number.to_s,
       app_identifier: bundle_identifier,
       submit_for_review: true,
-      automatic_release: true,
+      # TODO change to true
+      automatic_release: false,
       force: true,
       skip_metadata: false,
       skip_screenshots: true,
