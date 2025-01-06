@@ -97,7 +97,7 @@
     },
     "deleteEntry": {
       "label": "Eintrag löschen",
-      "confirmation_dialog": "Möchtest du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
+      "confirmation_dialog": "Möchtest Du diesen Eintrag wirklich löschen? Dies kann nicht rückgängig gemacht werden."
     },
     "team": {
       "label": "Team"
@@ -114,7 +114,7 @@
   },
   "location": {
     "activateLocationAccess": "Standortermittlung aktivieren",
-    "activateLocationAccessRationale": "Erlaube der App deinen Standort zu benutzen, um diesen auf der Karte anzuzeigen.",
+    "activateLocationAccessRationale": "Erlaube der App Deinen Standort zu benutzen, um diesen auf der Karte anzuzeigen.",
     "activateLocationAccessSettings": "Aktiviere die Standortermittlung in den Einstellungen.",
     "askPermissionsAgain": "Soll noch einmal nach der Berechtigung gefragt werden?",
     "grantLocation": "Ich möchte meinen Standort freigeben.",
@@ -136,21 +136,17 @@
       "info": {
         "easyLogin": "Mit der Zwei-Faktor-Authentifizierung kannst Du Dich ganz einfach im Grünen Netz einloggen.",
         "noShortMessageNeeded": "Kein Code per SMS mehr notwendig!",
-        "scanQRCode": "Zur Einrichtung des zweiten Faktors musst du nur mit deiner Kamera den QR-Code in den Einstellungen deines Grünes Netz-Accounts einscannen.",
-        "notificationOnLogin": "Danach erhältst Du bei jeder Anmeldung automatisch eine Benachrichtigung zur Freigabe der Anmeldung."
+        "scanQRCode(rich)": "Zur Einrichtung des zweiten Faktors musst Du nur mit Deiner Kamera den QR-Code in den ${openMfaSettings(Einstellungen Deines Grünen Netz-Accounts)} einscannen.",
+        "notificationOnLogin": "Im Anschluss öffne die App jedes mal, wenn du eine Anmeldung im Grünen Netz freigeben willst."
       },
       "startSetup": "Jetzt einrichten",
-      "moreInformation": {
-        "text": "Mehr Informationen zur Einrichtung findest du",
-        "link": "hier",
-        "point": "."
-      }
+      "moreInformation(rich)": "Mehr Informationen zur Einrichtung findest Du ${openMfaInformation(hier)}."
     },
     "tokenScan": {
       "title": "2FA - QR-Code scannen",
       "intro": "Scanne den QR-Code des Accounts, für den Du den zweiten Faktor aktivieren willst.",
       "doManual": "Einrichtungsschlüssel manuell eingeben",
-      "oidcIssuerMissmatch": "Die Authenticator-Funktion kann nur mit dem Grüne Netz verwendet werden."
+      "oidcIssuerMissmatch": "Die Authenticator-Funktion kann nur mit dem Grünen Netz verwendet werden."
     },
     "tokenInput": {
       "title": "2FA - Manuelle Einrichtung",
@@ -169,7 +165,7 @@
       "betaVersion": "Diese Funktion befindet sich noch in der Entwicklung. Wir bitten um Verständnis.",
       "delete": {
         "title": "App als zweiten Faktor deaktivieren",
-        "text": "Bitte entferne die App in deiner Account Console bevor du sie hier als zweiten Faktor deaktivierst. Sollte diese App dein einziger konfigurierter zweiter Faktor sein, wirst du dich ansonsten nach dem Deaktivieren nicht mehr einloggen können.",
+        "text": "Bitte entferne die App in Deiner Account Console bevor Du sie hier als zweiten Faktor deaktivierst. Sollte diese App Dein einziger konfigurierter zweiter Faktor sein, wirst Du dich ansonsten nach dem Deaktivieren nicht mehr einloggen können.",
         "submit": "Jetzt deaktivieren"
       }
     },
