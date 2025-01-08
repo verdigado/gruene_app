@@ -2,7 +2,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Config {
   static String get appId => 'de.gruene.wkapp';
-  static bool get development => bool.parse(dotenv.env['DEVELOPMENT']!);
+  static String get env => dotenv.env['ENV'] ?? 'production';
+  static bool get isProduction => Config.env == 'production';
+  static bool get isStaging => Config.env == 'staging';
+  static bool get isDevelopment => Config.env == 'development';
 
   static String get grueneApiUrl => dotenv.env['GRUENE_API_URL']!;
   static String get grueneApiAccessToken => dotenv.env['GRUENE_API_ACCESS_TOKEN'] ?? '';
