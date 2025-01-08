@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
@@ -10,6 +12,8 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     final currentRoute = GoRouterState.of(context);
+    final authBloc = context.read<AuthBloc>();
+    final isLoggedIn = authBloc.state is Authenticated;
     final theme = Theme.of(context);
     return AppBar(
       title: Text(
@@ -28,7 +32,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
             ),
             onPressed: null,
           ),
-        if (currentRoute.path != Routes.settings.path)
+        if (currentRoute.path != Routes.settings.path && isLoggedIn)
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/settings.svg',

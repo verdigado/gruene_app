@@ -2,9 +2,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/constants/routes.dart';
+import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/utils/open_url.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
-import 'package:url_launcher/url_launcher_string.dart';
 
 class IntroView extends StatelessWidget {
   const IntroView({super.key});
@@ -32,8 +33,18 @@ class IntroView extends StatelessWidget {
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
-          Text(
-            t.mfa.intro.info.scanQRCode,
+          Text.rich(
+            t.mfa.intro.info.scanQRCode(
+              openMfaSettings: (text) => TextSpan(
+                text: text,
+                style: theme.textTheme.bodyMedium?.apply(
+                  color: ThemeColors.primary,
+                  decoration: TextDecoration.underline,
+                  fontWeightDelta: 3,
+                ),
+                recognizer: TapGestureRecognizer()..onTap = () => openUrl(mfaSettingsUrl, context),
+              ),
+            ),
             style: theme.textTheme.bodyMedium,
           ),
           const SizedBox(height: 16),
@@ -58,36 +69,20 @@ class IntroView extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 22),
-          RichText(
-            textAlign: TextAlign.center,
-            text: TextSpan(
-              text: t.mfa.intro.moreInformation.text,
-              style: theme.textTheme.labelSmall,
-              children: [
-                TextSpan(
-                  text: ' ',
-                  style: theme.textTheme.labelSmall,
-                ),
-                TextSpan(
-                  text: t.mfa.intro.moreInformation.link,
+          Center(
+            child: Text.rich(
+              t.mfa.intro.moreInformation(
+                openMfaInformation: (text) => TextSpan(
+                  text: text,
                   style: theme.textTheme.labelSmall?.apply(
                     color: ThemeColors.primary,
                     decoration: TextDecoration.underline,
                     fontWeightDelta: 3,
                   ),
-                  recognizer: TapGestureRecognizer()
-                    ..onTap = () {
-                      launchUrlString(
-                        'https://netz.gruene.de/de/wissenswerk/2024-02/2-faktor-authentifizierung-mit-einer-app-anleitung',
-                        mode: LaunchMode.externalApplication,
-                      );
-                    },
+                  recognizer: TapGestureRecognizer()..onTap = () => openUrl(mfaInformationUrl, context),
                 ),
-                TextSpan(
-                  text: t.mfa.intro.moreInformation.point,
-                  style: theme.textTheme.labelSmall,
-                ),
-              ],
+              ),
+              style: theme.textTheme.labelSmall,
             ),
           ),
         ],
