@@ -1529,38 +1529,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.0.1"
-  webview_flutter:
-    dependency: "direct main"
-    description:
-      name: webview_flutter
-      sha256: "889a0a678e7c793c308c68739996227c9661590605e70b1f6cf6b9a6634f7aec"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.10.0"
-  webview_flutter_android:
-    dependency: transitive
-    description:
-      name: webview_flutter_android
-      sha256: "86c2d01c37c4578ee46560109cf2e18fb271f0d080a796f09188d0952352e057"
-      url: "https://pub.dev"
-    source: hosted
-    version: "4.0.2"
-  webview_flutter_platform_interface:
-    dependency: transitive
-    description:
-      name: webview_flutter_platform_interface
-      sha256: d937581d6e558908d7ae3dc1989c4f87b786891ab47bb9df7de548a151779d8d
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.10.0"
-  webview_flutter_wkwebview:
-    dependency: transitive
-    description:
-      name: webview_flutter_wkwebview
-      sha256: "3be297aa4ca78205abdd284cf55f168c35246c75b3079990ad8ba9d257681a30"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.16.2"
   wheel_chooser:
     dependency: transitive
     description:
