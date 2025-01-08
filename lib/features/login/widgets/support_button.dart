@@ -13,21 +13,18 @@ class SupportButton extends StatelessWidget {
     return Positioned(
       right: 24,
       top: 32,
-      width: 48,
-      child: RotatedBox(
-        quarterTurns: 3,
-        child: FilledButton.icon(
-          onPressed: () => openUrl(supportUrl, context),
-          icon: CustomIcon(
-            path: 'assets/icons/heart.svg',
-            color: theme.colorScheme.surface,
-            width: 16,
-            height: 16,
-          ),
-          label: Text(
-            t.login.support,
-            style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
-          ),
+      height: 48,
+      child: FilledButton.icon(
+        onPressed: () => openUrl(supportUrl, context),
+        icon: CustomIcon(
+          path: 'assets/icons/heart.svg',
+          color: theme.colorScheme.surface,
+          width: 16,
+          height: 16,
+        ),
+        label: Text(
+          t.login.support,
+          style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
         ),
       ),
     );

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/constants/routes.dart';
@@ -21,7 +20,7 @@ class WelcomeView extends StatelessWidget {
         Spacer(),
         SizedBox(
           height: 256,
-          child: SvgPicture.asset('assets/graphics/login.svg'),
+          child: Image.asset('assets/graphics/login.png'),
         ),
         Center(
           child: Text(t.login.welcome, style: theme.textTheme.displayLarge?.apply(color: ThemeColors.text)),
@@ -64,6 +63,7 @@ class WelcomeView extends StatelessWidget {
             ),
           ),
         ),
+        const SizedBox(height: 32),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
