@@ -6,7 +6,7 @@ class NewsModel {
   String title;
   String summary;
   String content;
-  String author;
+  String? author;
   String image;
   String type;
   DivisionModel? division;
@@ -35,7 +35,7 @@ class NewsModel {
       title: news.title,
       summary: news.summary ?? 'Leere Zusammenfassung.',
       content: news.body.content,
-      author: 'Peter Platzhalter',
+      author: null,
       // TODO: Use placeholder as long as drupal blocks image access
       // image: news.featuredImage?.original.url ?? 'assets/graphics/placeholders/placeholder_1.jpg',
       image: 'assets/graphics/placeholders/placeholder_${int.parse(news.id) % 3 + 1}.jpg',
