@@ -62,6 +62,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
           );
         } else {
           final news = snapshot.data!;
+          final author = news.author;
           return SizedBox(
             width: double.infinity,
             height: double.infinity,
@@ -81,7 +82,7 @@ class _NewsDetailScreenState extends State<NewsDetailScreen> {
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(t.news.writtenBy(author: news.author)),
+                              author != null ? Text(t.news.writtenBy(author: author)) : Container(),
                               Text(
                                 news.title,
                                 style: theme.textTheme.titleLarge,
