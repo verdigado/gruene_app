@@ -431,7 +431,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BH3ML3K6G2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Grüne App";
+				INFOPLIST_KEY_CFBundleDisplayName = "B90/DIE GRÜNEN";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -464,7 +464,7 @@
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = BH3ML3K6G2;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = Runner/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = "Grüne App";
+				INFOPLIST_KEY_CFBundleDisplayName = "B90/DIE GRÜNEN";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
