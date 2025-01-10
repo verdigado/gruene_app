@@ -4,13 +4,19 @@ import 'package:gruene_app/app/utils/open_url.dart';
 import 'package:gruene_app/features/settings/widgets/settings_card.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-class SupportScreen extends StatelessWidget {
+class SupportScreen extends StatefulWidget {
   const SupportScreen({super.key});
+
+  @override
+  State<SupportScreen> createState() => _SupportScreenState();
+}
+
+class _SupportScreenState extends State<SupportScreen> {
+  bool supportEnabled = false;
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final supportEnabled = false;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
