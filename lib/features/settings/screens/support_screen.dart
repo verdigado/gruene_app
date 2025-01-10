@@ -10,34 +10,66 @@ class SupportScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final supportEnabled = false;
     return ListView(
       padding: const EdgeInsets.all(16),
       children: [
         Container(
           padding: const EdgeInsets.only(bottom: 24),
-          child: Text(t.settings.support.contacts, style: theme.textTheme.titleLarge),
+          child: Text(
+            t.settings.support.contacts,
+            style: theme.textTheme.titleLarge,
+          ),
         ),
         SettingsCard(
           title: t.settings.support.generalFeedback,
-          subtitle: grueneSupportMail,
+          subtitle: supportEnabled ? grueneSupportMail : '',
           icon: 'assets/icons/gruene.png',
           onPress: () => openMail(grueneSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
         SettingsCard(
           title: t.settings.support.campaignSupport,
-          subtitle: pollionSupportMail,
+          subtitle: supportEnabled ? pollionSupportMail : '',
           icon: 'assets/icons/pollion.png',
           onPress: () => openMail(pollionSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
         SettingsCard(
           title: t.settings.support.otherSupport,
-          subtitle: verdigadoSupportMail,
+          subtitle: supportEnabled ? verdigadoSupportMail : '',
           icon: 'assets/icons/verdigado.png',
           onPress: () => openMail(verdigadoSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
+        ...supportEnabled
+            ? []
+            : [
+                Container(
+                  margin: EdgeInsets.fromLTRB(8, 8, 8, 24),
+                  child: Text(
+                    'Aufgrund der hohen Anzahl an Anfragen bitten wir darum keine Anfragen per E-Mail zu senden.\nMehr Informationen zum Prozess "Feedback & Fehlermeldungen" findest Du in folgendem Wissenswerk-Artikel. Danke für Dein Verständnis!',
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: OutlinedButton(
+                    onPressed: () => openUrl(
+                      'https://netz.gruene.de/de/wissenswerk/2025-01/b90die-gruenen-die-app-von-buendnis-90die-gruenen',
+                      context,
+                    ),
+                    child: Text(
+                      'zum Wissenswerk Artikel',
+                      style: theme.textTheme.titleMedium
+                          ?.apply(color: theme.colorScheme.tertiary),
+                    ),
+                  ),
+                ),
+              ],
       ],
     );
   }
