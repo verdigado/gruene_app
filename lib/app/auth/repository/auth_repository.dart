@@ -18,6 +18,7 @@ class AuthRepository {
         AuthorizationTokenRequest(
           Config.oidcClientId,
           Config.oidcCallbackPath,
+          allowInsecureConnections: Config.isDevelopment,
           issuer: Config.oidcIssuer,
           scopes: ['openid', 'profile', 'email', 'offline_access'],
         ),
@@ -43,6 +44,7 @@ class AuthRepository {
         idTokenHint: idToken,
         postLogoutRedirectUrl: Config.oidcCallbackPath,
         discoveryUrl: '${Config.oidcIssuer}/.well-known/openid-configuration',
+        allowInsecureConnections: Config.isDevelopment,
       ),
     );
 
@@ -69,6 +71,7 @@ class AuthRepository {
         TokenRequest(
           Config.oidcClientId,
           Config.oidcCallbackPath,
+          allowInsecureConnections: Config.isDevelopment,
           refreshToken: refreshToken,
           issuer: Config.oidcIssuer,
         ),

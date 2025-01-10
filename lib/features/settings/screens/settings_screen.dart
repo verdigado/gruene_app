@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
-import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/routes.dart';
 import 'package:gruene_app/app/constants/urls.dart';
 import 'package:gruene_app/app/theme/theme.dart';
@@ -19,7 +18,7 @@ class SettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     final authBloc = context.read<AuthBloc>();
-    final isLoggedIn = !Config.useLogin || authBloc.state is Authenticated;
+    final isLoggedIn = authBloc.state is Authenticated;
     return ListView(
       padding: const EdgeInsets.only(top: 32),
       children: [
