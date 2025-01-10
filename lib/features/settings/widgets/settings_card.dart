@@ -34,7 +34,6 @@ class SettingsCard extends StatelessWidget {
         ],
       ),
       child: Card(
-
         color: theme.colorScheme.surface,
         margin: const EdgeInsets.symmetric(vertical: 8),
         elevation: 0,
@@ -44,11 +43,20 @@ class SettingsCard extends StatelessWidget {
         child: ListTile(
           onTap: isEnabled ? onPress : null,
           contentPadding: EdgeInsets.symmetric(horizontal: 12),
-          title: Text(title, style: theme.textTheme.titleSmall?.apply(color: isEnabled ? ThemeColors.text : ThemeColors.textDisabled),),
+          title: Text(
+            title,
+            style: theme.textTheme.titleSmall?.apply(color: isEnabled ? ThemeColors.text : ThemeColors.textDisabled),
+          ),
           subtitle: Text(subtitle, style: TextStyle(color: isEnabled ? ThemeColors.text : ThemeColors.textDisabled)),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(icon, height: 48, width: 48, color: isEnabled ? null : Colors.grey, colorBlendMode: isEnabled ? null : BlendMode.saturation),
+            child: Image.asset(
+              icon,
+              height: 48,
+              width: 48,
+              color: isEnabled ? null : Colors.grey,
+              colorBlendMode: isEnabled ? null : BlendMode.saturation,
+            ),
           ),
           trailing: Padding(
             padding: const EdgeInsets.only(right: 10),

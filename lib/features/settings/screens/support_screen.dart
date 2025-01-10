@@ -64,8 +64,7 @@ class SupportScreen extends StatelessWidget {
                     ),
                     child: Text(
                       'zum Wissenswerk Artikel',
-                      style: theme.textTheme.titleMedium
-                          ?.apply(color: theme.colorScheme.tertiary),
+                      style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
                     ),
                   ),
                 ),
