@@ -17,17 +17,21 @@ GoRouter createAppRouter(BuildContext context) {
       Routes.login,
     ],
     redirect: (context, state) {
+      final currentPath = state.uri.toString();
+      final isLoginOpen = currentPath.startsWith(Routes.login.path);
+      final isMfaOpen = currentPath.startsWith(Routes.mfa.path);
+
       final authBloc = context.read<AuthBloc>();
       final isLoggedIn = authBloc.state is Authenticated;
-      final isLoggingIn = state.uri.toString() == Routes.login.path;
-      final isMfa = [
-        Routes.mfa.path,
-        '${Routes.mfa.path}/${Routes.mfaTokenInput.path}',
-        '${Routes.mfa.path}/${Routes.mfaTokenScan.path}',
-      ].contains(state.uri.toString());
+      final isLoggedOut = authBloc.state is Unauthenticated;
 
-      if (!isLoggedIn && !isLoggingIn && !isMfa) return Routes.login.path;
-      if (isLoggedIn && isLoggingIn) return Routes.news.path;
+      if (isLoggedOut && !isMfaOpen) {
+        return Routes.login.path;
+      }
+
+      if (isLoggedIn && isLoginOpen) {
+        return Routes.news.path;
+      }
 
       return null;
     },
