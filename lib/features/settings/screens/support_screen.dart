@@ -51,7 +51,7 @@ class SupportScreen extends StatelessWidget {
                 Container(
                   margin: EdgeInsets.fromLTRB(8, 8, 8, 24),
                   child: Text(
-                    'Aufgrund der hohen Anzahl an Anfragen bitten wir darum keine Anfragen per E-Mail zu senden.\nMehr Informationen zum Prozess "Feedback & Fehlermeldungen" findest Du in folgendem Wissenswerk-Artikel. Danke für Dein Verständnis!',
+                    'Aufgrund der hohen Anzahl an Anfragen bitten wir darum keine Anfragen per E-Mail zu senden.\nMehr Informationen zum Prozess "Feedback & Fehlermeldungen" findest Du im Wissenswerk-Artikel zur App. Danke für Dein Verständnis!',
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -63,7 +63,7 @@ class SupportScreen extends StatelessWidget {
                       context,
                     ),
                     child: Text(
-                      'zum Wissenswerk Artikel',
+                      'zum Wissenswerk-Artikel',
                       style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
                     ),
                   ),
