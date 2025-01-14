@@ -3,9 +3,11 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/map_layer_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
@@ -68,6 +70,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   MapLibreMapController? _controller;
   final MarkerItemManager _markerItemManager = MarkerItemManager();
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
+  final campaignSessionSettings = GetIt.I<CampaignSessionSettings>();
+
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
   final locationCenterGermany = LatLng(51.163361, 10.447683);
@@ -98,9 +102,9 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   Widget build(BuildContext context) {
     const mapLibreColor = Color(0xFF979897);
 
-    final userLocation = widget.userLocation;
+    final userLocation = campaignSessionSettings.lastPosition ?? widget.userLocation;
     final cameraPosition = userLocation != null
-        ? CameraPosition(target: userLocation, zoom: zoomLevelUserLocation)
+        ? CameraPosition(target: userLocation, zoom: (campaignSessionSettings.lastZoomLevel ?? zoomLevelUserLocation))
         : CameraPosition(target: locationCenterGermany, zoom: zoomLevelUserOverview);
 
     Widget addMarker = SizedBox(
@@ -281,6 +285,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   void _onCameraIdle() async {
     if (!_isMapInitialized) return;
+
+    _storeLastCameraPosition();
 
     _loadDataOnMap();
   }
@@ -654,6 +660,11 @@ class _MapContainerState extends State<MapContainer> implements MapController {
         infos.clear();
       });
     }
+  }
+
+  void _storeLastCameraPosition() {
+    campaignSessionSettings.lastPosition = _controller!.cameraPosition!.target;
+    campaignSessionSettings.lastZoomLevel = _controller!.cameraPosition!.zoom;
   }
 }
 
