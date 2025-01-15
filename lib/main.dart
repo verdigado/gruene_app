@@ -4,13 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/widgets/clean_layout.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_event.dart';
@@ -22,8 +22,7 @@ import 'package:timeago/timeago.dart' as timeago;
 
 void main() async {
   await dotenv.load(fileName: '.env');
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  WidgetsFlutterBinding.ensureInitialized();
   final locale = await LocaleSettings.useDeviceLocale();
 
   if (locale.languageCode == 'de') {
@@ -49,7 +48,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final authRepository = AuthRepository();
-    final router = createAppRouter(context);
 
     return MultiBlocProvider(
       providers: [
@@ -60,29 +58,35 @@ class MyApp extends StatelessWidget {
           create: (context) => MfaBloc()..add(InitMfa()),
         ),
       ],
-      child: BlocListener<AuthBloc, AuthState>(
-        listener: (context, state) {
-          router.refresh();
-          if (state is! AuthLoading && state is! AuthInitial) {
-            Future.delayed(Duration(seconds: 1), () {
-              FlutterNativeSplash.remove();
-            });
-          }
+      child: Builder(
+        builder: (context) {
+          return BlocBuilder<AuthBloc, AuthState>(
+            builder: (context, authState) {
+              final router = createAppRouter(context);
+              final isLoginLoading = authState is AuthLoading;
+
+              // Prevent flickering if current login state is not yet known
+              if (isLoginLoading) {
+                return MaterialApp(
+                  debugShowCheckedModeBanner: false,
+                  theme: appTheme,
+                  home: CleanLayout(showAppBar: false),
+                );
+              }
+
+              return MaterialApp.router(
+                debugShowCheckedModeBanner: false,
+                locale: TranslationProvider.of(context).flutterLocale,
+                supportedLocales: AppLocaleUtils.supportedLocales,
+                localizationsDelegates: GlobalMaterialLocalizations.delegates,
+                routeInformationParser: router.routeInformationParser,
+                routerDelegate: router.routerDelegate,
+                routeInformationProvider: router.routeInformationProvider,
+                theme: appTheme,
+              );
+            },
+          );
         },
-        child: Builder(
-          builder: (context) {
-            return MaterialApp.router(
-              debugShowCheckedModeBanner: false,
-              locale: TranslationProvider.of(context).flutterLocale,
-              supportedLocales: AppLocaleUtils.supportedLocales,
-              localizationsDelegates: GlobalMaterialLocalizations.delegates,
-              routeInformationParser: router.routeInformationParser,
-              routerDelegate: router.routerDelegate,
-              routeInformationProvider: router.routeInformationProvider,
-              theme: appTheme,
-            );
-          },
-        ),
       ),
     );
   }

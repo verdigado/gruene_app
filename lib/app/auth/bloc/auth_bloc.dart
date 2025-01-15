@@ -12,8 +12,6 @@ class CheckTokenRequested extends AuthEvent {}
 
 class AuthState {}
 
-class AuthInitial extends AuthState {}
-
 class AuthLoading extends AuthState {}
 
 class Authenticated extends AuthState {}
@@ -25,7 +23,7 @@ class AuthBloc extends Bloc<AuthEvent, AuthState> {
 
   Stream<AuthState> get authStateStream => stream;
 
-  AuthBloc(this.authRepository) : super(AuthInitial()) {
+  AuthBloc(this.authRepository) : super(AuthLoading()) {
     on<SignInRequested>((event, emit) async {
       emit(AuthLoading());
       final success = await authRepository.signIn();

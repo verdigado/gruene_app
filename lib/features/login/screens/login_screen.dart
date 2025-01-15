@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/widgets/clean_layout.dart';
 import 'package:gruene_app/features/login/widgets/support_button.dart';
 import 'package:gruene_app/features/login/widgets/welcome_view.dart';
 
@@ -7,30 +8,26 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    return Scaffold(
-      appBar: AppBar(backgroundColor: theme.colorScheme.surface, toolbarHeight: 0),
-      body: Container(
-        color: theme.colorScheme.surface,
-        child: Stack(
-          children: [
-            LayoutBuilder(
-              builder: (context, constraints) {
-                // #457: disable intro slides for now
-                // return Container(
-                //   padding: EdgeInsets.only(bottom: defaultBottomSheetSize * constraints.maxHeight),
-                //   child: WelcomeView(),
-                // );
-                return WelcomeView();
-              },
-            ),
-            SupportButton(),
-            // #457: disable intro slides for now
-            // PersistentBottomSheet(
-            //   child: IntroSlides(),
-            // ),
-          ],
-        ),
+    return CleanLayout(
+      showAppBar: false,
+      child: Stack(
+        children: [
+          LayoutBuilder(
+            builder: (context, constraints) {
+              // #457: disable intro slides for now
+              // return Container(
+              //   padding: EdgeInsets.only(bottom: defaultBottomSheetSize * constraints.maxHeight),
+              //   child: WelcomeView(),
+              // );
+              return WelcomeView();
+            },
+          ),
+          SupportButton(),
+          // #457: disable intro slides for now
+          // PersistentBottomSheet(
+          //   child: IntroSlides(),
+          // ),
+        ],
       ),
     );
   }
