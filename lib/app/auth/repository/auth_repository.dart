@@ -57,13 +57,20 @@ class AuthRepository {
 
   Future<bool> isTokenValid() async {
     final accessToken = await getAccessToken();
+    _logger.w('Access token not found');
     if (accessToken == null) return false;
 
-    return !JwtDecoder.isExpired(accessToken);
+    final isExpired = JwtDecoder.isExpired(accessToken);
+    if (isExpired) {
+      _logger.w('Token expired');
+    }
+    _logger.w('Token valid');
+    return !isExpired;
   }
 
   Future<bool> refreshToken() async {
     final refreshToken = await _secureStorage.read(key: SecureStorageKeys.refreshToken);
+    _logger.w('Refresh token not found');
     if (refreshToken == null) return false;
 
     try {
@@ -80,6 +87,7 @@ class AuthRepository {
       await _secureStorage.write(key: SecureStorageKeys.accessToken, value: result.accessToken);
       await _secureStorage.write(key: SecureStorageKeys.idToken, value: result.idToken);
       await _secureStorage.write(key: SecureStorageKeys.refreshToken, value: result.refreshToken);
+      _logger.w('Token successfully refreshed');
       return true;
     } catch (e) {
       _logger.w('Token refresh was not successful: $e');
@@ -91,5 +99,6 @@ class AuthRepository {
     await _secureStorage.delete(key: SecureStorageKeys.accessToken);
     await _secureStorage.delete(key: SecureStorageKeys.idToken);
     await _secureStorage.delete(key: SecureStorageKeys.refreshToken);
+    _logger.w('Tokens successfully deleted');
   }
 }

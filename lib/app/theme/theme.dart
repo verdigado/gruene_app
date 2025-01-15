@@ -165,9 +165,6 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     unselectedLabelStyle: _ThemeTextStyles.labelSmall,
   ),
   scaffoldBackgroundColor: ThemeColors.backgroundSecondary,
-  actionIconTheme: ActionIconThemeData(
-    backButtonIconBuilder: (BuildContext context) => SvgPicture.asset('assets/icons/back.svg'),
-  ),
   tabBarTheme: TabBarTheme(
     indicatorColor: ThemeColors.primary,
     indicatorSize: TabBarIndicatorSize.tab,

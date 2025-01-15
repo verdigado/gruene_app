@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/utils/build_page_without_animation.dart';
+import 'package:gruene_app/app/widgets/clean_layout.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/features/campaigns/screens/campaigns_screen.dart';
 import 'package:gruene_app/features/login/screens/login_screen.dart';
@@ -15,14 +18,19 @@ import 'package:gruene_app/features/settings/screens/support_screen.dart';
 import 'package:gruene_app/features/tools/screens/tools_screen.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-GoRoute buildRoute(String path, String? name, Widget child, {List<RouteBase>? routes, bool withMainLayout = true}) {
+GoRoute buildRoute(String path, String? name, Widget child, {List<RouteBase>? routes}) {
   return GoRoute(
     name: name,
     path: path,
     pageBuilder: (BuildContext context, GoRouterState state) => buildPageWithoutAnimation<void>(
       context: context,
       state: state,
-      child: withMainLayout ? MainLayout(child: child) : child,
+      child: BlocBuilder<AuthBloc, AuthState>(
+        builder: (context, authState) {
+          final isLoggedIn = authState is Authenticated;
+          return isLoggedIn ? MainLayout(child: child) : CleanLayout(child: child);
+        },
+      ),
     ),
     routes: routes ?? [],
   );
@@ -45,7 +53,7 @@ class Routes {
   static GoRoute mfaTokenInput = buildRoute('token-input', t.mfa.tokenInput.title, TokenInputScreen());
   static GoRoute mfa = buildRoute('/mfa', t.mfa.mfa, MfaScreen(), routes: [mfaTokenScan, mfaTokenInput]);
   static GoRoute tools = buildRoute('/tools', t.tools.tools, ToolsScreen());
-  static GoRoute login = buildRoute('/login', t.login.login, LoginScreen(), withMainLayout: false);
+  static GoRoute login = buildRoute('/login', t.login.login, LoginScreen());
   static GoRoute support = buildRoute('support', t.settings.support.support, SupportScreen());
   static GoRoute settings = buildRoute(
     '/settings',
