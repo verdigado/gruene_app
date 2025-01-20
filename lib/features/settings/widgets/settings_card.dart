@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
 
 class SettingsCard extends StatelessWidget {
@@ -6,6 +7,7 @@ class SettingsCard extends StatelessWidget {
   final String title;
   final String subtitle;
   final bool isExternal;
+  final bool isEnabled;
   final void Function() onPress;
 
   const SettingsCard({
@@ -15,6 +17,7 @@ class SettingsCard extends StatelessWidget {
     required this.subtitle,
     required this.onPress,
     this.isExternal = false,
+    this.isEnabled = true,
   });
 
   @override
@@ -38,13 +41,22 @@ class SettingsCard extends StatelessWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: ListTile(
-          onTap: onPress,
+          onTap: isEnabled ? onPress : null,
           contentPadding: EdgeInsets.symmetric(horizontal: 12),
-          title: Text(title, style: theme.textTheme.titleSmall),
-          subtitle: Text(subtitle),
+          title: Text(
+            title,
+            style: theme.textTheme.titleSmall?.apply(color: isEnabled ? ThemeColors.text : ThemeColors.textDisabled),
+          ),
+          subtitle: Text(subtitle, style: TextStyle(color: isEnabled ? ThemeColors.text : ThemeColors.textDisabled)),
           leading: ClipRRect(
             borderRadius: BorderRadius.circular(8.0),
-            child: Image.asset(icon, height: 48, width: 48),
+            child: Image.asset(
+              icon,
+              height: 48,
+              width: 48,
+              color: isEnabled ? null : Colors.grey,
+              colorBlendMode: isEnabled ? null : BlendMode.saturation,
+            ),
           ),
           trailing: Padding(
             padding: const EdgeInsets.only(right: 10),

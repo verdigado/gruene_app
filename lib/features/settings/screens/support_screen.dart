@@ -7,6 +7,8 @@ import 'package:gruene_app/i18n/translations.g.dart';
 class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
+  final bool supportEnabled = false;
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -15,29 +17,59 @@ class SupportScreen extends StatelessWidget {
       children: [
         Container(
           padding: const EdgeInsets.only(bottom: 24),
-          child: Text(t.settings.support.contacts, style: theme.textTheme.titleLarge),
+          child: Text(
+            t.settings.support.contacts,
+            style: theme.textTheme.titleLarge,
+          ),
         ),
         SettingsCard(
           title: t.settings.support.generalFeedback,
-          subtitle: grueneSupportMail,
+          subtitle: supportEnabled ? grueneSupportMail : '',
           icon: 'assets/icons/gruene.png',
           onPress: () => openMail(grueneSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
         SettingsCard(
           title: t.settings.support.campaignSupport,
-          subtitle: pollionSupportMail,
+          subtitle: supportEnabled ? pollionSupportMail : '',
           icon: 'assets/icons/pollion.png',
           onPress: () => openMail(pollionSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
         SettingsCard(
           title: t.settings.support.otherSupport,
-          subtitle: verdigadoSupportMail,
+          subtitle: supportEnabled ? verdigadoSupportMail : '',
           icon: 'assets/icons/verdigado.png',
           onPress: () => openMail(verdigadoSupportMail, context),
           isExternal: true,
+          isEnabled: supportEnabled,
         ),
+        ...supportEnabled
+            ? []
+            : [
+                Container(
+                  margin: EdgeInsets.fromLTRB(8, 8, 8, 24),
+                  child: Text(
+                    t.settings.support.supportDisabledHint,
+                    style: theme.textTheme.bodyMedium,
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 24),
+                  child: OutlinedButton(
+                    onPressed: () => openUrl(
+                      grueneAppArticleUrl,
+                      context,
+                    ),
+                    child: Text(
+                      t.settings.support.appArticleLinkLabel,
+                      style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
+                    ),
+                  ),
+                ),
+              ],
       ],
     );
   }
