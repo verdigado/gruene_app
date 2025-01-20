@@ -4,15 +4,10 @@ import 'package:gruene_app/app/utils/open_url.dart';
 import 'package:gruene_app/features/settings/widgets/settings_card.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-class SupportScreen extends StatefulWidget {
+class SupportScreen extends StatelessWidget {
   const SupportScreen({super.key});
 
-  @override
-  State<SupportScreen> createState() => _SupportScreenState();
-}
-
-class _SupportScreenState extends State<SupportScreen> {
-  bool supportEnabled = false;
+  final bool supportEnabled = false;
 
   @override
   Widget build(BuildContext context) {
