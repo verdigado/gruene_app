@@ -57,7 +57,7 @@ class _SupportScreenState extends State<SupportScreen> {
                 Container(
                   margin: EdgeInsets.fromLTRB(8, 8, 8, 24),
                   child: Text(
-                    'Aufgrund der hohen Anzahl an Anfragen bitten wir darum keine Anfragen per E-Mail zu senden.\nMehr Informationen zum Prozess "Feedback & Fehlermeldungen" findest Du im Wissenswerk-Artikel zur App. Danke für Dein Verständnis!',
+                    t.settings.support.supportDisabledHint,
                     style: theme.textTheme.bodyMedium,
                   ),
                 ),
@@ -65,11 +65,11 @@ class _SupportScreenState extends State<SupportScreen> {
                   padding: const EdgeInsets.symmetric(horizontal: 24),
                   child: OutlinedButton(
                     onPressed: () => openUrl(
-                      'https://netz.gruene.de/de/wissenswerk/2025-01/b90die-gruenen-die-app-von-buendnis-90die-gruenen',
+                      grueneAppArticleUrl,
                       context,
                     ),
                     child: Text(
-                      'zum Wissenswerk-Artikel',
+                      t.settings.support.appArticleLinkLabel,
                       style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.tertiary),
                     ),
                   ),
