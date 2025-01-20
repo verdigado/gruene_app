@@ -35,7 +35,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete, PosterValidator {
+class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -319,7 +319,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _savePoster() async {
     if (!context.mounted) return;
-    if (!validatePoster(_currentPhoto, context)) return;
 
     setState(() {
       _isWorking = true;

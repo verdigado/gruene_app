@@ -23,7 +23,7 @@ class PosterAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersAddState();
 }
 
-class _PostersAddState extends State<PosterAddScreen> with AddressExtension, PosterValidator {
+class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -170,10 +170,8 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension, Pos
 
   void _onSavePressed(BuildContext localContext) async {
     if (!localContext.mounted) return;
-    if (!validatePoster(_currentPhoto, context)) return;
 
     final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
-
     _saveAndReturn(reducedImage);
   }
 
