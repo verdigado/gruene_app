@@ -23,7 +23,7 @@ class PosterAddScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersAddState();
 }
 
-class _PostersAddState extends State<PosterAddScreen> with AddressExtension, PosterValidator {
+class _PostersAddState extends State<PosterAddScreen> with AddressExtension {
   @override
   TextEditingController streetTextController = TextEditingController();
   @override
@@ -64,6 +64,27 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension, Pos
                   style: theme.textTheme.displayMedium!.apply(color: theme.colorScheme.surface),
                 ),
               ),
+              _hasPhoto
+                  ? GestureDetector(
+                      onTap: _removeImage,
+                      child: Container(
+                        alignment: Alignment.centerRight,
+                        width: 50,
+                        height: 50,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                            size: 30.0,
+                          ),
+                        ),
+                      ),
+                    )
+                  : SizedBox(),
+              SizedBox(width: 12),
               GestureDetector(
                 onTap: _pickImageFromDevice,
                 child: Container(
@@ -170,10 +191,8 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension, Pos
 
   void _onSavePressed(BuildContext localContext) async {
     if (!localContext.mounted) return;
-    if (!validatePoster(_currentPhoto, context)) return;
 
     final reducedImage = await MediaHelper.resizeAndReduceImageFile(_currentPhoto);
-
     _saveAndReturn(reducedImage);
   }
 
@@ -197,4 +216,14 @@ class _PostersAddState extends State<PosterAddScreen> with AddressExtension, Pos
       });
     }
   }
+
+  void _removeImage() {
+    if (_hasPhoto) {
+      setState(() {
+        _currentPhoto = null;
+      });
+    }
+  }
+
+  bool get _hasPhoto => _currentPhoto != null;
 }

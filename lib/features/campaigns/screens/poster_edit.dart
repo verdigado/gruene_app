@@ -35,7 +35,7 @@ class PosterEdit extends StatefulWidget {
   State<PosterEdit> createState() => _PosterEditState();
 }
 
-class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete, PosterValidator {
+class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmDelete {
   Set<PosterStatus> _segmentedButtonSelection = <PosterStatus>{};
 
   @override
@@ -111,6 +111,33 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
                               ),
                               child: _getPosterPreview(),
                             ),
+                            _hasPhoto
+                                ? Positioned.fill(
+                                    right: 10,
+                                    top: 5,
+                                    child: Align(
+                                      alignment: Alignment.topRight,
+                                      child: GestureDetector(
+                                        onTap: _removeImage,
+                                        child: Container(
+                                          width: 50,
+                                          height: 50,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            color: ThemeColors.secondary.withAlpha(100),
+                                          ),
+                                          child: Center(
+                                            child: Icon(
+                                              Icons.delete,
+                                              color: Colors.white,
+                                              size: 30.0,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  )
+                                : SizedBox(),
                             Positioned.fill(
                               left: 10,
                               bottom: 5,
@@ -319,7 +346,6 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
 
   void _savePoster() async {
     if (!context.mounted) return;
-    if (!validatePoster(_currentPhoto, context)) return;
 
     setState(() {
       _isWorking = true;
@@ -434,4 +460,15 @@ class _PosterEditState extends State<PosterEdit> with AddressExtension, ConfirmD
       });
     }
   }
+
+  void _removeImage() {
+    if (_hasPhoto) {
+      setState(() {
+        _isPhotoDeleted = true;
+        _currentPhoto = null;
+      });
+    }
+  }
+
+  bool get _hasPhoto => _currentPhoto != null || (widget.poster.imageUrl != null && !_isPhotoDeleted);
 }
