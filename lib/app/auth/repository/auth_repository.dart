@@ -4,15 +4,14 @@ import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/secure_storage_keys.dart';
+import 'package:gruene_app/app/utils/logger.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
-import 'package:logger/logger.dart';
 
 class AuthRepository {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
   final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
-  final Logger _logger = Logger();
 
-  Future<bool> signIn() async {
+  Future<bool> login() async {
     try {
       final AuthorizationTokenResponse result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
@@ -27,16 +26,19 @@ class AuthRepository {
       await _secureStorage.write(key: SecureStorageKeys.accessToken, value: result.accessToken);
       await _secureStorage.write(key: SecureStorageKeys.idToken, value: result.idToken);
       await _secureStorage.write(key: SecureStorageKeys.refreshToken, value: result.refreshToken);
+
+      logger.d('Login successful');
+
       return true;
     } on FlutterAppAuthUserCancelledException catch (e) {
-      _logger.w('Sign-in was cancelled: $e');
+      logger.d('Login cancelled: $e');
     } catch (e) {
-      _logger.w('Sign-in was not successful: $e');
+      logger.w('SLogin failed: $e');
     }
     return false;
   }
 
-  Future<void> signOut() async {
+  Future<void> logout() async {
     final idToken = await _secureStorage.read(key: SecureStorageKeys.idToken);
 
     await _appAuth.endSession(
@@ -48,6 +50,7 @@ class AuthRepository {
       ),
     );
 
+    logger.d('Logout successful');
     await _deleteTokens();
   }
 
@@ -57,14 +60,22 @@ class AuthRepository {
 
   Future<bool> isTokenValid() async {
     final accessToken = await getAccessToken();
-    if (accessToken == null) return false;
+    if (accessToken == null) {
+      logger.d('Access token not found');
+      return false;
+    }
 
-    return !JwtDecoder.isExpired(accessToken);
+    final isExpired = JwtDecoder.isExpired(accessToken);
+    logger.d('Access token ${isExpired ? 'expired' : 'valid'}');
+    return !isExpired;
   }
 
   Future<bool> refreshToken() async {
     final refreshToken = await _secureStorage.read(key: SecureStorageKeys.refreshToken);
-    if (refreshToken == null) return false;
+    if (refreshToken == null) {
+      logger.d('Refresh token not found');
+      return false;
+    }
 
     try {
       final TokenResponse result = await _appAuth.token(
@@ -80,9 +91,10 @@ class AuthRepository {
       await _secureStorage.write(key: SecureStorageKeys.accessToken, value: result.accessToken);
       await _secureStorage.write(key: SecureStorageKeys.idToken, value: result.idToken);
       await _secureStorage.write(key: SecureStorageKeys.refreshToken, value: result.refreshToken);
+      logger.d('Token refresh successful');
       return true;
     } catch (e) {
-      _logger.w('Token refresh was not successful: $e');
+      logger.w('Token refresh failed: $e');
     }
     return false;
   }
@@ -91,5 +103,6 @@ class AuthRepository {
     await _secureStorage.delete(key: SecureStorageKeys.accessToken);
     await _secureStorage.delete(key: SecureStorageKeys.idToken);
     await _secureStorage.delete(key: SecureStorageKeys.refreshToken);
+    logger.d('Tokens deleted successfully');
   }
 }
