@@ -14,70 +14,62 @@ class IntroView extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.fromLTRB(24, 33, 24, 26),
+      padding: const EdgeInsets.only(left: 24, right: 24, bottom: 24),
       child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
-            t.mfa.intro.title,
-            textAlign: TextAlign.center,
-            style: theme.textTheme.displayLarge,
-          ),
-          const SizedBox(height: 48),
-          Text(
-            t.mfa.intro.info.easyLogin,
-            style: theme.textTheme.bodyMedium?.apply(fontWeightDelta: 3),
-          ),
-          Text(
-            t.mfa.intro.info.noShortMessageNeeded,
-            style: theme.textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 16),
-          Text.rich(
-            t.mfa.intro.info.scanQRCode(
-              openMfaSettings: (text) => TextSpan(
-                text: text,
-                style: theme.textTheme.bodyMedium?.apply(
-                  color: ThemeColors.primary,
-                  decoration: TextDecoration.underline,
-                  fontWeightDelta: 3,
+          Expanded(
+            child: ListView(
+              padding: const EdgeInsets.only(top: 32, bottom: 16),
+              children: [
+                Text(
+                  t.mfa.intro.title,
+                  textAlign: TextAlign.center,
+                  style: theme.textTheme.displayLarge,
                 ),
-                recognizer: TapGestureRecognizer()..onTap = () => openUrl(mfaSettingsUrl, context),
-              ),
+                const SizedBox(height: 48),
+                Text(
+                  t.mfa.intro.info.easyLogin,
+                  style: theme.textTheme.bodyMedium?.copyWith(fontWeight: FontWeight.w700),
+                ),
+                Text(t.mfa.intro.info.noShortMessageNeeded, style: theme.textTheme.bodyMedium),
+                const SizedBox(height: 16),
+                Text.rich(
+                  t.mfa.intro.info.scanQRCode(
+                    openMfaSettings: (text) => TextSpan(
+                      text: text,
+                      style: theme.textTheme.bodyMedium?.copyWith(
+                        color: ThemeColors.primary,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w700,
+                      ),
+                      recognizer: TapGestureRecognizer()..onTap = () => openUrl(mfaSettingsUrl, context),
+                    ),
+                  ),
+                  style: theme.textTheme.bodyMedium,
+                ),
+                const SizedBox(height: 16),
+                Text(t.mfa.intro.info.notificationOnLogin, style: theme.textTheme.bodyMedium),
+              ],
             ),
-            style: theme.textTheme.bodyMedium,
           ),
-          const SizedBox(height: 16),
-          Text(
-            t.mfa.intro.info.notificationOnLogin,
-            style: theme.textTheme.bodyMedium,
-          ),
-          const SizedBox(height: 16),
-          Spacer(),
           FilledButton(
-            onPressed: () => {
-              context.push(
-                '${Routes.mfa.path}/${Routes.mfaTokenScan.path}',
-              ),
-            },
-            style: ButtonStyle(
-              minimumSize: WidgetStateProperty.all<Size>(Size.fromHeight(56)),
-            ),
+            onPressed: () => context.push('${Routes.mfa.path}/${Routes.mfaTokenScan.path}'),
+            style: ButtonStyle(minimumSize: WidgetStateProperty.all(Size.fromHeight(56))),
             child: Text(
               t.mfa.intro.startSetup,
               style: theme.textTheme.titleMedium?.apply(color: theme.colorScheme.surface),
             ),
           ),
-          const SizedBox(height: 22),
+          const SizedBox(height: 24),
           Center(
             child: Text.rich(
               t.mfa.intro.moreInformation(
                 openMfaInformation: (text) => TextSpan(
                   text: text,
-                  style: theme.textTheme.labelSmall?.apply(
+                  style: theme.textTheme.labelSmall?.copyWith(
                     color: ThemeColors.primary,
                     decoration: TextDecoration.underline,
-                    fontWeightDelta: 3,
+                    fontWeight: FontWeight.w700,
                   ),
                   recognizer: TapGestureRecognizer()..onTap = () => openUrl(mfaInformationUrl, context),
                 ),
