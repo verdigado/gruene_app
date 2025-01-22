@@ -10,7 +10,7 @@ import 'package:package_info_plus/package_info_plus.dart';
 
 Future<GrueneApi> createGrueneApiClient() async {
   final userAgentHeaderValue = await _getUserAgentString();
-  List<chopper.Interceptor> interceptors = [UserAgentInterceptor(userAgentHeaderValue)];
+  List<chopper.Interceptor> interceptors = [UserAgentInterceptor(userAgentHeaderValue), ConnectionInterceptor()];
   chopper.Authenticator? authenticator;
 
   if (Config.grueneApiAccessToken.isNotEmpty) {
@@ -181,4 +181,18 @@ class AccessTokenAuthenticator implements chopper.Authenticator {
 
   @override
   chopper.AuthenticationCallback? get onAuthenticationSuccessful => null;
+}
+
+class ConnectionInterceptor implements chopper.Interceptor {
+  @override
+  FutureOr<chopper.Response<BodyType>> intercept<BodyType>(chopper.Chain<BodyType> chain) {
+    final updatedRequest = chopper.applyHeader(
+      chain.request,
+      HttpHeaders.connectionHeader,
+      'keep-alive',
+      override: false,
+    );
+
+    return chain.proceed(updatedRequest);
+  }
 }
