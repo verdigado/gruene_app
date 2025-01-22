@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class ThemeColors {
@@ -165,9 +164,6 @@ final ThemeData appTheme = ThemeData.light().copyWith(
     unselectedLabelStyle: _ThemeTextStyles.labelSmall,
   ),
   scaffoldBackgroundColor: ThemeColors.backgroundSecondary,
-  actionIconTheme: ActionIconThemeData(
-    backButtonIconBuilder: (BuildContext context) => SvgPicture.asset('assets/icons/back.svg'),
-  ),
   tabBarTheme: TabBarTheme(
     indicatorColor: ThemeColors.primary,
     indicatorSize: TabBarIndicatorSize.tab,

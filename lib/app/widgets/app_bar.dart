@@ -18,10 +18,10 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       title: Text(
         currentRoute.name ?? '',
-        style: theme.textTheme.displayMedium?.apply(color: theme.colorScheme.surface),
+        style: theme.textTheme.displayMedium?.apply(color: isLoggedIn ? theme.colorScheme.surface : ThemeColors.text),
       ),
-      foregroundColor: theme.colorScheme.surface,
-      backgroundColor: theme.primaryColor,
+      foregroundColor: isLoggedIn ? theme.colorScheme.surface : ThemeColors.text,
+      backgroundColor: isLoggedIn ? theme.primaryColor : theme.colorScheme.surfaceDim,
       centerTitle: true,
       actions: [
         if (currentRoute.path == Routes.campaigns.path)
