@@ -8,6 +8,7 @@
       "cancel": "Abbrechen",
       "delete": "Löschen",
       "edit": "Bearbeiten",
+      "consent": "Verstanden",
       "settings": "Einstellungen",
       "openSettings": "Einstellungen öffnen",
       "close": "Schließen"
@@ -51,6 +52,7 @@
       "created": "aufgehängt",
       "updated": "aktualisiert",
       "noPhotoWarning": "Bitte wähle ein Foto oder nimm eins mit der Kamera auf!",
+      "photoConsentMessage": "Bitte achte darauf, dass keine Personen, Kennzeichen oder andere sensible, personenbezogene Daten auf Deinen Plakatfotos zu sehen sind.",
       "date_format": "dd.MM.yyyy",
       "time_format": "HH:mm",
       "datetime_display_template": "{date} um {time}",

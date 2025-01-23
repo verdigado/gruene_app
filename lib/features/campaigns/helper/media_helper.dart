@@ -2,8 +2,11 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
+import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:image/image.dart' as image_lib;
 import 'package:image_picker/image_picker.dart';
 import 'package:photo_view/photo_view.dart';
@@ -13,6 +16,7 @@ class MediaHelper {
 
   static Future<File?> acquirePhoto(BuildContext context) async {
     try {
+      await showImageConsent(context);
       final pickedImage = await ImagePicker().pickImage(source: ImageSource.camera);
       if (pickedImage != null) {
         return File(pickedImage.path);
@@ -21,6 +25,52 @@ class MediaHelper {
       debugPrint(e.toString());
     }
     return null;
+  }
+
+  static Future<File?> pickImageFromDevice(BuildContext context) async {
+    try {
+      await showImageConsent(context);
+      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if (pickedImage != null) {
+        return File(pickedImage.path);
+      }
+    } catch (e) {
+      debugPrint(e.toString());
+    }
+    return null;
+  }
+
+  static Future<void> showImageConsent(BuildContext context) async {
+    var appSettings = GetIt.I<AppSettings>();
+    final theme = Theme.of(context);
+    if (appSettings.campaign.imageConsentConfirmed) return;
+    await showDialog<bool>(
+      barrierDismissible: false,
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          backgroundColor: ThemeColors.alertBackground,
+          content: Text(
+            t.campaigns.poster.photoConsentMessage,
+            textAlign: TextAlign.center,
+            style: theme.textTheme.labelMedium?.apply(
+              color: theme.colorScheme.surface,
+              fontSizeDelta: 1,
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.maybePop(context),
+              child: Text(
+                t.common.actions.consent,
+                style: theme.textTheme.labelLarge?.apply(color: theme.colorScheme.secondary),
+              ),
+            ),
+          ],
+        );
+      },
+    );
+    appSettings.campaign.imageConsentConfirmed = true;
   }
 
   static Future<Uint8List?> resizeAndReduceImageFile(File? photo) async {
@@ -68,7 +118,7 @@ class MediaHelper {
   static void showPictureInFullView(BuildContext context, ImageProvider imageProvider) async {
     final theme = Theme.of(context);
     await showDialog<void>(
-      context: context,
+      context: Navigator.of(context).context,
       barrierDismissible: true,
       builder: (BuildContext context) {
         return Stack(
@@ -95,17 +145,5 @@ class MediaHelper {
         );
       },
     );
-  }
-
-  static Future<File?> pickImageFromDevice(BuildContext context) async {
-    try {
-      final pickedImage = await ImagePicker().pickImage(source: ImageSource.gallery);
-      if (pickedImage != null) {
-        return File(pickedImage.path);
-      }
-    } catch (e) {
-      debugPrint(e.toString());
-    }
-    return null;
   }
 }
