@@ -11,7 +11,7 @@ import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/clean_layout.dart';
-import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
+import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_event.dart';
 import 'package:gruene_app/features/mfa/domain/mfa_factory.dart';
@@ -36,7 +36,7 @@ void main() async {
   }
 
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
-  GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
+  GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
 
   runApp(TranslationProvider(child: const MyApp()));

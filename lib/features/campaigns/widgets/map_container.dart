@@ -6,8 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
-import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/map_layer_manager.dart';
 import 'package:gruene_app/features/campaigns/helper/marker_item_helper.dart';
@@ -70,7 +70,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   MapLibreMapController? _controller;
   final MarkerItemManager _markerItemManager = MarkerItemManager();
   final MapLayerDataManager _mapLayerManager = MapLayerDataManager();
-  final campaignSessionSettings = GetIt.I<CampaignSessionSettings>();
+  final appSettings = GetIt.I<AppSettings>();
 
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
@@ -102,9 +102,9 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   Widget build(BuildContext context) {
     const mapLibreColor = Color(0xFF979897);
 
-    final userLocation = campaignSessionSettings.lastPosition ?? widget.userLocation;
+    final userLocation = appSettings.campaign.lastPosition ?? widget.userLocation;
     final cameraPosition = userLocation != null
-        ? CameraPosition(target: userLocation, zoom: (campaignSessionSettings.lastZoomLevel ?? zoomLevelUserLocation))
+        ? CameraPosition(target: userLocation, zoom: (appSettings.campaign.lastZoomLevel ?? zoomLevelUserLocation))
         : CameraPosition(target: locationCenterGermany, zoom: zoomLevelUserOverview);
 
     Widget addMarker = SizedBox(
@@ -663,8 +663,8 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   }
 
   void _storeLastCameraPosition() {
-    campaignSessionSettings.lastPosition = _controller!.cameraPosition!.target;
-    campaignSessionSettings.lastZoomLevel = _controller!.cameraPosition!.zoom;
+    appSettings.campaign.lastPosition = _controller!.cameraPosition!.target;
+    appSettings.campaign.lastZoomLevel = _controller!.cameraPosition!.zoom;
   }
 }
 
