@@ -7,7 +7,9 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppBar({super.key});
+  final Widget? appBarAction;
+
+  const MainAppBar({super.key, this.appBarAction});
 
   @override
   Widget build(BuildContext context) {
@@ -24,11 +26,12 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: isLoggedIn ? theme.primaryColor : theme.colorScheme.surfaceDim,
       centerTitle: true,
       actions: [
+        if (appBarAction != null) appBarAction!,
         if (currentRoute.path == Routes.campaigns.path)
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/refresh.svg',
-              color: ThemeColors.background,
+              color: theme.colorScheme.surface,
             ),
             onPressed: null,
           ),
@@ -36,7 +39,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/settings.svg',
-              color: ThemeColors.background,
+              color: theme.colorScheme.surface,
             ),
             onPressed: () => context.push(Routes.settings.path),
           ),
