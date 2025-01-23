@@ -5,6 +5,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/secure_storage_keys.dart';
+import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:keycloak_authenticator/api.dart';
 import 'package:logger/logger.dart';
@@ -16,6 +17,7 @@ class AuthRepository {
   Timer? _pollingTimer;
   final AuthenticatorService _authenticatorService = GetIt.I<AuthenticatorService>();
   Authenticator? _authenticator;
+  final IpService _ipService = GetIt.I<IpService>();
 
   Future<bool> signIn() async {
     try {
@@ -116,7 +118,7 @@ class AuthRepository {
         }
 
         final challenge = await _authenticator!.fetchChallenge();
-        if (challenge != null) {
+        if (challenge != null && await _ipService.isOwnIP(challenge.ipAddress)) {
           _stopPolling();
           await _authenticator!.reply(
             challenge: challenge,
