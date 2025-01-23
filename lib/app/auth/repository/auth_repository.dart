@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter_appauth/flutter_appauth.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/secure_storage_keys.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
@@ -9,7 +10,7 @@ import 'package:logger/logger.dart';
 
 class AuthRepository {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
-  final FlutterSecureStorage _secureStorage = FlutterSecureStorage();
+  final _secureStorage = GetIt.instance<FlutterSecureStorage>();
   final Logger _logger = Logger();
 
   Future<bool> signIn() async {
