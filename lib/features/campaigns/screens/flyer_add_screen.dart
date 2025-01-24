@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
+import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
 import 'package:gruene_app/features/campaigns/screens/mixins.dart';
 import 'package:gruene_app/features/campaigns/widgets/create_address_widget.dart';
@@ -46,6 +47,7 @@ class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressExtension, 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
+    final mediaQuery = MediaQuery.of(context);
     return Container(
       margin: EdgeInsets.all(24),
       child: Column(
@@ -91,6 +93,26 @@ class _FlyerAddScreenState extends State<FlyerAddScreen> with AddressExtension, 
             ),
           ),
           SaveCancelOnCreateWidget(onSave: _onSavePressed),
+          Row(
+            children: [
+              Icon(
+                Icons.info_outline,
+                color: ThemeColors.background,
+              ),
+              SizedBox(width: 10),
+              SizedBox(
+                width: mediaQuery.size.width - 82,
+                child: Text(
+                  t.campaigns.flyer.info_flyer_guidelines,
+                  style: theme.textTheme.labelMedium!.apply(
+                    color: ThemeColors.background,
+                    fontWeightDelta: 3,
+                    letterSpacingDelta: 1,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ],
       ),
     );
