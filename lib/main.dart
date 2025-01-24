@@ -41,6 +41,8 @@ void main() async {
   GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerSingleton<IpService>(IpService());
+  // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
+  // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
 
   runApp(TranslationProvider(child: const MyApp()));
