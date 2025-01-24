@@ -38,10 +38,10 @@ void main() async {
   }
 
   registerSecureStorage();
-  GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
   GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerSingleton<IpService>(IpService());
+  GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
 
   runApp(TranslationProvider(child: const MyApp()));
 }
