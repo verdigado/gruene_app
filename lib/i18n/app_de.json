@@ -27,7 +27,9 @@
     "writtenBy": "Von ${author}",
     "updatedAt": "Stand: ${date}",
     "noResults": "Es wurden leider keine Artikel gefunden.",
-    "newsNotFound": "Dieser Artiekl wurde leider nicht gefunden."
+    "newsNotFound": "Dieser Artiekl wurde leider nicht gefunden.",
+    "latest": "Aktuelles",
+    "bookmarked": "Gespeichert"
   },
   "campaigns": {
     "map": {

@@ -4,16 +4,16 @@ import 'package:gruene_app/app/widgets/bottom_navigation.dart';
 
 class MainLayout extends StatelessWidget {
   final Widget child;
-  final Widget? appBarAction;
+  final PreferredSizeWidget? appBar;
 
-  const MainLayout({super.key, required this.child, this.appBarAction});
+  const MainLayout({super.key, required this.child, this.appBar});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: child,
       bottomNavigationBar: const BottomNavigation(),
-      appBar: MainAppBar(appBarAction: appBarAction),
+      appBar: appBar ?? MainAppBar(),
     );
   }
 }
