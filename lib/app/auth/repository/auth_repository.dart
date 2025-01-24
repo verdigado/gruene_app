@@ -114,7 +114,7 @@ class AuthRepository {
         }
 
         final challenge = await authenticator.fetchChallenge();
-        if (challenge != null && await _ipService.isOwnIP(challenge.ipAddress)) {
+        if (challenge != null && await _ipService.isOwnIp(challenge.ipAddress)) {
           stopPolling(timer);
           await authenticator.reply(
             challenge: challenge,

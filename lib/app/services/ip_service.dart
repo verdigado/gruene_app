@@ -4,15 +4,15 @@ import 'package:gruene_app/app/constants/config.dart';
 import 'package:http/http.dart' as http;
 
 class IpService {
-  Future<bool> isOwnIP(String ip) async {
-    final isInputIPv6 = isIPv6(ip);
-    final publicIp = await getPublicIp(useIPv6: isInputIPv6);
+  Future<bool> isOwnIp(String ip) async {
+    final isInputIpV6 = isIpV6(ip);
+    final publicIp = await getPublicIp(useIpV6: isInputIpV6);
     return ip == publicIp;
   }
 
-  Future<String?> getPublicIp({bool useIPv6 = false}) async {
+  Future<String?> getPublicIp({bool useIpV6 = false}) async {
     try {
-      final url = useIPv6 ? Config.ipServiceV6Url : Config.ipServiceV4Url;
+      final url = useIpV6 ? Config.ipV6ServiceUrl : Config.ipV4ServiceUrl;
 
       final response = await http.get(
         Uri.parse(url),
@@ -30,7 +30,7 @@ class IpService {
     }
   }
 
-  bool isIPv6(String ip) {
+  bool isIpV6(String ip) {
     try {
       final address = InternetAddress(ip);
       return address.type == InternetAddressType.IPv6;
