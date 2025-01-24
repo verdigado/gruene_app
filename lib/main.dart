@@ -9,6 +9,7 @@ import 'package:gruene_app/app/auth/bloc/auth_bloc.dart';
 import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
+import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:gruene_app/app/services/secure_storage_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/clean_layout.dart';
@@ -37,9 +38,12 @@ void main() async {
   }
 
   registerSecureStorage();
-  GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
   GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
+  GetIt.I.registerSingleton<IpService>(IpService());
+  // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
+  // Therefore this should be last
+  GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
 
   runApp(TranslationProvider(child: const MyApp()));
 }

@@ -5,15 +5,21 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/constants/config.dart';
 import 'package:gruene_app/app/constants/secure_storage_keys.dart';
+import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:jwt_decoder/jwt_decoder.dart';
+import 'package:keycloak_authenticator/api.dart';
 import 'package:logger/logger.dart';
 
 class AuthRepository {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
   final _secureStorage = GetIt.instance<FlutterSecureStorage>();
   final Logger _logger = Logger();
+  final AuthenticatorService _authenticatorService = GetIt.I<AuthenticatorService>();
+  final IpService _ipService = GetIt.I<IpService>();
 
   Future<bool> signIn() async {
+    final authenticator = await _authenticatorService.getFirst();
+    final pollingTimer = authenticator != null ? _pollForChallenge(authenticator) : null;
     try {
       final AuthorizationTokenResponse result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
@@ -33,6 +39,8 @@ class AuthRepository {
       _logger.w('Sign-in was cancelled: $e');
     } catch (e) {
       _logger.w('Sign-in was not successful: $e');
+    } finally {
+      stopPolling(pollingTimer);
     }
     return false;
   }
@@ -92,5 +100,36 @@ class AuthRepository {
     await _secureStorage.delete(key: SecureStorageKeys.accessToken);
     await _secureStorage.delete(key: SecureStorageKeys.idToken);
     await _secureStorage.delete(key: SecureStorageKeys.refreshToken);
+  }
+
+  Timer _pollForChallenge(Authenticator authenticator) {
+    final startTime = DateTime.now();
+    final timeout = Duration(seconds: 120);
+
+    return Timer.periodic(Duration(seconds: 1), (timer) async {
+      try {
+        if (DateTime.now().difference(startTime) > timeout) {
+          stopPolling(timer);
+          return;
+        }
+
+        final challenge = await authenticator.fetchChallenge();
+        if (challenge != null && await _ipService.isOwnIp(challenge.ipAddress)) {
+          stopPolling(timer);
+          await authenticator.reply(
+            challenge: challenge,
+            granted: true,
+          );
+        }
+      } catch (e) {
+        _logger.w('Error during challenge polling: $e');
+      }
+    });
+  }
+
+  void stopPolling(Timer? pollingTimer) {
+    if (pollingTimer != null && pollingTimer.isActive) {
+      pollingTimer.cancel();
+    }
   }
 }

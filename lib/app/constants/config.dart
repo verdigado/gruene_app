@@ -17,6 +17,9 @@ class Config {
   static String get maplibreUrl => dotenv.env['MAP_MAPLIBRE_URL']!;
   static String get addressSearchUrl => dotenv.env['MAP_ADDRESSSEARCH_URL']!;
 
+  static String get ipV4ServiceUrl => dotenv.env['IP_V4_SERVICE_URL']!;
+  static String get ipV6ServiceUrl => dotenv.env['IP_V6_SERVICE_URL']!;
+
   static bool get androidFloss {
     // may be needed when building for f-droid store
     final configValue = dotenv.env['ANDROID_FLOSS'] ?? 'false';
