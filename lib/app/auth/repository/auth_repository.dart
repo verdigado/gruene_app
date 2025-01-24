@@ -14,16 +14,13 @@ class AuthRepository {
   final FlutterAppAuth _appAuth = FlutterAppAuth();
   final _secureStorage = GetIt.instance<FlutterSecureStorage>();
   final Logger _logger = Logger();
-  Timer? _pollingTimer;
   final AuthenticatorService _authenticatorService = GetIt.I<AuthenticatorService>();
-  Authenticator? _authenticator;
   final IpService _ipService = GetIt.I<IpService>();
 
   Future<bool> signIn() async {
+    final authenticator = await _authenticatorService.getFirst();
+    final pollingTimer = authenticator != null ? _pollForChallenge(authenticator) : null;
     try {
-      _authenticator = await _authenticatorService.getFirst();
-      if (_authenticator != null) _pollForChallenge();
-
       final AuthorizationTokenResponse result = await _appAuth.authorizeAndExchangeCode(
         AuthorizationTokenRequest(
           Config.oidcClientId,
@@ -34,8 +31,6 @@ class AuthRepository {
         ),
       );
 
-      if (_authenticator != null) _stopPolling();
-
       await _secureStorage.write(key: SecureStorageKeys.accessToken, value: result.accessToken);
       await _secureStorage.write(key: SecureStorageKeys.idToken, value: result.idToken);
       await _secureStorage.write(key: SecureStorageKeys.refreshToken, value: result.refreshToken);
@@ -44,8 +39,9 @@ class AuthRepository {
       _logger.w('Sign-in was cancelled: $e');
     } catch (e) {
       _logger.w('Sign-in was not successful: $e');
+    } finally {
+      stopPolling(pollingTimer);
     }
-    if (_authenticator != null) _stopPolling();
     return false;
   }
 
@@ -106,21 +102,21 @@ class AuthRepository {
     await _secureStorage.delete(key: SecureStorageKeys.refreshToken);
   }
 
-  Future<void> _pollForChallenge() async {
+  Timer _pollForChallenge(Authenticator authenticator) {
     final startTime = DateTime.now();
     final timeout = Duration(seconds: 120);
 
-    _pollingTimer = Timer.periodic(Duration(seconds: 1), (timer) async {
+    return Timer.periodic(Duration(seconds: 1), (timer) async {
       try {
         if (DateTime.now().difference(startTime) > timeout) {
-          _stopPolling();
+          stopPolling(timer);
           return;
         }
 
-        final challenge = await _authenticator!.fetchChallenge();
+        final challenge = await authenticator.fetchChallenge();
         if (challenge != null && await _ipService.isOwnIP(challenge.ipAddress)) {
-          _stopPolling();
-          await _authenticator!.reply(
+          stopPolling(timer);
+          await authenticator.reply(
             challenge: challenge,
             granted: true,
           );
@@ -131,10 +127,9 @@ class AuthRepository {
     });
   }
 
-  void _stopPolling() {
-    if (_pollingTimer != null && _pollingTimer!.isActive) {
-      _pollingTimer!.cancel();
-      _pollingTimer = null;
+  void stopPolling(Timer? pollingTimer) {
+    if (pollingTimer != null && pollingTimer.isActive) {
+      pollingTimer.cancel();
     }
   }
 }
