@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'dart:io';
+import 'package:gruene_app/app/constants/config.dart';
 import 'package:http/http.dart' as http;
 
 class IpService {
@@ -10,9 +12,19 @@ class IpService {
 
   Future<String?> getPublicIp({bool useIPv6 = false}) async {
     try {
-      final url = 'https://api${useIPv6 ? '6' : '4'}.ipify.org';
-      final response = await http.get(Uri.parse(url));
-      return response.body;
+      final url = useIPv6 ? Config.ipServiceV6Url : Config.ipServiceV4Url;
+
+      final response = await http.get(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> jsonResponse = json.decode(response.body) as Map<String, dynamic>;
+        return jsonResponse['clientIp'] as String?;
+      }
+
+      return null;
     } catch (e) {
       return null;
     }
