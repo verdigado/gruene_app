@@ -1050,6 +1050,137 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/campaigns/polling-stations:
+    post:
+      operationId: createPollingStation
+      summary: Create a new PollingStation
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePollingStation'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollingStation'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findPollingStations
+      summary: Find PollingStations
+      parameters:
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: 47.695103,7.659684,53.670793, 14.229507
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindPollingStationsResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/polling-stations/{pollingStationId}:
+    get:
+      operationId: getPollingStation
+      summary: Get a PollingStation
+      parameters:
+        - name: pollingStationId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollingStation'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updatePollingStation
+      summary: Update a PollingStation
+      parameters:
+        - name: pollingStationId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdatePollingStation'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollingStation'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deletePollingStation
+      summary: Delete a PollingStation
+      parameters:
+        - name: pollingStationId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PollingStation'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /v1/campaigns/pois:
     post:
       operationId: createPoi
@@ -1286,6 +1417,148 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Poi'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/routes:
+    post:
+      operationId: createRoute
+      summary: Create a new Route
+      parameters: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateRoute'
+      responses:
+        '201':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    get:
+      operationId: findRoutes
+      summary: Find Routes
+      parameters:
+        - name: type
+          required: false
+          in: query
+          description: filter by Route type
+          schema:
+            example: POSTER
+            enum:
+              - FLYER_SPOT
+              - POSTER
+              - HOUSE
+            type: string
+        - name: bbox
+          required: false
+          in: query
+          schema:
+            example: 47.695103,7.659684,53.670793, 14.229507
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FindRoutesResponse'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+  /v1/campaigns/routes/{routeId}:
+    get:
+      operationId: getRoute
+      summary: Get a Route
+      parameters:
+        - name: routeId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    put:
+      operationId: updateRoute
+      summary: Update a Route
+      parameters:
+        - name: routeId
+          required: true
+          in: path
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateRoute'
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
+        '401':
+          description: ''
+        '404':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
+    delete:
+      operationId: deleteRoute
+      summary: Delete a Route
+      parameters:
+        - name: routeId
+          required: true
+          in: path
+          schema:
+            type: string
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Route'
         '401':
           description: ''
         '404':
@@ -1557,6 +1830,25 @@ paths:
       security:
         - bearer: []
         - oauth2: []
+  /v1/campaigns/statistics:
+    get:
+      operationId: getStatistics
+      summary: Get statistics
+      parameters: []
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Statistics'
+        '401':
+          description: ''
+      tags:
+        - campaigns
+      security:
+        - bearer: []
+        - oauth2: []
   /v1/news:
     get:
       operationId: findNews
@@ -1676,7 +1968,7 @@ tags: []
 servers:
   - url: https://api.gruene.de
     description: Production
-  - url: http://192.168.178.95:5000
+  - url: http://192.168.178.35:5000
     description: Development
 components:
   securitySchemes:
@@ -3043,6 +3335,84 @@ components:
         - zip
         - street
         - houseNumber
+    UpdatePollingStation:
+      type: object
+      properties:
+        coords:
+          description: Coordinates represented in GeoJSON [longitude, latitude]
+          example:
+            - 52.5297
+            - 13.4266
+          minItems: 2
+          maxItems: 2
+          type: array
+          items:
+            type: number
+        address:
+          $ref: '#/components/schemas/PoiAddress'
+      required:
+        - coords
+        - address
+    CreatePollingStation:
+      type: object
+      properties:
+        coords:
+          description: Coordinates represented in GeoJSON [longitude, latitude]
+          example:
+            - 52.5297
+            - 13.4266
+          minItems: 2
+          maxItems: 2
+          type: array
+          items:
+            type: number
+        address:
+          $ref: '#/components/schemas/PoiAddress'
+      required:
+        - coords
+        - address
+    PollingStation:
+      type: object
+      properties:
+        coords:
+          description: Coordinates represented in GeoJSON [longitude, latitude]
+          example:
+            - 52.5297
+            - 13.4266
+          minItems: 2
+          maxItems: 2
+          type: array
+          items:
+            type: number
+        id:
+          type: string
+          example: '1'
+        userId:
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        updatedAt:
+          format: date-time
+          type: string
+        address:
+          $ref: '#/components/schemas/PoiAddress'
+      required:
+        - coords
+        - id
+        - userId
+        - createdAt
+        - updatedAt
+        - address
+    FindPollingStationsResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/PollingStation'
+      required:
+        - data
     PoiPoster:
       type: object
       properties:
@@ -3252,6 +3622,86 @@ components:
             $ref: '#/components/schemas/Poi'
       required:
         - data
+    LineString:
+      type: object
+      properties:
+        type:
+          type: string
+          description: Type of the LineString
+          example: LineString
+          default: LineString
+        coordinates:
+          type: array
+          items:
+            required: true
+            description: |-
+              Coordinates of the LineString
+              Must follow the GeoJSON standard
+            type: array
+            items:
+              type: number
+      required:
+        - type
+        - coordinates
+    UpdateRoute:
+      type: object
+      properties:
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        lineString:
+          $ref: '#/components/schemas/LineString'
+      required:
+        - type
+        - lineString
+    CreateRoute:
+      type: object
+      properties:
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        lineString:
+          $ref: '#/components/schemas/LineString'
+      required:
+        - type
+        - lineString
+    Route:
+      type: object
+      properties:
+        id:
+          type: string
+          example: '1'
+        type:
+          enum:
+            - FLYER_SPOT
+            - POSTER
+            - HOUSE
+          type: string
+        createdAt:
+          format: date-time
+          type: string
+        lineString:
+          $ref: '#/components/schemas/LineString'
+      required:
+        - id
+        - type
+        - createdAt
+        - lineString
+    FindRoutesResponse:
+      type: object
+      properties:
+        data:
+          type: array
+          items:
+            $ref: '#/components/schemas/Route'
+      required:
+        - data
     UpdateExperienceArea:
       type: object
       properties:
@@ -3385,6 +3835,35 @@ components:
             $ref: '#/components/schemas/FocusArea'
       required:
         - data
+    PoiStatistics:
+      type: object
+      properties:
+        own:
+          type: number
+        division:
+          type: number
+        state:
+          type: number
+        germany:
+          type: number
+      required:
+        - own
+        - division
+        - state
+        - germany
+    Statistics:
+      type: object
+      properties:
+        poster:
+          $ref: '#/components/schemas/PoiStatistics'
+        flyer:
+          $ref: '#/components/schemas/PoiStatistics'
+        house:
+          $ref: '#/components/schemas/PoiStatistics'
+      required:
+        - poster
+        - flyer
+        - house
     NewsCategory:
       type: object
       properties:
