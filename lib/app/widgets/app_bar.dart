@@ -7,7 +7,10 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/icon.dart';
 
 class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const MainAppBar({super.key});
+  final Widget? appBarAction;
+  final PreferredSizeWidget? tabBar;
+
+  const MainAppBar({super.key, this.appBarAction, this.tabBar});
 
   @override
   Widget build(BuildContext context) {
@@ -23,12 +26,14 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
       foregroundColor: isLoggedIn ? theme.colorScheme.surface : ThemeColors.text,
       backgroundColor: isLoggedIn ? theme.primaryColor : theme.colorScheme.surfaceDim,
       centerTitle: true,
+      bottom: tabBar,
       actions: [
+        if (appBarAction != null) appBarAction!,
         if (currentRoute.path == Routes.campaigns.path)
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/refresh.svg',
-              color: ThemeColors.background,
+              color: theme.colorScheme.surface,
             ),
             onPressed: null,
           ),
@@ -36,7 +41,7 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
           IconButton(
             icon: CustomIcon(
               path: 'assets/icons/settings.svg',
-              color: ThemeColors.background,
+              color: theme.colorScheme.surface,
             ),
             onPressed: () => context.push(Routes.settings.path),
           ),
@@ -45,5 +50,5 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => Size.fromHeight(kToolbarHeight + (tabBar == null ? 0 : kTextTabBarHeight));
 }
