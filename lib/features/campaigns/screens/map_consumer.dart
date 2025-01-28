@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
@@ -26,9 +27,10 @@ typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
 typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
 typedef OnDeletePoiCallback = void Function(String posterId);
 
-abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo {
+abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo, SearchMixin<T> {
   late MapController mapController;
-  final NominatimService _nominatimService;
+
+  final NominatimService _nominatimService = GetIt.I<NominatimService>();
 
   bool focusAreasVisible = false;
   final String _focusAreadId = 'focusArea';
@@ -36,7 +38,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _lastInfoSnackBar;
   String? _lastFocusAreaId;
 
-  MapConsumer(this._nominatimService);
+  MapConsumer();
 
   GrueneApiCampaignsService get campaignService;
 
@@ -325,5 +327,10 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
     );
 
     toast.show(context);
+  }
+
+  @override
+  void navigateMapTo(LatLng location) {
+    mapController.navigateMapTo(location);
   }
 }

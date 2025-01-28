@@ -30,7 +30,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
 
   late List<FilterChipModel> flyerFilter;
 
-  _FlyerScreenState() : super(NominatimService());
+  _FlyerScreenState() : super();
 
   @override
   void initState() {
@@ -74,7 +74,12 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       children: [
         FilterChipCampaign(flyerFilter, <String, List<String>>{}),
         Expanded(
-          child: mapContainer,
+          child: Stack(
+            children: [
+              mapContainer,
+              ...getSearchWidgets(context),
+            ],
+          ),
         ),
       ],
     );

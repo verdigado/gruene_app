@@ -36,7 +36,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
 
   late List<FilterChipModel> postersFilter;
 
-  _PostersScreenState() : super(NominatimService());
+  _PostersScreenState() : super();
 
   @override
   GrueneApiCampaignsService get campaignService => _grueneApiService;
@@ -115,6 +115,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
                   ),
                 ),
               ),
+              ...getSearchWidgets(context),
             ],
           ),
         ),

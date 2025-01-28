@@ -35,7 +35,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.door);
 
-  _DoorsScreenState() : super(NominatimService());
+  _DoorsScreenState() : super();
 
   @override
   GrueneApiCampaignsService get campaignService => _grueneApiService;
@@ -82,7 +82,12 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       children: [
         FilterChipCampaign(doorsFilter, doorsExclusions),
         Expanded(
-          child: mapContainer,
+          child: Stack(
+            children: [
+              mapContainer,
+              ...getSearchWidgets(context),
+            ],
+          ),
         ),
       ],
     );

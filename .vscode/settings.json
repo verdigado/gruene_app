@@ -4,5 +4,9 @@
         "gruene",
         "housenumber"
     ],
-    "files.eol": "\n"
+    "files.eol": "\n",
+    "circleci.filters.branchFilter": "allBranches",
+    "circleci.persistedProjectSelection": [
+        "gh/verdigado/gruene_app"
+    ]
 }

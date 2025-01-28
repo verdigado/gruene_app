@@ -1,3 +1,5 @@
+import 'package:maplibre_gl/maplibre_gl.dart';
+
 class CampaignConstants {
   static const dummyImageAssetName = 'assets/splash/logo_android12.png';
   static const doorAssetName = 'assets/symbols/doors/door.png';
@@ -17,4 +19,10 @@ class CampaignConstants {
     4: 'Stufe 4: viele Plakate aufhängen, viele Flyer verteilen, Haustüren',
     5: 'Stufe 5: viele Plakate aufhängen, sehr viele Flyer verteilen, Haustüren auf jeden Fall',
   };
+
+  static LatLngBounds viewBoxGermany = LatLngBounds(
+    southwest: LatLng(46.8, 5.6),
+    northeast: LatLng(55.1, 15.5),
+  ); //typically boundaries of Germany;
+  static LatLng centerGermany = LatLng(51.163361, 10.447683);
 }
