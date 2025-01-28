@@ -19,7 +19,7 @@ class _CampaignsScreen extends State<CampaignsScreen> with SingleTickerProviderS
     CampaignMenuModel(t.campaigns.poster.label, true, PostersScreen()),
     CampaignMenuModel(t.campaigns.flyer.label, true, FlyerScreen()),
     CampaignMenuModel(t.campaigns.team.label, false, TeamsScreen()),
-    CampaignMenuModel(t.campaigns.statistic.label, false, StatisticsScreen()),
+    CampaignMenuModel(t.campaigns.statistic.label, true, StatisticsScreen()),
   ];
   late TabController _tabController;
 
