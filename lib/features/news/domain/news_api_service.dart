@@ -6,7 +6,11 @@ Future<NewsModel> fetchNewsById(String newsId) async => getFromApi(
       map: NewsModel.fromApi,
     );
 
-Future<List<NewsModel>> fetchNews() async => getFromApi(
+Future<List<NewsModel>> fetchNews({
+  bool? bookmarked,
+}) async =>
+    getFromApi(
+      // TODO Actually use arguments
       request: (api) => api.v1NewsGet(),
       map: (data) => data.data.map(NewsModel.fromApi).toList(),
     );

@@ -1,32 +1,50 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/screens/error_screen.dart';
-import 'package:gruene_app/app/screens/future_loading_screen.dart';
 import 'package:gruene_app/app/widgets/app_bar.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
-import 'package:gruene_app/features/news/domain/news_api_service.dart';
-import 'package:gruene_app/features/news/models/news_model.dart';
-import 'package:gruene_app/features/news/widgets/news_card.dart';
+import 'package:gruene_app/app/widgets/tab_bar.dart';
+import 'package:gruene_app/features/news/widgets/news_list.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
-class NewsScreen extends StatelessWidget {
-  const NewsScreen({super.key});
+class NewsScreen extends StatefulWidget {
+  final tabs = [
+    TabModel(label: t.news.latest, view: NewsList()),
+    TabModel(label: t.news.bookmarked, view: NewsList(bookmarked: true)),
+  ];
+
+  NewsScreen({super.key});
+
+  @override
+  State<NewsScreen> createState() => _NewsScreenState();
+}
+
+class _NewsScreenState extends State<NewsScreen> with SingleTickerProviderStateMixin {
+  late TabController _tabController;
+
+  @override
+  void initState() {
+    _tabController = TabController(length: widget.tabs.length, vsync: this);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _tabController.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return MainLayout(
-      appBar: MainAppBar(),
-      child: FutureLoadingScreen(
-        load: fetchNews,
-        buildChild: (List<NewsModel>? data) {
-          if (data == null || data.isEmpty) {
-            return ErrorScreen(error: t.news.noResults, retry: fetchNews);
-          }
-          return ListView.builder(
-            padding: const EdgeInsets.all(16),
-            itemCount: data.length,
-            itemBuilder: (context, index) => NewsCard(news: data[index]),
-          );
-        },
+      appBar: MainAppBar(
+        tabBar: CustomTabBar(
+          tabController: _tabController,
+          tabs: widget.tabs,
+          onTap: (index) => setState(() => _tabController.index = index),
+        ),
+      ),
+      child: TabBarView(
+        controller: _tabController,
+        children: widget.tabs.map((tab) => tab.view).toList(),
       ),
     );
   }
