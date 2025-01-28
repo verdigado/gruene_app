@@ -1,3 +1,4 @@
+import 'package:gruene_app/app/geocode/nominatim.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
@@ -12,7 +13,7 @@ import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:intl/intl.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
-import 'package:turf/transform.dart';
+import 'package:turf/turf.dart' as turf;
 
 part 'converters/poi_type_parsing.dart';
 part 'converters/lat_lng_parsing.dart';
@@ -25,3 +26,5 @@ part 'converters/poi_address_parsing.dart';
 part 'converters/focus_area_parsing.dart';
 part 'converters/poi_parsing.dart';
 part 'converters/slider_range_parsing.dart';
+part 'converters/place_parser.dart';
+part 'converters/string_extension.dart';

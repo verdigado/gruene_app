@@ -2,7 +2,7 @@ part of '../converters.dart';
 
 extension FocusAreaParsing on FocusArea {
   MapLayerModel transformToMapLayer() {
-    toPosition(List<double?>? point) => Position(
+    toPosition(List<double?>? point) => turf.Position(
           point![0]!,
           point[1]!,
         );

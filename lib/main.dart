@@ -10,6 +10,7 @@ import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/services/ip_service.dart';
+import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/services/secure_storage_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/clean_layout.dart';
@@ -44,6 +45,7 @@ void main() async {
   // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
   // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
+  GetIt.I.registerFactory<NominatimService>(() => NominatimService(countryCode: t.campaigns.search.country_code));
 
   runApp(TranslationProvider(child: const MyApp()));
 }

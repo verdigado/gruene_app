@@ -29,6 +29,11 @@
     },
     "campaigns": "Wahlkampf",
     "label": "Wahlkampf",
+    "search": {
+      "hintText": "Ort oder Straße finden",
+      "no_entries_found": "Leider nichts gefunden",
+      "country_code": "de-de"
+    },
     "filters": {
       "focusAreas": "Fokusgebiete",
       "routes": "Routen",

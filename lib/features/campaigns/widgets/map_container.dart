@@ -74,19 +74,17 @@ class _MapContainerState extends State<MapContainer> implements MapController {
 
   bool _isMapInitialized = false;
   bool _permissionGiven = false;
-  final locationCenterGermany = LatLng(51.163361, 10.447683);
+  final defaultStartLocation = CampaignConstants.centerGermany;
 
   static const minZoomMarkerItems = 11.5;
   static const double zoomLevelUserLocation = 16;
+  static const double zoomLevelSearchLocation = 14.5;
   static const double zoomLevelUserOverview = 5.2;
 
   List<Widget> popups = [];
   List<Widget> infos = [];
 
-  final LatLngBounds _cameraTargetBounds = LatLngBounds(
-    southwest: LatLng(46.8, 5.6),
-    northeast: LatLng(55.1, 15.5),
-  ); //typically Germany
+  final _cameraTargetBounds = CampaignConstants.viewBoxGermany;
 
   var followUserLocation = true;
 
@@ -105,7 +103,7 @@ class _MapContainerState extends State<MapContainer> implements MapController {
     final userLocation = appSettings.campaign.lastPosition ?? widget.userLocation;
     final cameraPosition = userLocation != null
         ? CameraPosition(target: userLocation, zoom: (appSettings.campaign.lastZoomLevel ?? zoomLevelUserLocation))
-        : CameraPosition(target: locationCenterGermany, zoom: zoomLevelUserOverview);
+        : CameraPosition(target: defaultStartLocation, zoom: zoomLevelUserOverview);
 
     Widget addMarker = SizedBox(
       height: 0,
@@ -665,6 +663,14 @@ class _MapContainerState extends State<MapContainer> implements MapController {
   void _storeLastCameraPosition() {
     appSettings.campaign.lastPosition = _controller!.cameraPosition!.target;
     appSettings.campaign.lastZoomLevel = _controller!.cameraPosition!.zoom;
+  }
+
+  @override
+  void navigateMapTo(LatLng location) async {
+    await _controller!.animateCamera(
+      CameraUpdate.newLatLngZoom(location, zoomLevelSearchLocation),
+      duration: Duration(seconds: 1),
+    );
   }
 }
 

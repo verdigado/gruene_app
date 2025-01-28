@@ -127,6 +127,118 @@ class Nominatim {
     }
     return Place.fromJson(data);
   }
+
+  /// Searches a places by their name
+  ///
+  /// Use either [query] with a free form string or any combination of
+  /// [street], [city], [county], [state], [country] or [postalCode],
+  /// but don't combine them.
+  ///
+  /// When using [query] commas are optional, but improve search
+  /// performance.
+  ///
+  /// When using [street] you should provide it in the following format:
+  /// `<housenumber> <streetname>`
+  ///
+  /// Using [addressDetails] will include a breakdown of the address into
+  /// elements. Default is false.
+  ///
+  /// Using [extraTags] will include additional information in the result if
+  /// available, e.g. wikipedia link, opening hours. Default is false.
+  ///
+  /// Using [nameDetails] will include a list of alternative names in the
+  /// results. These may include language variants, references, operator and
+  /// brand. Default is false.
+  ///
+  /// Using [language] will set the preferred language order for showing search
+  /// results, overrides the value specified in the `Accept-Language` HTTP
+  /// header if you are running in a browser. Either use a standard RFC2616
+  /// accept-language string or a simple comma-separated list of language codes.
+  ///
+  /// Using [countryCodes] will limit search results to one or more countries.
+  /// The country code must be the ISO 3166-1alpha2 code, e.g. `gb` for the
+  /// United Kingdom, `de` for Germany.
+  ///
+  /// Using [excludePlaceIds] will skip certain OSM objects you don't want to
+  /// appear in the search results. This can be used to broaden search results.
+  /// For example, if a previous query only returned a few results, then
+  /// including those here would cause the search to return other, less
+  /// accurate, matches (if possible).
+  ///
+  /// Using [limit] will limit the number of returned results. Default is 10 and
+  /// maximum is 50.
+  ///
+  /// Using [viewBox] will set the preferred area to find search results and an
+  /// amenity only search is allowed. In this case, give the special keyword for
+  /// the amenity in square brackets, e.g. `[pub]`.
+  static Future<List<Place>> searchByName({
+    String? query,
+    String? street,
+    String? city,
+    String? county,
+    String? state,
+    String? country,
+    String? postalCode,
+    String? layer,
+    bool addressDetails = false,
+    bool extraTags = false,
+    bool nameDetails = false,
+    bool bounded = false,
+    bool dedupe = false,
+    String? language,
+    List<String>? countryCodes,
+    List<String>? excludePlaceIds,
+    int limit = 10,
+    ViewBox? viewBox,
+  }) async {
+    final baseServer = Uri.parse(Config.addressSearchUrl);
+    assert(baseServer.scheme == 'https', 'It\'s required to have the address search on https');
+
+    if (query == null) {
+      assert(
+        street != null || city != null || county != null || state != null || country != null || postalCode != null,
+        'Any search parameter is needed for a structured request',
+      );
+    } else {
+      assert(
+        street == null && city == null && county == null && state == null && country == null && postalCode == null,
+        'Do not use query and any other search parameter together',
+      );
+    }
+    assert(limit > 0, 'Limit has to be greater than zero');
+    assert(limit <= 50, 'Limit has to be smaller or equals than 50');
+    final uri = Uri.https(
+      baseServer.host,
+      '${baseServer.path}/search',
+      {
+        'format': 'jsonv2',
+        if (query != null) 'q': query,
+        if (street != null) 'street': street,
+        if (city != null) 'city': city,
+        if (county != null) 'county': county,
+        if (state != null) 'state': state,
+        if (country != null) 'country': country,
+        if (postalCode != null) 'postalcode': postalCode,
+        if (layer != null) 'layer': layer,
+        if (addressDetails) 'addressdetails': '1',
+        if (extraTags) 'extratags': '1',
+        if (nameDetails) 'namedetails': '1',
+        if (bounded) 'bounded': '1',
+        if (dedupe) 'dedupe': '1',
+        if (language != null) 'accept-language': language,
+        if (countryCodes != null && countryCodes.isNotEmpty) 'countrycodes': countryCodes.join(','),
+        if (excludePlaceIds != null && excludePlaceIds.isNotEmpty) 'exclude_place_ids': excludePlaceIds.join(','),
+        if (limit != 10) 'limit': limit.toString(),
+        if (viewBox != null)
+          'viewbox':
+              '${viewBox.westLongitude},${viewBox.southLatitude},${viewBox.eastLongitude},${viewBox.northLatitude}',
+        if (viewBox != null) 'bounded': '1',
+      },
+    );
+    final response = await http.get(uri);
+    final data = json.decode(response.body) as List<dynamic>;
+    return data.map<Place>((p) => Place.fromJson(p as Map<String, dynamic>)).toList();
+  }
 }
 
 /// A place in the nominatim system
@@ -146,6 +258,7 @@ class Place {
     required this.importance,
     this.icon,
     this.address,
+    this.addressType,
     this.extraTags,
     this.nameDetails,
   });
@@ -164,6 +277,7 @@ class Place {
         type: json['type'] as String,
         importance: json['importance'] is int ? (json['importance'] as int).toDouble() : json['importance'] as double,
         icon: json['icon'] != null ? json['icon'] as String : null,
+        addressType: json['addresstype'] != null ? json['addresstype'] as String : null,
         address: json['address'] != null ? json['address'] as Map<String, dynamic> : null,
         extraTags: json['extratags'] != null ? json['extratags'] as Map<String, dynamic> : null,
         nameDetails: json['namedetails'] != null ? json['namedetails'] as Map<String, dynamic> : null,
@@ -207,6 +321,8 @@ class Place {
   /// Link to class icon (if available)
   final String? icon;
 
+  final String? addressType;
+
   /// Map of address details
   /// Only with [Nominatim.searchByName(addressDetails: true)]
   /// See https://nominatim.org/release-docs/latest/api/Output/#addressdetails
@@ -219,4 +335,50 @@ class Place {
   /// Map with full list of available names including ref etc.
   /// Only with [Nominatim.searchByName(nameDetails: true)]
   final Map<String, dynamic>? nameDetails;
+}
+
+/// View box for searching
+class ViewBox {
+  // ignore: public_member_api_docs
+  ViewBox(
+    this.northLatitude,
+    this.southLatitude,
+    this.eastLongitude,
+    this.westLongitude,
+  )   : assert(
+          northLatitude > southLatitude,
+          'north latitude has to be greater than south latitude',
+        ),
+        assert(
+          eastLongitude > westLongitude,
+          'east longitude has to be greater than west longitude',
+        ),
+        assert(
+          northLatitude <= 90,
+          'north latitude must be smaller than or equals 90',
+        ),
+        assert(
+          southLatitude >= -90,
+          'south latitude must be greater than or equals -90',
+        ),
+        assert(
+          eastLongitude <= 180,
+          'east longitude must be smaller than or equals 180',
+        ),
+        assert(
+          westLongitude >= -180,
+          'east longitude must be greater than or equals -180',
+        );
+
+  /// North boundary of the view box
+  final double northLatitude;
+
+  /// South boundary of the view box
+  final double southLatitude;
+
+  /// East boundary of the view box
+  final double eastLongitude;
+
+  /// West boundary of the view box
+  final double westLongitude;
 }

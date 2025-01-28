@@ -19,4 +19,16 @@ extension LatLngParsing on LatLng {
   String transformToGeoJsonBBoxString(LatLng northEast) {
     return transformToGeoJsonBBox(northEast).join(',');
   }
+
+  num getDistance(LatLng other) {
+    return turf.distance(
+      asPoint(),
+      other.asPoint(),
+      turf.Unit.kilometers,
+    );
+  }
+
+  turf.Point asPoint() {
+    return turf.Point(coordinates: turf.Position(longitude, latitude));
+  }
 }

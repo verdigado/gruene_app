@@ -40,5 +40,7 @@ abstract class MapController {
 
   double get minimumMarkerZoomLevel;
 
-  void toggleInfoForMissingMapFeatures(bool enable) {}
+  void toggleInfoForMissingMapFeatures(bool enable);
+
+  void navigateMapTo(LatLng location);
 }
