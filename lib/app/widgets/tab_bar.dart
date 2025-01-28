@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 
+class TabModel {
+  final String label;
+  final bool disabled;
+  final Widget view;
+
+  TabModel({required this.label, required this.view, this.disabled = false});
+}
+
 class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
   final TabController tabController;
-  final List<String> tabs;
+  final List<TabModel> tabs;
   final void Function(int index) onTap;
 
   const CustomTabBar({super.key, required this.tabController, required this.tabs, required this.onTap});
+
+  void safeOnTap(int index) {
+    if (!tabs[index].disabled) {
+      onTap(index);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +35,17 @@ class CustomTabBar extends StatelessWidget implements PreferredSizeWidget {
         controller: tabController,
         isScrollable: true,
         tabAlignment: TabAlignment.start,
-        onTap: onTap,
-        tabs: tabs.map((tab) => Tab(child: Text(tab))).toList(),
+        onTap: safeOnTap,
+        tabs: tabs
+            .map(
+              (tab) => Tab(
+                child: Text(
+                  tab.label,
+                  style: tab.disabled ? TextStyle(color: ThemeColors.textDisabled) : null,
+                ),
+              ),
+            )
+            .toList(),
       ),
     );
   }

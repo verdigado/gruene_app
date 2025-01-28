@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gruene_app/app/screens/error_screen.dart';
-import 'package:gruene_app/app/screens/future_loading_screen.dart';
 import 'package:gruene_app/app/widgets/app_bar.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
 import 'package:gruene_app/app/widgets/rounded_icon_button.dart';
@@ -9,7 +7,10 @@ import 'package:gruene_app/features/news/widgets/news_list.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 
 class NewsScreen extends StatefulWidget {
-  final tabs = [t.news.latest, t.news.bookmarked];
+  final tabs = [
+    TabModel(label: t.news.latest, view: NewsList()),
+    TabModel(label: t.news.bookmarked, view: NewsList(bookmarked: true)),
+  ];
 
   NewsScreen({super.key});
 
@@ -53,7 +54,7 @@ class _NewsScreenState extends State<NewsScreen> with SingleTickerProviderStateM
       ),
       child: TabBarView(
         controller: _tabController,
-        children: widget.tabs.map((tab) => NewsList(bookmarked: tab == t.news.bookmarked)).toList(),
+        children: widget.tabs.map((tab) => tab.view).toList(),
       ),
     );
   }
