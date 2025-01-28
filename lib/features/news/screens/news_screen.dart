@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/widgets/app_bar.dart';
 import 'package:gruene_app/app/widgets/main_layout.dart';
+import 'package:gruene_app/app/widgets/rounded_icon_button.dart';
 import 'package:gruene_app/app/widgets/tab_bar.dart';
 import 'package:gruene_app/features/news/widgets/news_list.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
@@ -18,6 +19,7 @@ class NewsScreen extends StatefulWidget {
 }
 
 class _NewsScreenState extends State<NewsScreen> with SingleTickerProviderStateMixin {
+  bool _showFilters = false;
   late TabController _tabController;
 
   @override
@@ -34,8 +36,16 @@ class _NewsScreenState extends State<NewsScreen> with SingleTickerProviderStateM
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return MainLayout(
       appBar: MainAppBar(
+        appBarAction: RoundedIconButton(
+          onPressed: () => setState(() => _showFilters = !_showFilters),
+          icon: Icons.filter_list_rounded,
+          iconColor: theme.colorScheme.surface,
+          backgroundColor: theme.colorScheme.primary,
+          selected: _showFilters,
+        ),
         tabBar: CustomTabBar(
           tabController: _tabController,
           tabs: widget.tabs,

@@ -7,10 +7,17 @@ Future<NewsModel> fetchNewsById(String newsId) async => getFromApi(
     );
 
 Future<List<NewsModel>> fetchNews({
+  String? division,
+  String? search,
+  String? category,
+  DateTime? start,
+  DateTime? end,
   bool? bookmarked,
-}) async =>
-    getFromApi(
-      // TODO Actually use arguments
-      request: (api) => api.v1NewsGet(),
-      map: (data) => data.data.map(NewsModel.fromApi).toList(),
-    );
+}) async {
+  final List<String> categories = category == null ? [] : [category];
+  return getFromApi(
+    // TODO Actually use arguments
+    request: (api) => api.v1NewsGet(divisionKey: division, search: search, category: categories),
+    map: (data) => data.data.map(NewsModel.fromApi).toList(),
+  );
+}
