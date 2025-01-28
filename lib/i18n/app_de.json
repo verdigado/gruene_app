@@ -122,7 +122,8 @@
       "by_my_KV": "von meinen Kreisverband",
       "by_my_LV": "von meinem Landesverband",
       "in_germany": "deutschlandweit",
-      "update_info": "wird alle 5 Minuten aktualisiert"
+      "update_info": "wird alle 5 Minuten aktualisiert",
+      "as_at": "Stand"
     },
     "address": {
       "street": "Straße",

@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_it/get_it.dart';
+import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_statistics_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
+import 'package:gruene_app/features/campaigns/models/statistics/campaign_statistics.dart';
+import 'package:gruene_app/features/campaigns/models/statistics/campaign_statistics_set.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
 import 'package:intl/intl.dart';
 
@@ -26,6 +30,7 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   SingleChildScrollView _buildStatScreen(CampaignStatistics statistics, ThemeData theme, BuildContext context) {
+    var lastUpdateTime = GetIt.I<AppSettings>().campaign.recentStatisticsFetchTimestamp ?? DateTime.now();
     return SingleChildScrollView(
       child: Container(
         padding: EdgeInsets.all(16),
@@ -57,7 +62,7 @@ class StatisticsScreen extends StatelessWidget {
               child: Align(
                 alignment: Alignment.centerLeft,
                 child: Text(
-                  'Stand: ${DateTime.now().toString()} (${t.campaigns.statistic.update_info})',
+                  '${t.campaigns.statistic.as_at}: ${lastUpdateTime.getAsLocalDateTimeString()} (${t.campaigns.statistic.update_info})',
                   style: theme.textTheme.labelMedium!.apply(color: ThemeColors.textDisabled),
                 ),
               ),
@@ -111,7 +116,6 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Widget _getBadgeRow(String title, int ownCounter, ThemeData theme) {
-    // var rng = Random();
     return Container(
       decoration: BoxDecoration(
         border: Border(
@@ -158,7 +162,7 @@ class StatisticsScreen extends StatelessWidget {
                     alignment: Alignment.center,
                     child: Text(
                       currentThreshold.toString(),
-                      style: theme.textTheme.labelMedium!.apply(fontWeightDelta: 3),
+                      style: theme.textTheme.labelMedium!.apply(fontWeightDelta: 3, fontStyle: FontStyle.italic),
                     ),
                   ),
                 ),
@@ -193,7 +197,7 @@ class StatisticsScreen extends StatelessWidget {
           ),
         );
       }
-      widgets.add(SizedBox(width: 6));
+      if (currentThreshold != thresholds.last) widgets.add(SizedBox(width: 5));
     }
     return widgets;
   }
@@ -266,7 +270,18 @@ class StatisticsScreen extends StatelessWidget {
   }
 
   Future<CampaignStatistics> _loadStatistics() async {
+    var campaignSettings = GetIt.I<AppSettings>().campaign;
+
+    if (campaignSettings.recentStatistics != null &&
+        DateTime.now().isBefore(campaignSettings.recentStatisticsFetchTimestamp!.add(Duration(minutes: 5)))) {
+      return campaignSettings.recentStatistics!;
+    }
     var statApiService = GetIt.I<GrueneApiCampaignsStatisticsService>();
-    return await statApiService.getStatistics();
+    var campaignStatistics = await statApiService.getStatistics();
+
+    campaignSettings.recentStatistics = campaignStatistics;
+    campaignSettings.recentStatisticsFetchTimestamp = DateTime.now();
+
+    return campaignStatistics;
   }
 }

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:gruene_app/features/campaigns/models/statistics/campaign_statistics.dart';
+import 'package:gruene_app/features/campaigns/models/statistics/campaign_statistics_set.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 
 class GrueneApiCampaignsStatisticsService {
@@ -40,20 +42,4 @@ extension PoiStatisticsParser on PoiStatistics {
       germany: germany,
     );
   }
-}
-
-class CampaignStatisticsSet {
-  final double own, division, state, germany;
-
-  const CampaignStatisticsSet({required this.own, required this.division, required this.state, required this.germany});
-}
-
-class CampaignStatistics {
-  final CampaignStatisticsSet flyerStats, houseStats, posterStats;
-
-  const CampaignStatistics({
-    required this.flyerStats,
-    required this.houseStats,
-    required this.posterStats,
-  });
 }

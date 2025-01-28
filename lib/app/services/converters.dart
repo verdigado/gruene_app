@@ -28,3 +28,4 @@ part 'converters/poi_parsing.dart';
 part 'converters/slider_range_parsing.dart';
 part 'converters/place_parser.dart';
 part 'converters/string_extension.dart';
+part 'converters/date_time_parsing.dart';
