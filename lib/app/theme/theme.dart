@@ -8,7 +8,7 @@ class ThemeColors {
   // Secondary Light Green (#008939)
   static const Color secondary = Color(0xFF008939);
 
-  // Secondary Light Green (#008939)
+  // Tertiary Light Green (#46962B)
   static const Color tertiary = Color(0xFF46962B);
 
   // White (#FFFFFF)
