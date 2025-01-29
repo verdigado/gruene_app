@@ -40,13 +40,13 @@ void main() async {
   }
 
   registerSecureStorage();
-  GetIt.I.registerSingleton<GrueneApiCampaignsStatisticsService>(GrueneApiCampaignsStatisticsService());
   GetIt.I.registerSingleton<AppSettings>(AppSettings());
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerSingleton<IpService>(IpService());
   // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
   // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
+  GetIt.I.registerSingleton<GrueneApiCampaignsStatisticsService>(GrueneApiCampaignsStatisticsService());
   GetIt.I.registerFactory<NominatimService>(() => NominatimService(countryCode: t.campaigns.search.country_code));
 
   runApp(TranslationProvider(child: const MyApp()));

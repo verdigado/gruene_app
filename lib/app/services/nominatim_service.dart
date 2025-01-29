@@ -17,7 +17,20 @@ class NominatimService {
         lat: location.latitude,
         lon: location.longitude,
       );
-      final address = AddressModel.fromPlace(place);
+      String? cityOverride;
+      if (place.getCity().isEmpty) {
+        var osmType = switch (place.osmType) {
+          'way' => 'W',
+          'node' => 'N',
+          'relation' => 'R',
+          String() => throw UnimplementedError(),
+          null => throw UnimplementedError(),
+        };
+        final addressDetail = await Nominatim.details(osmType: osmType, osmId: place.osmId!);
+        cityOverride = addressDetail.getCity();
+      }
+
+      final address = AddressModel.fromPlace(place, cityOverride: cityOverride);
       return address;
     } catch (e) {
       _logger.e(
@@ -105,9 +118,9 @@ class AddressModel {
   * For City we take in descending order city, town, or village, whatever is first.
   * Hopefully, this will solve most issues with that kind of address composition.
   */
-  AddressModel.fromPlace(Place place)
+  AddressModel.fromPlace(Place place, {String? cityOverride})
       : street = place.getRoad(),
         houseNumber = place.getHouseNumber(),
         zipCode = place.getZipCode(),
-        city = place.getCity();
+        city = cityOverride ?? place.getCityOrVillage();
 }
