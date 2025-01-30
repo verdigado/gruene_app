@@ -239,6 +239,48 @@ class Nominatim {
     final data = json.decode(response.body) as List<dynamic>;
     return data.map<Place>((p) => Place.fromJson(p as Map<String, dynamic>)).toList();
   }
+
+  static Future<AddressDetail> details({
+    required String osmType,
+    required int osmId,
+    String? className,
+    bool addressDetails = false,
+    bool keywords = false,
+    bool linkedPlaces = false,
+    bool hierarchy = false,
+    bool groupHierarchy = false,
+    bool polygonGeojson = false,
+    String? language,
+  }) async {
+    final baseServer = Uri.parse(Config.addressSearchUrl);
+    assert(baseServer.scheme == 'https', 'It\'s required to have the address search on https');
+
+    assert(
+      ['N', 'W', 'R', null].contains(osmType),
+      'osmType needs to be one of N, W, R',
+    );
+
+    final uri = Uri.https(
+      baseServer.host,
+      '${baseServer.path}/details',
+      {
+        'format': 'json',
+        'osmtype': osmType,
+        'osmid': osmId.toString(),
+        if (className != null) 'class': className,
+        if (addressDetails) 'addressdetails': '1',
+        if (keywords) 'keywords': '1',
+        if (linkedPlaces) 'linkedplaces': '1',
+        if (hierarchy) 'hierarchy': '1',
+        if (groupHierarchy) 'group_hierarchy': '1',
+        if (polygonGeojson) 'polygon_geojson': '1',
+        if (language != null) 'accept-language': language,
+      },
+    );
+    final response = await http.get(uri);
+    final data = json.decode(response.body) as Map<String, dynamic>;
+    return AddressDetail.fromJson(data);
+  }
 }
 
 /// A place in the nominatim system
@@ -335,6 +377,34 @@ class Place {
   /// Map with full list of available names including ref etc.
   /// Only with [Nominatim.searchByName(nameDetails: true)]
   final Map<String, dynamic>? nameDetails;
+}
+
+/// A place in the nominatim system
+class AddressDetail {
+  // ignore: public_member_api_docs
+  AddressDetail({
+    required this.osmType,
+    required this.osmId,
+    required this.addressTags,
+  });
+
+  // ignore: public_member_api_docs
+  factory AddressDetail.fromJson(Map<String, dynamic> json) => AddressDetail(
+        osmType: json['osm_type'] != null ? json['osm_type'] as String : null,
+        osmId: json['osm_id'] != null ? json['osm_id'] as int : null,
+        addressTags: json['addresstags'] != null ? json['addresstags'] as Map<String, dynamic> : null,
+      );
+
+  /// Reference to the OSM object
+  final String? osmType;
+
+  /// Reference to the OSM object
+  final int? osmId;
+
+  /// Map of address tags
+  /// Only with [Nominatim.searchByName(addressDetails: true)]
+  /// See https://nominatim.org/release-docs/latest/api/Output/#addressdetails
+  final Map<String, dynamic>? addressTags;
 }
 
 /// View box for searching

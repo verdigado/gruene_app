@@ -4,7 +4,7 @@ extension PlaceParser on Place {
   String getAddress() {
     var road = getRoad();
     var housenumber = getHouseNumber();
-    var city = getCity();
+    var city = getCityOrVillage();
     var zipCode = getZipCode();
     var state = getState();
     var municipality = getMunicipality();
@@ -46,8 +46,13 @@ extension PlaceParser on Place {
         '';
   }
 
+  String getCityOrVillage() {
+    var city = getCity();
+    return city.isEmpty ? (address?['village']?.toString() ?? '') : city;
+  }
+
   String getCity() {
-    return address?['city']?.toString() ?? address?['town']?.toString() ?? address?['village']?.toString() ?? '';
+    return address?['city']?.toString() ?? address?['town']?.toString() ?? '';
   }
 
   String getZipCode() {
@@ -72,5 +77,11 @@ extension PlaceParser on Place {
 
   String getCounty() {
     return address?['county']?.toString() ?? '';
+  }
+}
+
+extension AdressDetailParser on AddressDetail {
+  String? getCity() {
+    return addressTags?['city']?.toString();
   }
 }

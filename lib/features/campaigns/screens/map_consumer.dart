@@ -68,7 +68,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
       AppRoute<W?>(
         builder: (context) {
           return FutureBuilder(
-            future: locationAddress.timeout(const Duration(milliseconds: 800), onTimeout: () => AddressModel()),
+            future: locationAddress.timeout(const Duration(milliseconds: 1300), onTimeout: () => AddressModel()),
             builder: (context, AsyncSnapshot<AddressModel> snapshot) {
               if (!snapshot.hasData && !snapshot.hasError) {
                 return Container(
