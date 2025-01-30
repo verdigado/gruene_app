@@ -29,7 +29,8 @@ typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
 typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
 typedef OnDeletePoiCallback = Future<void> Function(String poiId);
 
-abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo, SearchMixin<T> {
+abstract class MapConsumer<T extends StatefulWidget, PoiCreateType, PoiUpdateType> extends State<T>
+    with FocusAreaInfo, SearchMixin<T> {
   late MapController mapController;
 
   final NominatimService _nominatimService = GetIt.I<NominatimService>();
@@ -153,7 +154,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
   }
 
   Future<void> deletePoi(String poiId) async {
-    var markerItem = await campaignActionCache.addDeleteAction(poiType, poiId);
+    var markerItem = await campaignActionCache.deletePoi(poiType, poiId);
     mapController.setMarkerSource([markerItem]);
   }
 
@@ -341,4 +342,12 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
     var markerItems = await campaignActionCache.getMarkerItems(poiType);
     mapController.setMarkerSource(markerItems);
   }
+
+  Future<void> savePoi(PoiUpdateType poiUpdate) async {
+    final updatedMarker = await campaignActionCache.updatePoi(poiType, poiUpdate);
+    mapController.setMarkerSource([updatedMarker]);
+  }
+
+  Future<MarkerItemModel> saveNewAndGetMarkerItem(PoiCreateType newPoi) async =>
+      await campaignActionCache.storeNewPoi(poiType, newPoi);
 }

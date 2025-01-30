@@ -10,7 +10,6 @@ import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
-import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/screens/door_edit.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_add_screen.dart';
 import 'package:gruene_app/features/campaigns/screens/doors_detail.dart';
@@ -27,7 +26,7 @@ class DoorsScreen extends StatefulWidget {
   State<DoorsScreen> createState() => _DoorsScreenState();
 }
 
-class _DoorsScreenState extends MapConsumer<DoorsScreen> {
+class _DoorsScreenState extends MapConsumer<DoorsScreen, DoorCreateModel, DoorUpdateModel> {
   static const _poiType = PoiServiceType.door;
   final Map<String, List<String>> doorsExclusions = <String, List<String>>{
     t.campaigns.filters.focusAreas: [t.campaigns.filters.visited_areas],
@@ -102,7 +101,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       location,
       null,
       _getAddScreen,
-      _saveNewAndGetMarkerItem,
+      saveNewAndGetMarkerItem,
     );
   }
 
@@ -135,7 +134,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     }
 
     getEditPoiWidget(DoorDetailModel door) {
-      return DoorEdit(door: door, onSave: _saveDoor, onDelete: deletePoi);
+      return DoorEdit(door: door, onSave: savePoi, onDelete: deletePoi);
     }
 
     super.onFeatureClick<DoorDetailModel>(
@@ -151,18 +150,10 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
     showFocusAreaInfoAtPoint(point);
   }
 
-  Future<void> _saveDoor(DoorUpdateModel doorUpdate) async {
-    final updatedMarker = await campaignActionCache.addUpdateAction(_poiType, doorUpdate);
-    mapController.setMarkerSource([updatedMarker]);
-  }
-
   DoorsAddScreen _getAddScreen(LatLng location, AddressModel? address, Object? additionalData) {
     return DoorsAddScreen(
       location: location,
       address: address!,
     );
   }
-
-  Future<MarkerItemModel> _saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
-      await campaignActionCache.addCreateAction(_poiType, newDoor);
 }

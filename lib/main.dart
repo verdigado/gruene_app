@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,6 +13,7 @@ import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_statistics_service.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
 import 'package:gruene_app/app/services/gruene_api_door_service.dart';
+import 'package:gruene_app/app/services/gruene_api_flyer_service.dart';
 import 'package:gruene_app/app/services/gruene_api_poster_service.dart';
 import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
@@ -19,7 +22,7 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/clean_layout.dart';
 import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_action_cache.dart';
-import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_action_cache_timer.dart';
 import 'package:gruene_app/features/campaigns/helper/file_cache_manager.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_event.dart';
@@ -51,19 +54,19 @@ Future<void> main() async {
   // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
   // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
-  GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
-  GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
-  GetIt.I.registerSingleton<GrueneApiCampaignsStatisticsService>(GrueneApiCampaignsStatisticsService());
   GetIt.I.registerFactory<NominatimService>(() => NominatimService(countryCode: t.campaigns.search.country_code));
-  GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
   GetIt.I.registerSingleton<CampaignActionCache>(CampaignActionCache());
+  GetIt.I.registerSingleton<CampaignActionCacheTimer>(CampaignActionCacheTimer());
   GetIt.I.registerSingleton<FileManager>(FileManager());
 
-  GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerFactory<GrueneApiPosterService>(() => GrueneApiPosterService());
   GetIt.I.registerFactory<GrueneApiDoorService>(() => GrueneApiDoorService());
+  GetIt.I.registerFactory<GrueneApiFlyerService>(() => GrueneApiFlyerService());
+  GetIt.I.registerFactory<GrueneApiCampaignsStatisticsService>(() => GrueneApiCampaignsStatisticsService());
 
   WidgetsFlutterBinding.ensureInitialized();
+
+  // setupCachePeriodicFlushing();
 
   runApp(TranslationProvider(child: const MyApp()));
 }

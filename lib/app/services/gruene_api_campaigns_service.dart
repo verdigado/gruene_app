@@ -4,16 +4,12 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
-import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
-import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
-import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
-import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-class GrueneApiCampaignsService {
+abstract class GrueneApiCampaignsService {
   late GrueneApi grueneApi;
 
   final PoiServiceType poiType;
@@ -42,25 +38,6 @@ class GrueneApiCampaignsService {
     return getPoisResult.body!.data.map((layerItem) => layerItem.transformToMapLayer()).toList();
   }
 
-  Future<MarkerItemModel> createNewFlyer(FlyerCreateModel newFlyer) async {
-    final requestParam = CreatePoi(
-      coords: newFlyer.location.transformToGeoJsonCoords(),
-      type: poiType.transformToApiCreateType(),
-      address: newFlyer.address.transformToPoiAddress(),
-      flyerSpot: PoiFlyerSpot(
-        flyerCount: newFlyer.flyerCount.toDouble(),
-      ),
-    );
-    // saving POI
-    final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
-
-    return newPoiResponse.body!.transformToMarkerItem();
-  }
-
-  Future<FlyerDetailModel> getPoiAsFlyerDetail(String poiId) {
-    return getPoi(poiId, (p) => p.transformPoiToFlyerDetail());
-  }
-
   Future<T> getPoi<T>(String poiId, T Function(Poi) transform) async {
     final poiResponse = await grueneApi.v1CampaignsPoisPoiIdGet(poiId: poiId);
     return transform(poiResponse.body!);
@@ -69,24 +46,5 @@ class GrueneApiCampaignsService {
   Future<void> deletePoi(String poiId) async {
     // ignore: unused_local_variable
     final deletePoiResponse = await grueneApi.v1CampaignsPoisPoiIdDelete(poiId: poiId);
-  }
-
-  Future<MarkerItemModel> updateFlyer(FlyerUpdateModel flyerUpdate) async {
-    var dtoUpdate = UpdatePoi(
-      address: flyerUpdate.address.transformToPoiAddress(),
-      flyerSpot: PoiFlyerSpot(
-        flyerCount: flyerUpdate.flyerCount.toDouble(),
-      ),
-    );
-    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: flyerUpdate.id, body: dtoUpdate);
-
-    return updatePoiResponse.body!.transformToMarkerItem();
-  }
-
-  Future<List<PosterListItemModel>> getMyPosters() async {
-    final getPoisType = poiType.transformToApiSelfGetType();
-
-    final getPoisResult = await grueneApi.v1CampaignsPoisSelfGet(type: getPoisType);
-    return getPoisResult.body!.data.map((p) => p.transformToPosterListItem()).toList();
   }
 }

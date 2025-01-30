@@ -28,6 +28,20 @@ extension CampaignActionParsing on CampaignAction {
     return model;
   }
 
+  FlyerCreateModel getAsFlyerCreate() {
+    var data = jsonDecode(serialized!) as Map<String, dynamic>;
+    var model = FlyerCreateModel.fromJson(data.convertLatLongField());
+
+    return model;
+  }
+
+  FlyerUpdateModel getAsFlyerUpdate() {
+    var data = jsonDecode(serialized!) as Map<String, dynamic>;
+    var model = FlyerUpdateModel.fromJson(data.updateIdField(poiId!).convertLatLongField());
+
+    return model;
+  }
+
   PosterListItemModel getPosterUpdateAsPosterListItem(DateTime originalCreatedAt) {
     var updateModel = getAsPosterUpdate().transformToPosterDetailModel();
     return PosterListItemModel(

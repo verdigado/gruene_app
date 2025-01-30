@@ -54,6 +54,7 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
       createdAt: poi.createdAt.getAsLocalDateTimeString(),
+      location: coords.transformToLatLng(),
     );
   }
 

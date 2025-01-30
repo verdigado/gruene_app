@@ -86,4 +86,11 @@ class GrueneApiPosterService extends GrueneApiCampaignsService {
   Future<PosterListItemModel> getPoiAsPosterListItem(String poiId) {
     return getPoi(poiId, (p) => p.transformToPosterListItem());
   }
+
+  Future<List<PosterListItemModel>> getMyPosters() async {
+    final getPoisType = poiType.transformToApiSelfGetType();
+
+    final getPoisResult = await grueneApi.v1CampaignsPoisSelfGet(type: getPoisType);
+    return getPoisResult.body!.data.map((p) => p.transformToPosterListItem()).toList();
+  }
 }

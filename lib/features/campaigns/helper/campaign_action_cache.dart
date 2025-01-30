@@ -6,12 +6,16 @@ import 'package:gruene_app/app/services/campaign_action_database.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_door_service.dart';
+import 'package:gruene_app/app/services/gruene_api_flyer_service.dart';
 import 'package:gruene_app/app/services/gruene_api_poster_service.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_action.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
@@ -22,6 +26,7 @@ import 'package:maplibre_gl/maplibre_gl.dart';
 
 class CampaignActionCache extends ChangeNotifier {
   static CampaignActionCache? _instance;
+  static bool _isflushing = false;
   var campaignActionDatabase = CampaignActionDatabase.instance;
 
   MapControllerSimplified? _currentMapController;
@@ -47,7 +52,7 @@ class CampaignActionCache extends ChangeNotifier {
     return campaignActionDatabase.getCount();
   }
 
-  Future<MarkerItemModel> addCreateAction(PoiServiceType poiType, dynamic poiCreate) async {
+  Future<MarkerItemModel> storeNewPoi(PoiServiceType poiType, dynamic poiCreate) async {
     switch (poiType) {
       case PoiServiceType.poster:
         return await _addCreateAction<PosterCreateModel>(
@@ -64,7 +69,12 @@ class CampaignActionCache extends ChangeNotifier {
           getMarker: (poi, tempId) => poi.transformToVirtualMarkerItem(tempId),
         );
       case PoiServiceType.flyer:
-        throw UnimplementedError();
+        return await _addCreateAction<FlyerCreateModel>(
+          poiType: poiType,
+          poi: poiCreate as FlyerCreateModel,
+          getJson: (poi) => poi.toJson(),
+          getMarker: (poi, tempId) => poi.transformToVirtualMarkerItem(tempId),
+        );
     }
   }
 
@@ -82,7 +92,7 @@ class CampaignActionCache extends ChangeNotifier {
     return getMarker(poi, action.poiTempId);
   }
 
-  Future<MarkerItemModel> addDeleteAction(PoiServiceType poiType, String poiId) async {
+  Future<MarkerItemModel> deletePoi(PoiServiceType poiType, String poiId) async {
     final action = CampaignAction(
       poiId: int.parse(poiId),
       actionType: poiType.getCacheDeleteAction(),
@@ -102,7 +112,7 @@ class CampaignActionCache extends ChangeNotifier {
     return _getDeleteMarkerModel(poiType, action.poiId!);
   }
 
-  Future<MarkerItemModel> addUpdateAction(PoiServiceType poiType, dynamic poi) async {
+  Future<MarkerItemModel> updatePoi(PoiServiceType poiType, dynamic poi) async {
     switch (poiType) {
       case PoiServiceType.poster:
         return await _addUpdateAction<PosterUpdateModel>(
@@ -123,7 +133,14 @@ class CampaignActionCache extends ChangeNotifier {
           getMarker: (poi) => poi.transformToVirtualMarkerItem(),
         );
       case PoiServiceType.flyer:
-        throw UnimplementedError();
+        return await _addUpdateAction<FlyerUpdateModel>(
+          poiType: poiType,
+          poi: poi as FlyerUpdateModel,
+          getId: (poi) => poi.id,
+          getJson: (poi) => poi.toJson(),
+          mergeUpdates: (action, poiUpdate) => poiUpdate,
+          getMarker: (poi) => poi.transformToVirtualMarkerItem(),
+        );
     }
   }
 
@@ -182,6 +199,7 @@ class CampaignActionCache extends ChangeNotifier {
         case CampaignActionType.deletePoster:
           var model = _getDeleteMarkerModel(PoiServiceType.poster, action.poiId!);
           markerItems.add(model);
+
         case CampaignActionType.addDoor:
           var model = action.getAsDoorCreate();
           markerItems.add(model.transformToVirtualMarkerItem(action.poiTempId));
@@ -191,25 +209,30 @@ class CampaignActionCache extends ChangeNotifier {
         case CampaignActionType.deleteDoor:
           var model = _getDeleteMarkerModel(PoiServiceType.door, action.poiId!);
           markerItems.add(model);
+
         case CampaignActionType.addFlyer:
+          var model = action.getAsFlyerCreate();
+          markerItems.add(model.transformToVirtualMarkerItem(action.poiTempId));
         case CampaignActionType.editFlyer:
+          var model = action.getAsFlyerUpdate();
+          markerItems.add(model.transformToVirtualMarkerItem());
         case CampaignActionType.deleteFlyer:
-        // var model = _getDeleteMarkerModel(PoiServiceType.door, action.poiId!);
-        // markerItems.add(model);
+          var model = _getDeleteMarkerModel(PoiServiceType.flyer, action.poiId!);
+          markerItems.add(model);
+
         case CampaignActionType.unknown:
         case null:
           throw UnimplementedError();
       }
-      if (action.actionType == CampaignActionType.addPoster) {}
     }
     return markerItems;
   }
 
   Future<PosterDetailModel> getPoiAsPosterDetail(String poiId) async {
-    var detailModel = await getPoiDetail<PosterDetailModel>(
+    var detailModel = await _getPoiDetail<PosterDetailModel>(
       poiId: poiId,
-      addActionFilter: CampaignActionType.addDoor,
-      editActionFilter: CampaignActionType.editDoor,
+      addActionFilter: CampaignActionType.addPoster,
+      editActionFilter: CampaignActionType.editPoster,
       transformEditAction: (action) => action.getAsPosterUpdate().transformToPosterDetailModel(),
       transformAddAction: (action) => action.getAsPosterCreate().transformToPosterDetailModel(poiId),
     );
@@ -217,7 +240,7 @@ class CampaignActionCache extends ChangeNotifier {
   }
 
   Future<DoorDetailModel> getPoiAsDoorDetail(String poiId) async {
-    var detailModel = await getPoiDetail<DoorDetailModel>(
+    var detailModel = await _getPoiDetail<DoorDetailModel>(
       poiId: poiId,
       addActionFilter: CampaignActionType.addDoor,
       editActionFilter: CampaignActionType.editDoor,
@@ -227,7 +250,18 @@ class CampaignActionCache extends ChangeNotifier {
     return detailModel;
   }
 
-  Future<T> getPoiDetail<T>({
+  Future<FlyerDetailModel> getPoiAsFlyerDetail(String poiId) async {
+    var detailModel = await _getPoiDetail<FlyerDetailModel>(
+      poiId: poiId,
+      addActionFilter: CampaignActionType.addFlyer,
+      editActionFilter: CampaignActionType.editFlyer,
+      transformEditAction: (action) => action.getAsFlyerUpdate().transformToFlyerDetailModel(),
+      transformAddAction: (action) => action.getAsFlyerCreate().transformToFlyerDetailModel(poiId),
+    );
+    return detailModel;
+  }
+
+  Future<T> _getPoiDetail<T>({
     required String poiId,
     required CampaignActionType addActionFilter,
     required CampaignActionType editActionFilter,
@@ -251,10 +285,13 @@ class CampaignActionCache extends ChangeNotifier {
     return posterCacheList;
   }
 
-  void flushCachedItems() async {
+  void flushCache() async {
+    if (_isflushing) return;
     try {
+      _isflushing = true;
       var posterApiService = GetIt.I<GrueneApiPosterService>();
       var doorApiService = GetIt.I<GrueneApiDoorService>();
+      var flyerApiService = GetIt.I<GrueneApiFlyerService>();
       final allActions = await campaignActionDatabase.readAll();
 
       for (int i = 0; i < allActions.length; i++) {
@@ -263,7 +300,7 @@ class CampaignActionCache extends ChangeNotifier {
           case CampaignActionType.addPoster:
             var model = action.getAsPosterCreate();
             var newPosterMarker = await posterApiService.createNewPoster(model);
-            await updateIds(
+            await _updateIdsInCache(
               oldId: action.poiTempId,
               newId: newPosterMarker.id!,
               startIndex: i + 1,
@@ -279,7 +316,7 @@ class CampaignActionCache extends ChangeNotifier {
           case CampaignActionType.addDoor:
             var model = action.getAsDoorCreate();
             var newDoorMarker = await doorApiService.createNewDoor(model);
-            await updateIds(
+            await _updateIdsInCache(
               oldId: action.poiTempId,
               newId: newDoorMarker.id!,
               startIndex: i + 1,
@@ -292,14 +329,27 @@ class CampaignActionCache extends ChangeNotifier {
             await doorApiService.updateDoor(model);
             campaignActionDatabase.delete(action.id!);
 
+          case CampaignActionType.addFlyer:
+            var model = action.getAsFlyerCreate();
+            var newDoorMarker = await flyerApiService.createNewFlyer(model);
+            await _updateIdsInCache(
+              oldId: action.poiTempId,
+              newId: newDoorMarker.id!,
+              startIndex: i + 1,
+              allActions: allActions,
+            );
+            campaignActionDatabase.delete(action.id!);
+          case CampaignActionType.editFlyer:
+            var model = action.getAsFlyerUpdate();
+            await flyerApiService.updateFlyer(model);
+            campaignActionDatabase.delete(action.id!);
+
           case CampaignActionType.deleteDoor:
           case CampaignActionType.deletePoster:
+          case CampaignActionType.deleteFlyer:
             await posterApiService.deletePoi(action.poiId!.toString());
             campaignActionDatabase.delete(action.id!);
 
-          case CampaignActionType.addFlyer:
-          case CampaignActionType.editFlyer:
-          case CampaignActionType.deleteFlyer:
           case CampaignActionType.unknown:
           case null:
             throw UnimplementedError();
@@ -307,6 +357,7 @@ class CampaignActionCache extends ChangeNotifier {
         notifyListeners();
       }
     } finally {
+      _isflushing = false;
       notifyListeners();
       if (await getCachedActionCount() == 0) {
         MediaHelper.removeAllFiles();
@@ -317,7 +368,7 @@ class CampaignActionCache extends ChangeNotifier {
     }
   }
 
-  Future<void> updateIds({
+  Future<void> _updateIdsInCache({
     required int oldId,
     required int newId,
     required List<CampaignAction> allActions,

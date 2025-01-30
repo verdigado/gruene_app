@@ -10,7 +10,6 @@ import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
-import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
@@ -34,7 +33,7 @@ class PostersScreen extends StatefulWidget {
   State<StatefulWidget> createState() => _PostersScreenState();
 }
 
-class _PostersScreenState extends MapConsumer<PostersScreen> {
+class _PostersScreenState extends MapConsumer<PostersScreen, PosterCreateModel, PosterUpdateModel> {
   static const _poiType = PoiServiceType.poster;
   final _grueneApiService = GetIt.I<GrueneApiPosterService>();
 
@@ -140,10 +139,6 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
     );
   }
 
-  Future<MarkerItemModel> saveNewAndGetMarkerItem(PosterCreateModel newPoster) async {
-    return await campaignActionCache.addCreateAction(_poiType, newPoster);
-  }
-
   void _addPOIClicked(LatLng location) async {
     super.addPOIClicked<File, PosterAddScreen, PosterCreateModel>(
       location,
@@ -181,7 +176,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
   }
 
   Widget _getEditPosterWidget(PosterDetailModel poster) {
-    return PosterEdit(poster: poster, onSave: _savePoster, onDelete: deletePoi);
+    return PosterEdit(poster: poster, onSave: savePoi, onDelete: deletePoi);
   }
 
   void _onFeatureClick(dynamic rawFeature) async {
@@ -207,11 +202,6 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
 
   void _onNoFeatureClick(Point<double> point) {
     showFocusAreaInfoAtPoint(point);
-  }
-
-  Future<void> _savePoster(PosterUpdateModel posterUpdate) async {
-    final updatedMarker = await campaignActionCache.addUpdateAction(_poiType, posterUpdate);
-    mapController.setMarkerSource([updatedMarker]);
   }
 
   void showMyPosters() async {

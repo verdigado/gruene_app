@@ -39,6 +39,7 @@ class FileManager {
 
   Future<void> clearAllFiles() async {
     var dir = Directory(await _getStore());
+    if (!(await dir.exists())) return;
     var allFiles = await dir.list().toList();
     for (var file in allFiles) {
       var stat = await file.stat();
@@ -49,14 +50,3 @@ class FileManager {
     }
   }
 }
-
-// class FileCacheManager {
-//   static const key = 'wk-cache-manager';
-//   static CacheManager instance = CacheManager(
-//     Config(
-//       key,
-//       stalePeriod: const Duration(days: 7),
-//       maxNrOfCacheObjects: 200,
-//     ),
-//   );
-// }

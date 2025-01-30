@@ -93,6 +93,6 @@ class _RefreshButtonState extends State<RefreshButton> {
   }
 
   void _flushCachedData() {
-    campaignActionCache.flushCachedItems();
+    campaignActionCache.flushCache();
   }
 }

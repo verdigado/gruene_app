@@ -127,4 +127,11 @@ class AddressModel {
         houseNumber = place.getHouseNumber(),
         zipCode = place.getZipCode(),
         city = cityOverride ?? place.getCityOrVillage();
+
+  /// Connect the generated [_$AddressModelFromJson] function to the `fromJson`
+  /// factory.
+  factory AddressModel.fromJson(Map<String, dynamic> json) => _$AddressModelFromJson(json);
+
+  /// Connect the generated [_$AddressModelToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$AddressModelToJson(this);
 }
