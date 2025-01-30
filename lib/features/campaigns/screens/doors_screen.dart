@@ -70,6 +70,7 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
+      loadCachedItems: _loadCachedItems,
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
@@ -151,4 +152,6 @@ class _DoorsScreenState extends MapConsumer<DoorsScreen> {
 
   Future<MarkerItemModel> _saveNewAndGetMarkerItem(DoorCreateModel newDoor) async =>
       await _grueneApiService.createNewDoor(newDoor);
+
+  void _loadCachedItems() {}
 }

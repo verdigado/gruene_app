@@ -25,7 +25,7 @@ typedef SaveNewAndGetMarkerCallback<T> = Future<MarkerItemModel> Function(T);
 typedef GetPoiCallback<T> = Future<T> Function(String);
 typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
 typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
-typedef OnDeletePoiCallback = void Function(String posterId);
+typedef OnDeletePoiCallback = Future<void> Function(String posterId);
 
 abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo, SearchMixin<T> {
   late MapController mapController;
@@ -148,7 +148,7 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
     );
   }
 
-  void deletePoi(String poiId) async {
+  Future<void> deletePoi(String poiId) async {
     final id = int.parse(poiId);
     await campaignService.deletePoi(poiId);
     mapController.removeMarkerItem(id);

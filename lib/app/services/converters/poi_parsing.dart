@@ -22,7 +22,7 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       openedDoors: poi.house!.countOpenedDoors.toInt(),
       closedDoors: poi.house!.countClosedDoors.toInt(),
-      createdAt: _getUtcDateTimeAsLocalDateTimeString(poi.createdAt),
+      createdAt: poi.createdAt.getAsLocalDateTimeString(),
     );
   }
 
@@ -37,8 +37,9 @@ extension PoiParsing on Poi {
       imageUrl: _getImageUrl(poi),
       address: poi.address.transformToAddressModel(),
       status: poi.poster!.status.transformToModelPosterStatus(),
+      location: coords.transformToLatLng(),
       comment: poi.poster!.comment ?? '',
-      createdAt: _getUtcDateTimeAsLocalDateTimeString(poi.createdAt),
+      createdAt: poi.createdAt.getAsLocalDateTimeString(),
     );
   }
 
@@ -51,7 +52,7 @@ extension PoiParsing on Poi {
       id: poi.id,
       address: poi.address.transformToAddressModel(),
       flyerCount: poi.flyerSpot!.flyerCount.toInt(),
-      createdAt: _getUtcDateTimeAsLocalDateTimeString(poi.createdAt),
+      createdAt: poi.createdAt.getAsLocalDateTimeString(),
     );
   }
 
@@ -67,23 +68,9 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       status: poi.poster!.status.translatePosterStatus(),
       lastChangeStatus: poi._getLastChangeStatus(),
-      lastChangeDateTime: poi._getLastChangeDateTimeInfo(),
+      lastChangeDateTime: poi.updatedAt.getAsLocalDateTimeString(),
       createdAt: poi.createdAt,
     );
-  }
-
-  String _getLastChangeDateTimeInfo() {
-    return _getUtcDateTimeAsLocalDateTimeString(updatedAt);
-  }
-
-  String _getUtcDateTimeAsLocalDateTimeString(DateTime utcTime) {
-    final localTime = utcTime.toLocal();
-
-    final lastChangeDate = DateFormat(t.campaigns.poster.date_format).format(localTime);
-    final lastChangeTime = DateFormat(t.campaigns.poster.time_format).format(localTime);
-    return t.campaigns.poster.datetime_display_template
-        .replaceAll('{date}', lastChangeDate)
-        .replaceAll('{time}', lastChangeTime);
   }
 
   String _getLastChangeStatus() {

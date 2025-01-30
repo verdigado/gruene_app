@@ -10,12 +10,16 @@ import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_statistics_service.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
+import 'package:gruene_app/app/services/gruene_api_poster_service.dart';
 import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/services/secure_storage_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
 import 'package:gruene_app/app/widgets/clean_layout.dart';
 import 'package:gruene_app/features/campaigns/helper/app_settings.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_action_cache.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_session_settings.dart';
+import 'package:gruene_app/features/campaigns/helper/file_cache_manager.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_bloc.dart';
 import 'package:gruene_app/features/mfa/bloc/mfa_event.dart';
 import 'package:gruene_app/features/mfa/domain/mfa_factory.dart';
@@ -24,7 +28,7 @@ import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:keycloak_authenticator/api.dart';
 import 'package:timeago/timeago.dart' as timeago;
 
-void main() async {
+Future<void> main() async {
   await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
   final locale = await LocaleSettings.useDeviceLocale();
@@ -46,8 +50,20 @@ void main() async {
   // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
   // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
+  GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
+  GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerSingleton<GrueneApiCampaignsStatisticsService>(GrueneApiCampaignsStatisticsService());
   GetIt.I.registerFactory<NominatimService>(() => NominatimService(countryCode: t.campaigns.search.country_code));
+  GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
+  GetIt.I.registerSingleton<CampaignActionCache>(CampaignActionCache());
+  // GetIt.I.registerSingleton<CacheManager>(FileCacheManager.instance);
+  GetIt.I.registerSingleton<FileManager>(FileManager());
+
+  GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
+  GetIt.I.registerFactory<GrueneApiPosterService>(() => GrueneApiPosterService());
+  // This is required so ObjectBox can get the application directory
+  // to store the database in.
+  WidgetsFlutterBinding.ensureInitialized();
 
   runApp(TranslationProvider(child: const MyApp()));
 }

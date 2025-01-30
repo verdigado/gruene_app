@@ -33,4 +33,17 @@ extension PoiServiceTypeParsing on PoiServiceType {
         return CreatePoiType.flyerSpot;
     }
   }
+
+  String getAsMarkerItemStatus(PosterStatus? posterStatus) {
+    var typeName = name;
+    switch (this) {
+      case PoiServiceType.poster:
+        String statusSuffix = '';
+        if (posterStatus != null) statusSuffix = '_${posterStatus.name}';
+        return '$typeName$statusSuffix';
+      case PoiServiceType.door:
+      case PoiServiceType.flyer:
+        return typeName;
+    }
+  }
 }

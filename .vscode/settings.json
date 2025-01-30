@@ -9,4 +9,5 @@
     "circleci.persistedProjectSelection": [
         "gh/verdigado/gruene_app"
     ]
+    "cSpell.enabled": false
 }

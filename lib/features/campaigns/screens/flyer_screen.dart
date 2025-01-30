@@ -62,6 +62,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
+      loadCachedItems: _loadCachedItems,
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
@@ -147,4 +148,6 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
     final updatedMarker = await campaignService.updateFlyer(flyerUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }
+
+  void _loadCachedItems() {}
 }
