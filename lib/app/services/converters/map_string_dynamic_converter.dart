@@ -2,7 +2,9 @@ part of '../converters.dart';
 
 extension MapStringDynamicConverter on Map<String, dynamic> {
   Map<String, dynamic> convertLatLongField({String fieldName = 'location'}) {
-    this[fieldName] = (this[fieldName] as List<dynamic>).cast<double>();
+    if (containsKey(fieldName) && this[fieldName] is List<dynamic>) {
+      this[fieldName] = (this[fieldName] as List<dynamic>).cast<double>().toList();
+    }
     return this;
   }
 

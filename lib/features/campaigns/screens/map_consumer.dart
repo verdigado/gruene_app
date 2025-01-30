@@ -3,9 +3,11 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
+import 'package:gruene_app/app/services/enums.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/features/campaigns/helper/campaign_action_cache.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/enums.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
@@ -25,7 +27,7 @@ typedef SaveNewAndGetMarkerCallback<T> = Future<MarkerItemModel> Function(T);
 typedef GetPoiCallback<T> = Future<T> Function(String);
 typedef GetPoiDetailWidgetCallback<T> = Widget Function(T);
 typedef GetPoiEditWidgetCallback<T> = Widget Function(T);
-typedef OnDeletePoiCallback = Future<void> Function(String posterId);
+typedef OnDeletePoiCallback = Future<void> Function(String poiId);
 
 abstract class MapConsumer<T extends StatefulWidget> extends State<T> with FocusAreaInfo, SearchMixin<T> {
   late MapController mapController;
@@ -37,8 +39,10 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
   final _minZoomFocusAreaLayer = 11.0;
   ScaffoldFeatureController<SnackBar, SnackBarClosedReason>? _lastInfoSnackBar;
   String? _lastFocusAreaId;
+  final campaignActionCache = GetIt.I<CampaignActionCache>();
+  final PoiServiceType poiType;
 
-  MapConsumer();
+  MapConsumer(this.poiType);
 
   GrueneApiCampaignsService get campaignService;
 
@@ -149,9 +153,8 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
   }
 
   Future<void> deletePoi(String poiId) async {
-    final id = int.parse(poiId);
-    await campaignService.deletePoi(poiId);
-    mapController.removeMarkerItem(id);
+    var markerItem = await campaignActionCache.addDeleteAction(poiType, poiId);
+    mapController.setMarkerSource([markerItem]);
   }
 
   void addMapLayersForContext(MapLibreMapController mapLibreController) async {
@@ -332,5 +335,10 @@ abstract class MapConsumer<T extends StatefulWidget> extends State<T> with Focus
   @override
   void navigateMapTo(LatLng location) {
     mapController.navigateMapTo(location);
+  }
+
+  void loadCachedItems() async {
+    var markerItems = await campaignActionCache.getMarkerItems(poiType);
+    mapController.setMarkerSource(markerItems);
   }
 }

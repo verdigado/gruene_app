@@ -10,6 +10,7 @@ import 'package:gruene_app/app/auth/repository/auth_repository.dart';
 import 'package:gruene_app/app/router.dart';
 import 'package:gruene_app/app/services/gruene_api_campaigns_statistics_service.dart';
 import 'package:gruene_app/app/services/gruene_api_core.dart';
+import 'package:gruene_app/app/services/gruene_api_door_service.dart';
 import 'package:gruene_app/app/services/gruene_api_poster_service.dart';
 import 'package:gruene_app/app/services/ip_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
@@ -56,13 +57,12 @@ Future<void> main() async {
   GetIt.I.registerFactory<NominatimService>(() => NominatimService(countryCode: t.campaigns.search.country_code));
   GetIt.I.registerSingleton<CampaignSessionSettings>(CampaignSessionSettings());
   GetIt.I.registerSingleton<CampaignActionCache>(CampaignActionCache());
-  // GetIt.I.registerSingleton<CacheManager>(FileCacheManager.instance);
   GetIt.I.registerSingleton<FileManager>(FileManager());
 
   GetIt.I.registerFactory<AuthenticatorService>(MfaFactory.create);
   GetIt.I.registerFactory<GrueneApiPosterService>(() => GrueneApiPosterService());
-  // This is required so ObjectBox can get the application directory
-  // to store the database in.
+  GetIt.I.registerFactory<GrueneApiDoorService>(() => GrueneApiDoorService());
+
   WidgetsFlutterBinding.ensureInitialized();
 
   runApp(TranslationProvider(child: const MyApp()));

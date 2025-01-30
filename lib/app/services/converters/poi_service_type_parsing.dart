@@ -46,4 +46,37 @@ extension PoiServiceTypeParsing on PoiServiceType {
         return typeName;
     }
   }
+
+  CampaignActionType getCacheDeleteAction() {
+    switch (this) {
+      case PoiServiceType.poster:
+        return CampaignActionType.deletePoster;
+      case PoiServiceType.door:
+        return CampaignActionType.deleteDoor;
+      case PoiServiceType.flyer:
+        return CampaignActionType.deleteFlyer;
+    }
+  }
+
+  CampaignActionType getCacheEditAction() {
+    switch (this) {
+      case PoiServiceType.poster:
+        return CampaignActionType.editPoster;
+      case PoiServiceType.door:
+        return CampaignActionType.editDoor;
+      case PoiServiceType.flyer:
+        return CampaignActionType.editFlyer;
+    }
+  }
+
+  CampaignActionType getCacheAddAction() {
+    switch (this) {
+      case PoiServiceType.poster:
+        return CampaignActionType.addPoster;
+      case PoiServiceType.door:
+        return CampaignActionType.addDoor;
+      case PoiServiceType.flyer:
+        return CampaignActionType.addFlyer;
+    }
+  }
 }

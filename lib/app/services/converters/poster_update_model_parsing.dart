@@ -9,7 +9,7 @@ extension PosterUpdateModelParsing on PosterUpdateModel {
     );
   }
 
-  PosterDetailModel transformToPosterDetailModel(int temporaryId) {
+  PosterDetailModel transformToPosterDetailModel() {
     var newPosterDetail = oldPosterDetail.copyWith(
       status: status,
       address: address,

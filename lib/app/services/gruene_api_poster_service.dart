@@ -6,6 +6,8 @@ import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
 import 'package:gruene_app/features/campaigns/helper/file_cache_manager.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_create_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
+import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_update_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:http/http.dart' as http;
@@ -75,5 +77,13 @@ class GrueneApiPosterService extends GrueneApiCampaignsService {
     );
     fileManager.deleteFile(imageFileLocation);
     return savePoiPhotoResponse;
+  }
+
+  Future<PosterDetailModel> getPoiAsPosterDetail(String poiId) async {
+    return getPoi(poiId, (p) => p.transformPoiToPosterDetail());
+  }
+
+  Future<PosterListItemModel> getPoiAsPosterListItem(String poiId) {
+    return getPoi(poiId, (p) => p.transformToPosterListItem());
   }
 }

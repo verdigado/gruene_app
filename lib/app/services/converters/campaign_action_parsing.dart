@@ -14,8 +14,22 @@ extension CampaignActionParsing on CampaignAction {
     return model;
   }
 
+  DoorCreateModel getAsDoorCreate() {
+    var data = jsonDecode(serialized!) as Map<String, dynamic>;
+    var model = DoorCreateModel.fromJson(data.convertLatLongField());
+
+    return model;
+  }
+
+  DoorUpdateModel getAsDoorUpdate() {
+    var data = jsonDecode(serialized!) as Map<String, dynamic>;
+    var model = DoorUpdateModel.fromJson(data.updateIdField(poiId!).convertLatLongField());
+
+    return model;
+  }
+
   PosterListItemModel getPosterUpdateAsPosterListItem(DateTime originalCreatedAt) {
-    var updateModel = getAsPosterUpdate().transformToPosterDetailModel(poiId!);
+    var updateModel = getAsPosterUpdate().transformToPosterDetailModel();
     return PosterListItemModel(
       id: updateModel.id,
       thumbnailUrl: updateModel.thumbnailUrl,
@@ -30,7 +44,7 @@ extension CampaignActionParsing on CampaignAction {
   }
 
   PosterListItemModel getPosterCreateAsPosterListItem() {
-    var createModel = getAsPosterCreate().transformToPosterDetailModel(poiTempId);
+    var createModel = getAsPosterCreate().transformToPosterDetailModel(poiTempId.toString());
     return PosterListItemModel(
       id: createModel.id,
       thumbnailUrl: createModel.thumbnailUrl,

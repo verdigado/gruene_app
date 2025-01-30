@@ -22,6 +22,7 @@ extension PoiParsing on Poi {
       address: poi.address.transformToAddressModel(),
       openedDoors: poi.house!.countOpenedDoors.toInt(),
       closedDoors: poi.house!.countClosedDoors.toInt(),
+      location: poi.coords.transformToLatLng(),
       createdAt: poi.createdAt.getAsLocalDateTimeString(),
     );
   }

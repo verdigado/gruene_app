@@ -9,9 +9,9 @@ extension PosterCreateModelParsing on PosterCreateModel {
     );
   }
 
-  PosterDetailModel transformToPosterDetailModel(int temporaryId) {
+  PosterDetailModel transformToPosterDetailModel(String temporaryId) {
     return PosterDetailModel(
-      id: temporaryId.toString(),
+      id: temporaryId,
       status: PosterStatus.ok,
       address: address,
       thumbnailUrl: imageFileLocation,

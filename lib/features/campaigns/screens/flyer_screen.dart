@@ -26,11 +26,12 @@ class FlyerScreen extends StatefulWidget {
 }
 
 class _FlyerScreenState extends MapConsumer<FlyerScreen> {
-  final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.flyer);
+  static const _poiType = PoiServiceType.door;
+  final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: _poiType);
 
   late List<FilterChipModel> flyerFilter;
 
-  _FlyerScreenState() : super();
+  _FlyerScreenState() : super(_poiType);
 
   @override
   void initState() {
@@ -62,7 +63,7 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
-      loadCachedItems: _loadCachedItems,
+      loadCachedItems: loadCachedItems,
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
@@ -148,6 +149,4 @@ class _FlyerScreenState extends MapConsumer<FlyerScreen> {
     final updatedMarker = await campaignService.updateFlyer(flyerUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }
-
-  void _loadCachedItems() {}
 }

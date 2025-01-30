@@ -4,10 +4,9 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/services/enums.dart';
-import 'package:gruene_app/app/services/gruene_api_campaigns_service.dart';
+import 'package:gruene_app/app/services/gruene_api_poster_service.dart';
 import 'package:gruene_app/app/services/nominatim_service.dart';
 import 'package:gruene_app/app/theme/theme.dart';
-import 'package:gruene_app/features/campaigns/helper/campaign_action_cache.dart';
 import 'package:gruene_app/features/campaigns/helper/campaign_constants.dart';
 import 'package:gruene_app/features/campaigns/helper/map_helper.dart';
 import 'package:gruene_app/features/campaigns/helper/media_helper.dart';
@@ -36,15 +35,15 @@ class PostersScreen extends StatefulWidget {
 }
 
 class _PostersScreenState extends MapConsumer<PostersScreen> {
-  final GrueneApiCampaignsService _grueneApiService = GrueneApiCampaignsService(poiType: PoiServiceType.poster);
-  final campaignActionCache = GetIt.I<CampaignActionCache>();
+  static const _poiType = PoiServiceType.poster;
+  final _grueneApiService = GetIt.I<GrueneApiPosterService>();
 
   late List<FilterChipModel> postersFilter;
 
-  _PostersScreenState() : super();
+  _PostersScreenState() : super(_poiType);
 
   @override
-  GrueneApiCampaignsService get campaignService => _grueneApiService;
+  GrueneApiPosterService get campaignService => _grueneApiService;
 
   @override
   void initState() {
@@ -77,7 +76,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
       onMapCreated: onMapCreated,
       addPOIClicked: _addPOIClicked,
       loadVisibleItems: loadVisibleItems,
-      loadCachedItems: _loadCachedItems,
+      loadCachedItems: loadCachedItems,
       getMarkerImages: _getMarkerImages,
       onFeatureClick: _onFeatureClick,
       onNoFeatureClick: _onNoFeatureClick,
@@ -142,7 +141,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
   }
 
   Future<MarkerItemModel> saveNewAndGetMarkerItem(PosterCreateModel newPoster) async {
-    return await campaignActionCache.addPosterCreate(newPoster);
+    return await campaignActionCache.addCreateAction(_poiType, newPoster);
   }
 
   void _addPOIClicked(LatLng location) async {
@@ -182,7 +181,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
   }
 
   Widget _getEditPosterWidget(PosterDetailModel poster) {
-    return PosterEdit(poster: poster, onSave: _savePoster, onDelete: _deletePoster);
+    return PosterEdit(poster: poster, onSave: _savePoster, onDelete: deletePoi);
   }
 
   void _onFeatureClick(dynamic rawFeature) async {
@@ -211,7 +210,7 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
   }
 
   Future<void> _savePoster(PosterUpdateModel posterUpdate) async {
-    final updatedMarker = await campaignActionCache.addPosterUpdate(posterUpdate);
+    final updatedMarker = await campaignActionCache.addUpdateAction(_poiType, posterUpdate);
     mapController.setMarkerSource([updatedMarker]);
   }
 
@@ -246,16 +245,6 @@ class _PostersScreenState extends MapConsumer<PostersScreen> {
     var myPosters = await campaignService.getMyPosters();
     await campaignActionCache.replaceAndFillUpMyPosterList(myPosters);
     return myPosters;
-  }
-
-  void _loadCachedItems() async {
-    var markerItems = await campaignActionCache.getPosterMarkerItems();
-    mapController.setMarkerSource(markerItems);
-  }
-
-  Future<void> _deletePoster(String posterId) async {
-    var markerItem = await campaignActionCache.addPosterDelete(posterId);
-    mapController.setMarkerSource([markerItem]);
   }
 
   Future<PosterListItemModel> _getPosterListItem(String id) async {

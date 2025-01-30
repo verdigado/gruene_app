@@ -4,15 +4,11 @@ import 'package:flutter/foundation.dart';
 import 'package:get_it/get_it.dart';
 import 'package:gruene_app/app/services/converters.dart';
 import 'package:gruene_app/app/services/enums.dart';
-import 'package:gruene_app/features/campaigns/models/doors/door_create_model.dart';
-import 'package:gruene_app/features/campaigns/models/doors/door_detail_model.dart';
-import 'package:gruene_app/features/campaigns/models/doors/door_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_create_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/flyer/flyer_update_model.dart';
 import 'package:gruene_app/features/campaigns/models/map_layer_model.dart';
 import 'package:gruene_app/features/campaigns/models/marker_item_model.dart';
-import 'package:gruene_app/features/campaigns/models/posters/poster_detail_model.dart';
 import 'package:gruene_app/features/campaigns/models/posters/poster_list_item_model.dart';
 import 'package:gruene_app/swagger_generated_code/gruene_api.swagger.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
@@ -46,22 +42,6 @@ class GrueneApiCampaignsService {
     return getPoisResult.body!.data.map((layerItem) => layerItem.transformToMapLayer()).toList();
   }
 
-  Future<MarkerItemModel> createNewDoor(DoorCreateModel newDoor) async {
-    final requestParam = CreatePoi(
-      coords: newDoor.location.transformToGeoJsonCoords(),
-      type: poiType.transformToApiCreateType(),
-      address: newDoor.address.transformToPoiAddress(),
-      house: PoiHouse(
-        countOpenedDoors: newDoor.openedDoors.toDouble(),
-        countClosedDoors: newDoor.closedDoors.toDouble(),
-      ),
-    );
-    // saving POI
-    final newPoiResponse = await grueneApi.v1CampaignsPoisPost(body: requestParam);
-
-    return newPoiResponse.body!.transformToMarkerItem();
-  }
-
   Future<MarkerItemModel> createNewFlyer(FlyerCreateModel newFlyer) async {
     final requestParam = CreatePoi(
       coords: newFlyer.location.transformToGeoJsonCoords(),
@@ -77,23 +57,11 @@ class GrueneApiCampaignsService {
     return newPoiResponse.body!.transformToMarkerItem();
   }
 
-  Future<PosterDetailModel> getPoiAsPosterDetail(String poiId) async {
-    return _getPoi(poiId, (p) => p.transformPoiToPosterDetail());
-  }
-
-  Future<PosterListItemModel> getPoiAsPosterListItem(String poiId) {
-    return _getPoi(poiId, (p) => p.transformToPosterListItem());
-  }
-
-  Future<DoorDetailModel> getPoiAsDoorDetail(String poiId) {
-    return _getPoi(poiId, (p) => p.transformPoiToDoorDetail());
-  }
-
   Future<FlyerDetailModel> getPoiAsFlyerDetail(String poiId) {
-    return _getPoi(poiId, (p) => p.transformPoiToFlyerDetail());
+    return getPoi(poiId, (p) => p.transformPoiToFlyerDetail());
   }
 
-  Future<T> _getPoi<T>(String poiId, T Function(Poi) transform) async {
+  Future<T> getPoi<T>(String poiId, T Function(Poi) transform) async {
     final poiResponse = await grueneApi.v1CampaignsPoisPoiIdGet(poiId: poiId);
     return transform(poiResponse.body!);
   }
@@ -101,19 +69,6 @@ class GrueneApiCampaignsService {
   Future<void> deletePoi(String poiId) async {
     // ignore: unused_local_variable
     final deletePoiResponse = await grueneApi.v1CampaignsPoisPoiIdDelete(poiId: poiId);
-  }
-
-  Future<MarkerItemModel> updateDoor(DoorUpdateModel doorUpdate) async {
-    var dtoUpdate = UpdatePoi(
-      address: doorUpdate.address.transformToPoiAddress(),
-      house: PoiHouse(
-        countOpenedDoors: doorUpdate.openedDoors.toDouble(),
-        countClosedDoors: doorUpdate.closedDoors.toDouble(),
-      ),
-    );
-    var updatePoiResponse = await grueneApi.v1CampaignsPoisPoiIdPut(poiId: doorUpdate.id, body: dtoUpdate);
-
-    return updatePoiResponse.body!.transformToMarkerItem();
   }
 
   Future<MarkerItemModel> updateFlyer(FlyerUpdateModel flyerUpdate) async {
