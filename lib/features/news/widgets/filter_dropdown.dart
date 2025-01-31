@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:gruene_app/app/theme/theme.dart';
+import 'package:gruene_app/app/utils/date.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:intl/intl.dart';
 
 class FilterOption {
   final String title;
@@ -92,18 +96,18 @@ class ChoiceChipsFilter extends StatelessWidget {
   }
 }
 
+// Future<DateTimeRange?> show () async {
+//   return showDateRangePicker(context: context, firstDate: firstDate, lastDate: lastDate)
+// }
+
 class DateRangeFilter extends StatelessWidget {
-  final void Function(DateTime? set) setStartDate;
-  final void Function(DateTime? selected) setEndDate;
-  final DateTime? startDate;
-  final DateTime? endDate;
+  final void Function(DateTimeRange?) setDateRange;
+  final DateTimeRange dateRange;
 
   const DateRangeFilter({
     super.key,
-    required this.setStartDate,
-    required this.setEndDate,
-    this.startDate,
-    this.endDate,
+    required this.setDateRange,
+    required this.dateRange,
   });
 
   @override
@@ -114,6 +118,14 @@ class DateRangeFilter extends StatelessWidget {
         SizedBox(width: 16),
         Text(t.common.dateFrom),
         SizedBox(width: 16),
+        TextButton(
+          onPressed: () => showDateRangePicker(context: context, firstDate: DateTime(1980), lastDate: DateTime.now()),
+          // style: ButtonStyle(
+          //   backgroundColor: theme.colorScheme.surfaceDim,
+          //   side: BorderSide(color: theme.colorScheme.surfaceDim),
+          // ),
+          child: Text(dateFormatter.format(dateRange.start.toLocal())),
+        ),
         // CalendarDatePicker(
         //   initialDate: DateTime(DateTime.now().year),
         //   firstDate: DateTime(1980),
@@ -123,12 +135,11 @@ class DateRangeFilter extends StatelessWidget {
         SizedBox(width: 16),
         Text(t.common.dateUntil),
         SizedBox(width: 16),
-        // CalendarDatePicker(
-        //   initialDate: DateTime.now(),
-        //   firstDate: DateTime(1980),
-        //   lastDate: DateTime.now(),
-        //   onDateChanged: setStartDate,
-        // ),
+        Chip(
+          label: Text(dateFormatter.format(dateRange.end.toLocal())),
+          backgroundColor: theme.colorScheme.surfaceDim,
+          side: BorderSide(color: theme.colorScheme.surfaceDim),
+        ),
         SizedBox(width: 16),
       ],
     );
@@ -159,7 +170,12 @@ class FilterDropdown extends StatelessWidget {
           child: ChoiceChipsFilter(selectFilter: (_) => null, filterOptions: categories, selectedFilter: categories[2]),
         ),
         FilterTitle(title: t.news.publicationDate),
-        FilterContainer(child: DateRangeFilter(setStartDate: (_) => null, setEndDate: (_) => null)),
+        FilterContainer(
+          child: DateRangeFilter(
+            setDateRange: (_) => null,
+            dateRange: DateTimeRange(start: DateTime(DateTime.now().year), end: DateTime.now()),
+          ),
+        ),
       ],
     );
   }
