@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -44,6 +46,11 @@ void main() async {
   // Warning: The gruene api singleton depends on the auth repository which depends on the authenticator singleton
   // Therefore this should be last
   GetIt.I.registerSingleton<GrueneApi>(await createGrueneApiClient());
+
+  FlutterError.onError = (details) {
+    print(details);
+    if (kReleaseMode) exit(1);
+  };
 
   runApp(TranslationProvider(child: const MyApp()));
 }

@@ -50,5 +50,9 @@ class MainAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => Size.fromHeight(kToolbarHeight + (tabBar == null ? 0 : kTextTabBarHeight));
+  Size get preferredSize => Size.fromHeight(getMainAppBarHeight(hasTabBar: tabBar != null));
+}
+
+double getMainAppBarHeight({bool? hasTabBar = false}) {
+  return kToolbarHeight + (hasTabBar == null ? 0 : kTextTabBarHeight);
 }

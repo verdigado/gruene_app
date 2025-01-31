@@ -3,8 +3,10 @@ import 'package:gruene_app/app/screens/error_screen.dart';
 import 'package:gruene_app/app/screens/future_loading_screen.dart';
 import 'package:gruene_app/features/news/domain/news_api_service.dart';
 import 'package:gruene_app/features/news/models/news_model.dart';
+import 'package:gruene_app/features/news/widgets/filter_dropdown.dart';
 import 'package:gruene_app/features/news/widgets/news_card.dart';
 import 'package:gruene_app/i18n/translations.g.dart';
+import 'package:gruene_app/swagger_generated_code/gruene_api.enums.swagger.dart';
 
 class NewsList extends StatelessWidget {
   final String? division;
@@ -31,11 +33,14 @@ class NewsList extends StatelessWidget {
         if (data == null || data.isEmpty) {
           return ErrorScreen(error: t.news.noResults, retry: fetchNews);
         }
-        return ListView.builder(
-          padding: const EdgeInsets.all(16),
-          itemCount: data.length,
-          itemBuilder: (context, index) => NewsCard(news: data[index]),
-        );
+        final categories = data.map((it) => it.categories).expand((it) => it).toSet();
+        print(categories);
+        return FilterDropdown(categories: categories.take(4).toList());
+        // return ListView.builder(
+        //   padding: const EdgeInsets.all(16),
+        //   itemCount: data.length,
+        //   itemBuilder: (context, index) => NewsCard(news: data[index]),
+        // );
       },
     );
   }

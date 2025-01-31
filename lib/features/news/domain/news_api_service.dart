@@ -16,7 +16,7 @@ Future<List<NewsModel>> fetchNews({
 }) async {
   final List<String> categories = category == null ? [] : [category];
   return getFromApi(
-    // TODO Actually use arguments
+    // TODO Actually use all arguments (start, end, bookmarked)
     request: (api) => api.v1NewsGet(divisionKey: division, search: search, category: categories),
     map: (data) => data.data.map(NewsModel.fromApi).toList(),
   );

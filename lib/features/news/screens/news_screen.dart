@@ -20,6 +20,11 @@ class NewsScreen extends StatefulWidget {
 
 class _NewsScreenState extends State<NewsScreen> with SingleTickerProviderStateMixin {
   bool _showFilters = false;
+  String? division;
+  String? search;
+  String? category;
+  DateTime? start;
+  DateTime? end;
   late TabController _tabController;
 
   @override
